@@ -6,7 +6,7 @@ Getting started:
 Mac OS X and Linux users:
 
 - Clone the lime git repo (you have probably already done that):
-    git clone git://github.com/digitalfruit/lime.git
+    git clone git://github.com/digitalfruit/limejs.git
 - bin/lime.py --help
 - bin/lime.py init
 - bin/lime.py create helloworld
@@ -18,14 +18,14 @@ Mac OS X and Linux users:
 
 - demos are available at lime/demos/
 - documentation is at lime/docs/
-
+- unit tests are at lime/tests/
 
 Windows users:
 
 If you consider yourself advanced user and know how to use Git/Python you are probably better off reading through Mac/Linux guide and choosing your best alternative tools/methods yourself. If not then follow this step-by-step route.
 
 1) Download and install Git client from http://code.google.com/p/msysgit/downloads/list (if not already installed). While installing select "Run Git from the Windows Command Prompt".
-2) Clone lime git repo or download zip package from https://github.com/digitalfruit/lime/zipball/master
+2) Clone lime git repo or download zip package from https://github.com/digitalfruit/limejs/zipball/master
 3) Extract the contents to suitable place on your hard drive. Next examples will use c:\ as the base path.
 4) If you don't have python download and install it from http://www.python.org/download/
 5) Launch Command Prompt (or PowerShell)
