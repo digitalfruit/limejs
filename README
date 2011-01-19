@@ -5,7 +5,8 @@ Getting started:
 
 Mac OS X and Linux users:
 
-- Clone the lime git repo. (You have probably already done that)
+- Clone the lime git repo (you have probably already done that):
+    git clone git://github.com/digitalfruit/lime.git
 - bin/lime.py --help
 - bin/lime.py init
 - bin/lime.py create helloworld
@@ -23,12 +24,12 @@ Windows users:
 
 If you consider yourself advanced user and know how to use Git/Python you are probably better off reading through Mac/Linux guide and choosing your best alternative tools/methods yourself. If not then follow this step-by-step route.
 
-1) Download zip package from ..
-2) Extract the contents to suitable place on your hard drive. Next examples will use c:\ as the base path.
-3) Download and install Git client from http://code.google.com/p/msysgit/downloads/list (if not already installed). While installing select "Run Git from the Windows Command Prompt".
-3) If you don't have python download and install it from http://www.python.org/download/
-4) Launch Command Prompt (or PowerShell)
-5) Check if you have python installed on your global path by running:
+1) Download and install Git client from http://code.google.com/p/msysgit/downloads/list (if not already installed). While installing select "Run Git from the Windows Command Prompt".
+2) Clone lime git repo or download zip package from https://github.com/digitalfruit/lime/zipball/master
+3) Extract the contents to suitable place on your hard drive. Next examples will use c:\ as the base path.
+4) If you don't have python download and install it from http://www.python.org/download/
+5) Launch Command Prompt (or PowerShell)
+6) Check if you have python installed on your global path by running:
     python --version
     
 If this returned error you have to add it to your global path or use full path to binaries in next steps.
@@ -44,11 +45,11 @@ To add python to your global path:
 7) Restart Command Prompt
 8) Try if it works now
 
-6) Move to lime base folder
+7) Move to lime base folder
     cd c:\lime
     
-7) python bin/lime.py --help
-8) In similar pattern continue from Mac/Linux tutorial from step 3
+8) python bin/lime.py --help
+9) In similar pattern continue from Mac/Linux tutorial from step 3
 
 
 
