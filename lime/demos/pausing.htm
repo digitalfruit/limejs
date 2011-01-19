@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+<title>Demo Pause</title>
+<script type="text/javascript" src="../../closure/closure/goog/base.js"></script>
+
+<script type="text/javascript">
+
+goog.provide('pause_test');
+
+goog.require('lime.Director');
+goog.require('lime.Scene');
+goog.require('lime.Layer');
+goog.require('lime.Circle');
+goog.require('lime.animation.Sequence');
+goog.require('lime.animation.Delay');
+goog.require('lime.animation.MoveBy');
+
+function setup(){
+    
+    //director
+	pause_test.director = new lime.Director(document.getElementById('game'),600,400);
+	
+	
+	var scene = new lime.Scene();
+	
+	var layer = new lime.Layer();
+	
+	ball = new lime.Circle().setSize(90,90).setFill('#c00').setPosition(150,150);
+	
+	layer.appendChild(ball);
+	
+	scene.appendChild(layer);
+	
+	pause_test.director.replaceScene(scene);
+	
+	moveBall();
+    
+}
+function moveBall(){
+	
+	var anim = new lime.animation.Sequence(
+			new lime.animation.Delay(),
+			new lime.animation.MoveBy(Math.random()*80-40,Math.random()*80-40)
+		);
+	goog.events.listen(anim,lime.animation.Event.STOP,moveBall);
+		
+	ball.runAction(anim);
+}
+function pause(){
+	pause_test.director.setPaused(true);
+}
+function resume(){
+	pause_test.director.setPaused(false);
+}
+</script>
+
+<style type="text/css">
+
+#game {
+	width: 600px;
+	height: 400px;
+	overflow:hidden;
+	border: 4px solid #c00;
+	margin:50px auto;
+}
+.game_cont {
+	border: 1px solid #00c;
+	padding-bottom: 15px;
+	margin: 50px;
+	width: 700px;
+}
+</style>
+
+
+</head>
+
+<body onload="setup()">
+	
+	<p> 
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum non augue velit. Ut eleifend dapibus purus, quis tempus augue feugiat vitae. Morbi molestie ligula a massa vulputate sed rhoncus ligula tristique. Vestibulum risus lorem, mattis quis volutpat ut, cursus vitae lectus. Vestibulum pharetra bibendum est id faucibus. Donec a sapien nisl, sit amet imperdiet nisl. Quisque sollicitudin est eu nibh iaculis vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin consectetur dolor non dolor tempor faucibus. Ut odio felis, consectetur et tincidunt eu, porta eu felis.
+	</p> 
+	<p> 
+	Suspendisse potenti. Vivamus leo elit, sodales id sagittis at, ullamcorper ac mi. In bibendum ante vitae metus consequat blandit. Ut non mi sit amet sem hendrerit eleifend sit amet eu tortor. Duis vitae nibh in massa tempor bibendum eleifend quis neque. Aenean consequat scelerisque nisi, quis aliquet elit semper sit amet. Fusce non massa a est lacinia rutrum at sed est. Sed semper fringilla enim, nec lacinia sapien sollicitudin eu. Etiam velit magna, tempor vitae lobortis sed, aliquam at nisi. Phasellus quis neque sed nulla elementum aliquam.
+	</p> 
+	<p> 
+	Proin placerat mauris id justo pellentesque iaculis. Quisque ultrices mauris non quam tempus rutrum. Fusce rhoncus massa diam. Nulla velit arcu, tincidunt ut facilisis quis, euismod vitae quam. Nulla ac odio id est auctor ultrices quis quis velit. Nulla facilisi. Aenean euismod enim sed turpis viverra sed cursus justo adipiscing. Nunc adipiscing elit at tellus euismod lobortis. Phasellus faucibus hendrerit elit, vel sollicitudin nisi ullamcorper id. Donec vulputate, erat quis tincidunt interdum, nibh nunc volutpat justo, id imperdiet massa eros et quam. Cras id mi eget est imperdiet ornare vel id sapien. Sed ut metus lorem. Ut justo lorem, pellentesque egestas auctor ultricies, sodales a mauris.
+	</p> 
+	<p> 
+	Mauris sed nulla ut massa condimentum facilisis. Donec pulvinar rutrum dapibus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur mollis mauris ut nunc varius eu feugiat enim imperdiet. Suspendisse quis urna nulla, quis viverra eros. Proin porta, felis at aliquet scelerisque, mi leo luctus felis, rutrum scelerisque lectus tellus ut massa. Quisque tempor consectetur sem, posuere luctus est dignissim eu. In euismod arcu enim, eget ultricies orci. Cras gravida lacus a mauris posuere congue. Fusce lectus lacus, eleifend ac gravida at, porttitor nec justo. Etiam tempor magna at felis laoreet tincidunt. In hac habitasse platea dictumst. Proin ligula arcu, vestibulum sed ornare vel, posuere vitae arcu. Etiam risus nibh, porttitor nec sollicitudin quis, tempor eget augue. Proin eget purus nulla. In at metus eu ante tempus ornare. Sed lorem lorem, bibendum ac scelerisque lobortis, ultrices eu magna. Fusce vitae hendrerit felis.
+	</p> 
+	<div class="game_cont">
+<div id="game"></div>
+		<a href="javascript:pause()">Pause game</a>
+		<a href="javascript:resume()">Resume game</a>
+</div>
+	<p style="clear:both"> 
+	In hac habitasse platea dictumst. Vestibulum molestie libero id eros posuere tempus. Vivamus neque diam, sodales sit amet eleifend quis, ultricies quis justo. Fusce neque nunc, tempor eget aliquet id, semper sed ante. Vestibulum sit amet purus ac nisl tempus lobortis eget et velit. Nunc dapibus accumsan urna aliquet malesuada. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed ac felis est, non venenatis metus. Vestibulum tellus risus, varius at tempor id, vulputate in urna. Praesent justo magna, interdum sit amet bibendum faucibus, blandit eget nunc. Duis felis dui, elementum vel vehicula nec, volutpat nec turpis. Nunc felis felis, posuere vitae lobortis sed, placerat 	quis lacus. Maecenas quis arcu ac velit pulvinar iaculis ut eu risus. Aenean at sem nec nunc posuere accumsan vel sed erat.
+		</p>
+
+
+</body>
+
+</html>

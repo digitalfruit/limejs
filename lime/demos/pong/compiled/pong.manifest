@@ -1,0 +1,14 @@
+CACHE MANIFEST
+
+# If you use more files you need to manually list them here.
+# Don't remove next line
+# Updated on: 2011-01-05 15:08:16
+
+pong.js
+pong.html
+assets/startup.jpg
+assets/startup_ipad.jpg
+assets/icon.png
+
+NETWORK:
+*

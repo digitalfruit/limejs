@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Lime Unit Tests - lime.director</title>
+<script src="../../closure/closure/goog/base.js"></script>
+<script>
+  goog.require('goog.testing.MockClock');
+  goog.require('goog.testing.jsunit');
+  goog.require('lime.Director');
+</script>
+</head>
+<style>
+    #stage {
+        width: 500px;
+        height: 300px;
+        visibility: hidden;
+    }
+</style>
+<body>
+    
+<div id="stage">
+</div>    
+<script>
+
+
+function shouldRunTests() {
+  return true;
+}
+
+function setUpPage(){
+    mockClock = new goog.testing.MockClock(1);
+}
+
+function tearDownPage(){
+    mockClock.uninstall();
+}
+
+function tearDown() {
+    stage.innerHTML='';
+}
+function setUp(){
+    stage = document.getElementById('stage');
+}
+
+
+function testDirectorInit() {
+  director = new lime.Director(stage,350,250);    
+    
+  assertEquals('Director was added to dom node',director.domElement.parentNode,stage);
+  assertTrue('Director is in tree',director.inTree_);
+  assertEquals('Director\'s director is itself',director,director.getDirector());
+  assertObjectEquals('Director\'s anchor is in top-left',director.getAnchorPoint(),new goog.math.Vec2(0,0));
+  assertNull('Empty director has no scenes',director.getCurrentScene());
+  assertObjectEquals('Director size was initialized',director.getSize(),new goog.math.Size(350,250));
+  
+  assertCSSValueEquals('Parent has to be overflow=hidden','overflow','hidden',stage.style['overflow']);
+  assertTrue('Parent has to have position absolute or relative',
+     stage.style['position']=='absolute' || stage.style['position']=='relative');
+
+  assertEquals('Director has to have absolute positioning','absolute',
+    goog.style.getComputedStyle(director.domElement,'position'));
+   
+  
+  
+}
+
+function testPartialSizes() {
+  director = new lime.Director(stage,350);
+  
+  assertObjectEquals('Director size with width only',director.getSize(),new goog.math.Size(350,(350*300)/500));
+    
+  stage.innerHTML = '';
+  
+  director = new lime.Director(stage);
+  
+  assertObjectEquals('Director size with by parent',director.getSize(),new goog.math.Size(500,300));
+  
+}
+/*
+function testFitInContainer(){
+  director = new lime.Director(stage,350,250);
+  mockClock.tick(1000);
+  //console.log(goog.style.getComputedStyle(director.domElement,'MozTransform'));
+}*/
+
+function testCoordinateConversion(){
+    director = new lime.Director(stage,350,250);
+    
+    var coord = new goog.math.Coordinate(50,50);
+    var locCoord = director.screenToLocal(coord);
+    assertObjectEquals('Local-to-screen converstion',coord,director.localToScreen(locCoord));
+    
+    var screenCoord = director.localToScreen(coord);
+    assertObjectEquals('Screen-to-local converstion',coord,director.screenToLocal(screenCoord));
+    
+}
+
+function testBounds(){
+    
+}
+
+function testHitTest(){
+    director = new lime.Director(stage,350,250);
+    assertTrue(director.hitTest());
+}
+
+function testPausing(){
+    director = new lime.Director(stage,350,250);
+    
+    assertFalse('Empty director is not paused',director.isPaused());
+    
+    director.setPaused(true);
+    
+    assertTrue('Pausing the director',director.isPaused());
+    assertTrue('Current scene is PauseScene',director.getCurrentScene() instanceof lime.helper.PauseScene);
+    
+    director.setPaused(false);
+    
+    assertFalse('Resume director',director.isPaused());
+    assertFalse('Current scene is not PauseScene',director.getCurrentScene() instanceof lime.helper.PauseScene);
+}
+
+</script>
+</body>
+</html>

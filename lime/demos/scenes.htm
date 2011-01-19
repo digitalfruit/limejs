@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+<title>Demo Performance</title>
+<script type="text/javascript" src="../closure/closure/goog/base.js"></script>
+
+<script type="text/javascript">
+
+goog.provide('scenes_test');
+
+goog.require('lime.Director');
+goog.require('lime.Scene');
+goog.require('goog.ui.Menu');
+goog.require('goog.ui.MenuItem');
+
+
+function setup(){
+    
+    //director
+	scenes_test.director = new lime.Director(document.body,400,400);
+	
+	
+	var scene = new lime.Scene();
+	
+	var menu = new goog.ui.Menu();
+	
+	menu.addChild(new goog.ui.MenuItem('Item1'));
+    menu.addChild(new goog.ui.MenuItem('Item2'));
+    menu.render(scene.baseElement);
+	
+	
+	scenes_test.director.replaceScene(scene);
+	
+    
+}
+
+</script>
+
+<style type="text/css">
+html,body {
+	margin: 0; padding:0px;
+	height: 100%;overflow: hidden;
+}
+#game {
+	width: 600px;
+	height: 400px;
+	overflow:hidden;
+	border: 4px solid #c00;
+	margin:50px auto;
+	padding: 20px;
+}
+</style>
+
+
+</head>
+
+<body onload="setup()">
+    <div id="game"></div>
+</body>
+
+</html>

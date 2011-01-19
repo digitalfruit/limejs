@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+
+<html manifest="pong.manifest">
+<head>
+	<title>pong</title>
+    <script type="text/javascript">
+        document.write('<link rel="apple-touch-startup-image" href="assets/startup'+(navigator.platform=='iPad'?'_ipad':'')+'.jpg">');
+    </script>
+    <link rel="apple-touch-icon" href="assets/icon.png"/>
+</head>
+<body>
+   	<script type="text/javascript">
+		(function(name,callback){
+
+			var getObjectByName = function(name, opt_obj) {
+				var parts = name.split('.');
+				var cur = opt_obj || window;
+				for (var part; part = parts.shift(); ) {
+					if (cur[part]) {
+						cur = cur[part];
+					} else {
+						return null;
+					}
+				}
+				return cur;
+			};
+
+			var webappCache = window.applicationCache;
+
+			if(webappCache){
+
+				var WIDTH = 200,
+					HEIGHT = 100;
+
+				var scripts = document.getElementsByTagName('script');
+				var script = scripts[scripts.length-1];
+				var el = document.createElement('div');
+				var parent = script.parentNode;
+				if(parent.style.position!='absolute' && parent.style.position!='relative'){
+					parent.style.cssText = 'relative';
+				}
+				var pwidth = window.innerWidth;
+				var pheight = window.innerHeight;
+				el.style.cssText = 'text-align:center;width:'+WIDTH+'px;height:'+HEIGHT+'px;position:absolute;left:'+Math.round((pwidth-WIDTH)*.5)+'px;top:'+Math.round((pheight-HEIGHT)*.5)+'px';
+				script.parentNode.insertBefore(el,script);
+				script.parentNode.removeChild(script);
+
+				var close = function(){
+					el.innerHTML = 'Starting';
+					var script = document.createElement('script');
+					script.setAttribute('type','text/javascript');
+					script.onload = function(){
+						el.parentNode.removeChild(el);
+						(getObjectByName(callback))();
+					};
+					
+					script.setAttribute('src',name);
+					document.getElementsByTagName('head')[0].appendChild(script);
+				};
+
+				webappCache.addEventListener('checking', function(){
+					//console.log('checking');
+					el.innerHTML = 'Initializing';  
+					},false);
+
+				webappCache.addEventListener('cached', function(){
+					//console.log('cached');
+					close();
+				},false);
+
+				webappCache.addEventListener('noupdate', function(){
+					//console.log('noupdate');
+					close();
+				},false);
+
+				webappCache.addEventListener('updateready', function(){
+					//console.log('updateready');
+					webappCache.swapCache();
+					close();
+				},false);
+/*
+			webappCache.addEventListener('downloading', function(){
+					console.log('downloading 3');
+					el.innerHTML = 'Loading';
+				},false);
+
+				webappCache.addEventListener('progress', function(e){
+					console.log('progress '+e.loaded+'/'+e.total);
+					el.innerHTML = 'Loading '+e.loaded+'/'+e.total; 
+				},false);
+*/
+				webappCache.addEventListener('obsolete', function(){
+					//console.log('obsolete')
+					close();
+				}, false);
+
+				webappCache.addEventListener('error', function(e){
+					//console.log('error');
+					close();
+				}, false);
+			}
+
+		})('pong.js','pong.start');
+
+		</script>
+</body>
+
+</html>

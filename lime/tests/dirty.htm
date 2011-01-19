@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Lime Unit Tests - lime.dirty</title>
+<script src="../../closure/closure/goog/base.js"></script>
+<script>
+  goog.require('goog.testing.MockClock');
+  goog.require('goog.testing.jsunit');
+  goog.require('goog.testing.recordFunction');
+  goog.require('goog.testing.PropertyReplacer');
+  goog.require('lime.Director');
+  goog.require('lime.Node');
+</script>
+</head>
+<style>
+    #stage {
+        width: 500px;
+        height: 300px;
+        visibility: hidden;
+    }
+</style>
+<body>
+    
+<div id="stage">
+</div>    
+<script>
+
+var stubs = new goog.testing.PropertyReplacer();
+
+function shouldRunTests() {
+  return true;
+}
+
+function setUpPage(){
+    mockClock = new goog.testing.MockClock(1);
+    stage = document.getElementById('stage');
+}
+
+function tearDownPage(){
+    mockClock.uninstall();
+}
+
+function tearDown() {
+    stubs.reset();
+}
+function setUp(){
+}
+
+
+function testDirtyQueue() {
+    stubs.set(lime.Node.prototype,'update',goog.testing.recordFunction(lime.Node.prototype.update));
+    var func = lime.Node.prototype.update;
+    
+    var director = new lime.Director(stage);
+    
+    mockClock.tick(200);
+    
+    assertEquals('Update run once:',1,func.getCallCount());
+    
+    director.setDirty(lime.Dirty.POSITION);
+    
+    assertEquals('No update before clock run',1,func.getCallCount());
+    mockClock.tick(200);
+    
+    assertEquals('Update run once:',2,func.getCallCount());
+    
+    director.setDirty(lime.Dirty.POSITION);
+    director.setDirty(lime.Dirty.SCALE);
+    
+    mockClock.tick(200);
+    
+    assertEquals('Two parameters, run once:',3,func.getCallCount());
+    
+    
+    
+}
+
+</script>
+</body>
+</html>

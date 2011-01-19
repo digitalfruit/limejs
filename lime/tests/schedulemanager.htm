@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Lime Unit Tests - lime.director</title>
+<script src="../../closure/closure/goog/base.js"></script>
+<script>
+  goog.require('goog.testing.MockClock');
+  goog.require('goog.testing.jsunit');
+  goog.require('goog.testing.recordFunction');
+  goog.require('goog.testing.PropertyReplacer');
+  goog.require('lime.scheduleManager');
+</script>
+</head>
+<style>
+</style>
+<body>
+    
+<script>
+
+var stubs = new goog.testing.PropertyReplacer();
+
+function shouldRunTests() {
+  return true;
+}
+
+function setUpPage(){
+    mockClock = new goog.testing.MockClock(1);
+}
+
+function tearDownPage(){
+    mockClock.uninstall();
+}
+
+function tearDown() {
+    stubs.reset();
+}
+function setUp(){
+}
+
+
+function testScheduler() {
+    
+   var mock = {f:goog.testing.recordFunction()};
+   
+   stubs.set(mock,'f',mock.f);
+   
+   lime.scheduleManager.schedule(mock.f,mock);
+   
+   assertEquals('No calls on stopped timer.',0,mock.f.getCallCount());
+  
+   mockClock.tick(1000);
+   //29= Math.ceil(1000/lime.scheduleManager.getDisplayRate())
+   assertEquals('Calls after 1000ms.',30,mock.f.getCallCount());
+
+   mockClock.tick(1000);
+   assertEquals('Calls after 2000ms.',60,mock.f.getCallCount());
+   
+   lime.scheduleManager.setDisplayRate(1000/60);
+   mockClock.tick(1000);
+   assertEquals('Calls after 3000ms.',120,mock.f.getCallCount());
+   
+   lime.scheduleManager.setDisplayRate(1000/30);
+   mockClock.tick(1000);
+   assertEquals('Calls after 3000ms.',149,mock.f.getCallCount());
+
+   
+   lime.scheduleManager.unschedule(mock.f,mock);
+   
+   mockClock.tick(1000);
+   assertEquals('Calls after stopped.',149,mock.f.getCallCount());
+   
+  
+}
+
+function testCallAfter(){
+    
+    var mock = {f:goog.testing.recordFunction()};
+
+    stubs.set(mock,'f',mock.f);
+    
+    lime.scheduleManager.callAfter(mock.f,mock,100);
+    
+    mockClock.tick(95);
+    
+    assertEquals('No call after 95ms',0,mock.f.getCallCount());
+    
+    mockClock.tick(50);
+
+    assertEquals('One call after 125ms',1,mock.f.getCallCount());
+
+    mockClock.tick(3000);
+
+    assertEquals('No more calls',1,mock.f.getCallCount());
+
+
+   
+}
+
+function testScheduleWithDelay(){
+    
+    var mock = {f:goog.testing.recordFunction()};
+    
+    stubs.set(mock,'f',mock.f);
+    
+    lime.scheduleManager.scheduleWithDelay(mock.f,mock,500);
+    
+    assertEquals('No calls on stopped timer.',0,mock.f.getCallCount());
+    
+    mockClock.tick(1200);
+    
+    assertEquals('2 calls on 1200ms',2,mock.f.getCallCount());
+    
+    lime.scheduleManager.unschedule(mock.f,mock);
+    
+    mockClock.tick(1200);
+    
+    assertEquals('No more calls',2,mock.f.getCallCount());
+}
+
+
+</script>
+</body>
+</html>

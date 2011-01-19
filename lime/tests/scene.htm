@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Lime Unit Tests - lime.scene</title>
+<script src="../../closure/closure/goog/base.js"></script>
+<script>
+  goog.require('goog.testing.MockClock');
+  goog.require('goog.testing.jsunit');
+  goog.require('lime.Director');
+  goog.require('lime.Scene');
+</script>
+</head>
+<style>
+    #stage {
+        width: 500px;
+        height: 100px;
+        visibility: hidden;
+    }
+</style>
+<body>
+    
+<div id="stage">
+</div>    
+<script>
+
+
+function shouldRunTests() {
+  return true;
+}
+
+function setUpPage(){
+    mockClock = new goog.testing.MockClock(1);
+}
+
+function tearDownPage(){
+    mockClock.uninstall();
+}
+
+function tearDown() {
+    stage.innerHTML='';
+}
+function setUp(){
+    stage = document.getElementById('stage');
+	director = new lime.Director(stage,300,250);
+}
+
+function testSceneInit(){
+	var scene = new lime.Scene();
+	
+    assertObjectEquals('Director\'s anchor is in top-left',director.getAnchorPoint(),
+        new goog.math.Vec2(0,0));
+	assertFalse('Scene is not in tree',scene.inTree_);
+	assertNotNull('Scene always has DOM element',scene.domElement);
+    assertEquals('Scene\'s scene is itself',scene,scene.getScene());
+}
+
+function checkSceneActive(scene,director){
+    assertTrue('Scene is in tree',scene.inTree_);
+    assertEquals('Scene\'s director is current director.',director,scene.getDirector());
+    assertEquals('Scene is active',scene,director.getCurrentScene());
+    assertEquals('Scene\'s parentNode is directors domElement',scene.domElement.parentNode,
+        director.domElement);
+}
+
+function checkSceneInactive(scene,director){
+    assertNotEquals('Scene is not active',scene,director.getCurrentScene());
+    assertNotEquals('Scene\'s parentNode is directors domElement',scene.domElement.parentNode,
+        director.domElement);
+}
+
+
+
+function testSceneActivation(){
+    director = new lime.Director(stage,300,250);
+    var scene = new lime.Scene();
+    
+    checkSceneInactive(scene,director);
+    director.replaceScene(scene);
+    checkSceneActive(scene,director);
+    
+    director.popScene(scene);
+    checkSceneInactive(scene,director);
+}
+
+function testScenePushPop(){
+    director = new lime.Director(stage,300,250);
+    var scene = new lime.Scene();
+    var scene2 = new lime.Scene();
+    var scene3 = new lime.Scene();
+    
+    director.pushScene(scene);
+    checkSceneActive(scene,director);
+    director.pushScene(scene2);
+    checkSceneActive(scene2,director);
+    assertNotEquals('Scene is not active',scene,director.getCurrentScene());
+    
+    director.pushScene(scene3);
+    
+    checkSceneActive(scene3,director);
+    assertNotEquals('Scene is not active',scene2,director.getCurrentScene());
+    assertNotEquals('Scene is not active',scene,director.getCurrentScene());
+    
+    director.popScene();
+    
+    
+    checkSceneActive(scene2,director);
+    assertNotEquals('Scene is not active',scene3,director.getCurrentScene());
+    assertNotEquals('Scene is not active',scene,director.getCurrentScene());
+}
+
+
+</script>
+</body>
+</html>
