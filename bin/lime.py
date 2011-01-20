@@ -45,7 +45,6 @@ def makeProjectPaths(add):
         lines.append(add)
     newlines = filter(lambda x: exists(join(basedir,x.rstrip())) and len(x.rstrip()),lines)
     newlines = removeDupes(newlines)
-    print newlines
     
     f = open(projects_path,'w')
     f.write('\n'.join(newlines))
@@ -131,7 +130,8 @@ def checkDependencies():
 def update():
     
     reldir = os.path.relpath(curdir,basedir)
-    makeProjectPaths(reldir)
+    if reldir!='.':
+        makeProjectPaths(reldir)
     
     print 'Updating Closure deps file'
     
@@ -159,7 +159,10 @@ def create(name):
     
     name = os.path.basename(path)
     
-    makeProjectPaths(os.path.relpath(path,basedir))
+    proj = os.path.relpath(path,basedir)
+    
+    if proj!='.':
+        makeProjectPaths(os.path.relpath(path,basedir))
     
     shutil.copytree(os.path.join(basedir,'lime/templates/default'),path)
     
@@ -194,12 +197,13 @@ def genSoy(path):
 def build(name,options):
     
     dir_list = open(projects_path,'r').readlines()
-    dir_list.append('lime\n')
-    dir_list.append('box2d\n')
+    dir_list.append('lime')
+    dir_list.append('box2d')
+    dir_list.append('closure')
     
     #dir_list = filter(lambda x: os.path.isdir(os.path.join(basedir,x)) and ['.git','bin','docs'].count(x)==0 ,os.listdir(basedir))
 
-    opt = ' '.join(map(lambda x: '--root="'+os.path.join(basedir,x)+'/"',dir_list))
+    opt = ' '.join(map(lambda x: '--root="'+os.path.join(basedir,x.rstrip())+'/"',dir_list))
     
     call = os.path.join(closure_dir,'closure/bin/build/closurebuilder.py')+' '+opt+' --namespace="'+name+'" '+\
         '-o compiled -c '+compiler_path;

@@ -1,6 +1,6 @@
 
 // pg - "Pot Game"
-goog.provide('test.autoresize')
+goog.provide('test.scroll')
 
 
 goog.require('lime');
