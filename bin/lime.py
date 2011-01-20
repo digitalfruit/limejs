@@ -32,6 +32,24 @@ compiler_path = os.path.join(extdir,'compiler.jar')
 soy_path = os.path.join(extdir,'SoyToJsSrcCompiler.jar')
 projects_path = join(basedir,'bin/projects')
 
+def removeDupes(seq):
+    # Not order preserving
+    keys = {}
+    for e in seq:
+        keys[e.rstrip()] = 1
+    return keys.keys()
+    
+def makeProjectPaths(add):
+    lines = open(projects_path,'r').readlines()
+    if len(add):
+        lines.append(add)
+    newlines = filter(lambda x: exists(join(basedir,x.rstrip())) and len(x.rstrip()),lines)
+    newlines = removeDupes(newlines)
+    print newlines
+    
+    f = open(projects_path,'w')
+    f.write('\n'.join(newlines))
+    f.close()
 
 def rephook(a,b,c):
     sys.stdout.write("\r%2d%%" % ((100*a*b)/c) )
@@ -106,22 +124,14 @@ def checkDependencies():
     if not os.path.exists(projects_path):
         open(projects_path,'w').close()
     
-    lines = open(projects_path,'r').readlines()
-    newlines = filter(lambda x: exists(join(basedir,x.rstrip())),lines)
-    
-    f = open(projects_path,'w')
-    f.write('\n'.join(newlines))
-    f.close()
+    makeProjectPaths('')
     
     
     
 def update():
     
     reldir = os.path.relpath(curdir,basedir)
-    if len(re.sub(r'[\./\\]','',reldir)) > 0 :
-        f = open(projects_path,'a')
-        f.write(reldir+'\n')
-        f.close()
+    makeProjectPaths(reldir)
     
     print 'Updating Closure deps file'
     
@@ -149,9 +159,7 @@ def create(name):
     
     name = os.path.basename(path)
     
-    f = open(projects_path,'a')
-    f.write(os.path.relpath(path,basedir)+'\n')
-    f.close()
+    makeProjectPaths(os.path.relpath(path,basedir))
     
     shutil.copytree(os.path.join(basedir,'lime/templates/default'),path)
     
