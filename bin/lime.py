@@ -32,6 +32,11 @@ compiler_path = os.path.join(extdir,'compiler.jar')
 soy_path = os.path.join(extdir,'SoyToJsSrcCompiler.jar')
 projects_path = join(basedir,'bin/projects')
 
+# zipfile.extract & os.path.relpath missing in 2.5
+if sys.version_info < (2,6):
+    print "Error. Python 2.6+ is required"
+    sys.exit(1)
+
 def removeDupes(seq):
     # Not order preserving
     keys = {}
