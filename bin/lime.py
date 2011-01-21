@@ -8,7 +8,6 @@ import subprocess
 import logging
 import sys
 import os.path
-import urllib
 import zipfile
 import re
 import shutil
@@ -16,6 +15,11 @@ import fileinput
 from os.path import join, splitext, split, exists
 from shutil import copyfile
 from datetime import datetime
+
+if sys.version_info[0]==3:
+    from urllib.request import urlretrieve
+else :
+    from urllib import urlretrieve
 
 
 basedir = os.path.join(os.path.dirname(os.path.abspath(__file__)),'..')
@@ -34,7 +38,7 @@ projects_path = join(basedir,'bin/projects')
 
 # zipfile.extract & os.path.relpath missing in 2.5
 if sys.version_info < (2,6):
-    print "Error. Python 2.6+ is required"
+    print("Error. Python 2.6+ is required")
     sys.exit(1)
 
 def removeDupes(seq):
@@ -70,8 +74,8 @@ def checkDependencies():
     
     #Closure Library
     if not (os.path.exists(closure_dir) and  os.path.exists(closure_deps_file)):
-        print 'Closure Library not found. Downloading to %s' % closure_dir
-        print 'Please wait...'
+        print ('Closure Library not found. Downloading to %s' % closure_dir)
+        print ('Please wait...')
         
         retcode = subprocess.Popen(subprocess.list2cmdline(["git","svn","clone","-r","HEAD","http://closure-library.googlecode.com/svn/trunk/",closure_dir]),shell=True).wait()
         
@@ -86,8 +90,8 @@ def checkDependencies():
     
     #Box2D
     if not os.path.exists(box2d_dir):
-        print 'Box2DJS not found. Downloading to %s' % box2d_dir
-        print 'Please wait...'
+        print ('Box2DJS not found. Downloading to %s' % box2d_dir)
+        print ('Please wait...')
         
         retcode = subprocess.Popen(subprocess.list2cmdline(["git","clone","http://github.com/thinkpixellab/box2d.git",box2d_dir]),shell=True).wait()
         
@@ -102,27 +106,27 @@ def checkDependencies():
     #Closure compiler
     if not os.path.exists(compiler_path):
         zip_path = os.path.join(extdir,'compiler.zip')
-        print 'Downloading Closure Compiler: '
-        urllib.urlretrieve("http://closure-compiler.googlecode.com/files/compiler-latest.zip",zip_path,rephook)
-        print '\nUnzipping...'
+        print ('Downloading Closure Compiler: ')
+        urlretrieve("http://closure-compiler.googlecode.com/files/compiler-latest.zip",zip_path,rephook)
+        print ('\nUnzipping...')
         zippedFile = zipfile.ZipFile(zip_path)
         zippedFile.extract('compiler.jar',extdir)
         zippedFile.close()
-        print 'Cleanup'
+        print ('Cleanup')
         os.unlink(zip_path)
     
     
     #Closure Templates
     if not os.path.exists(soy_path):
         zip_path = os.path.join(extdir,'soy.zip')
-        print 'Downloading Closure Templates(Soy):'
-        urllib.urlretrieve("http://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip",
+        print ('Downloading Closure Templates(Soy):')
+        urlretrieve("http://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip",
             zip_path,rephook)
-        print '\nUnzipping...'
+        print ('\nUnzipping...')
         zippedFile = zipfile.ZipFile(zip_path)
         zippedFile.extract('SoyToJsSrcCompiler.jar',extdir)
         zippedFile.close()
-        print 'Cleanup'
+        print ('Cleanup')
         os.unlink(zip_path)
     
     if not os.path.exists(projects_path):
@@ -138,7 +142,7 @@ def update():
     if reldir!='.':
         makeProjectPaths(reldir)
     
-    print 'Updating Closure deps file'
+    print ('Updating Closure deps file')
     
     paths = open(projects_path,'r').readlines()
     paths.append('lime\n')
@@ -149,7 +153,7 @@ def update():
     call = os.path.join(closure_dir,'closure/bin/build/depswriter.py')+' --root_with_prefix="'+\
         closure_dir+'/ ../../" '+opt+' > '+closure_deps_file
         
-    print call
+    print (call)
     
     subprocess.call(call,shell=True)
     
@@ -178,9 +182,9 @@ def create(name):
                 os.rename(os.path.join(path,fname),os.path.join(path,newname))
             for line in fileinput.FileInput(os.path.join(path,newname),inplace=1):
                 line = line.replace('{name}',name)
-                print line,
+                print (line,)
             
-    print 'Created %s' % path
+    print ('Created %s' % path)
     
     update()
 
@@ -196,7 +200,7 @@ def genSoy(path):
             if fname[-4:]=='.soy':
                 soypath = os.path.join(root,fname)
                 call = "java -jar "+soy_path+" --cssHandlingScheme goog --shouldProvideRequireSoyNamespaces --outputPathFormat "+soypath+".js "+soypath;
-                print call
+                print (call)
                 subprocess.call(call,shell=True)
 
 def build(name,options):
@@ -261,7 +265,7 @@ def build(name,options):
                     
                         if fname == name+'.manifest':
                             line = re.sub(r'# Updated on:.*','# Updated on: '+datetime.now().strftime("%Y-%m-%d %H:%M:%S"),line)
-                        print line,
+                        print (line,)
         
     
 
