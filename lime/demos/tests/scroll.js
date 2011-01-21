@@ -47,15 +47,31 @@ test.start = function(){
 
     var box = new lime.Sprite().setFill('#00c').setSize(120,100);
     moving.appendChild(box);
+    var box = new lime.Sprite().setFill('#0cc').setSize(130,100).setPosition(200,0);
+    moving.appendChild(box);
+    var box = new lime.Sprite().setFill('#0c9').setSize(160,100).setPosition(470,0);
+    moving.appendChild(box);
+    var box = new lime.Sprite().setFill('#c00').setSize(160,100).setPosition(650,0);
+    moving.appendChild(box);
     
 	goog.events.listen(moving,['mousedown','touchstart'],function(e){
+	  //  e.position = back.localToNode(e.position,moving);
 	    var x = e.position.x,
             y =moving.getPosition().y;
             var p = moving.getPosition().clone();
-            console.log('aa');
+            var measure = moving.measureContents();
+            console.log(measure.top,measure.right,measure.bottom,measure.left);
         var oldx = posx = moving.getPosition().x;
         var ismove = 1,vx = 0;
-        var LOW = 60,HIGH = 440;
+        var LOW = -measure.left,HIGH =Math.min(500-measure.right,-measure.left);
+      var diff = (measure.right-measure.left)-500;
+      if(diff>0){
+      LOW-=diff;
+      HIGH+=diff;
+  }
+        var OFFSET = 250;
+        var OFFSET_LAG = 0.4;
+        var FRICTION = 0.95;
         lime.animation.actionManager.stopAll(moving);
             moving.setPosition(p);
         var step = function(){
@@ -63,7 +79,7 @@ test.start = function(){
                 vx = (posx-oldx);
                 oldx = posx;
             }
-            vx*=.95;
+            vx*=FRICTION;
             /*if(Math.abs(vx)>0.5){
                 var pos = moving.getPosition();
                 pos.x+=vx;
@@ -80,15 +96,16 @@ test.start = function(){
                 pos.x -= x;
                 pos.y = y;
                 pos = moving.localToNode(pos, moving.getParent());
+                
                 if(pos.x<LOW){
                     var diff = LOW-pos.x;
-                    if(diff>200) diff=200;
-                    pos.x = LOW-diff/2;
+                    if(diff>OFFSET) diff=OFFSET;
+                    pos.x = LOW-diff*OFFSET_LAG;
                 }
                 if(pos.x>HIGH) {
                     var diff = pos.x-HIGH;
-                    if(diff>200) diff=200;
-                    pos.x = HIGH+diff/2;
+                    if(diff>OFFSET) diff=OFFSET;
+                    pos.x = HIGH+diff*OFFSET_LAG;
                 }
                 posx = pos.x;
                 moving.setPosition(pos);
@@ -103,10 +120,9 @@ test.start = function(){
                 var oldx = pos.x;
                 lime.scheduleManager.unschedule(step,moving);
                 
-                var k = Math.log(0.5/Math.abs(vx))/Math.log(0.95);
+                var k = Math.log(0.5/Math.abs(vx))/Math.log(FRICTION);
                 var duration = k/30;
-                var endpos = (Math.abs(vx)*(Math.pow(0.95,k)-1))/(0.95-1)*(vx>0?1:-1);
-                console.log(vx,duration,endpos,k);
+                var endpos = (Math.abs(vx)*(Math.pow(FRICTION,k)-1))/(FRICTION-1)*(vx>0?1:-1);
                 pos.x+=endpos;
                 ismove = 0;
                 if(vx!=0){
