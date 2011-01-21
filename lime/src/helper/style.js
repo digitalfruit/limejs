@@ -63,17 +63,23 @@ lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
         this.values.push(rot_str);
     return this;
 };
-
+(function(){
+    
+// android doesn't scale when translate3d has been used    
+var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
+    
 lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
+    
     var p = 1 / this.precision;
     var val = 'translate';
-    if (goog.userAgent.WEBKIT) val += '3d';
+    if (ios) val += '3d';
     val += '(' + (tx * p) + 'px,' + (ty * p) + 'px';
-    if (goog.userAgent.WEBKIT) val += ',' + ((opt_tz ? opt_tz : 0) * p) + 'px';
+    if (ios) val += ',' + ((opt_tz ? opt_tz : 0) * p) + 'px';
     this.values.push(val + ')');
     return this;
 };
-lime.style.Transform.prototype.setPrecision = function(p) {
+})();
+lime.style.Transform.prototype.setPrecision = function(p) {return this;
     if (this.precision != 1) {
         var opposite = 1 / this.precision;
         this.scale(opposite, opposite);
@@ -99,7 +105,7 @@ lime.style.setTransform = (function() {
         var value = transform.toString();
         if (value != el.transform_cache_) {
             el.style[stylename] = el.transform_cache_ = value;
-            //console.log('transform',stylename,value);
+            //console.log('transform'+stylename+el.style[stylename]);
         }
     }
 })();
