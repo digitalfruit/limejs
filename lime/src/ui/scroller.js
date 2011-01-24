@@ -88,20 +88,35 @@ lime.ui.Scroller.prototype.removeChild = function(){
 
 lime.ui.Scroller.prototype.downHandler_ = function(e){
     e.position = this.localToNode(e.position,this.moving_);
-  	this.downx = e.position.x,
-    this.downy = this.moving_.getPosition().y;
-    //    p = moving.getPosition().clone(),
-        var measure = this.moving_.measureContents(),
-        width = this.getSize().width;
-            
+  	this.downx = e.position.x;
+    this.downy = e.position.y;
+    
+    var measure = this.moving_.measureContents();
+    
     this.v = 0;
     this.ismove = 1;
-            
-    this.oldx = this.posx = this.moving_.getPosition().x;
     
-    this.LOW = -measure.left;
-    this.HIGH =Math.min(width-measure.right,-measure.left);
-    var diff = (measure.right-measure.left)-width;
+    if(this.getDirection()==lime.ui.Scroller.Direction.HORIZONTAL){
+        this.downy=this.moving_.getPosition().y;
+        var max = this.getSize().width;
+            
+        this.oldx = this.posx = this.moving_.getPosition().x;
+    
+        this.LOW = -measure.left;
+        this.HIGH =Math.min(max-measure.right,-measure.left);
+        var diff = (measure.right-measure.left)-max;
+    }
+    else {
+        this.downx=this.moving_.getPosition().x;
+        max = this.getSize().height;
+            
+        this.oldx = this.posx = this.moving_.getPosition().y;
+    
+        this.LOW = -measure.top;
+        this.HIGH =Math.min(max-measure.bottom,-measure.top);
+        diff = (measure.bottom-measure.top)-max;
+    }    
+    
     if(diff>0){
         this.LOW-=diff;
         this.HIGH+=diff;
@@ -127,58 +142,79 @@ lime.ui.Scroller.prototype.captureVelocity_ = function(){
 }
 
 lime.ui.Scroller.prototype.moveHandler_ = function(e) {
-    var pos = e.position.clone();
-   // pos = this.localToNode(e.position,this.moving_);
-    pos.x -= this.downx;
-    pos.y = this.downy;
+    var pos = e.position.clone(),dir = this.getDirection(),activeval;
     
-   // pos = this.moving_.localToNode(pos,this);
+    if(dir==lime.ui.Scroller.Direction.HORIZONTAL){
+        pos.x -= this.downx;
+        pos.y = this.downy;
+        activeval = pos.x;
+    }
+    else {
+        pos.x = this.downx;
+        pos.y -= this.downy;
+        activeval = pos.y;
+    }
+    
 
-    if(pos.x<this.LOW){
-        var diff = this.LOW-pos.x;
+    if(activeval<this.LOW){
+        var diff = this.LOW-activeval;
         
         if(diff>lime.ui.Scroller.OFFSET) diff=lime.ui.Scroller.OFFSET;
-        pos.x = this.LOW-diff*lime.ui.Scroller.OFFSET_LAG;
+        activeval = this.LOW-diff*lime.ui.Scroller.OFFSET_LAG;
     }
-    if(pos.x>this.HIGH) {
-        diff = pos.x-this.HIGH;
+    if(activeval>this.HIGH) {
+        diff = activeval-this.HIGH;
         
         if(diff>lime.ui.Scroller.OFFSET) diff=lime.ui.Scroller.OFFSET;
-        pos.x = this.HIGH+diff*lime.ui.Scroller.OFFSET_LAG;
+        activeval = this.HIGH+diff*lime.ui.Scroller.OFFSET_LAG;
     }
     
-    this.posx = pos.x;
+    this.posx = activeval;
+    
+    if(dir==lime.ui.Scroller.Direction.HORIZONTAL){
+        pos.x = activeval;
+    }
+    else {
+        pos.y = activeval;
+    }
+    
     this.moving_.setPosition(pos);
 }
   
 lime.ui.Scroller.prototype.upHandler_ = function(e){
-    var pos = e.position.clone();
+    var pos = e.position.clone(),dir = this.getDirection(),activeval;
     
-    pos.x -= this.downx;
-    pos.y = this.downy;
-    
-    //pos = this.moving_.localToNode(pos, this.moving_.getParent());
+    if(dir==lime.ui.Scroller.Direction.HORIZONTAL){
+        pos.x -= this.downx;
+        pos.y = this.downy;
+        activeval = pos.x;
+    }
+    else {
+        pos.x = this.downx;
+        pos.y -= this.downy;
+        activeval = pos.y;
+    }
 
     lime.scheduleManager.unschedule(this.captureVelocity_,this);
-    var oldx = pos.x,
+    var oldx = activeval,
         k = Math.log(0.5/Math.abs(this.v))/Math.log(lime.ui.Scroller.FRICTION),
         duration = k/30,
         endpos = (Math.abs(this.v)*(Math.pow(lime.ui.Scroller.FRICTION,k)-1))/(lime.ui.Scroller.FRICTION-1)*(this.v>0?1:-1);
         
-    pos.x+=endpos;
+    activeval+=endpos;
     this.ismove = 0;
     
     if(this.v!=0){
 
         var diff = endpos;
 
-        if(pos.x<this.LOW){
-            diff = this.LOW-(pos.x-endpos);
-            pos.x = this.LOW;
+        if(activeval<this.LOW){
+            diff = this.LOW-(activeval-endpos);
+            activeval = this.LOW;
         }
-        if(pos.x>this.HIGH) {
-            diff = this.HIGH-(pos.x-endpos);
-            pos.x = this.HIGH;
+        if(activeval>this.HIGH) {
+            diff = this.HIGH-(activeval-endpos);
+            activeval = this.HIGH;
         }
         //console.log(diff,endpos);
         duration*=(diff/endpos);
@@ -186,13 +222,20 @@ lime.ui.Scroller.prototype.upHandler_ = function(e){
     }
     
     if(this.oldx<this.LOW){
-        pos.x = this.LOW;
+        activeval = this.LOW;
         duration=.3;
     }
     if(oldx>this.HIGH) {
-        pos.x = this.HIGH;
+        activeval = this.HIGH;
         duration=.3;
-    }console.log(duration);
+    }
+    
+    if(dir==lime.ui.Scroller.Direction.HORIZONTAL){
+        pos.x = activeval;
+    }
+    else {
+        pos.y = activeval;
+    }
     
     if(Math.abs(duration)<10){
          this.moving_.runAction(new lime.animation.MoveTo(pos.x,pos.y).setDuration(duration)

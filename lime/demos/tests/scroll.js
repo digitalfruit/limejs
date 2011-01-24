@@ -9,6 +9,7 @@ goog.require('lime.Scene');
 goog.require('lime.Layer');
 goog.require('lime.Sprite');
 goog.require('lime.ui.Scroller');
+goog.require('lime.fill.LinearGradient')
 
 
 
@@ -31,6 +32,8 @@ test.start = function(){
 	var scroll = new lime.ui.Scroller().setFill('#ccc').setAnchorPoint(0,0.5).setSize(400,130);
 	layer.appendChild(scroll);
 	
+	
+	// some better way to have content in a flow will be added soon
 	var box = new lime.Sprite().setFill('#00c').setSize(120,100);
     scroll.appendChild(box);
     box = new lime.Sprite().setFill('#0cc').setSize(130,100).setPosition(200,0);
@@ -41,121 +44,20 @@ test.start = function(){
     scroll.appendChild(box);
 	
 	
-	/*
-	var back = new lime.Sprite().setFill('#ccc').setSize(500,130).setAnchorPoint(0,0.5);
-	layer.appendChild(back);
-	var mask = new lime.Sprite().setFill('#ccc').setSize(500,130).setAnchorPoint(0,0.5);
-	layer.appendChild(mask);
-	back.setMask(mask);
-	
-	var moving = new lime.Layer();
-	back.appendChild(moving);
+	var lipsum = ('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent mauris magna, bibendum tempor vulputate vel, pharetra vitae diam.').split(' ');
 
-    var box = new lime.Sprite().setFill('#00c').setSize(120,100);
-    moving.appendChild(box);
-    var box = new lime.Sprite().setFill('#0cc').setSize(130,100).setPosition(200,0);
-    moving.appendChild(box);
-    var box = new lime.Sprite().setFill('#0c9').setSize(160,100).setPosition(470,0);
-    moving.appendChild(box);
-    var box = new lime.Sprite().setFill('#c00').setSize(160,100).setPosition(650,0);
-    moving.appendChild(box);
+    var scroll2 = new lime.ui.Scroller().setFill(
+        new lime.fill.LinearGradient().addColorStop(0,100,0,0,.4).addColorStop(1,100,0,0,.0)
+        ).setAnchorPoint(0,0)
+        .setSize(170,230).setPosition(100,160).setDirection(lime.ui.Scroller.Direction.VERTICAL);
+        
+    layer.appendChild(scroll2);
     
-	goog.events.listen(moving,['mousedown','touchstart'],function(e){
-	  //  e.position = back.localToNode(e.position,moving);
-	    var x = e.position.x,
-            y =moving.getPosition().y;
-            var p = moving.getPosition().clone();
-            var measure = moving.measureContents();
-            console.log(measure.top,measure.right,measure.bottom,measure.left);
-        var oldx = posx = moving.getPosition().x;
-        var ismove = 1,vx = 0;
-        var LOW = -measure.left,HIGH =Math.min(500-measure.right,-measure.left);
-      var diff = (measure.right-measure.left)-500;
-      if(diff>0){
-      LOW-=diff;
-      HIGH+=diff;
-  }
-        var OFFSET = 250;
-        var OFFSET_LAG = 0.4;
-        var FRICTION = 0.95;
-        lime.animation.actionManager.stopAll(moving);
-            moving.setPosition(p);
-        var step = function(){
-            if(ismove){
-                vx = (posx-oldx);
-                oldx = posx;
-            }
-            vx*=FRICTION;
-        };
-        
-        
-        lime.scheduleManager.schedule(step,moving);    
-            
-        e.swallow(['touchmove', 'mousemove'], function(e) {
-            var pos = e.position.clone();
-                pos.x -= x;
-                pos.y = y;
-                pos = moving.localToNode(pos, moving.getParent());
-                
-                if(pos.x<LOW){
-                    var diff = LOW-pos.x;
-                    if(diff>OFFSET) diff=OFFSET;
-                    pos.x = LOW-diff*OFFSET_LAG;
-                }
-                if(pos.x>HIGH) {
-                    var diff = pos.x-HIGH;
-                    if(diff>OFFSET) diff=OFFSET;
-                    pos.x = HIGH+diff*OFFSET_LAG;
-                }
-                posx = pos.x;
-                moving.setPosition(pos);
-        });
-        
-        e.swallow(['touchend','mouseup','touchend'],function(e){
-            var pos = e.position.clone();
-                pos.x -= x;
-                pos.y = y;
-                pos = moving.localToNode(pos, moving.getParent());
-                
-                var oldx = pos.x;
-                lime.scheduleManager.unschedule(step,moving);
-                
-                var k = Math.log(0.5/Math.abs(vx))/Math.log(FRICTION);
-                var duration = k/30;
-                var endpos = (Math.abs(vx)*(Math.pow(FRICTION,k)-1))/(FRICTION-1)*(vx>0?1:-1);
-                pos.x+=endpos;
-                ismove = 0;
-                if(vx!=0){
-                
-                var diff = endpos;
-                
-                if(pos.x<LOW){
-                    diff = LOW-(pos.x-endpos);
-                    pos.x = LOW;
-                }
-                if(pos.x>HIGH) {
-                    diff = HIGH-(pos.x-endpos);
-                    pos.x = HIGH;
-                }
-                //console.log(diff,endpos);
-                duration*=(diff/endpos);
-                }
-                if(oldx<LOW){
-                    pos.x = LOW;
-                    duration=.3;
-                }
-                if(oldx>HIGH) {
-                    pos.x = HIGH;
-                    duration=.3;
-                }
-                if(Math.abs(duration)<10)
-               moving.runAction(new lime.animation.MoveTo(pos.x,pos.y).setDuration(duration).setEasing(lime.animation.getEasingFunction(.19,.6,.35,.97)).enableOptimizations());
-                
-                
-                
-        });
-	    
-	},false,this);*/
+    for(var i=0;i<lipsum.length;i++){
+        var b = new lime.Label(lipsum[i]).setFill(0,100,0,.2).setPosition(10,i*40).setSize(150,30).setAnchorPoint(0,0).setPadding(7);
+        scroll2.appendChild(b);
+    }
+
 	
 	test.director.replaceScene(gamescene);
 	
