@@ -409,7 +409,7 @@ lime.Node.prototype.setSize = function(value) {
                 var fixed = oldSize.height;
                 var r1 = b.top+ap2.y*oldSize.height;
                 var r2 = b.bottom-b.top;
-                var r3 = fixed-b.bottom+ap2.y*oldSize.height;
+                var r3 = fixed-b.bottom-ap2.y*oldSize.height;
                 if(ar & lime.AutoResize.TOP) fixed-=r1;
                 if(ar & lime.AutoResize.HEIGHT) fixed-=r2;
                 if(ar & lime.AutoResize.BOTTOM) fixed-=r3;
@@ -422,7 +422,7 @@ lime.Node.prototype.setSize = function(value) {
                 var ap = c.getAnchorPoint();
                 c.setSize(c2,r2);
                 c.setPosition(c1+ap.x*c2-ap2.x*newval.width,
-                        r1+ap.y*r2-ap2.y*newval.height);
+                              r1+ap.y*r2-ap2.y*newval.height);
             }
             
         }
