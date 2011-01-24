@@ -8,15 +8,7 @@ goog.require('lime.Director');
 goog.require('lime.Scene');
 goog.require('lime.Layer');
 goog.require('lime.Sprite');
-goog.require('lime.animation.MoveTo');
-goog.require('lime.animation.MoveBy');
-goog.require('lime.animation.ScaleBy');
-goog.require('lime.animation.RotateBy');
-goog.require('lime.animation.ScaleTo');
-goog.require('lime.animation.Spawn')
-goog.require('lime.animation.Sequence')
-goog.require('lime.animation.Delay')
-goog.require('lime.animation.FadeTo')
+goog.require('lime.ui.Scroller');
 
 
 
@@ -36,6 +28,20 @@ test.start = function(){
 	layer.setPosition(200,100);
 	gamescene.appendChild(layer);
 	
+	var scroll = new lime.ui.Scroller().setFill('#ccc').setAnchorPoint(0,0.5).setSize(400,130);
+	layer.appendChild(scroll);
+	
+	var box = new lime.Sprite().setFill('#00c').setSize(120,100);
+    scroll.appendChild(box);
+    box = new lime.Sprite().setFill('#0cc').setSize(130,100).setPosition(200,0);
+    scroll.appendChild(box);
+    box = new lime.Sprite().setFill('#0c9').setSize(160,100).setPosition(470,0);
+    scroll.appendChild(box);
+    box = new lime.Sprite().setFill('#c00').setSize(160,100).setPosition(650,0);
+    scroll.appendChild(box);
+	
+	
+	/*
 	var back = new lime.Sprite().setFill('#ccc').setSize(500,130).setAnchorPoint(0,0.5);
 	layer.appendChild(back);
 	var mask = new lime.Sprite().setFill('#ccc').setSize(500,130).setAnchorPoint(0,0.5);
@@ -80,12 +86,6 @@ test.start = function(){
                 oldx = posx;
             }
             vx*=FRICTION;
-            /*if(Math.abs(vx)>0.5){
-                var pos = moving.getPosition();
-                pos.x+=vx;
-                moving.setPosition(pos);
-            }
-            else if(!ismove) lime.scheduleManager.unschedule(step,moving);    */
         };
         
         
@@ -155,7 +155,7 @@ test.start = function(){
                 
         });
 	    
-	},false,this);
+	},false,this);*/
 	
 	test.director.replaceScene(gamescene);
 	
