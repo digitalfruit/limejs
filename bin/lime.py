@@ -182,7 +182,7 @@ def create(name):
                 os.rename(os.path.join(path,fname),os.path.join(path,newname))
             for line in fileinput.FileInput(os.path.join(path,newname),inplace=1):
                 line = line.replace('{name}',name)
-                print (line,)
+                print(line.rstrip())
             
     print ('Created %s' % path)
     
@@ -265,7 +265,7 @@ def build(name,options):
                     
                         if fname == name+'.manifest':
                             line = re.sub(r'# Updated on:.*','# Updated on: '+datetime.now().strftime("%Y-%m-%d %H:%M:%S"),line)
-                        print (line,)
+                        print(line.rstrip())
         
     
 
