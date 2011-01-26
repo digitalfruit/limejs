@@ -106,17 +106,17 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
     if (goog.isDef(this.swallows[ee.identifier])) {
         var s = this.swallows[ee.identifier];
-        var handler = s[0][0];
-        var p2 = handler.screenToLocal(ee.screenPosition);
 
-        ee.position = p2;
-
-        ee.targetObject = handler;
         for (var i = 0; i < s.length; i++) {
             if (s[i][1] == e.type || (goog.isArray(s[i][1]) &&
-                    goog.array.contains(s[i][1], e.type)))
-                s[i][2].call(s[i][0], ee);
+                    goog.array.contains(s[i][1], e.type))){
+                
+                var handler = s[i][0];
+                ee.targetObject = handler;
+                ee.position = handler.screenToLocal(ee.screenPosition);
+                s[i][2].call(handler, ee);
                 didhandle = true;
+            }
         }
         //handler.dispatchEvent(ee);
 

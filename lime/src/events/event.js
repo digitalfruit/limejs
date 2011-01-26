@@ -17,10 +17,12 @@ lime.events.Event = function(dispatcher) {
  * @param {string|Array.<string>} type Event types to swallow.
  * @param {function(lime.events.Event)} handler Function to call on event.
  */
-lime.events.Event.prototype.swallow = function(type, handler) {
+lime.events.Event.prototype.swallow = function(type, handler, opt_deny_shared) {
     this.dispatcher_.swallow(this, type, handler);
 
-    this.event.stopPropagation();
+    if(opt_deny_shared){
+        this.event.stopPropagation();
+    }
 };
 
 /**
