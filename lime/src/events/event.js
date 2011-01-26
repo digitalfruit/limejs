@@ -112,3 +112,9 @@ lime.events.Event.prototype.startDrag = function(snapToCenter, box) {
     });
 
 };
+
+lime.events.Event.prototype.clone = function(){
+    var e = new lime.events.Event(this.dispatcher_);
+    goog.object.extend(e, this);
+    return e;
+}

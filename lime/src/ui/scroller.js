@@ -210,6 +210,9 @@ lime.ui.Scroller.prototype.moveHandler_ = function(e) {
     }
     
     this.moving_.setPosition(pos);
+    
+    this.event = e.clone();
+    
 }
   
 lime.ui.Scroller.prototype.upHandler_ = function(e){
