@@ -59,22 +59,27 @@ lime.events.Event.prototype.release = function(opt_type) {
  * @param {boolean} snapToCenter Drag from center or not.
  * @param {goog.math.Box} box Limited area where dragging is possible.
  */
-lime.events.Event.prototype.startDrag = function(snapToCenter, box) {
+lime.events.Event.prototype.startDrag = function(snapToCenter, box, opt_targetObject) {
 
-    var obj = this.targetObject;
+    var obj = opt_targetObject || this.targetObject;
 
-    if (!goog.isDef(snapToCenter)) {
-        snapToCenter = false;
+    var x = 0,
+        y = 0;
+
+    if (!snapToCenter) {
+        var centerpos = obj.localToScreen(new goog.math.Coordinate(0,0));
+        x = this.screenPosition.x-centerpos.x;
+        y = this.screenPosition.y-centerpos.y;
     }
-
-    var x = snapToCenter ? 0 : this.position.x,
-        y = snapToCenter ? 0 : this.position.y;
+    
+    var curposition = obj.getPosition().clone();
 
     this.swallow(['touchmove', 'mousemove'], function(e) {
-        var pos = e.position.clone();
+        var pos = e.screenPosition.clone();
+        
         pos.x -= x;
         pos.y -= y;
-        pos = obj.localToNode(pos, obj.getParent());
+        pos = obj.getParent().screenToLocal(pos);
 
         if (goog.isDefAndNotNull(box)) {
             //todo: this can be optimized
@@ -109,7 +114,7 @@ lime.events.Event.prototype.startDrag = function(snapToCenter, box) {
 
         }
 
-        this.setPosition(pos);
+        obj.setPosition(pos);
 
     });
 
