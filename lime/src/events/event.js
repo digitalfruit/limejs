@@ -18,7 +18,9 @@ lime.events.Event = function(dispatcher) {
  * @param {function(lime.events.Event)} handler Function to call on event.
  */
 lime.events.Event.prototype.swallow = function(type, handler, opt_deny_shared) {
-    this.dispatcher_.swallow(this, type, handler);
+    type = goog.isArray(type) ? type : [type];
+    for(var i=0;i<type.length;i++)
+    this.dispatcher_.swallow(this, type[i], handler);
 
     if(opt_deny_shared){
         this.event.stopPropagation();
