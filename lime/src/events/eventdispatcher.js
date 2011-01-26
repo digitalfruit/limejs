@@ -60,8 +60,10 @@ lime.events.EventDispatcher.prototype.release = function(node, eventType) {
  * @param {function(lime.events.Event)} handler Function to call.
  */
 lime.events.EventDispatcher.prototype.swallow = function(e, type, handler) {
-    if (e.type != 'mousedown' && e.type != 'touchstart' &&
-        e.type != 'touchmove' && e.type != 'keydown') return;
+   /* 
+   // don't remember why this check was needed
+   if (e.type != 'mousedown' && e.type != 'touchstart' &&
+        e.type != 'touchmove' && e.type != 'keydown') return;*/
     var id = e.identifier;
     if (!goog.isDef(this.swallows[id])) {
         this.swallows[id] = [];
