@@ -124,6 +124,7 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
         if (e.type == 'touchend' || e.type == 'touchcancel' ||
             e.type == 'mouseup' || e.type=='keyup') {
+            delete ee.targetObject;
             ee.release();
         }
     }

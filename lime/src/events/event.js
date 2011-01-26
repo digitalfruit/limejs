@@ -27,13 +27,29 @@ lime.events.Event.prototype.swallow = function(type, handler, opt_deny_shared) {
 
 /**
  * Release all swllowed handlers.
+ * @param {s}
  */
-lime.events.Event.prototype.release = function() {
+lime.events.Event.prototype.release = function(opt_type) {
+    var limit_type = goog.isDef(opt_type);
+    var type = goog.isArray(opt_type) ? opt_type : [opt_type];
     var s = this.dispatcher_.swallows[this.identifier];
-    for (var i = 0; i < s.length; i++) {
-        goog.events.unlisten(s[i][0], s[i][1], s[i][2]);
+    if(!s) return;
+    
+    var e = this;
+    var s2 = goog.array.filter(s,function(swallow){
+        if(!goog.isDef(e.targetObject) || (swallow[0]==e.targetObject && (!limit_type || goog.array.contains(type,swallow[1])))){
+           goog.events.unlisten(swallow[0], swallow[1], swallow[2]);
+           return false;
+        }
+        return true;
+    });
+    
+    if(s2.length){
+        this.dispatcher_.swallows[this.identifier] = s2;
     }
-    delete this.dispatcher_.swallows[this.identifier];
+    else {
+        delete this.dispatcher_.swallows[this.identifier];
+    }
 };
 
 /**
