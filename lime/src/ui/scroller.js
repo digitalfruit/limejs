@@ -137,6 +137,8 @@ lime.ui.Scroller.prototype.scrollTo = function(offset,opt_duration){
 }
 
 lime.ui.Scroller.prototype.downHandler_ = function(e){
+    if(this.ismove) return;
+    
     e.position = this.localToNode(e.position,this.moving_);
   	this.downx = e.position.x;
     this.downy = e.position.y;
@@ -160,7 +162,7 @@ lime.ui.Scroller.prototype.downHandler_ = function(e){
 
     e.swallow(['touchmove', 'mousemove'], this.moveHandler_);
 
-    e.swallow(['touchend','mouseup','touchend'], this.upHandler_);
+    e.swallow(['touchend','mouseup','touchcancel'], this.upHandler_);
 
 }
 
@@ -174,11 +176,11 @@ lime.ui.Scroller.prototype.captureVelocity_ = function(){
 
 lime.ui.Scroller.prototype.cancelEvents = function(){
     this.event.release();
+    this.ismove = 0;
 }
 
 lime.ui.Scroller.prototype.moveHandler_ = function(e) {
     var pos = e.position.clone(),dir = this.getDirection(),activeval;
-    
     if(dir==lime.ui.Scroller.Direction.HORIZONTAL){
         pos.x -= this.downx;
         pos.y = this.downy;
