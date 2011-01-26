@@ -86,15 +86,14 @@ http://www.youtube.com/watch?v=yp_9q3tgDnQ
 
 Known issues:
 -Weird mixup on events on scaled elements(at least on polygons)
--Different result on image fill in Firefox & Webkit(test if correct now)
 -Opera & IE9 rotate wrong in potgame
+-Transition based animations don't fire stop events on Spawn&Sequence
 
 Missing/broken:
 -Custom Canvas context
 -Custom WebGL context
 -Frame fill
 -Sprite fill
--Dependency on dirty queue
 -Web-app installing tutorial
 -Unit tests
 -Some basic fallback for non supported browsers
