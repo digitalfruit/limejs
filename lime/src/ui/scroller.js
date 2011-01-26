@@ -164,6 +164,7 @@ lime.ui.Scroller.prototype.downHandler_ = function(e){
 
     e.swallow(['touchend','mouseup','touchcancel'], this.upHandler_);
 
+    this.event = e.clone();
 }
 
 lime.ui.Scroller.prototype.captureVelocity_ = function(){
@@ -175,7 +176,9 @@ lime.ui.Scroller.prototype.captureVelocity_ = function(){
 }
 
 lime.ui.Scroller.prototype.cancelEvents = function(){
-    this.event.release();
+    if(this.event){
+        this.event.release();
+    }
     this.ismove = 0;
 }
 
@@ -217,7 +220,6 @@ lime.ui.Scroller.prototype.moveHandler_ = function(e) {
     
     this.moving_.setPosition(pos);
     
-    this.event = e.clone();
     
 }
   
