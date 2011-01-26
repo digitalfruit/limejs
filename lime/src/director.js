@@ -80,7 +80,12 @@ lime.Director = function(parentElement) {
         
         var meta=document.createElement('meta');
         meta.name='viewport';
-        meta.content='width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1.0,user-scalable=no,target-densityDpi=device-dpi';
+        var content = 'width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1.0,user-scalable=no';        
+        if((/android/i).test(navigator.userAgent)){
+            content+=',target-densityDpi=device-dpi';
+        }
+        
+        meta.content = content;
         document.getElementsByTagName('head').item(0).appendChild(meta);
         window.scrollTo(0,0);
     }
