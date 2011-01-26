@@ -43,6 +43,7 @@ test.start = function(){
     box = new lime.Sprite().setFill('#c00').setSize(160,100).setPosition(650,0);
     scroll.appendChild(box);
 	
+	scroll.scrollTo(0);
 	
 	var lipsum = ('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent mauris magna, bibendum tempor vulputate vel, pharetra vitae diam.').split(' ');
 

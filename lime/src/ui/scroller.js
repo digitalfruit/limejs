@@ -112,6 +112,30 @@ lime.ui.Scroller.prototype.measureLimits = function(){
     }
 }
 
+lime.ui.Scroller.prototype.scrollTo = function(offset,opt_duration){
+    var pos = this.moving_.getPosition().clone();
+    var duration = opt_duration || 0;
+    
+    this.measureLimits();
+    
+    if(offset<0) offset = 0;
+    
+    if(this.getDirection()==lime.ui.Scroller.Direction.HORIZONTAL){
+        pos.x = this.HIGH - offset;
+        if(pos.x<this.LOW) pos.x = this.LOW;
+    }
+    else {
+        pos.y = this.HIGH - offset;
+        if(pos.y<this.LOW) pos.y = this.LOW;
+    }
+    
+    if(duration){
+        this.moving_.runAction(new lime.animation.MoveTo(pos.x,pos.y).setDuration(duration)
+            .setEasing(lime.animation.getEasingFunction(.19,.6,.35,.97)).enableOptimizations());
+    }
+    else this.moving_.setPosition(pos);
+}
+
 lime.ui.Scroller.prototype.downHandler_ = function(e){
     e.position = this.localToNode(e.position,this.moving_);
   	this.downx = e.position.x;
