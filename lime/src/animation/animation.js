@@ -180,6 +180,7 @@ lime.animation.Animation.prototype.step_ = function(dt) {
 
     this.playTime_ += dt;
     var t = this.playTime_ / (this.duration_ * 1000);
+    if(isNaN(t)) t = 1;
     if (t > 1) t = 1;
     var t_orig = t;
     var t = this.getEasing()[0](t);
