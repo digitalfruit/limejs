@@ -172,6 +172,10 @@ lime.ui.Scroller.prototype.captureVelocity_ = function(){
     this.v*=lime.ui.Scroller.FRICTION;
 }
 
+lime.ui.Scroller.prototype.cancelEvents = function(){
+    this.event.release();
+}
+
 lime.ui.Scroller.prototype.moveHandler_ = function(e) {
     var pos = e.position.clone(),dir = this.getDirection(),activeval;
     
