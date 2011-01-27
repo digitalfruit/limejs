@@ -42,6 +42,7 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
             this.position_,
             this.duration_,this.getEasing());
         target.setDirty(lime.Dirty.POSITION);
+        console.log(goog.getUid(target)+' makemove '+this.position_.x);
     }
 
     return {startpos: start, delta: delta};
@@ -63,6 +64,7 @@ lime.animation.MoveTo.prototype.clearTransition = function(target){
         target.clearTransition(lime.Transition.POSITION);
         target.setDirty(lime.Dirty.POSITION);
     }
+    console.log(goog.getUid(target)+' clearmove '+this.position_.x);
     
 }
 

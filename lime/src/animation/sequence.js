@@ -44,6 +44,17 @@ lime.animation.Sequence.prototype.initTarget = function(target) {
     this.last_ = -1;
 };
 
+lime.animation.Sequence.prototype.stop = function(){
+    lime.animation.Animation.prototype.stop.apply(this,arguments);
+    
+    console.log(goog.getUid(this.targets[0])+' stop '+this.last_);
+    
+    if(this.last_!=-1){
+        this.actions[this.last_].stop(this.targets);
+    }
+    
+}
+
 lime.animation.Sequence.prototype.update = function(t,target) {
     if (this.status_ == 0) return;
 
@@ -67,13 +78,14 @@ lime.animation.Sequence.prototype.update = function(t,target) {
     if (this.last_ == -1 && found == 1)	{
         this.actions[0].initTarget(target);
         this.actions[0].update(1, target);
-        this.actions[0].stop();
+        this.actions[0].stop([target]);
     }
 
     if (this.last_ != found) {
     	if (this.last_ != -1) {
     	    this.actions[this.last_].update(1, target);
-    	    this.actions[this.last_].stop();
+    	    this.actions[this.last_].stop([target]);
+    	    console.log('stop',this.last_);
     	}
     	this.actions[found].initTarget(target);
     }

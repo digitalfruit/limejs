@@ -117,12 +117,13 @@ lime.animation.Animation.prototype.play = function() {
 /**
  * Stop playing the animtion
  */
-lime.animation.Animation.prototype.stop = function() {
+lime.animation.Animation.prototype.stop = function(opt_targets) {
     if (this.status_ != 0) {
+        var targets = opt_targets || this.targets;
         if(this.useTransitions() && this.clearTransition){ 
-            var i = this.targets.length;
+            var i = targets.length;
             while (--i >= 0) {
-                this.clearTransition(this.targets[i]);
+                this.clearTransition(targets[i]);
             }
         }
         this.status_ = 0;
@@ -205,7 +206,7 @@ lime.animation.Animation.prototype.step_ = function(dt) {
  * @return {boolean} Transitions are being used?
  */
 lime.animation.Animation.prototype.useTransitions = function() {
-    return lime.style.isTransitionsSupported && this.optimizations_ //&&
+    return this.duration_>0 && lime.style.isTransitionsSupported && this.optimizations_ //&&
         //goog.userAgent.MOBILE;
     // I see no boost on mac, only on ios
 };
@@ -267,6 +268,7 @@ lime.animation.actionManager.stopAll = function(target) {
     if (goog.isDef(this.actions[id])) {
         for (var i in this.actions[id]) {
             this.actions[id][i].stop();
+            delete this.actions[id][i];
         }
     }
 };
