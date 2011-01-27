@@ -23,6 +23,7 @@ lime.animation.Animation = function() {
      * @protected
      */
     this.targets = [];
+    this.initTargets_ = [];
 
     this.targetProp_ = {};
 
@@ -119,13 +120,14 @@ lime.animation.Animation.prototype.play = function() {
  */
 lime.animation.Animation.prototype.stop = function(opt_targets) {
     if (this.status_ != 0) {
-        var targets = opt_targets || this.targets;
+        var targets = this.initTargets_;
         if(this.useTransitions() && this.clearTransition){ 
             var i = targets.length;
             while (--i >= 0) {
                 this.clearTransition(targets[i]);
             }
         }
+        this.initTargets_ = [];
         this.status_ = 0;
         lime.scheduleManager.unschedule(this.step_, this);
         this.dispatchEvent({type: lime.animation.Event.STOP});
@@ -162,6 +164,7 @@ lime.animation.Animation.prototype.getTargetProp = function(target) {
 lime.animation.Animation.prototype.initTarget = function(target) {
     lime.animation.actionManager.register(this, target);
     this.status_ = 1;
+    goog.array.insert(this.initTargets_,target);
 };
 
 /**
@@ -178,7 +181,6 @@ lime.animation.Animation.prototype.getDirector = function() {
  * @param {number} dt Time difference since last run.
  */
 lime.animation.Animation.prototype.step_ = function(dt) {
-
     this.playTime_ += dt;
     var t = this.playTime_ / (this.duration_ * 1000);
     if(isNaN(t)) t = 1;
@@ -264,6 +266,7 @@ lime.animation.actionManager.register = function(action, target) {
  * @this {lime.animation.actionManager}
  */
 lime.animation.actionManager.stopAll = function(target) {
+    // todo: doesn't stop scopless action atm. (like sequence)
     var id = goog.getUid(target);
     if (goog.isDef(this.actions[id])) {
         for (var i in this.actions[id]) {

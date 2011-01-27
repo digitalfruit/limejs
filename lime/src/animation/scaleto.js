@@ -39,7 +39,6 @@ lime.animation.ScaleTo.prototype.makeTargetProp = function(target) {
             new goog.math.Vec2(scale.x + delta.x, scale.y + delta.y),
             this.duration_,this.getEasing());
         target.setDirty(lime.Dirty.SCALE);
-        console.log(goog.getUid(target)+' makescale '+this.scale_.x);
     }
 
     return {startScale: scale,
@@ -60,7 +59,6 @@ lime.animation.ScaleTo.prototype.clearTransition = function(target){
     if (this.useTransitions()) {
         target.clearTransition(lime.Transition.SCALE);
         target.setDirty(lime.Dirty.SCALE);
-        console.log(goog.getUid(target)+' clearscale '+this.scale_.x);
     }
 };
 

@@ -730,7 +730,16 @@ lime.Node.prototype.update = function(opt_pass) {
         }
         
         if(this.domElement){
-            for(var i in this.transitionsAdd_){
+            for(var i in this.transitionsClear_){
+                delete this.transitionsActive_[i];
+                delete this.transitionsActiveSet_[i];
+                property = lime.Node.getPropertyForTransition(i);
+                lime.style.clearTransition(this.domElement,property);
+                if(this.domElement != this.containerElement){
+                    lime.style.clearTransition(this.continerElement,property);
+                }
+            }
+            for(i in this.transitionsAdd_){
                 var value = this.transitionsAdd_[i];
                 var property = lime.Node.getPropertyForTransition(i);
                 
@@ -760,15 +769,7 @@ lime.Node.prototype.update = function(opt_pass) {
                 delete this.transitionsAdd_[i];
             }
             
-            for(i in this.transitionsClear_){
-                delete this.transitionsActive_[i];
-                delete this.transitionsActiveSet_[i];
-                property = lime.Node.getPropertyForTransition(i);
-                lime.style.clearTransition(this.domElement,property);
-                if(this.domElement != this.containerElement){
-                    lime.style.clearTransition(this.continerElement,property);
-                }
-            }
+            
             
            
             this.positionDrawn_ = this.position_;
