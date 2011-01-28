@@ -1,5 +1,7 @@
 goog.provide('lime.events.Event');
 
+goog.require('lime.events.Drag');
+
 /**
  * Dfkit Event object
  * @param {lime.events.EventDispatcher} dispatcher Dispatcher.
@@ -60,64 +62,7 @@ lime.events.Event.prototype.release = function(opt_type) {
  * @param {goog.math.Box} box Limited area where dragging is possible.
  */
 lime.events.Event.prototype.startDrag = function(snapToCenter, box, opt_targetObject) {
-
-    var obj = opt_targetObject || this.targetObject;
-
-    var x = 0,
-        y = 0;
-
-    if (!snapToCenter) {
-        var centerpos = obj.localToScreen(new goog.math.Coordinate(0,0));
-        x = this.screenPosition.x-centerpos.x;
-        y = this.screenPosition.y-centerpos.y;
-    }
-    
-    var curposition = obj.getPosition().clone();
-
-    this.swallow(['touchmove', 'mousemove'], function(e) {
-        var pos = e.screenPosition.clone();
-        
-        pos.x -= x;
-        pos.y -= y;
-        pos = obj.getParent().screenToLocal(pos);
-
-        if (goog.isDefAndNotNull(box)) {
-            //todo: this can be optimized
-
-            /*
-            //thinking again testing with bounding box may be actually wrong
-            var s = obj.size_, a = obj.anchorPoint_,p = this.position_;
-            var rr = new goog.math.Rect(
-                        p.x-s.width*a.x,
-                        p.y-s.height*a.y ,
-                        size.width, size.height
-                    );
-
-
-            if(rr.left<box.left) rr.left=box.left;
-            if(rr.top<box.top) rr.top=box.top;
-
-            if(rr.left+s.width>box.right) bb.left=box.right-s.width;
-            if(rr.top+s.height>box.bottom) bb.top=box.bottom-s.height;
-
-            pos.x = rr.left+s.width*a.x;
-            pos.y = rr.top+s.height*a.y;
-            */
-
-            //point version
-            if (pos.x < box.left) pos.x = box.left;
-            else if (pos.x > box.right) pos.x = box.right;
-
-            if (pos.y < box.top) pos.y = box.top;
-            else if (pos.y > box.bottom) pos.y = box.bottom;
-
-
-        }
-
-        obj.setPosition(pos);
-
-    });
-
+    return new lime.events.Drag(this, snapToCenter, box, opt_targetObject);
 };
 
 lime.events.Event.prototype.clone = function(){
