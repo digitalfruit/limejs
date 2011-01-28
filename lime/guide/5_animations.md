@@ -17,6 +17,15 @@ Different types of animations supported:
 -   *ColorTo* - change objects color from current color to another.
 -   *FadeTo* - fade elements opacity to a given value.
 
+If you wish know when an animation has ended you can listen for its *stop* event. Event name is also defined as constant `lime.animation.Event.STOP`.
+
+    #!Javascript
+    var moveleft = new lime.animation.MoveBy(-100,0);
+    ball.runAction(moveleft);
+    goog.events.listen(moveleft,lime.animation.Event.STOP,function(){
+        alert('Ball has finished moving');
+    })
+
 
 ## Multiple targets
 
@@ -70,7 +79,7 @@ Easing defines the characteristics how the time is changing when the animation i
 -   lime.animation.Easing.EASEINOUT
 
 You can also provide custom function made of points of cubic bezier curve.
- 
+
 
 
 *Lime animations do not use or rely on goog.fx.\* libraries. These are common functions for making animations in Closure Library but don't quite fit in with LimeJS logic. This may change in the future but not very likely.*
