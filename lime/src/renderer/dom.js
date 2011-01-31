@@ -130,8 +130,14 @@ lime.Renderer.DOM.update = function() {
 
     lime.Renderer.DOM.drawSizePosition.call(this);
 
-    if (this.getDirty() & lime.Dirty.ALPHA) {
-        goog.style.setOpacity(this.domElement, this.opacity_);
+    if (!this.transitionsActiveSet_[lime.Transition.OPACITY]){
+        var opacity = this.opacity_;
+        if (this.transitionsActive_[lime.Transition.OPACITY]) {
+            opacity = this.transitionsActive_[lime.Transition.OPACITY];
+        }
+        if (this.getDirty() & lime.Dirty.ALPHA) {
+            goog.style.setOpacity(this.domElement, opacity );
+        }
     }
 
     if (this.getDirty() & lime.Dirty.VISIBILITY) {

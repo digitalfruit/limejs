@@ -605,6 +605,8 @@ lime.Node.prototype.setOpacity = function(value) {
     if (!this.transition_opactity_) {
         this.setDirty(lime.Dirty.ALPHA);
     }
+    if (this.transitionsActive_[lime.Transition.OPACITY]) return this;
+    
     var hidden = this.getHidden();
     if(this.opacity_==0 && !hidden){
         this.setHidden(true);
@@ -613,7 +615,6 @@ lime.Node.prototype.setOpacity = function(value) {
     else if(this.opacity_!=0 && hidden && this.autoHide_){
         this.setHidden(false);
     }
-
     return this;
 };
 
@@ -755,6 +756,11 @@ lime.Node.prototype.update = function(opt_pass) {
                     this.setDirty(lime.Dirty.SCALE,0,true);
                     continue;
                 }
+                                             
+                if(i == lime.Transition.OPACITY && this.opacityDrawn_ != this.opacity_){
+                    this.setDirty(lime.Dirty.ALPHA,0,true);
+                    continue;
+                }
 
                 }
                 this.transitionsActive_[i] = value[0];
@@ -774,6 +780,7 @@ lime.Node.prototype.update = function(opt_pass) {
            
             this.positionDrawn_ = this.position_;
             this.scaleDrawn_ = this.scale_;
+            this.opacityDrawn_ = this.opacity_;
             
             
             this.transitionsClear_ = {};

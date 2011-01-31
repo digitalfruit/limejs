@@ -21,10 +21,12 @@ lime.animation.FadeTo.prototype.scope = 'fade';
 
 lime.animation.FadeTo.prototype.makeTargetProp = function(target) {
     var op = target.getOpacity();
-    if (this.useTransitions() && target.domElement) {
-        lime.style.setTransition(target.domElement, 'opacity', this.duration_, this.getEasing());
-        goog.style.setOpacity(target.domElement, this.opacity_);
-        target.transition_opactity_ = true;
+    if (this.useTransitions()) {
+        target.addTransition(lime.Transition.OPACITY,
+            this.opacity_,
+            this.duration_,this.getEasing());
+            
+        target.setDirty(lime.Dirty.ALPHA);
     }
     return {startOpacity: op, delta: this.opacity_ - op };
 };
@@ -38,9 +40,9 @@ lime.animation.FadeTo.prototype.update = function(t,target) {
 };
 
 lime.animation.FadeTo.prototype.clearTransition = function(target){
-    if (target.transition_opactity_) {
-        delete target.transition_opactity_;
-        lime.style.clearTransition(target.domElement, 'opacity');
+    if (this.useTransitions()) {
+        target.clearTransition(lime.Transition.OPACITY);
+        target.setDirty(lime.Dirty.ALPHA);
     }
 }
 
