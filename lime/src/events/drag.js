@@ -1,11 +1,15 @@
 goog.provide('lime.events.Drag');
 
 goog.require('goog.events.EventTarget');
+goog.require('lime.animation.MoveTo');
 
 lime.events.Drag = function(event,opt_snapToCenter,opt_bounds,opt_targetObject){
     goog.base(this);
 
     this.target = opt_targetObject || event.targetObject;
+    
+    this.dropTargets_ = [];
+    this.dropIndex_ = -1;
 
     this.x = 0;
     this.y = 0;
@@ -31,13 +35,15 @@ lime.events.Drag.Event = {
     END     : 'end',
     MOVE    : 'move',
     CHANGE  : 'change',
-    DROP    : 'drop' 
+    DROP    : 'drop',
+    CANCEL  : 'cancel'
 };
 
 lime.events.Drag.prototype.disposeInternal = function() {
     goog.base(this,'disposeInternal');
     this.event_ = null;
     this.target = null;
+    this.dropTargets_ = null;
 };
 
 lime.events.Drag.prototype.getBounds = function(){
@@ -89,15 +95,84 @@ lime.events.Drag.prototype.moveHandler_ = function(e){
 
 
     }
-
+    
+    
     this.target.setPosition(pos);
     
     this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.MOVE));
+    
+    var sel = -1;
+    var currect = goog.math.Rect.createFromBox(this.target.getFrame());
+    var results = [];
+    for(var i=0;i<this.dropTargets_.length;i++){
+        var loc = this.dropTargets_[i];
+        var dropFrame = loc.getFrame();
+        var tl = loc.localToNode(new goog.math.Coordinate(dropFrame.left,dropFrame.top),this.target);
+        var br = loc.localToNode(new goog.math.Coordinate(dropFrame.right,dropFrame.bottom),this.target);
+        var droprect = goog.math.Rect.createFromBox(new goog.math.Box(tl.y,br.x,br.y,tl.x));
+        var intersection;
+        
+        if(intersection = goog.math.Rect.intersection(currect,droprect)){
+            results.push([intersection.width*intersection.height/(droprect.width*droprect.height),i]);
+        }
+    }
+    
+    if(results.length){
+        
+        results = results.sort(function(a,b){b[0]-a[0]});
+        sel = results[0][1];
+   }     
+        
+   if(sel!=this.dropIndex_){
+        if(this.dropIndex_!=-1){
+            if(goog.isFunction(this.dropTargets_[this.dropIndex_].hideDropHightLight)){
+                this.dropTargets_[this.dropIndex_].hideDropHightLight();
+            }
+        }
+        this.dropIndex_ = sel;
+        if(this.dropIndex_!=-1){
+            if(goog.isFunction(this.dropTargets_[this.dropIndex_].hideDropHightLight)){
+                this.dropTargets_[this.dropIndex_].hideDropHightLight();
+            }
+        }
+        
+        var ev = new goog.events.Event(lime.events.Drag.Event.CHANGE);
+        ev.activeDropTarget = this.dropIndex_ != -1 ? this.dropTargets_[this.dropIndex_] : null;
+        this.dispatchEvent(ev);
+        
+    }
+        
+    
+
 }
 
 lime.events.Drag.prototype.releaseHandler_ = function(e){
     
+    if(this.dropTargets_.length){
+        
+        if(this.dropIndex_!=-1){
+            var ev = new goog.events.Event(lime.events.Drag.Event.DROP);
+            ev.activeDropTarget = this.dropTargets_[this.dropIndex_];
+            this.dispatchEvent(ev);
+            if(!ev.propagationStopped_){
+                var pos = ev.activeDropTarget.getParent().localToNode(ev.activeDropTarget.getPosition(),this.target.getParent());
+                this.target.runAction(new lime.animation.MoveTo(pos.x,pos.y).setDuration(.5).enableOptimizations());
+            }
+        }
+        else {
+            this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.CANCEL));
+        }
+        
+    }
+    
+    
     this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.END));
     
+    lime.scheduleManager.callAfter(this.dispose,this,100);
+    
+}
+
+lime.events.Drag.prototype.addDropTarget = function(drop){
+    this.dropTargets_.push(drop);
 }
 
