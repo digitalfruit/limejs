@@ -32,6 +32,10 @@ lime.audio.Audio = function(filePath) {
     this.baseElement.preload = true;
     this.baseElement.loop = false;
     
+    if(goog.userAgent.GECKO && (/\.mp3$/).test(filePath)){
+        filePath = filePath.replace(/\.mp3$/,'.ogg');
+    }
+    
     this.baseElement.src = filePath;
     this.baseElement.load();
 
