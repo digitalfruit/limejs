@@ -132,7 +132,7 @@ lime.Renderer.DOM.update = function() {
 
     if (!this.transitionsActiveSet_[lime.Transition.OPACITY]){
         var opacity = this.opacity_;
-        if (this.transitionsActive_[lime.Transition.OPACITY]) {
+        if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])) {
             opacity = this.transitionsActive_[lime.Transition.OPACITY];
         }
         if (this.getDirty() & lime.Dirty.ALPHA) {

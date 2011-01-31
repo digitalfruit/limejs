@@ -38,7 +38,7 @@ test.start = function(){
     ball.setPosition( 50,100 ).setSize(100,100);
     
     ball.runAction(new lime.animation.Loop(new lime.animation.Sequence(
-        new lime.animation.FadeTo(0.01).setDuration(3).enableOptimizations(),
+        new lime.animation.FadeTo(0).setDuration(3).enableOptimizations(),
         new lime.animation.FadeTo(1).setDuration(3).enableOptimizations()
     )));
     

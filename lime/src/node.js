@@ -602,10 +602,6 @@ lime.Node.prototype.getOpacity = function() {
  */
 lime.Node.prototype.setOpacity = function(value) {
     this.opacity_ = value;
-    if (!this.transition_opactity_) {
-        this.setDirty(lime.Dirty.ALPHA);
-    }
-    if (this.transitionsActive_[lime.Transition.OPACITY]) return this;
     
     var hidden = this.getHidden();
     if(this.opacity_==0 && !hidden){
@@ -615,6 +611,10 @@ lime.Node.prototype.setOpacity = function(value) {
     else if(this.opacity_!=0 && hidden && this.autoHide_){
         this.setHidden(false);
     }
+    
+    if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])) return this;
+ 
+    this.setDirty(lime.Dirty.ALPHA);
     return this;
 };
 
