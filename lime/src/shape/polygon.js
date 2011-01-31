@@ -111,7 +111,7 @@ lime.Polygon.prototype.getAnchorPoint = function() {
  */
 lime.Polygon.prototype.hitTest = function(e) {
     var p = this.getPoints(),
-        plen = points.length,
+        plen = p.length,
         coord = this.screenToLocal(e.screenPosition),
         inPoly = false;
 

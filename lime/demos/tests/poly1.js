@@ -10,6 +10,7 @@ goog.require('lime.Scene');
 goog.require('lime.Layer');
 goog.require('lime.Polygon');
 goog.require('lime.animation.RotateBy');
+goog.require('lime.fill.LinearGradient');
 
 
 test.WIDTH = 600;
@@ -35,14 +36,18 @@ test.start = function(){
 	var poly = new lime.Polygon(-130,-130,130,-130,130,130,-130,130,-190,0).setFill(100,0,0).setPosition(200,200);
 	flameLayer.appendChild(poly);
 	
-	 var p2 = new lime.Polygon(0,-160,140,120,-140,120).setFill(0,0,100);
+	 var p2 = new lime.Polygon(0,-160,140,120,-140,120).setFill(
+	     new lime.fill.LinearGradient().setDirection(0,0,1,0).addColorStop(.1,100,0,0)
+	        .addColorStop(.5,0,0,100).addColorStop(.9,0,100,0)
+	     );
 	poly.appendChild(p2);
+	
  	goog.events.listen(poly,['mousedown','touchstart'],function(e){
  	    poly.runAction(new lime.animation.RotateBy(20));
-     	p2.runAction(new lime.animation.RotateBy(40));
+     	p2.runAction(new lime.animation.RotateBy(20));
  	});
     	goog.events.listen(p2,['mousedown','touchstart'],function(e){
-        	p2.runAction(new lime.animation.RotateBy(-40));
+        	p2.runAction(new lime.animation.RotateBy(-20));
         	
          	e.event.stopPropagation();
     	});
