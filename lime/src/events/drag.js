@@ -130,8 +130,8 @@ lime.events.Drag.prototype.moveHandler_ = function(e){
         }
         this.dropIndex_ = sel;
         if(this.dropIndex_!=-1){
-            if(goog.isFunction(this.dropTargets_[this.dropIndex_].hideDropHightLight)){
-                this.dropTargets_[this.dropIndex_].hideDropHightLight();
+            if(goog.isFunction(this.dropTargets_[this.dropIndex_].showDropHightLight)){
+                this.dropTargets_[this.dropIndex_].showDropHightLight();
             }
         }
         
@@ -150,6 +150,9 @@ lime.events.Drag.prototype.releaseHandler_ = function(e){
     if(this.dropIndex_!=-1){
         var ev = new goog.events.Event(lime.events.Drag.Event.DROP);
         ev.activeDropTarget = this.dropTargets_[this.dropIndex_];
+        if(goog.isFunction(ev.activeDropTarget.showDropHightLight)){
+            ev.activeDropTarget.hideDropHightLight();
+        }
         this.dispatchEvent(ev);
         if(!ev.propagationStopped_){
             var pos = ev.activeDropTarget.getParent().localToNode(ev.activeDropTarget.getPosition(),this.target.getParent());
