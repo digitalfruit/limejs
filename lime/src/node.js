@@ -853,8 +853,7 @@ lime.Node.prototype.addEventListener = function(type, handler,
         opt_capture, opt_handlerScope) {
 
     // Bypass all mouse events on touchscreen devices
-    // todo: should use lime.Capabilities
-    if (goog.isDef(document.body.ontouchmove) &&
+    if (lime.userAgent.SUPPORTS_TOUCH &&
         type.substring(0, 5) == 'mouse') return;
 
     // First element defines if events are registered with DOM 1=yes/0=no
@@ -878,7 +877,7 @@ lime.Node.prototype.removeEventListener = function(
     type, handler, opt_capture, opt_handlerScope) {
 
     // Bypass all mouse events on touchscreen devices
-    if (goog.isDef(document.body.ontouchmove) &&
+    if (lime.userAgent.SUPPORTS_TOUCH &&
         type.substring(0, 5) == 'mouse') return;
 
     if (this.inTree_ && this.eventHandlers_[type][1] == 1) {
