@@ -128,6 +128,7 @@ lime.animation.Animation.prototype.stop = function(opt_targets) {
             }
         }
         this.initTargets_ = [];
+        this.targetProp_ = [];
         this.status_ = 0;
         lime.scheduleManager.unschedule(this.step_, this);
         this.dispatchEvent({type: lime.animation.Event.STOP});
