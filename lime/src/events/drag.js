@@ -118,8 +118,7 @@ lime.events.Drag.prototype.moveHandler_ = function(e){
     }
     
     if(results.length){
-        
-        results = results.sort(function(a,b){b[0]-a[0]});
+        results = results.sort(function(a,b){return b[0]-a[0]});
         sel = results[0][1];
    }     
         
