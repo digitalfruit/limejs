@@ -1,6 +1,7 @@
 goog.provide('lime');
 
 goog.require('lime.css');
+goog.require('lime.userAgent');
 goog.require('goog.style');
 
 (function() {
