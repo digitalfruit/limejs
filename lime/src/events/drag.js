@@ -147,22 +147,24 @@ lime.events.Drag.prototype.moveHandler_ = function(e){
 
 lime.events.Drag.prototype.releaseHandler_ = function(e){
     
-    if(this.dropTargets_.length){
-        
-        if(this.dropIndex_!=-1){
-            var ev = new goog.events.Event(lime.events.Drag.Event.DROP);
-            ev.activeDropTarget = this.dropTargets_[this.dropIndex_];
-            this.dispatchEvent(ev);
-            if(!ev.propagationStopped_){
-                var pos = ev.activeDropTarget.getParent().localToNode(ev.activeDropTarget.getPosition(),this.target.getParent());
-                this.target.runAction(new lime.animation.MoveTo(pos.x,pos.y).setDuration(.5).enableOptimizations());
+    if(this.dropIndex_!=-1){
+        var ev = new goog.events.Event(lime.events.Drag.Event.DROP);
+        ev.activeDropTarget = this.dropTargets_[this.dropIndex_];
+        this.dispatchEvent(ev);
+        if(!ev.propagationStopped_){
+            var pos = ev.activeDropTarget.getParent().localToNode(ev.activeDropTarget.getPosition(),this.target.getParent());
+            var move = new lime.animation.MoveTo(pos.x,pos.y).setDuration(.5).enableOptimizations();
+            this.target.runAction(move);
+            if(goog.isFunction(ev.moveEndedCallback)){
+                goog.events.listen(move,lime.animation.Event.STOP,ev.moveEndedCallback,false,this.target);
             }
         }
-        else {
-            this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.CANCEL));
-        }
-        
     }
+    else {
+        this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.CANCEL));
+    }
+        
+    
     
     
     this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.END));
