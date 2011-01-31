@@ -38,7 +38,7 @@ test.start = function(){
 	
 	var two = new lime.Sprite().
 	    setSize(100,100).
-	    setPosition(180,180).
+	    setPosition(150,150).
 	    setFill(0,100,0).setRotation(15);
 	flameLayer.appendChild(two);
 	
@@ -54,7 +54,7 @@ test.start = function(){
 	
 
 	goog.events.listen(three,['mousedown','touchstart'],function(e){
-	   two.runAction(new lime.animation.MoveTo(220,220).setDuration(3)); 
+	   two.runAction(new lime.animation.MoveTo(220,220).setDuration(2)); 
 	   //two.setPosition(100,100);
 	});
 	

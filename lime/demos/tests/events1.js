@@ -36,7 +36,7 @@ test.start = function(){
 
 	var box = (new lime.Sprite)
 	    .setRenderer(lime.Renderer.DOM)
-	    .setFill('img/nano.png')
+	    .setFill('assets/nano.png')
 	    .setRotation(10)
 	    .setPosition(50,50 ).setScale(.5)
 	  //  .setSize(100,100);

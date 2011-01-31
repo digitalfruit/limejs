@@ -25,6 +25,14 @@ test.HEIGHT = 400;
 
 
 test.start = function(){ 
+    
+    /*
+    
+    There is no box2d integration in LimeJS yet. This file only
+    shows that box2d is in correct path.
+    
+    */
+    
 	
 	//director
 	test.director = new lime.Director(document.body,test.WIDTH,test.HEIGHT);
@@ -42,7 +50,7 @@ test.start = function(){
 
     var flame = (new lime.Circle)
         .setFill(100,0,0)
-        .setRenderMode(lime.RenderMode.CANVAS)
+        .setRenderer(lime.Renderer.CANVAS)
 	//    .setFill(100,0,0)
 	    .setSize(40,40);
 //	flame.setQuality(quality);
@@ -54,7 +62,7 @@ test.start = function(){
 	test.director.replaceScene(gamescene);
 	
 	
-	var gravity = new box2d.Vec2(10,10);
+	var gravity = new box2d.Vec2(30,30);
 	var bounds = new box2d.AABB();
 	bounds.minVertex.Set(0,0);
 	bounds.maxVertex.Set(test.WIDTH, test.HEIGHT);
@@ -89,7 +97,7 @@ test.start = function(){
     
     var box = (new lime.Sprite)
         .setFill(0,100,0)
-        .setRenderMode(lime.RenderMode.CANVAS)
+        .setRenderer(lime.Renderer.CANVAS)
         .setAnchorPoint(0,1)
 	    .setSize(60,20);
     flameLayer.appendChild(box);   

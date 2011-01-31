@@ -34,7 +34,7 @@ test.start = function(){
         	var flame = new lime.Circle;
         	flameLayer.appendChild(flame);
         	flame.setRenderer(lime.Renderer.CANVAS);
-        	flame.setFill('../potgame_demos/Flame_animated/0000.jpg');
+        	flame.setFill('assets/nano.png');
         //	flame.setFill(100,0,0);
         //	flame.setRotation(90);
         //	flame.setSize(150,100);
@@ -45,7 +45,7 @@ test.start = function(){
           
 
         	flame = (new lime.Circle)
-        	    .setFill('../potgame_demos/Flame_animated/0000.jpg')
+        	    .setFill('assets/nano.png')
         	    .setSize(100,100)
         	    .setPosition(300,100)
         	    .setQuality(quality)
@@ -58,7 +58,7 @@ test.start = function(){
 
         	flame = new lime.Circle;
         	flameLayer.appendChild(flame);
-        	flame.setFill('img/nano.png');
+        	flame.setFill('assets/nano.png');
         	flame.setPosition( new goog.math.Coordinate(50,250) );
         	flame.setQuality(quality);
         	flame.setScale(flame.getScale().clone().scale(scale));
