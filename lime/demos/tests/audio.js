@@ -40,25 +40,22 @@ test.start = function(){
 	
 	var sprite = new lime.Sprite().setFill('#0c0').setSize(50,50);
 	layer.appendChild(sprite);
-	
-	var anim = new lime.animation.Spawn(
-	        new lime.animation.MoveBy(200,0).setDuration(1.5),
-	        new lime.animation.ScaleBy(2)
-	    );
-	var a2 = new lime.animation.Sequence(anim,anim.reverse());
-	sprite.runAction(new lime.animation.Loop(a2).setLimit(5));
-	
+    var sprite2 = new lime.Sprite().setFill('#00c').setSize(50,50).setPosition(70,0);
+	layer.appendChild(sprite2);
+    
 	// set active scene
 	test.director.replaceScene(menuscene);
 	
-	var audio = new lime.audio.Audio('../potgame_demos/water.m4a');
-/*	
+	var tromboon = new lime.audio.Audio('assets/tromboon_sample.mp3');
+	
 	goog.events.listen(sprite,['mousedown','touchstart'],function(){
-	    audio.play();
-	})*/
-	setTimeout(function(){
-	    audio.play();
-	},3000);
+	    tromboon.play();
+	})
+    
+	goog.events.listen(sprite2,['mousedown','touchstart'],function(){
+	    tromboon.stop();
+	})
+    
 	
 }
 

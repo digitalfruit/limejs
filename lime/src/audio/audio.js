@@ -30,11 +30,9 @@ lime.audio.Audio = function(filePath) {
      */
     this.baseElement = document.createElement('audio');
     this.baseElement.preload = true;
-    this.baseElement.loop = true;
+    this.baseElement.loop = false;
     
     this.baseElement.src = filePath;
-    document.body.appendChild(this.baseElement);
-
     this.baseElement.load();
 
     this.loadInterval = setInterval(goog.bind(this.loadHandler_,this),10);
@@ -48,9 +46,8 @@ lime.audio.Audio.prototype.loadHandler_ = function(){
         clearTimeout(this.loadInterval);
     }
     if(this.baseElement.error)clearTimeout(this.loadInterval);
-    //todo:use device testing functions
-    var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
-    if (ios && this.baseElement.readyState == 0) {
+    
+    if (lime.userAgent.IOS && this.baseElement.readyState == 0) {
         //ios hack do not work any more after 4.2.1 updates
         // no good solutions that i know
         this.loaded_ = true;
