@@ -48,8 +48,8 @@ goog.inherits(lime.animation.Spawn, lime.animation.Animation);
 lime.animation.Spawn.prototype.initTarget = function(target) {
     lime.animation.Animation.prototype.initTarget.call(this, target);
 
-    this.one.initTarget(target);
-    this.two.initTarget(target);
+    this.one.status_ = 1;
+    this.two.status_ = 1;
 };
 
 lime.animation.Spawn.prototype.update = function(t,target) {

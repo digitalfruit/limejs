@@ -72,7 +72,8 @@ lime.animation.Sequence.prototype.update = function(t,target) {
     }
 
     if (this.last_ == -1 && found == 1)	{
-        this.actions[0].initTarget(target);
+        this.actions[0].status_ = 1;
+        //this.actions[0].initTarget(target);
         this.actions[0].update(1, target);
         this.actions[0].stop([target]);
     }
@@ -82,7 +83,8 @@ lime.animation.Sequence.prototype.update = function(t,target) {
     	    this.actions[this.last_].update(1, target);
     	    this.actions[this.last_].stop([target]);
     	}
-    	this.actions[found].initTarget(target);
+    	this.actions[found].status_ = 1;
+    	//this.actions[found].initTarget(target);
     }
 
     this.actions[found].update(new_t, target);

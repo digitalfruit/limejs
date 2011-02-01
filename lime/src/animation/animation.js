@@ -128,7 +128,7 @@ lime.animation.Animation.prototype.stop = function(opt_targets) {
             }
         }
         this.initTargets_ = [];
-        this.targetProp_ = [];
+        this.targetProp_ = {};
         this.status_ = 0;
         lime.scheduleManager.unschedule(this.step_, this);
         this.dispatchEvent({type: lime.animation.Event.STOP});
@@ -164,6 +164,7 @@ lime.animation.Animation.prototype.getTargetProp = function(target) {
  */
 lime.animation.Animation.prototype.initTarget = function(target) {
     lime.animation.actionManager.register(this, target);
+    //todo: check if all this status_ mess can be removed now
     this.status_ = 1;
     goog.array.insert(this.initTargets_,target);
 };

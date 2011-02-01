@@ -51,8 +51,9 @@ test.start = function(){
         	flame.setSize(200,200);
         //	flame.setScale(flame.getScale().clone().scale(scale));
         	
-        	   var move = new lime.animation.Sequence( new lime.animation.Spawn(
-                          (new lime.animation.ScaleBy(1.5)).setDuration(3),
+        	   var move = new lime.animation.Sequence( 
+        	       new lime.animation.Spawn(
+                          (new lime.animation.ScaleBy(1.5)),
                           new lime.animation.FadeTo(0.5)
                           ), new lime.animation.MoveBy(300,300));
                     move.addTarget(flame);
