@@ -31,7 +31,7 @@ lime.events.Event.prototype.swallow = function(type, handler, opt_deny_shared) {
 
 /**
  * Release all swllowed handlers.
- * @param {s}
+ * @param {string|Array.<string>} opt_type Event types to release
  */
 lime.events.Event.prototype.release = function(opt_type) {
     var limit_type = goog.isDef(opt_type);

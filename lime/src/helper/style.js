@@ -79,7 +79,7 @@ lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
     return this;
 };
 })();
-lime.style.Transform.prototype.setPrecision = function(p) {return this;
+lime.style.Transform.prototype.setPrecision = function(p) {
     if (this.precision != 1) {
         var opposite = 1 / this.precision;
         this.scale(opposite, opposite);

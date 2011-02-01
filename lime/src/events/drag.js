@@ -3,6 +3,11 @@ goog.provide('lime.events.Drag');
 goog.require('goog.events.EventTarget');
 goog.require('lime.animation.MoveTo');
 
+
+/**
+ * @constructor
+ * @extends goog.events.EventTarget
+ */
 lime.events.Drag = function(event,opt_snapToCenter,opt_bounds,opt_targetObject){
     goog.base(this);
 

@@ -135,6 +135,8 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
             if (this.director.getCurrentScene() != handler.getScene() &&
                 handler != this.director) continue;
+                
+            if(handler.getHidden()) continue;
 
             ee.targetObject = handler;
 

@@ -6,6 +6,7 @@ goog.require('lime.Sprite');
 
 /**
  * PauseScene. This scene appears when director is paused.
+ * @constructor
  * @extends lime.Scene
  */
 lime.helper.PauseScene = function() {

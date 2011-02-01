@@ -3,7 +3,10 @@ goog.provide('lime.ui.Scroller');
 goog.require('lime.Sprite');
 goog.require('lime.animation.MoveTo');
 
-
+/**
+ * @constructor
+ * @extends lime.Sprite
+ */
 lime.ui.Scroller = function(){
     
     goog.base(this);

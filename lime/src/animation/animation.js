@@ -190,7 +190,7 @@ lime.animation.Animation.prototype.step_ = function(dt) {
     var t = this.getEasing()[0](t);
     if(isNaN(t)){
         throw('Cubic equations with 3 roots not allowed atm.');
-        t = t_orig;
+        //t = t_orig;
     }
     if (t_orig == 1) t = 1;
     var i = this.targets.length;
@@ -288,7 +288,7 @@ lime.animation.getEasingFunction = function(p1x,p1y,p2x,p2y){
     var A = -3*p1x + 3*p2x -1,
 		B = 3*p1x - 6*p2x +3,
 		C = 3*p2x -3,
-		that = this;
+		that = lime.animation;
     return [function(t){
 		var t= that.solveCubic_(A,B,C,1-t);
 		var y=p1y*3*t*t*(1-t) + p2y*3*t*(1-t)*(1-t) + (1-t)*(1-t)*(1-t);
