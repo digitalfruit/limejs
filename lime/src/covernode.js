@@ -2,12 +2,12 @@
 goog.provide('lime.CoverNode');
 
 
-goog.require('lime.Director');
-goog.require('lime.Node');
 goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.math.Box');
 goog.require('goog.style');
+goog.require('lime.Director');
+goog.require('lime.Node');
 
 
 /**

@@ -31,17 +31,17 @@ lime.audio.Audio = function(filePath) {
     this.baseElement = document.createElement('audio');
     this.baseElement.preload = true;
     this.baseElement.loop = false;
-    
-    if(goog.userAgent.GECKO && (/\.mp3$/).test(filePath)){
-        filePath = filePath.replace(/\.mp3$/,'.ogg');
+
+    if (goog.userAgent.GECKO && (/\.mp3$/).test(filePath)) {
+        filePath = filePath.replace(/\.mp3$/, '.ogg');
     }
-    
+
     this.baseElement.src = filePath;
     this.baseElement.load();
 
-    this.loadInterval = setInterval(goog.bind(this.loadHandler_,this),10);
+    this.loadInterval = setInterval(goog.bind(this.loadHandler_, this), 10);
 
-    this.loaded_ = false; 
+    this.loaded_ = false;
 };
 
 /**
@@ -49,13 +49,13 @@ lime.audio.Audio = function(filePath) {
  * on lot of browsers.
  * @private
  */
-lime.audio.Audio.prototype.loadHandler_ = function(){
-    if(this.baseElement.readyState>2){
+lime.audio.Audio.prototype.loadHandler_ = function() {
+    if (this.baseElement.readyState > 2) {
         this.loaded_ = true;
         clearTimeout(this.loadInterval);
     }
-    if(this.baseElement.error)clearTimeout(this.loadInterval);
-    
+    if (this.baseElement.error)clearTimeout(this.loadInterval);
+
     if (lime.userAgent.IOS && this.baseElement.readyState == 0) {
         //ios hack do not work any more after 4.2.1 updates
         // no good solutions that i know

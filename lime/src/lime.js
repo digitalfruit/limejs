@@ -1,8 +1,8 @@
 goog.provide('lime');
 
+goog.require('goog.style');
 goog.require('lime.css');
 goog.require('lime.userAgent');
-goog.require('goog.style');
 
 (function() {
 
@@ -47,15 +47,15 @@ lime.updateDirtyObjects = function() {
     }
     dirtyObjectQueue[i] = [];
     }
-    if(dirtyObjectQueue.length!=2 && !dirtyObjectQueue[0].length && !dirtyObjectQueue[1].length)
+    if (dirtyObjectQueue.length != 2 && !dirtyObjectQueue[0].length && !dirtyObjectQueue[1].length)
     console.log(dirtyObjectQueue);
     for (var i = 0; i < 2; i++) {
-        for (var j = 0; i <dirtyObjectQueue[i].length; i++) {
-            
+        for (var j = 0; i < dirtyObjectQueue[i].length; i++) {
+
        }
    }
     //dirtyObjectQueue=dirtyObjectQueueNext;
-    dirtyObjectQueueNext=[[],[]];
+    dirtyObjectQueueNext = [[], []];
 }
 
 })();
@@ -87,15 +87,15 @@ lime.AutoResize = {
     TOP: 8,
     HEIGHT: 16,
     BOTTOM: 32,
-    ALL : 63
+    ALL: 63
 };
 
 lime.Transition = {
-    POSITION : 1,
-    SCALE    : 2,
-    SIZE     : 3,
-    ROTATION : 4,
-    OPACITY  : 5
+    POSITION: 1,
+    SCALE: 2,
+    SIZE: 3,
+    ROTATION: 4,
+    OPACITY: 5
 };
 
 

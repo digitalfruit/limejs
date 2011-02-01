@@ -1,9 +1,9 @@
 goog.provide('lime.animation.MoveBy');
 
 
+goog.require('goog.math.Coordinate');
 goog.require('lime.Sprite');
 goog.require('lime.animation.Animation');
-goog.require('goog.math.Coordinate');
 
 /**
  * Move elemenet by offset
@@ -33,10 +33,10 @@ lime.animation.MoveBy.prototype.setSpeed = function(speed) {
 
 
 lime.animation.MoveBy.prototype.makeTargetProp = function(target) {
-    if(this.useTransitions()){
+    if (this.useTransitions()) {
         target.addTransition(lime.Transition.POSITION,
             goog.math.Coordinate.sum(target.getPosition(), this.delta_),
-            this.duration_,this.getEasing());
+            this.duration_, this.getEasing());
         target.setDirty(lime.Dirty.POSITION);
     }
     return {startpos: target.getPosition()};
@@ -53,15 +53,15 @@ lime.animation.MoveBy.prototype.update = function(t,target) {
 
 };
 
-lime.animation.MoveBy.prototype.clearTransition = function(target){
-    
+lime.animation.MoveBy.prototype.clearTransition = function(target) {
+
     if (this.useTransitions()) {
         target.clearTransition(lime.Transition.POSITION);
         target.setDirty(lime.Dirty.POSITION);
     }
-    
 
-}
+
+};
 
 lime.animation.MoveBy.prototype.reverse = function() {
     var d = this.delta_.clone();

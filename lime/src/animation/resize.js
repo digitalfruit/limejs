@@ -1,9 +1,9 @@
 goog.provide('lime.animation.Resize');
 
 
+goog.require('goog.math.Vec2');
 goog.require('lime.Sprite');
 goog.require('lime.animation.Animation');
-goog.require('goog.math.Vec2');
 
 /**
  * Resize element

@@ -1,11 +1,11 @@
 goog.provide('lime.customNodes.CoverLens');
 
 
+goog.require('goog.math.Coordinate');
+goog.require('goog.style');
 goog.require('lime.CoverNode');
 goog.require('lime.Director');
 goog.require('lime.Node');
-goog.require('goog.math.Coordinate');
-goog.require('goog.style');
 
 
 lime.customNodes.CoverLens = function() {

@@ -1,9 +1,9 @@
 goog.provide('lime.animation.ScaleTo');
 
 
+goog.require('goog.math.Vec2');
 goog.require('lime.Sprite');
 goog.require('lime.animation.Animation');
-goog.require('goog.math.Vec2');
 
 /**
  * Scale to a given factor
@@ -33,11 +33,11 @@ lime.animation.ScaleTo.prototype.makeTargetProp = function(target) {
     var scale = target.getScale(),
         delta = new goog.math.Vec2(this.scale_.x - scale.x,
                                   this.scale_.y - scale.y);
-    
-    if(this.useTransitions()){
+
+    if (this.useTransitions()) {
         target.addTransition(lime.Transition.SCALE,
             new goog.math.Vec2(scale.x + delta.x, scale.y + delta.y),
-            this.duration_,this.getEasing());
+            this.duration_, this.getEasing());
         target.setDirty(lime.Dirty.SCALE);
     }
 
@@ -55,7 +55,7 @@ lime.animation.ScaleTo.prototype.update = function(t,target) {
     );
 };
 
-lime.animation.ScaleTo.prototype.clearTransition = function(target){
+lime.animation.ScaleTo.prototype.clearTransition = function(target) {
     if (this.useTransitions()) {
         target.clearTransition(lime.Transition.SCALE);
         target.setDirty(lime.Dirty.SCALE);

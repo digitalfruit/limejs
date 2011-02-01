@@ -65,7 +65,7 @@ lime.Label.prototype.measureText = function() {
     var lh = this.getLineHeight();
     mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
     var metrics = mContext.measureText(this.text_);
-    var w = goog.userAgent.WEBKIT?metrics.width:metrics.width+1;
+    var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
     return new goog.math.Size(
         this.padding_[1] + this.padding_[3] + w,
         this.padding_[0] + this.padding_[2] + lh * this.getFontSize()
@@ -96,7 +96,7 @@ lime.Label.prototype.getText = function() {
  * @return {lime.Label} object itself.
  */
 lime.Label.prototype.setText = function(txt) {
-    this.text_ = txt+'';
+    this.text_ = txt + '';
     this.setDirty(lime.Dirty.CONTENT);
     return this;
 };
@@ -111,7 +111,7 @@ lime.Label.prototype.getFontFamily = function() {
 
 /**
  * Set font weight
- * @param {string} value New font weight value
+ * @param {string} value New font weight value.
  * @return {lime.Label} object itself.
  */
 lime.Label.prototype.setFontWeight = function(value) {
@@ -361,7 +361,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     var lh = this.getLineHeight();
 
     context.fillStyle = this.getFontColor();
-    context.font = this.getFontWeight()+' '+this.getFontSize() + 'px/' + lh + ' ' + this.getFontFamily();
+    context.font = this.getFontWeight() + ' ' + this.getFontSize() + 'px/' + lh + ' ' + this.getFontFamily();
     context.textAlign = align;
     context.textBaseline = 'top';
 
@@ -382,7 +382,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     context.restore();
 };
 
-lime.Label.installFont = function(name,fileurl,opt_format){
+lime.Label.installFont = function(name,fileurl,opt_format) {
     var format = opt_format || 'truetype';
-    goog.style.installStyles('@font-face{font-family: "'+name+'";src: url('+fileurl+') format("'+format+'");})');
-}
+    goog.style.installStyles('@font-face{font-family: "' + name + '";src: url(' + fileurl + ') format("' + format + '");})');
+};

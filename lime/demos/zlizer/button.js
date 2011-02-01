@@ -10,8 +10,8 @@ goog.require('lime.GlossyButton');
  * @extends lime.Button
  */
 zlizer.Button = function(txt) {
-    lime.GlossyButton.call(this,txt);
-    
+    lime.GlossyButton.call(this, txt);
+
     this.borderWidth = 4;
     this.setColor('#000');
 };
@@ -25,7 +25,7 @@ goog.inherits(zlizer.Button, lime.GlossyButton);
 zlizer.Button.prototype.makeState_ = function() {
     var state = new lime.RoundedRect().setFill('#fff').setRadius(15);
     state.inner = new lime.RoundedRect().setRadius(15);
-    state.label = new lime.Label().setAlign('center').setFontColor('#eef').setFontSize(35).setSize(250,35);
+    state.label = new lime.Label().setAlign('center').setFontColor('#eef').setFontSize(35).setSize(250, 35);
 
     state.appendChild(state.inner);
     state.inner.appendChild(state.label);

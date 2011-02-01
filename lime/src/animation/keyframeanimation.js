@@ -1,9 +1,9 @@
 goog.provide('lime.animation.KeyframeAnimation');
 
 
+goog.require('goog.events');
 goog.require('lime.Sprite');
 goog.require('lime.animation.Animation');
-goog.require('goog.events');
 
 /**
  * Keyframe Animation object.

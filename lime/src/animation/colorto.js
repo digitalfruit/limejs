@@ -16,7 +16,7 @@ lime.animation.ColorTo = function(args) {
     this.rgb_ = null;
 
     var color = lime.fill.parse(arguments);
-    
+
     if (color instanceof lime.fill.Color) {
         this.rgb_ = color.getRgb();
     }

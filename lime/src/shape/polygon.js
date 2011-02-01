@@ -2,10 +2,10 @@ goog.provide('lime.Polygon');
 goog.provide('lime.Renderer.CANVAS.POLYGON');
 
 
-goog.require('lime.Renderer.CANVAS.SPRITE');
-goog.require('lime.Sprite');
 goog.require('goog.array');
 goog.require('goog.math.Coordinate');
+goog.require('lime.Renderer.CANVAS.SPRITE');
+goog.require('lime.Sprite');
 
 /**
  * Polygon shaped textured object

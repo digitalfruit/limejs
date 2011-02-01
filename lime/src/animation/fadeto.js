@@ -24,8 +24,8 @@ lime.animation.FadeTo.prototype.makeTargetProp = function(target) {
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.OPACITY,
             this.opacity_,
-            this.duration_,this.getEasing());
-            
+            this.duration_, this.getEasing());
+
         target.setDirty(lime.Dirty.ALPHA);
     }
     return {startOpacity: op, delta: this.opacity_ - op };
@@ -39,12 +39,12 @@ lime.animation.FadeTo.prototype.update = function(t,target) {
 
 };
 
-lime.animation.FadeTo.prototype.clearTransition = function(target){
+lime.animation.FadeTo.prototype.clearTransition = function(target) {
     if (this.useTransitions()) {
         target.clearTransition(lime.Transition.OPACITY);
         target.setDirty(lime.Dirty.ALPHA);
     }
-}
+};
 
 lime.animation.FadeTo.prototype.reverse = function() {
     return (new lime.animation.FadeTo(this.opacity_)).setDuration(this.getDuration());

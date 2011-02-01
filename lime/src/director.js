@@ -1,12 +1,6 @@
 goog.provide('lime.Director');
 
 
-goog.require('lime');
-goog.require('lime.Node');
-goog.require('lime.events.EventDispatcher');
-goog.require('lime.helper.PauseScene');
-goog.require('lime.scheduleManager');
-goog.require('lime.transitions.Transition');
 goog.require('goog.array');
 goog.require('goog.dom');
 goog.require('goog.dom.ViewportSizeMonitor');
@@ -17,6 +11,12 @@ goog.require('goog.math.Coordinate');
 goog.require('goog.math.Size');
 goog.require('goog.math.Vec2');
 goog.require('goog.style');
+goog.require('lime');
+goog.require('lime.Node');
+goog.require('lime.events.EventDispatcher');
+goog.require('lime.helper.PauseScene');
+goog.require('lime.scheduleManager');
+goog.require('lime.transitions.Transition');
 
 
 /**
@@ -77,17 +77,17 @@ lime.Director = function(parentElement) {
     if (parentElement == document.body) {
         //todo: installstyles is better
         goog.style.installStyles('html,body{margin:0;padding:0;height:100%;}');
-        
-        var meta=document.createElement('meta');
-        meta.name='viewport';
-        var content = 'width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1.0,user-scalable=no';        
-        if((/android/i).test(navigator.userAgent)){
-            content+=',target-densityDpi=device-dpi';
+
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        var content = 'width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1.0,user-scalable=no';
+        if ((/android/i).test(navigator.userAgent)) {
+            content += ',target-densityDpi=device-dpi';
         }
-        
+
         meta.content = content;
         document.getElementsByTagName('head').item(0).appendChild(meta);
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
     }
 
     var width, parentSize = goog.style.getSize(parentElement);
@@ -425,16 +425,16 @@ lime.Director.prototype.update = function() {
  * @private
  */
 lime.Director.prototype.invalidateSize_ = function() {
-    
+
     var stageSize = goog.style.getSize(this.domElement.parentNode);
-    
+
     if (this.domElement.parentNode == document.body) {
         window.scrollTo(0, 0);
-        if(goog.isNumber(window.innerHeight)){
+        if (goog.isNumber(window.innerHeight)) {
             stageSize.height = window.innerHeight;
         }
     }
-    
+
     var realSize = this.getSize().clone().scaleToFit(stageSize);
 
     var scale = realSize.width / this.getSize().width;
@@ -466,17 +466,17 @@ lime.Director.prototype.makeMobileWebAppCapable = function() {
     meta.name = 'apple-mobile-web-app-status-bar-style';
     meta.content = 'black';
     document.getElementsByTagName('head').item(0).appendChild(meta);
-    
+
     var visited = false;
     if (goog.isDef(localStorage)) {
-        visited = localStorage.getItem("_lime_visited");
+        visited = localStorage.getItem('_lime_visited');
     }
-    
+
     var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
-    if(ios  && !window.navigator.standalone  && COMPILED && !visited) {
+    if (ios && !window.navigator.standalone && COMPILED && !visited) {
         alert('Please install this page as a web app by clicking Share + Add to home screen.');
         if (goog.isDef(localStorage)) {
-           localStorage.setItem("_lime_visited",true);
+           localStorage.setItem('_lime_visited', true);
         }
     }
 

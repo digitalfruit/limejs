@@ -89,7 +89,7 @@ lime.fill.LinearGradient.prototype.setDOMStyle = function(domEl, shape) {
         y0 = frame.top + height * this.points_[1],
         angle = Math.atan2(y, x), tana = -y / x, p;
 
-        if(tana==Infinity) tana=Math.pow(10,10);
+        if (tana == Infinity) tana = Math.pow(10, 10);
 
         if (angle > 0 && angle < Math.PI / 2) {
             p = [frame.right, frame.top];

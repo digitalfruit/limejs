@@ -1,16 +1,16 @@
 goog.provide('lime.Node');
 
 
-goog.require('lime');
-goog.require('lime.DirtyObject');
-goog.require('lime.Renderer.CANVAS');
-goog.require('lime.Renderer.DOM');
 goog.require('goog.events.EventTarget');
 goog.require('goog.math.Box');
 goog.require('goog.math.Coordinate');
-
 goog.require('goog.math.Size');
 goog.require('goog.math.Vec2');
+goog.require('lime');
+goog.require('lime.DirtyObject');
+
+goog.require('lime.Renderer.CANVAS');
+goog.require('lime.Renderer.DOM');
 
 
 /**
@@ -25,7 +25,7 @@ lime.Node = function() {
     this.children_ = [];
 
     this.parent_ = null;
-    
+
     this.transitionsAdd_ = {};
     this.transitionsActive_ = {};
     this.transitionsActiveSet_ = {};
@@ -207,7 +207,7 @@ lime.Node.prototype.getDirty = function() {
 lime.Node.prototype.setDirty = function(value, opt_pass, opt_nextframe) {
 
     if (value && !this.dirty_) {
-        lime.setObjectDirty(this,opt_pass,opt_nextframe);
+        lime.setObjectDirty(this, opt_pass, opt_nextframe);
     }
     var old = this.dirty_;
     this.dirty_ |= value;
@@ -339,7 +339,7 @@ lime.Node.prototype.getRotation = function() {
 lime.Node.prototype.setRotation = function(value) {
 
     this.rotation_ = value;
-    
+
     if (this.transitionsActive_[lime.Transition.ROTATION]) return this;
 
     return this.setDirty(lime.Dirty.POSITION);
@@ -380,7 +380,7 @@ lime.Node.prototype.getSize = function() {
  * @return {lime.Node} object itself.
  */
 lime.Node.prototype.setSize = function(value) {
-    var oldSize = this.size_,newval;
+    var oldSize = this.size_, newval;
     if (arguments.length == 2) {
         newval = new goog.math.Size(arguments[0], arguments[1]);
     }
@@ -389,46 +389,46 @@ lime.Node.prototype.setSize = function(value) {
     }
     //todo:clear this mess
     var ap2 = this.getAnchorPoint();
-   if(oldSize && this.children_.length){
-        for(var i=0;i<this.children_.length;i++){
+   if (oldSize && this.children_.length) {
+        for (var i = 0; i < this.children_.length; i++) {
             var c = this.children_[i];
-            if(c.getAutoResize){
+            if (c.getAutoResize) {
                 var ar = c.getAutoResize();
-                if(ar == lime.AutoResize.NONE) continue;
+                if (ar == lime.AutoResize.NONE) continue;
                 var b = c.getBoundingBox();
                 var fixed = oldSize.width;
-                var c1 = b.left+ap2.x*oldSize.width;
-                var c2 = b.right-b.left;
-                var c3 = fixed-b.right-ap2.x*oldSize.width;
-                if(ar & lime.AutoResize.LEFT) fixed-=c1;
-                if(ar & lime.AutoResize.WIDTH) fixed-=c2;
-                if(ar & lime.AutoResize.RIGHT) fixed-=c3;
-                if(fixed != oldSize.width){
-                    var scale = (newval.width-fixed)/(oldSize.width-fixed);
-                    if(ar & lime.AutoResize.LEFT) c1*=scale;
-                    if(ar & lime.AutoResize.WIDTH) c2*=scale;
+                var c1 = b.left + ap2.x * oldSize.width;
+                var c2 = b.right - b.left;
+                var c3 = fixed - b.right - ap2.x * oldSize.width;
+                if (ar & lime.AutoResize.LEFT) fixed -= c1;
+                if (ar & lime.AutoResize.WIDTH) fixed -= c2;
+                if (ar & lime.AutoResize.RIGHT) fixed -= c3;
+                if (fixed != oldSize.width) {
+                    var scale = (newval.width - fixed) / (oldSize.width - fixed);
+                    if (ar & lime.AutoResize.LEFT) c1 *= scale;
+                    if (ar & lime.AutoResize.WIDTH) c2 *= scale;
                 }
                 var fixed = oldSize.height;
-                var r1 = b.top+ap2.y*oldSize.height;
-                var r2 = b.bottom-b.top;
-                var r3 = fixed-b.bottom-ap2.y*oldSize.height;
-                if(ar & lime.AutoResize.TOP) fixed-=r1;
-                if(ar & lime.AutoResize.HEIGHT) fixed-=r2;
-                if(ar & lime.AutoResize.BOTTOM) fixed-=r3;
-                if(fixed != oldSize.height){
-                    var scale = (newval.height-fixed)/(oldSize.height-fixed);
-                    if(ar & lime.AutoResize.TOP) r1*=scale;
-                    if(ar & lime.AutoResize.HEIGHT) r2*=scale;
+                var r1 = b.top + ap2.y * oldSize.height;
+                var r2 = b.bottom - b.top;
+                var r3 = fixed - b.bottom - ap2.y * oldSize.height;
+                if (ar & lime.AutoResize.TOP) fixed -= r1;
+                if (ar & lime.AutoResize.HEIGHT) fixed -= r2;
+                if (ar & lime.AutoResize.BOTTOM) fixed -= r3;
+                if (fixed != oldSize.height) {
+                    var scale = (newval.height - fixed) / (oldSize.height - fixed);
+                    if (ar & lime.AutoResize.TOP) r1 *= scale;
+                    if (ar & lime.AutoResize.HEIGHT) r2 *= scale;
                 }
-                
+
                 var ap = c.getAnchorPoint();
-                c.setSize(c2,r2);
-                c.setPosition(c1+ap.x*c2-ap2.x*newval.width,
-                              r1+ap.y*r2-ap2.y*newval.height);
+                c.setSize(c2, r2);
+                c.setPosition(c1 + ap.x * c2 - ap2.x * newval.width,
+                              r1 + ap.y * r2 - ap2.y * newval.height);
             }
-            
+
         }
-        
+
     }
     this.size_ = newval;
     return this.setDirty(lime.Dirty.SCALE);
@@ -604,18 +604,18 @@ lime.Node.prototype.getOpacity = function() {
  */
 lime.Node.prototype.setOpacity = function(value) {
     this.opacity_ = value;
-    
+
     var hidden = this.getHidden();
-    if(this.opacity_==0 && !hidden){
+    if (this.opacity_ == 0 && !hidden) {
         this.setHidden(true);
         this.autoHide_ = 1;
     }
-    else if(this.opacity_!=0 && hidden && this.autoHide_){
+    else if (this.opacity_ != 0 && hidden && this.autoHide_) {
         this.setHidden(false);
     }
-    
+
     if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])) return this;
- 
+
     this.setDirty(lime.Dirty.ALPHA);
     return this;
 };
@@ -731,87 +731,87 @@ lime.Node.prototype.update = function(opt_pass) {
             }
             lime.setObjectDirty(this.getDeepestParentWithDom(), 1);
         }
-        
-        if(this.domElement){
-            for(var i in this.transitionsClear_){
+
+        if (this.domElement) {
+            for (var i in this.transitionsClear_) {
                 delete this.transitionsActive_[i];
                 delete this.transitionsActiveSet_[i];
                 property = lime.Node.getPropertyForTransition(i);
-                lime.style.clearTransition(this.domElement,property);
-                if(this.domElement != this.containerElement){
-                    lime.style.clearTransition(this.continerElement,property);
+                lime.style.clearTransition(this.domElement, property);
+                if (this.domElement != this.containerElement) {
+                    lime.style.clearTransition(this.continerElement, property);
                 }
             }
-            for(i in this.transitionsAdd_){
+            for (i in this.transitionsAdd_) {
                 var value = this.transitionsAdd_[i];
                 var property = lime.Node.getPropertyForTransition(i);
-                
-                if(!value[3]){
-                    value[3]=1;
+
+                if (!value[3]) {
+                    value[3] = 1;
                  //todo: combine into one - only one continue for every draw offset
-                 if(i == lime.Transition.POSITION && this.positionDrawn_ != this.position_){
-                     this.setDirty(lime.Dirty.POSITION,0,true);
+                 if (i == lime.Transition.POSITION && this.positionDrawn_ != this.position_) {
+                     this.setDirty(lime.Dirty.POSITION, 0, true);
                      continue;
                  }
-      
-                if(i == lime.Transition.SCALE && this.scaleDrawn_ != this.scale_){
-                    this.setDirty(lime.Dirty.SCALE,0,true);
+
+                if (i == lime.Transition.SCALE && this.scaleDrawn_ != this.scale_) {
+                    this.setDirty(lime.Dirty.SCALE, 0, true);
                     continue;
                 }
-                
-                if(i == lime.Transition.OPACITY && this.opacityDrawn_ != this.opacity_){
-                    this.setDirty(lime.Dirty.ALPHA,0,true);
+
+                if (i == lime.Transition.OPACITY && this.opacityDrawn_ != this.opacity_) {
+                    this.setDirty(lime.Dirty.ALPHA, 0, true);
                     continue;
                 }
-                if(i == lime.Transition.ROTATION && this.rotationDrawn_ != this.rotation_){
-                    this.setDirty(lime.Dirty.ROTATION,0,true);
+                if (i == lime.Transition.ROTATION && this.rotationDrawn_ != this.rotation_) {
+                    this.setDirty(lime.Dirty.ROTATION, 0, true);
                     continue;
                 }
 
                 }
                 this.transitionsActive_[i] = value[0];
-                lime.style.setTransition(this.domElement,property,value[1],value[2]);
-                
-                if(this.domElement != this.containerElement  && 
-                    property==lime.style.transformProperty){
-                    
-                    lime.style.setTransition(this.containerElement,property,value[1],value[2]);
-                        
+                lime.style.setTransition(this.domElement, property, value[1], value[2]);
+
+                if (this.domElement != this.containerElement &&
+                    property == lime.style.transformProperty) {
+
+                    lime.style.setTransition(this.containerElement, property, value[1], value[2]);
+
                 }
                 delete this.transitionsAdd_[i];
             }
-            
-            
-            
-           
+
+
+
+
             this.positionDrawn_ = this.position_;
             this.scaleDrawn_ = this.scale_;
             this.opacityDrawn_ = this.opacity_;
             this.rotationDrawn_ = this.rotation_;
-            
-            
+
+
             this.transitionsClear_ = {};
-            
+
         }
-        
+
         this.renderer.update.call(this);
-        
-         for(i in this.transitionsActive_){
-                if(this.transitionsActive_[i]){
+
+         for (i in this.transitionsActive_) {
+                if (this.transitionsActive_[i]) {
                     this.transitionsActiveSet_[i] = true;
                 }
             }
-        
+
     }
 
     this.setDirty(0, pass);
 
 };
 
-lime.Node.getPropertyForTransition = function(transition){
+lime.Node.getPropertyForTransition = function(transition) {
     return transition == lime.Transition.OPACITY ?
         'opacity' : lime.style.transformProperty;
-}
+};
 
 
 /**
@@ -1033,12 +1033,12 @@ lime.Node.prototype.measureContents = function() {
 
 };
 
-lime.Node.prototype.addTransition = function(property,value,duration,ease){
-    this.transitionsAdd_[property]=[value,duration,ease,0];
-}
-lime.Node.prototype.clearTransition = function(property){
-    this.transitionsClear_[property]=1;
-}
+lime.Node.prototype.addTransition = function(property,value,duration,ease) {
+    this.transitionsAdd_[property] = [value, duration, ease, 0];
+};
+lime.Node.prototype.clearTransition = function(property) {
+    this.transitionsClear_[property] = 1;
+};
 
 /**
  * Checks if event should fire on element based on the position.

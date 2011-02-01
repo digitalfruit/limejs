@@ -1,8 +1,8 @@
 goog.provide('lime.Renderer.DOM');
 
+goog.require('goog.dom');
 goog.require('lime.Renderer');
 goog.require('lime.style');
-goog.require('goog.dom');
 
 /**
  * DOM renderer. This renders as div dom elements and
@@ -119,7 +119,7 @@ lime.Renderer.DOM.drawSizePosition = function() {
     transform.translate(px, py).scale(realScale.x, realScale.y).
         rotate(rotation);
 
-    if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]){
+    if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
        //     console.log('transform',this.transition_position_set_,this.transition_position_);
         lime.style.setTransform(this.domElement, transform);
     }
@@ -131,17 +131,17 @@ lime.Renderer.DOM.drawSizePosition = function() {
  * @this {lime.Node}
  */
 lime.Renderer.DOM.update = function() {
-    if(!this.domElement) return;
+    if (!this.domElement) return;
 
     lime.Renderer.DOM.drawSizePosition.call(this);
 
-    if (!this.transitionsActiveSet_[lime.Transition.OPACITY]){
+    if (!this.transitionsActiveSet_[lime.Transition.OPACITY]) {
         var opacity = this.opacity_;
         if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])) {
             opacity = this.transitionsActive_[lime.Transition.OPACITY];
         }
         if (this.getDirty() & lime.Dirty.ALPHA) {
-            goog.style.setOpacity(this.domElement, opacity );
+            goog.style.setOpacity(this.domElement, opacity);
         }
     }
 

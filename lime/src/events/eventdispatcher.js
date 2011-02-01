@@ -25,7 +25,7 @@ lime.events.EventDispatcher.prototype.register = function(node, eventType) {
         //base element switch here because safari fires touchend on
         //dom tree changes otherwise
         goog.events.listen(eventType.substring(0, 5) == 'touch' ?
-            document : (eventType.substring(0, 3) == 'key'?window:this.director.domElement.parentNode), eventType,
+            document : (eventType.substring(0, 3) == 'key' ? window : this.director.domElement.parentNode), eventType,
             this, false, this);
     }
     else {
@@ -60,7 +60,7 @@ lime.events.EventDispatcher.prototype.release = function(node, eventType) {
  * @param {function(lime.events.Event)} handler Function to call.
  */
 lime.events.EventDispatcher.prototype.swallow = function(e, type, handler) {
-   /* 
+   /*
    // don't remember why this check was needed
    if (e.type != 'mousedown' && e.type != 'touchstart' &&
         e.type != 'touchmove' && e.type != 'keydown') return;*/
@@ -80,13 +80,13 @@ lime.events.EventDispatcher.prototype.swallow = function(e, type, handler) {
 lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
     if (!goog.isDef(this.handlers[e.type])) return;
-    
+
     var handlers = this.handlers[e.type].slice(), didhandle = false;
 
     var touchIndex = 0, doBreak = 0;
 
     while (!doBreak) {
-        
+
     var ee = new lime.events.Event(this);
     ee.type = e.type;
     ee.event = e;
@@ -111,8 +111,8 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
         for (var i = 0; i < s.length; i++) {
             if (s[i][1] == e.type || (goog.isArray(s[i][1]) &&
-                    goog.array.contains(s[i][1], e.type))){
-                
+                    goog.array.contains(s[i][1], e.type))) {
+
                 var handler = s[i][0];
                 ee.targetObject = handler;
                 ee.position = handler.screenToLocal(ee.screenPosition);
@@ -123,7 +123,7 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
         //handler.dispatchEvent(ee);
 
         if (e.type == 'touchend' || e.type == 'touchcancel' ||
-            e.type == 'mouseup' || e.type=='keyup') {
+            e.type == 'mouseup' || e.type == 'keyup') {
             delete ee.targetObject;
             ee.release();
         }
@@ -135,12 +135,12 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
             if (this.director.getCurrentScene() != handler.getScene() &&
                 handler != this.director) continue;
-                
-            if(handler.getHidden()) continue;
+
+            if (handler.getHidden()) continue;
 
             ee.targetObject = handler;
 
-            if (handler.hitTest(ee) || e.type.substring(0,3)=='key') {
+            if (handler.hitTest(ee) || e.type.substring(0, 3) == 'key') {
 
                 ee.targetObject = handler;
                 handler.dispatchEvent(ee);

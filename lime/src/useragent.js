@@ -3,7 +3,7 @@ goog.provide('lime.userAgent');
 goog.require('goog.userAgent');
 
 
-(function(){
+(function() {
 
 
 var ua = goog.userAgent.getUserAgentString();

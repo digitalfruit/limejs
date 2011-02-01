@@ -1,8 +1,8 @@
 goog.provide('lime.Renderer.CANVAS');
 
-goog.require('lime.Renderer');
 goog.require('goog.math.Box.size');
 goog.require('goog.math.Size.scaleVec2');
+goog.require('lime.Renderer');
 
 /**
 * Canvas renderer. This renders as canvas element or just
@@ -29,9 +29,9 @@ lime.Renderer.CANVAS.drawCanvas = function() {
     ownquality = rquality / quality,
     sizediff,
     PADDING = 12;
-    
-    
-    if(!this.domElement) return;
+
+
+    if (!this.domElement) return;
 
     if (this.boundsCache && this.boundsCache.contains(bounds) &&
     (sizediff = this.boundsCache.size().area() / bounds.size().area()) &&
@@ -123,12 +123,12 @@ lime.Renderer.CANVAS.drawCanvas = function() {
             (this.ay + ap_offset.height) / pxsize.height * 100, true);
 
         if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
-            
+
             var rotation = -this.getRotation();
             if (this.transitionsActive_[lime.Transition.ROTATION]) {
                 rotation = this.transitionsActive_[lime.Transition.ROTATION];
             }
-            
+
             lime.style.setTransform(this.domElement,
                 new lime.style.Transform().translate(pos.x, pos.y).
                 scale(realScale.x, realScale.y).rotate(rotation));

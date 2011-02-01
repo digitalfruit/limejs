@@ -1,9 +1,9 @@
 goog.provide('lime.animation.Loop');
 
 
+goog.require('goog.math.Coordinate');
 goog.require('lime.Sprite');
 goog.require('lime.animation.Animation');
-goog.require('goog.math.Coordinate');
 
 /**
  * Loop animation again after it has finished

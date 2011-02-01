@@ -21,10 +21,10 @@ lime.animation.RotateTo.prototype.scope = 'rotate';
 
 lime.animation.RotateTo.prototype.makeTargetProp = function(target) {
     var rot = target.getRotation();
-    if(this.useTransitions()){
+    if (this.useTransitions()) {
         target.addTransition(lime.Transition.ROTATION,
             this.angle_,
-            this.duration_,this.getEasing()
+            this.duration_, this.getEasing()
         );
         target.setDirty(lime.Dirty.POSITION);
     }
@@ -37,12 +37,12 @@ lime.animation.RotateTo.prototype.update = function(t,target) {
     target.setRotation(prop.startRot + prop.delta * t);
 };
 
-lime.animation.RotateTo.prototype.clearTransition = function(target){
+lime.animation.RotateTo.prototype.clearTransition = function(target) {
     if (this.useTransitions()) {
         target.clearTransition(lime.Transition.ROTATION);
         target.setDirty(lime.Dirty.POSITION);
     }
-}
+};
 
 lime.animation.RotateTo.prototype.reverse = function() {
     return (new lime.animation.RotateTo(this.angle_)).setDuration(this.getDuration());

@@ -1,9 +1,9 @@
 goog.provide('lime.animation.MoveTo');
 
 
+goog.require('goog.math.Coordinate');
 goog.require('lime.Sprite');
 goog.require('lime.animation.Animation');
-goog.require('goog.math.Coordinate');
 
 /**
  * Move element to specific position
@@ -37,10 +37,10 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
     if (this.speed_) {
         this.setDuration(this.speed_ * goog.math.Coordinate.distance(delta, new goog.math.Coordinate(0, 0)) / 100);
     }
-    if(this.useTransitions()){
+    if (this.useTransitions()) {
         target.addTransition(lime.Transition.POSITION,
             this.position_,
-            this.duration_,this.getEasing());
+            this.duration_, this.getEasing());
         target.setDirty(lime.Dirty.POSITION);
     }
 
@@ -57,14 +57,14 @@ lime.animation.MoveTo.prototype.update = function(t,target) {
     );
 };
 
-lime.animation.MoveTo.prototype.clearTransition = function(target){
+lime.animation.MoveTo.prototype.clearTransition = function(target) {
 
     if (this.useTransitions()) {
         target.clearTransition(lime.Transition.POSITION);
         target.setDirty(lime.Dirty.POSITION);
     }
-    
-}
+
+};
 
 lime.animation.MoveTo.prototype.reverse = function() {
     return (new lime.animation.MoveTo(this.position_)).setDuration(this.getDuration());

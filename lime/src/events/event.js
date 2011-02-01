@@ -21,34 +21,34 @@ lime.events.Event = function(dispatcher) {
  */
 lime.events.Event.prototype.swallow = function(type, handler, opt_deny_shared) {
     type = goog.isArray(type) ? type : [type];
-    for(var i=0;i<type.length;i++)
+    for (var i = 0; i < type.length; i++)
     this.dispatcher_.swallow(this, type[i], handler);
 
-    if(opt_deny_shared){
+    if (opt_deny_shared) {
         this.event.stopPropagation();
     }
 };
 
 /**
  * Release all swllowed handlers.
- * @param {string|Array.<string>} opt_type Event types to release
+ * @param {string|Array.<string>} opt_type Event types to release.
  */
 lime.events.Event.prototype.release = function(opt_type) {
     var limit_type = goog.isDef(opt_type);
     var type = goog.isArray(opt_type) ? opt_type : [opt_type];
     var s = this.dispatcher_.swallows[this.identifier];
-    if(!s) return;
-    
+    if (!s) return;
+
     var e = this;
-    var s2 = goog.array.filter(s,function(swallow){
-        if(!goog.isDef(e.targetObject) || (swallow[0]==e.targetObject && (!limit_type || goog.array.contains(type,swallow[1])))){
+    var s2 = goog.array.filter(s, function(swallow) {
+        if (!goog.isDef(e.targetObject) || (swallow[0] == e.targetObject && (!limit_type || goog.array.contains(type, swallow[1])))) {
            goog.events.unlisten(swallow[0], swallow[1], swallow[2]);
            return false;
         }
         return true;
     });
-    
-    if(s2.length){
+
+    if (s2.length) {
         this.dispatcher_.swallows[this.identifier] = s2;
     }
     else {
@@ -65,8 +65,8 @@ lime.events.Event.prototype.startDrag = function(snapToCenter, box, opt_targetOb
     return new lime.events.Drag(this, snapToCenter, box, opt_targetObject);
 };
 
-lime.events.Event.prototype.clone = function(){
+lime.events.Event.prototype.clone = function() {
     var e = new lime.events.Event(this.dispatcher_);
     goog.object.extend(e, this);
     return e;
-}
+};

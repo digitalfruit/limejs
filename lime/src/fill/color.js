@@ -1,9 +1,9 @@
 goog.provide('lime.fill.Color');
 
-goog.require('lime.fill.Fill');
-
 goog.require('goog.color');
+
 goog.require('goog.color.alpha');
+goog.require('lime.fill.Fill');
 
 /**
 * Color fill

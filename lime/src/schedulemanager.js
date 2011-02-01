@@ -1,7 +1,7 @@
 goog.provide('lime.scheduleManager');
 
-goog.require('lime');
 goog.require('goog.array');
+goog.require('lime');
 
 
 /**

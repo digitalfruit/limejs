@@ -3,10 +3,10 @@ goog.provide('lime.animation.Easing');
 goog.provide('lime.animation.actionManager');
 
 
-goog.require('lime.scheduleManager');
 goog.require('goog.array');
 goog.require('goog.events.EventTarget');
 goog.require('goog.fx.easing');
+goog.require('lime.scheduleManager');
 
 
 /**
@@ -76,14 +76,14 @@ lime.animation.Animation.prototype.getDuration = function() {
      this.duration_ = value;
      return this;
  };
- 
+
 lime.animation.Animation.prototype.setEasing = function(ease) {
     this.ease = ease;
     return this;
 };
-lime.animation.Animation.prototype.getEasing = function(){
+lime.animation.Animation.prototype.getEasing = function() {
     return this.ease;
-}
+};
 
 /**
  * Add target node to animation
@@ -121,7 +121,7 @@ lime.animation.Animation.prototype.play = function() {
 lime.animation.Animation.prototype.stop = function(opt_targets) {
     if (this.status_ != 0) {
         var targets = this.initTargets_;
-        if(this.useTransitions() && this.clearTransition){ 
+        if (this.useTransitions() && this.clearTransition) {
             var i = targets.length;
             while (--i >= 0) {
                 this.clearTransition(targets[i]);
@@ -166,7 +166,7 @@ lime.animation.Animation.prototype.initTarget = function(target) {
     lime.animation.actionManager.register(this, target);
     //todo: check if all this status_ mess can be removed now
     this.status_ = 1;
-    goog.array.insert(this.initTargets_,target);
+    goog.array.insert(this.initTargets_, target);
 };
 
 /**
@@ -185,12 +185,12 @@ lime.animation.Animation.prototype.getDirector = function() {
 lime.animation.Animation.prototype.step_ = function(dt) {
     this.playTime_ += dt;
     var t = this.playTime_ / (this.duration_ * 1000);
-    if(isNaN(t)) t = 1;
+    if (isNaN(t)) t = 1;
     if (t > 1) t = 1;
     var t_orig = t;
     var t = this.getEasing()[0](t);
-    if(isNaN(t)){
-        throw('Cubic equations with 3 roots not allowed atm.');
+    if (isNaN(t)) {
+        throw ('Cubic equations with 3 roots not allowed atm.');
         //t = t_orig;
     }
     if (t_orig == 1) t = 1;
@@ -210,7 +210,7 @@ lime.animation.Animation.prototype.step_ = function(dt) {
  * @return {boolean} Transitions are being used?
  */
 lime.animation.Animation.prototype.useTransitions = function() {
-    return this.duration_>0 && lime.style.isTransitionsSupported && this.optimizations_ //&&
+    return this.duration_ > 0 && lime.style.isTransitionsSupported && this.optimizations_; //&&
         //goog.userAgent.MOBILE;
     // I see no boost on mac, only on ios
 };
@@ -278,34 +278,34 @@ lime.animation.actionManager.stopAll = function(target) {
     }
 };
 
-lime.animation.solveCubic_ = function(a,b,c,d){
-    var Q, R, H = 2*Math.pow(b,3)-9*a*b*c+27*a*a*d;
-	Q = Math.sqrt(Math.pow(H,2)-4*Math.pow(b*b-3*a*c,3));
-	R = Math.pow(.5*(Q+H),1/3);
-	return -b/(3*a) - R/(3*a) - (b*b-3*a*c)/(3*a*R);
+lime.animation.solveCubic_ = function(a,b,c,d) {
+    var Q, R, H = 2 * Math.pow(b, 3) - 9 * a * b * c + 27 * a * a * d;
+	Q = Math.sqrt(Math.pow(H, 2) - 4 * Math.pow(b * b - 3 * a * c, 3));
+	R = Math.pow(.5 * (Q + H), 1 / 3);
+	return -b / (3 * a) - R / (3 * a) - (b * b - 3 * a * c) / (3 * a * R);
 };
 
-lime.animation.getEasingFunction = function(p1x,p1y,p2x,p2y){
-    var A = -3*p1x + 3*p2x -1,
-		B = 3*p1x - 6*p2x +3,
-		C = 3*p2x -3,
+lime.animation.getEasingFunction = function(p1x,p1y,p2x,p2y) {
+    var A = -3 * p1x + 3 * p2x - 1,
+		B = 3 * p1x - 6 * p2x + 3,
+		C = 3 * p2x - 3,
 		that = lime.animation;
-    return [function(t){
-		var t= that.solveCubic_(A,B,C,1-t);
-		var y=p1y*3*t*t*(1-t) + p2y*3*t*(1-t)*(1-t) + (1-t)*(1-t)*(1-t);
+    return [function(t) {
+		var t = that.solveCubic_(A, B, C, 1 - t);
+		var y = p1y * 3 * t * t * (1 - t) + p2y * 3 * t * (1 - t) * (1 - t) + (1 - t) * (1 - t) * (1 - t);
 		return y;
-    },p1x,p1y,p2x,p2y];
-    
-}
+    },p1x, p1y, p2x, p2y];
+
+};
 
 // todo: This is not quite correct as the functions are bit different
 // Real solution would involve generic cubic-bezier function in JS
 lime.animation.Easing = {
-    EASE        : lime.animation.getEasingFunction(0.25,0.1,.25,1),
-    LINEAR      : lime.animation.getEasingFunction(.21,.2,.51,.58),
-    EASEIN      : lime.animation.getEasingFunction(.76,.1,1,1),
-    EASEOUT     : lime.animation.getEasingFunction(0.13,0.43,.4,.78),
-    EASEINOUT   : lime.animation.getEasingFunction(.42,0,.58,1)
+    EASE: lime.animation.getEasingFunction(0.25, 0.1, .25, 1),
+    LINEAR: lime.animation.getEasingFunction(.21, .2, .51, .58),
+    EASEIN: lime.animation.getEasingFunction(.76, .1, 1, 1),
+    EASEOUT: lime.animation.getEasingFunction(0.13, 0.43, .4, .78),
+    EASEINOUT: lime.animation.getEasingFunction(.42, 0, .58, 1)
 };
 
 

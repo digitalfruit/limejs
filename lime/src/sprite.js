@@ -4,15 +4,15 @@ goog.provide('lime.Renderer.DOM.SPRITE');
 goog.provide('lime.Sprite');
 
 
-goog.require('lime');
-goog.require('lime.Node');
-goog.require('lime.fill.Color');
-goog.require('lime.fill.Fill');
-goog.require('lime.fill.Image');
-
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('goog.math.Size');
+goog.require('lime');
+goog.require('lime.Node');
+
+goog.require('lime.fill.Color');
+goog.require('lime.fill.Fill');
+goog.require('lime.fill.Image');
 
 /**
  * Rectangural textured object
@@ -100,24 +100,24 @@ lime.Renderer.DOM.SPRITE.draw = function(el) {
  */
 lime.Renderer.CANVAS.SPRITE.draw = function(context) {
     //todo: remove domElement, add getContext
-    var size = this.getSize(),scale = this.getScale(), fill = this.fill_;
+    var size = this.getSize(), scale = this.getScale(), fill = this.fill_;
 
     if (!fill) return;
 
-    var width = size.width*scale.x;
-    var height = size.height*scale.y;
+    var width = size.width * scale.x;
+    var height = size.height * scale.y;
 
     var frame = this.getFrame();
 
 
     if (fill.id == 'image') {
         if (width && height)
-        context.drawImage(fill.image_, frame.left*scale.x, frame.top*scale.y, width, height);
+        context.drawImage(fill.image_, frame.left * scale.x, frame.top * scale.y, width, height);
     }
     else {
         fill.setCanvasStyle(context, this);
 
-        context.fillRect(frame.left*scale.x, frame.top*scale.y, width, height);
+        context.fillRect(frame.left * scale.x, frame.top * scale.y, width, height);
     }
 
 };

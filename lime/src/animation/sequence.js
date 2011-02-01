@@ -1,9 +1,9 @@
 goog.provide('lime.animation.Sequence');
 
 
+goog.require('goog.math.Coordinate');
 goog.require('lime.Sprite');
 goog.require('lime.animation.Animation');
-goog.require('goog.math.Coordinate');
 
 /**
  * Sequence of animations that are run after each other.
@@ -44,12 +44,12 @@ lime.animation.Sequence.prototype.initTarget = function(target) {
     this.last_ = -1;
 };
 
-lime.animation.Sequence.prototype.stop = function(){
-    if(this.last_!=-1){
+lime.animation.Sequence.prototype.stop = function() {
+    if (this.last_ != -1) {
         this.actions[this.last_].stop(this.targets);
     }
-    lime.animation.Animation.prototype.stop.apply(this,arguments);
-}
+    lime.animation.Animation.prototype.stop.apply(this, arguments);
+};
 
 lime.animation.Sequence.prototype.update = function(t,target) {
     if (this.status_ == 0) return;

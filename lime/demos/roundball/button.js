@@ -10,8 +10,8 @@ goog.require('lime.GlossyButton');
  * @extends lime.Button
  */
 rb.Button = function(txt) {
-    lime.GlossyButton.call(this,txt);
-    
+    lime.GlossyButton.call(this, txt);
+
     this.borderWidth = 4;
     this.setColor('#000');
 };

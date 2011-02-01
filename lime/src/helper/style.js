@@ -63,13 +63,13 @@ lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
         this.values.push(rot_str);
     return this;
 };
-(function(){
-    
-// android doesn't scale when translate3d has been used    
+(function() {
+
+// android doesn't scale when translate3d has been used
 var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
-    
+
 lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
-    
+
     var p = 1 / this.precision;
     var val = 'translate';
     if (ios) val += '3d';
@@ -128,10 +128,10 @@ lime.style.isTransitionsSupported = !!stylename;
 var clearProp = function(str, prop) {
     if (!str.length) return str;
     var proplist = str.split('),');
-    for(var i=0;i<proplist.length-1;i++){
-        proplist[i]+=')';
+    for (var i = 0; i < proplist.length - 1; i++) {
+        proplist[i] += ')';
     }
-    
+
     proplist = goog.array.filter(proplist, function(part) {
                return part.indexOf(prop) == -1;
    });
@@ -143,14 +143,14 @@ lime.style.setTransition = function(el, property, time, ease) {
     var curvalue = clearProp(el.style[stylename], property);
     if (curvalue.length) curvalue += ', ';
     //console.log(time+'s cubic-bezier('+ease[1]+','+ease[2]+','+ease[3]+','+ease[4]+')');
-    curvalue += property + ' ' + time + 's cubic-bezier('+ease[1]+','+ease[2]+','+ease[3]+','+ease[4]+')';
+    curvalue += property + ' ' + time + 's cubic-bezier(' + ease[1] + ',' + ease[2] + ',' + ease[3] + ',' + ease[4] + ')';
     el.style[stylename] = curvalue;
 };
 
 lime.style.clearTransition = function(el, property) {
     if (!stylename || !el) return;
     el.style[stylename] = clearProp(el.style[stylename], property);
-    
+
    // console.log('clear',el.style[stylename],property);
 };
 
