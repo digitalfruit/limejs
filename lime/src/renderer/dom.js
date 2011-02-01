@@ -88,7 +88,7 @@ lime.Renderer.DOM.drawSizePosition = function() {
 
 
     if (this.domElement != this.containerElement) {
-        if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE])
+        if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION])
         lime.style.setTransform(this.containerElement,
                 new lime.style.Transform().translate(ax, ay));
     }
@@ -111,10 +111,15 @@ lime.Renderer.DOM.drawSizePosition = function() {
             rotate(this.mask_.mRot, 'rad').translate(ax, ay).setPrecision(1);
     }
 
-    transform.translate(px, py).scale(realScale.x, realScale.y).
-        rotate(-this.getRotation());
+    var rotation = -this.getRotation();
+    if (this.transitionsActive_[lime.Transition.ROTATION]) {
+        rotation = this.transitionsActive_[lime.Transition.ROTATION];
+    }
 
-    if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE]){
+    transform.translate(px, py).scale(realScale.x, realScale.y).
+        rotate(rotation);
+
+    if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]){
        //     console.log('transform',this.transition_position_set_,this.transition_position_);
         lime.style.setTransform(this.domElement, transform);
     }

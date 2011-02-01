@@ -339,6 +339,8 @@ lime.Node.prototype.getRotation = function() {
 lime.Node.prototype.setRotation = function(value) {
 
     this.rotation_ = value;
+    
+    if (this.transitionsActive_[lime.Transition.ROTATION]) return this;
 
     return this.setDirty(lime.Dirty.POSITION);
 };
@@ -746,7 +748,7 @@ lime.Node.prototype.update = function(opt_pass) {
                 
                 if(!value[3]){
                     value[3]=1;
-                 
+                 //todo: combine into one - only one continue for every draw offset
                  if(i == lime.Transition.POSITION && this.positionDrawn_ != this.position_){
                      this.setDirty(lime.Dirty.POSITION,0,true);
                      continue;
@@ -756,9 +758,13 @@ lime.Node.prototype.update = function(opt_pass) {
                     this.setDirty(lime.Dirty.SCALE,0,true);
                     continue;
                 }
-                                             
+                
                 if(i == lime.Transition.OPACITY && this.opacityDrawn_ != this.opacity_){
                     this.setDirty(lime.Dirty.ALPHA,0,true);
+                    continue;
+                }
+                if(i == lime.Transition.ROTATION && this.rotationDrawn_ != this.rotation_){
+                    this.setDirty(lime.Dirty.ROTATION,0,true);
                     continue;
                 }
 
@@ -781,6 +787,7 @@ lime.Node.prototype.update = function(opt_pass) {
             this.positionDrawn_ = this.position_;
             this.scaleDrawn_ = this.scale_;
             this.opacityDrawn_ = this.opacity_;
+            this.rotationDrawn_ = this.rotation_;
             
             
             this.transitionsClear_ = {};

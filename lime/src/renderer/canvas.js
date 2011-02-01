@@ -122,10 +122,16 @@ lime.Renderer.CANVAS.drawCanvas = function() {
             (this.ax + ap_offset.width) / pxsize.width * 100,
             (this.ay + ap_offset.height) / pxsize.height * 100, true);
 
-        if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE]) {
+        if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
+            
+            var rotation = -this.getRotation();
+            if (this.transitionsActive_[lime.Transition.ROTATION]) {
+                rotation = this.transitionsActive_[lime.Transition.ROTATION];
+            }
+            
             lime.style.setTransform(this.domElement,
                 new lime.style.Transform().translate(pos.x, pos.y).
-                scale(realScale.x, realScale.y).rotate(-this.getRotation()));
+                scale(realScale.x, realScale.y).rotate(rotation));
         }
 
         if (this.redraw_) {

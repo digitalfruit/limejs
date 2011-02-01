@@ -18,6 +18,7 @@ goog.require('lime.animation.ScaleBy');
 goog.require('lime.animation.Spawn');
 goog.require('lime.animation.Loop');
 goog.require('lime.animation.Sequence');
+goog.require('lime.animation.RotateBy');
 
 
 test.WIDTH = 600;
@@ -36,7 +37,7 @@ test.start = function(){
 	var layer = (new lime.Layer).setPosition(100,100);
 	menuscene.appendChild(layer);
 	
-	
+
 	var sprite = new lime.Sprite().setFill('#0c0').setSize(50,50);
 	layer.appendChild(sprite);
 	
@@ -46,6 +47,16 @@ test.start = function(){
 	    );
 	var a2 = new lime.animation.Sequence(anim,anim.reverse());
 	sprite.runAction(new lime.animation.Loop(a2).setLimit(5));
+
+	var sprite = new lime.Sprite().setFill('#0c0').setSize(50,50).setPosition(0,100);
+	layer.appendChild(sprite);
+	
+	var anim = new lime.animation.Spawn(
+	    new lime.animation.RotateBy(-90).setDuration(3).enableOptimizations(),
+	    new lime.animation.MoveBy(300,0).setDuration(3).enableOptimizations()
+    );
+    var a2 = new lime.animation.Sequence(anim,anim.reverse());
+    sprite.runAction(new lime.animation.Loop(a2).setLimit(5));
 	
 	// set active scene
 	test.director.replaceScene(menuscene);

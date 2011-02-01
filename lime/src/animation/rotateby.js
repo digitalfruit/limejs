@@ -21,6 +21,13 @@ goog.inherits(lime.animation.RotateBy, lime.animation.Animation);
 lime.animation.RotateBy.prototype.scope = 'rotate';
 
 lime.animation.RotateBy.prototype.makeTargetProp = function(target) {
+    if(this.useTransitions()){
+        target.addTransition(lime.Transition.ROTATION,
+            target.getRotation() + this.angle_,
+            this.duration_,this.getEasing()
+        );
+        target.setDirty(lime.Dirty.POSITION);
+    }
     return {startRot: target.getRotation() };
 };
 
@@ -30,6 +37,13 @@ lime.animation.RotateBy.prototype.update = function(t,target) {
     target.setRotation(prop.startRot + this.angle_ * t);
 };
 
+lime.animation.RotateBy.prototype.clearTransition = function(target){
+    if (this.useTransitions()) {
+        target.clearTransition(lime.Transition.ROTATION);
+        target.setDirty(lime.Dirty.POSITION);
+    }
+}
+
 lime.animation.RotateBy.prototype.reverse = function() {
-    return (new lime.animation.ScaleBy(-this.angle_)).setDuration(this.getDuration());
+    return (new lime.animation.RotateBy(-this.angle_)).setDuration(this.getDuration());
 };
