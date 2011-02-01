@@ -32,27 +32,27 @@ goog.inherits(lime.ui.Scroller, lime.Sprite);
 /**
  * Offset that can be dragged over the edge
  * @const
- * @type {number}
+ * @type number
  */
 lime.ui.Scroller.OFFSET = 250;
 
 /**
  * Factor to slow down if over the edge
  * @const
- * @type {number}
+ * @type number
  */
 lime.ui.Scroller.OFFSET_LAG = .4;
 
 /**
  * How fast to slow down
  * @const
- * @type {number}
+ * @type number
  */
 lime.ui.Scroller.FRICTION = .95;
 
 /**
  * Direction of the scroller.
- * @enum {number}
+ * @enum number
  */
 lime.ui.Scroller.Direction = {
   HORIZONTAL : 0,

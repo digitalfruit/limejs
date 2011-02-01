@@ -16,7 +16,7 @@ goog.require('goog.math.Vec2');
 /**
 * Node. Abstract drawable object in lime.
 * @constructor
-* @implements {lime.DirtyObject}
+* @implements lime.DirtyObject
 * @extends goog.events.EventTarget
 */
 lime.Node = function() {

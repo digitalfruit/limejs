@@ -5,7 +5,7 @@ goog.require('lime.fill.Fill');
 /**
  * Linear gradient fill.
  * @constructor
- * @extends lime.fill.LinearGradient
+ * @extends lime.fill.Fill
  */
 lime.fill.LinearGradient = function() {
     lime.fill.Fill.call(this);

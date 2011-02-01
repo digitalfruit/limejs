@@ -12,7 +12,7 @@ goog.require('goog.fx.easing');
 /**
  * General object for running animations on nodes
  * @constructor
- * @extends {goog.events.EventTarget}
+ * @extends goog.events.EventTarget
  */
 lime.animation.Animation = function() {
     goog.events.EventTarget.call(this);

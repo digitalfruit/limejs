@@ -44,6 +44,11 @@ lime.audio.Audio = function(filePath) {
     this.loaded_ = false; 
 };
 
+/**
+ * Handle loading the audio file. Event handlers seem to fail
+ * on lot of browsers.
+ * @private
+ */
 lime.audio.Audio.prototype.loadHandler_ = function(){
     if(this.baseElement.readyState>2){
         this.loaded_ = true;
