@@ -78,6 +78,7 @@ lime.CoverNode.prototype.setNeedsRedraw = function() {
 /**
  * Tell CoverNode that it needs to redraw its contents if
  * specific Box area
+ * @param {goog.math.Box} box Box.
  */
 lime.CoverNode.prototype.setNeedsRedrawInRect = function(box) {
     var dir = this.director,

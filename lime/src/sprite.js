@@ -1,15 +1,12 @@
 goog.provide('lime.Renderer.CANVAS.SPRITE');
-
 goog.provide('lime.Renderer.DOM.SPRITE');
 goog.provide('lime.Sprite');
-
 
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('goog.math.Size');
 goog.require('lime');
 goog.require('lime.Node');
-
 goog.require('lime.fill.Color');
 goog.require('lime.fill.Fill');
 goog.require('lime.fill.Image');
@@ -70,7 +67,9 @@ lime.Sprite.prototype.setFill = function(fill) {
     return this;
 };
 
-
+/**
+ * @private
+ */
 // todo: move this function to canvas background rendermode
 lime.Sprite.prototype.getCanvasContextName_ = (function() {
     var contextID_ = 0;
@@ -112,12 +111,14 @@ lime.Renderer.CANVAS.SPRITE.draw = function(context) {
 
     if (fill.id == 'image') {
         if (width && height)
-        context.drawImage(fill.image_, frame.left * scale.x, frame.top * scale.y, width, height);
+        context.drawImage(fill.image_, frame.left * scale.x,
+            frame.top * scale.y, width, height);
     }
     else {
         fill.setCanvasStyle(context, this);
 
-        context.fillRect(frame.left * scale.x, frame.top * scale.y, width, height);
+        context.fillRect(frame.left * scale.x,
+            frame.top * scale.y, width, height);
     }
 
 };

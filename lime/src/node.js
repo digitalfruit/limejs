@@ -202,6 +202,7 @@ lime.Node.prototype.getDirty = function() {
  * kind of updates before next draw.
  * @param {number} value Values to be added to the bitmask.
  * @param {number} opt_pass Pass number (0-1).
+ * @param {boolean} opt_nextframe Register for next frame.
  * @return {lime.Node} Node itself.
  */
 lime.Node.prototype.setDirty = function(value, opt_pass, opt_nextframe) {
@@ -404,11 +405,12 @@ lime.Node.prototype.setSize = function(value) {
                 if (ar & lime.AutoResize.WIDTH) fixed -= c2;
                 if (ar & lime.AutoResize.RIGHT) fixed -= c3;
                 if (fixed != oldSize.width) {
-                    var scale = (newval.width - fixed) / (oldSize.width - fixed);
+                    var scale = (newval.width - fixed) /
+                        (oldSize.width - fixed);
                     if (ar & lime.AutoResize.LEFT) c1 *= scale;
                     if (ar & lime.AutoResize.WIDTH) c2 *= scale;
                 }
-                var fixed = oldSize.height;
+                fixed = oldSize.height;
                 var r1 = b.top + ap2.y * oldSize.height;
                 var r2 = b.bottom - b.top;
                 var r3 = fixed - b.bottom - ap2.y * oldSize.height;
@@ -416,7 +418,8 @@ lime.Node.prototype.setSize = function(value) {
                 if (ar & lime.AutoResize.HEIGHT) fixed -= r2;
                 if (ar & lime.AutoResize.BOTTOM) fixed -= r3;
                 if (fixed != oldSize.height) {
-                    var scale = (newval.height - fixed) / (oldSize.height - fixed);
+                    scale = (newval.height - fixed) /
+                        (oldSize.height - fixed);
                     if (ar & lime.AutoResize.TOP) r1 *= scale;
                     if (ar & lime.AutoResize.HEIGHT) r2 *= scale;
                 }
@@ -614,7 +617,8 @@ lime.Node.prototype.setOpacity = function(value) {
         this.setHidden(false);
     }
 
-    if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])) return this;
+    if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY]))
+        return this;
 
     this.setDirty(lime.Dirty.ALPHA);
     return this;
@@ -748,34 +752,41 @@ lime.Node.prototype.update = function(opt_pass) {
 
                 if (!value[3]) {
                     value[3] = 1;
-                 //todo: combine into one - only one continue for every draw offset
-                 if (i == lime.Transition.POSITION && this.positionDrawn_ != this.position_) {
+                 //todo: combine into one - only one continue
+                 //      for every draw offset
+                 if (i == lime.Transition.POSITION &&
+                    this.positionDrawn_ != this.position_) {
                      this.setDirty(lime.Dirty.POSITION, 0, true);
                      continue;
                  }
 
-                if (i == lime.Transition.SCALE && this.scaleDrawn_ != this.scale_) {
+                if (i == lime.Transition.SCALE &&
+                    this.scaleDrawn_ != this.scale_) {
                     this.setDirty(lime.Dirty.SCALE, 0, true);
                     continue;
                 }
 
-                if (i == lime.Transition.OPACITY && this.opacityDrawn_ != this.opacity_) {
+                if (i == lime.Transition.OPACITY &&
+                    this.opacityDrawn_ != this.opacity_) {
                     this.setDirty(lime.Dirty.ALPHA, 0, true);
                     continue;
                 }
-                if (i == lime.Transition.ROTATION && this.rotationDrawn_ != this.rotation_) {
+                if (i == lime.Transition.ROTATION &&
+                    this.rotationDrawn_ != this.rotation_) {
                     this.setDirty(lime.Dirty.ROTATION, 0, true);
                     continue;
                 }
 
                 }
                 this.transitionsActive_[i] = value[0];
-                lime.style.setTransition(this.domElement, property, value[1], value[2]);
+                lime.style.setTransition(this.domElement,
+                    property, value[1], value[2]);
 
                 if (this.domElement != this.containerElement &&
                     property == lime.style.transformProperty) {
 
-                    lime.style.setTransition(this.containerElement, property, value[1], value[2]);
+                    lime.style.setTransition(this.containerElement,
+                        property, value[1], value[2]);
 
                 }
                 delete this.transitionsAdd_[i];
@@ -808,6 +819,11 @@ lime.Node.prototype.update = function(opt_pass) {
 
 };
 
+/**
+ * Return CSS property name for transition constant
+ * @param {number} transition Transition constant.
+ * @return {string} Property name.
+ */
 lime.Node.getPropertyForTransition = function(transition) {
     return transition == lime.Transition.OPACITY ?
         'opacity' : lime.style.transformProperty;
@@ -1033,9 +1049,21 @@ lime.Node.prototype.measureContents = function() {
 
 };
 
-lime.Node.prototype.addTransition = function(property,value,duration,ease) {
+/**
+ * Register transition property. Use through animations.
+ * @param {number} property Transition property constant.
+ * @param {mixed} value New value.
+ * @param {number} duration Transition duration.
+ * @param {Array.<mixed>} ease Easing function.
+ */
+lime.Node.prototype.addTransition = function(property, value, duration, ease) {
     this.transitionsAdd_[property] = [value, duration, ease, 0];
 };
+
+/**
+ * Clear previously set transition
+ * @param {number} property Transition property.
+ */
 lime.Node.prototype.clearTransition = function(property) {
     this.transitionsClear_[property] = 1;
 };

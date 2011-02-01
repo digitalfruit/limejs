@@ -80,7 +80,8 @@ lime.Director = function(parentElement) {
 
         var meta = document.createElement('meta');
         meta.name = 'viewport';
-        var content = 'width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1.0,user-scalable=no';
+        var content = 'width=device-width,initial-scale=1.0,minimum-scale=1,' +
+            'maximum-scale=1.0,user-scalable=no';
         if ((/android/i).test(navigator.userAgent)) {
             content += ',target-densityDpi=device-dpi';
         }
@@ -244,7 +245,8 @@ lime.Director.prototype.step_ = function(delta) {
 /**
  * Replace current scene with new scene
  * @param {lime.Scene} scene New scene.
- * @param {function(lime.scene,lime.scene,boolean=)} opt_transition Transition played.
+ * @param {function(lime.scene,lime.scene,boolean=)} opt_transition
+ *        Transition played.
  * @param {number} opt_duration Duration of transition.
  */
 lime.Director.prototype.replaceScene = function(scene, opt_transition,
@@ -318,7 +320,8 @@ lime.Director.prototype.popScene = function() {
     if (!this.sceneStack_.length) return;
     this.sceneStack_[this.sceneStack_.length - 1].wasRemovedFromTree();
     this.sceneStack_[this.sceneStack_.length - 1].parent_ = null;
-    goog.dom.removeNode(this.sceneStack_[this.sceneStack_.length - 1].domElement);
+    goog.dom.removeNode(
+        this.sceneStack_[this.sceneStack_.length - 1].domElement);
     this.sceneStack_.pop();
 
 };
@@ -474,7 +477,8 @@ lime.Director.prototype.makeMobileWebAppCapable = function() {
 
     var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
     if (ios && !window.navigator.standalone && COMPILED && !visited) {
-        alert('Please install this page as a web app by clicking Share + Add to home screen.');
+        alert('Please install this page as a web app by ' +
+            'clicking Share + Add to home screen.');
         if (goog.isDef(localStorage)) {
            localStorage.setItem('_lime_visited', true);
         }

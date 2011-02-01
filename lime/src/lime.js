@@ -47,13 +47,15 @@ lime.updateDirtyObjects = function() {
     }
     dirtyObjectQueue[i] = [];
     }
-    if (dirtyObjectQueue.length != 2 && !dirtyObjectQueue[0].length && !dirtyObjectQueue[1].length)
+    /*
+    if (dirtyObjectQueue.length != 2 && !dirtyObjectQueue[0].length &&
+        !dirtyObjectQueue[1].length)
     console.log(dirtyObjectQueue);
     for (var i = 0; i < 2; i++) {
         for (var j = 0; i < dirtyObjectQueue[i].length; i++) {
 
        }
-   }
+   }*/
     //dirtyObjectQueue=dirtyObjectQueueNext;
     dirtyObjectQueueNext = [[], []];
 }
@@ -90,6 +92,10 @@ lime.AutoResize = {
     ALL: 63
 };
 
+/**
+* Enum for Transtion properties
+* @enum {number}
+*/
 lime.Transition = {
     POSITION: 1,
     SCALE: 2,
@@ -100,24 +106,4 @@ lime.Transition = {
 
 
 goog.style.installStyles(lime.css.css());
-
-/**
-(function(){
-    var scripts = document.getElementsByTagName('script'),
-        script = scripts[scripts.length-1],
-        src = script.getAttribute('src'),
-        parts = src.split('?'),func;
-    if(parts.length==2){
-        func = window[1];
-        if(typeof func=='function'){
-            delete window[parts[1]];
-            func();
-        }
-    }
-})();
-
-(function(){var a=document.getElementsByTagName("script");a=a[a.length-1].getAttribute("src").split("?");var b;if(a.length==2){b=window[1];if(typeof b=="function"){delete window[a[1]];b()}}})();
-
-*/
-
 
