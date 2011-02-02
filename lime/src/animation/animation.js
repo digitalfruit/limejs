@@ -303,7 +303,7 @@ lime.animation.getEasingFunction = function(p1x,p1y,p2x,p2y) {
 lime.animation.Easing = {
     EASE: lime.animation.getEasingFunction(0.25, 0.1, .25, 1),
     LINEAR: lime.animation.getEasingFunction(.21, .2, .51, .58),
-    EASEIN: lime.animation.getEasingFunction(.76, .1, 1, 1),
+    EASEIN: lime.animation.getEasingFunction(.81, .09, .97, .96),
     EASEOUT: lime.animation.getEasingFunction(0.13, 0.43, .4, .78),
     EASEINOUT: lime.animation.getEasingFunction(.42, 0, .58, 1)
 };
