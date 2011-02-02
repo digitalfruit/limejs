@@ -7,6 +7,7 @@ goog.require('lime.animation.Animation');
 /**
  * Animation for changing elements opacity value
  * @constructor
+ * @param {number} opacity New opacity value.
  * @extends lime.animation.Animation
  */
 lime.animation.FadeTo = function(opacity) {
@@ -17,8 +18,15 @@ lime.animation.FadeTo = function(opacity) {
 };
 goog.inherits(lime.animation.FadeTo, lime.animation.Animation);
 
+/**
+ * @inheritDoc
+ */
 lime.animation.FadeTo.prototype.scope = 'fade';
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#makeTargetProp
+ */
 lime.animation.FadeTo.prototype.makeTargetProp = function(target) {
     var op = target.getOpacity();
     if (this.useTransitions()) {
@@ -31,7 +39,11 @@ lime.animation.FadeTo.prototype.makeTargetProp = function(target) {
     return {startOpacity: op, delta: this.opacity_ - op };
 };
 
-lime.animation.FadeTo.prototype.update = function(t,target) {
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#update
+ */
+lime.animation.FadeTo.prototype.update = function(t, target) {
     if (this.status_ == 0) return;
     var prop = this.getTargetProp(target);
 
@@ -39,6 +51,10 @@ lime.animation.FadeTo.prototype.update = function(t,target) {
 
 };
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#clearTransition
+ */
 lime.animation.FadeTo.prototype.clearTransition = function(target) {
     if (this.useTransitions()) {
         target.clearTransition(lime.Transition.OPACITY);
@@ -46,6 +62,3 @@ lime.animation.FadeTo.prototype.clearTransition = function(target) {
     }
 };
 
-lime.animation.FadeTo.prototype.reverse = function() {
-    return (new lime.animation.FadeTo(this.opacity_)).setDuration(this.getDuration());
-};

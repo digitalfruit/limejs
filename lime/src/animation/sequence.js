@@ -8,12 +8,12 @@ goog.require('lime.animation.Animation');
 /**
  * Sequence of animations that are run after each other.
  * Also accepts more than two animations
- * @param {lime.animation.Animation} one
- * @param {lime.animation.Animation} two
+ * @param {lime.animation.Animation} one First animation.
+ * @param {lime.animation.Animation} two Second animation.
  * @constructor
  * @extends lime.animation.Animation
  */
-lime.animation.Sequence = function(one,two) {
+lime.animation.Sequence = function(one, two) {
 
     lime.animation.Animation.call(this);
 
@@ -36,6 +36,10 @@ lime.animation.Sequence = function(one,two) {
 };
 goog.inherits(lime.animation.Sequence, lime.animation.Animation);
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#initTarget
+ */
 lime.animation.Sequence.prototype.initTarget = function(target) {
     lime.animation.Animation.prototype.initTarget.call(this, target);
 
@@ -44,6 +48,10 @@ lime.animation.Sequence.prototype.initTarget = function(target) {
     this.last_ = -1;
 };
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#stop
+ */
 lime.animation.Sequence.prototype.stop = function() {
     if (this.last_ != -1) {
         this.actions[this.last_].stop(this.targets);
@@ -51,7 +59,11 @@ lime.animation.Sequence.prototype.stop = function() {
     lime.animation.Animation.prototype.stop.apply(this, arguments);
 };
 
-lime.animation.Sequence.prototype.update = function(t,target) {
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#update
+ */
+lime.animation.Sequence.prototype.update = function(t, target) {
     if (this.status_ == 0) return;
 
     var prop = this.getTargetProp(target);
@@ -71,7 +83,7 @@ lime.animation.Sequence.prototype.update = function(t,target) {
         else new_t = 1;
     }
 
-    if (this.last_ == -1 && found == 1)	{
+    if (this.last_ == -1 && found == 1) {
         this.actions[0].status_ = 1;
         //this.actions[0].initTarget(target);
         this.actions[0].update(1, target);
@@ -79,12 +91,12 @@ lime.animation.Sequence.prototype.update = function(t,target) {
     }
 
     if (this.last_ != found) {
-    	if (this.last_ != -1) {
-    	    this.actions[this.last_].update(1, target);
-    	    this.actions[this.last_].stop([target]);
-    	}
-    	this.actions[found].status_ = 1;
-    	//this.actions[found].initTarget(target);
+        if (this.last_ != -1) {
+            this.actions[this.last_].update(1, target);
+            this.actions[this.last_].stop([target]);
+        }
+        this.actions[found].status_ = 1;
+        //this.actions[found].initTarget(target);
     }
 
     this.actions[found].update(new_t, target);
@@ -92,6 +104,11 @@ lime.animation.Sequence.prototype.update = function(t,target) {
 
 };
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#reverse
+ */
 lime.animation.Sequence.prototype.reverse = function() {
-    return (new lime.animation.Sequence(this.actions[1].reverse(), this.actions[0].reverse()));
+    return (new lime.animation.Sequence(this.actions[1].reverse(),
+        this.actions[0].reverse()));
 };

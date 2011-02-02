@@ -18,6 +18,7 @@ lime.events.Event = function(dispatcher) {
  * interaction will be sent directly to handler without any search
  * @param {string|Array.<string>} type Event types to swallow.
  * @param {function(lime.events.Event)} handler Function to call on event.
+ * @param {boolean=} opt_deny_shared Deny further actions for same event.
  */
 lime.events.Event.prototype.swallow = function(type, handler, opt_deny_shared) {
     type = goog.isArray(type) ? type : [type];
@@ -41,7 +42,8 @@ lime.events.Event.prototype.release = function(opt_type) {
 
     var e = this;
     var s2 = goog.array.filter(s, function(swallow) {
-        if (!goog.isDef(e.targetObject) || (swallow[0] == e.targetObject && (!limit_type || goog.array.contains(type, swallow[1])))) {
+        if (!goog.isDef(e.targetObject) || (swallow[0] == e.targetObject &&
+            (!limit_type || goog.array.contains(type, swallow[1])))) {
            goog.events.unlisten(swallow[0], swallow[1], swallow[2]);
            return false;
         }
@@ -60,11 +62,18 @@ lime.events.Event.prototype.release = function(opt_type) {
  * Start dragging sequence from current event
  * @param {boolean} snapToCenter Drag from center or not.
  * @param {goog.math.Box} box Limited area where dragging is possible.
+ * @param {lime.Node=} opt_targetObject Different target object to drag.
+ * @return {lime.events.Drag} New Drag object.
  */
-lime.events.Event.prototype.startDrag = function(snapToCenter, box, opt_targetObject) {
+lime.events.Event.prototype.startDrag = function(snapToCenter, box,
+        opt_targetObject) {
     return new lime.events.Drag(this, snapToCenter, box, opt_targetObject);
 };
 
+/**
+ * Retunr new event with same parameters
+ * @return {lime.events.Event} event.
+ */
 lime.events.Event.prototype.clone = function() {
     var e = new lime.events.Event(this.dispatcher_);
     goog.object.extend(e, this);

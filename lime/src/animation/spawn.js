@@ -7,12 +7,12 @@ goog.require('lime.animation.Sequence');
 /**
  * Animations that are run parallel with each other.
  * Also accepts more than two animations
- * @param {lime.animation.Animation} one
- * @param {lime.animation.Animation} two
+ * @param {lime.animation.Animation} one First animation.
+ * @param {lime.animation.Animation} two Second animation.
  * @constructor
  * @extends lime.animation.Animation
  */
-lime.animation.Spawn = function(one,two) {
+lime.animation.Spawn = function(one, two) {
 
     lime.animation.Animation.call(this);
 
@@ -36,15 +36,21 @@ lime.animation.Spawn = function(one,two) {
     var delay = new lime.animation.Delay;
 
     if (d1 > d2) {
-        this.two = new lime.animation.Sequence(this.two, delay.setDuration(d1 - d2));
+        this.two = new lime.animation.Sequence(this.two,
+            delay.setDuration(d1 - d2));
     }
     else if (d1 < d2) {
-        this.one = new lime.animation.Sequence(this.one, delay.setDuration(d2 - d1));
+        this.one = new lime.animation.Sequence(this.one,
+            delay.setDuration(d2 - d1));
     }
 
 };
 goog.inherits(lime.animation.Spawn, lime.animation.Animation);
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#initTarget
+ */
 lime.animation.Spawn.prototype.initTarget = function(target) {
     lime.animation.Animation.prototype.initTarget.call(this, target);
 
@@ -52,13 +58,21 @@ lime.animation.Spawn.prototype.initTarget = function(target) {
     this.two.status_ = 1;
 };
 
-lime.animation.Spawn.prototype.update = function(t,target) {
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#update
+ */
+lime.animation.Spawn.prototype.update = function(t, target) {
     if (this.status_ == 0) return;
     var prop = this.getTargetProp(target);
     this.one.update(t, target);
     this.two.update(t, target);
 };
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#reverse
+ */
 lime.animation.Spawn.prototype.reverse = function() {
     return (new lime.animation.Spawn(this.one.reverse(), this.two.reverse()));
 };

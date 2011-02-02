@@ -14,17 +14,19 @@ lime.ui.Scroller = function() {
     //need default size for autoresize
     this.setSize(100, 100);
 
-    this.clipper = new lime.Sprite().setFill('#c00').setSize(100, 100).setAutoResize(lime.AutoResize.ALL);
-	this.appendChild(this.clipper);
-	this.setMask(this.clipper);
+    this.clipper = new lime.Sprite().setFill('#c00').setSize(100, 100).
+        setAutoResize(lime.AutoResize.ALL);
+    this.appendChild(this.clipper);
+    this.setMask(this.clipper);
 
-	this.moving_ = new lime.Layer();
-	lime.Node.prototype.appendChild.call(this, this.moving_);
+    this.moving_ = new lime.Layer();
+    lime.Node.prototype.appendChild.call(this, this.moving_);
 
-	goog.events.listen(this, ['mousedown', 'touchstart'], this.downHandler_, false, this);
+    goog.events.listen(this, ['mousedown', 'touchstart'],
+        this.downHandler_, false, this);
 
 
-  	this.setDirection(lime.ui.Scroller.Direction.HORIZONTAL);
+    this.setDirection(lime.ui.Scroller.Direction.HORIZONTAL);
 
 };
 goog.inherits(lime.ui.Scroller, lime.Sprite);
@@ -51,7 +53,7 @@ lime.ui.Scroller.OFFSET_LAG = .4;
 lime.ui.Scroller.FRICTION = .95;
 
 /**
- * Direction of the scroller.
+ * Directions of the scroller.
  * @enum number
  */
 lime.ui.Scroller.Direction = {
@@ -59,16 +61,28 @@ lime.ui.Scroller.Direction = {
   VERTICAL: 1
 };
 
+/**
+ * Returns the direction of the scroller (horizontal/vertical)
+ * @return {lime.ui.Scroller.Direction} Scroll direction.
+ */
 lime.ui.Scroller.prototype.getDirection = function() {
     return this.direction_;
 };
 
+/**
+ * Set the direction of the scroller (horizontal/vertical)
+ * @param {lime.ui.Scroller.Direction} direction Direction.
+ * @return {lime.ui.Scroller} object itself.
+ */
 lime.ui.Scroller.prototype.setDirection = function(direction) {
     this.direction_ = direction;
     return this;
 };
 
-/** @inheritDoc */
+/**
+ * @inheritDoc
+ * @see lime.Node#setAnchorPoint
+ */
 lime.ui.Scroller.prototype.setAnchorPoint = function() {
     if (this.clipper) {
         this.clipper.setAnchorPoint.apply(this.clipper, arguments);
@@ -76,19 +90,30 @@ lime.ui.Scroller.prototype.setAnchorPoint = function() {
     return lime.Node.prototype.setAnchorPoint.apply(this, arguments);
 };
 
-/** @inheritDoc */
-
+/**
+ * @inheritDoc
+ * @see lime.Node#appendChild
+ */
 lime.ui.Scroller.prototype.appendChild = function() {
-    if (this.moving_) return this.moving_.appendChild.apply(this.moving_, arguments);
+    if (this.moving_) return this.moving_.appendChild.apply(
+        this.moving_, arguments);
     return lime.Node.prototype.appendChild.apply(this, arguments);
 };
 
-/** @inheritDoc */
+/**
+ * @inheritDoc
+ * @see lime.Node#removeChild
+ */
 lime.ui.Scroller.prototype.removeChild = function() {
-    //if(this.moving_) return this.moving_.removeChild.apply(this.moving_,arguments);
+    if (this.moving_) return this.moving_.removeChild.apply(
+        this.moving_, arguments);
     return lime.Node.prototype.removeChild.apply(this, arguments);
 };
 
+/**
+ * Measure the contents of the scroller and set
+ * up high and low limits.
+ */
 lime.ui.Scroller.prototype.measureLimits = function() {
 
     var measure = this.moving_.measureContents();
@@ -115,7 +140,12 @@ lime.ui.Scroller.prototype.measureLimits = function() {
     }
 };
 
-lime.ui.Scroller.prototype.scrollTo = function(offset,opt_duration) {
+/**
+ * Scroll to specific offset in pixels
+ * @param {number} offset Offset in pixels.
+ * @param {number=} opt_duration Animation duration.
+ */
+lime.ui.Scroller.prototype.scrollTo = function(offset, opt_duration) {
     var pos = this.moving_.getPosition().clone();
     var duration = opt_duration || 0;
 
@@ -133,17 +163,23 @@ lime.ui.Scroller.prototype.scrollTo = function(offset,opt_duration) {
     }
 
     if (duration) {
-        this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).setDuration(duration)
-            .setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)).enableOptimizations());
+        this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).
+            setDuration(duration).enableOptimizations().
+            setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));
     }
     else this.moving_.setPosition(pos);
 };
 
+/**
+ * Handle down events
+ * @private
+ * @param {lime.events.Event} e Event.
+ */
 lime.ui.Scroller.prototype.downHandler_ = function(e) {
     if (this.ismove) return;
 
     e.position = this.localToNode(e.position, this.moving_);
-  	this.downx = e.position.x;
+    this.downx = e.position.x;
     this.downy = e.position.y;
 
     this.v = 0;
@@ -170,6 +206,11 @@ lime.ui.Scroller.prototype.downHandler_ = function(e) {
     this.event = e.clone();
 };
 
+/**
+ * Capture the scrolling velocity to get some throwing
+ * motion after release.
+ * @private
+ */
 lime.ui.Scroller.prototype.captureVelocity_ = function() {
     if (this.ismove) {
         this.v = (this.posvalue - this.oldvalue) * 1.05;
@@ -178,6 +219,9 @@ lime.ui.Scroller.prototype.captureVelocity_ = function() {
     this.v *= lime.ui.Scroller.FRICTION;
 };
 
+/**
+ * Cancel all current movement events.
+ */
 lime.ui.Scroller.prototype.cancelEvents = function() {
     if (this.event) {
         this.event.release();
@@ -185,6 +229,11 @@ lime.ui.Scroller.prototype.cancelEvents = function() {
     this.ismove = 0;
 };
 
+/**
+ * Handle move events.
+ * @private
+ * @param {lime.events.Event} e Event.
+ */
 lime.ui.Scroller.prototype.moveHandler_ = function(e) {
     var pos = e.position.clone(), dir = this.getDirection(), activeval;
     if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {
@@ -226,6 +275,11 @@ lime.ui.Scroller.prototype.moveHandler_ = function(e) {
 
 };
 
+/**
+ * Handle release(up) events.
+ * @private
+ * @param {lime.events.Event} e Event.
+ */
 lime.ui.Scroller.prototype.upHandler_ = function(e) {
     var pos = e.position.clone(), dir = this.getDirection(), activeval;
 
@@ -241,9 +295,12 @@ lime.ui.Scroller.prototype.upHandler_ = function(e) {
     }
 
     lime.scheduleManager.unschedule(this.captureVelocity_, this);
-    var k = Math.log(0.5 / Math.abs(this.v)) / Math.log(lime.ui.Scroller.FRICTION),
+    var k = Math.log(0.5 / Math.abs(this.v)) /
+            Math.log(lime.ui.Scroller.FRICTION),
         duration = k / 30,
-        endpos = (Math.abs(this.v) * (Math.pow(lime.ui.Scroller.FRICTION, k) - 1)) / (lime.ui.Scroller.FRICTION - 1) * (this.v > 0 ? 1 : -1);
+        endpos = (Math.abs(this.v) *
+            (Math.pow(lime.ui.Scroller.FRICTION, k) - 1)) /
+            (lime.ui.Scroller.FRICTION - 1) * (this.v > 0 ? 1 : -1);
 
     activeval += endpos;
     this.ismove = 0;
@@ -282,8 +339,9 @@ lime.ui.Scroller.prototype.upHandler_ = function(e) {
     }
 
     if (Math.abs(duration) < 10) {
-         this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).setDuration(duration)
-            .setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)).enableOptimizations());
+         this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).
+            setDuration(duration).enableOptimizations().
+            setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));
     }
 
 

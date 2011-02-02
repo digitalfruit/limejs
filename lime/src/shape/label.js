@@ -40,6 +40,10 @@ goog.inherits(lime.Label, lime.Sprite);
  */
 lime.Label.prototype.id = 'label';
 
+/**
+ * Default Font name for labels
+ * @type {string}
+ */
 lime.Label.defaultFont = 'Arial';
 
 /** @inheritDoc */
@@ -361,7 +365,8 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     var lh = this.getLineHeight();
 
     context.fillStyle = this.getFontColor();
-    context.font = this.getFontWeight() + ' ' + this.getFontSize() + 'px/' + lh + ' ' + this.getFontFamily();
+    context.font = this.getFontWeight() + ' ' + this.getFontSize() +
+        'px/' + lh + ' ' + this.getFontFamily();
     context.textAlign = align;
     context.textBaseline = 'top';
 
@@ -382,7 +387,15 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     context.restore();
 };
 
-lime.Label.installFont = function(name,fileurl,opt_format) {
+/**
+ * Helper function to install new font file so you can use
+ * the font name as font-family.
+ * @param {string} name Font name.
+ * @param {string} fileurl Path to font file.
+ * @param {string=} opt_format Font format.
+ */
+lime.Label.installFont = function(name, fileurl, opt_format) {
     var format = opt_format || 'truetype';
-    goog.style.installStyles('@font-face{font-family: "' + name + '";src: url(' + fileurl + ') format("' + format + '");})');
+    goog.style.installStyles('@font-face{font-family: "' + name +
+        '";src: url(' + fileurl + ') format("' + format + '");})');
 };

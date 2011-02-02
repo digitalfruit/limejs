@@ -25,7 +25,8 @@ lime.events.EventDispatcher.prototype.register = function(node, eventType) {
         //base element switch here because safari fires touchend on
         //dom tree changes otherwise
         goog.events.listen(eventType.substring(0, 5) == 'touch' ?
-            document : (eventType.substring(0, 3) == 'key' ? window : this.director.domElement.parentNode), eventType,
+            document : (eventType.substring(0, 3) == 'key' ?
+            window : this.director.domElement.parentNode), eventType,
             this, false, this);
     }
     else {

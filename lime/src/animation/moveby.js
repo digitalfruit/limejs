@@ -8,7 +8,11 @@ goog.require('lime.animation.Animation');
 /**
  * Move elemenet by offset
  * Also accepts two numbers (x and y)
+ * @example
+ * var moveleft = new lime.animation.MoveBy(100,0);
+ * sprite.runAction(moveleft);
  * @constructor
+ * @param {goog.math.Coordinate} delta Offset to move.
  * @extends lime.animation.Animation
  */
 lime.animation.MoveBy = function(delta) {
@@ -23,15 +27,26 @@ lime.animation.MoveBy = function(delta) {
 };
 goog.inherits(lime.animation.MoveBy, lime.animation.Animation);
 
+/** @inheritDoc */
 lime.animation.MoveBy.prototype.scope = 'move';
 
+/**
+ * Helper function that sets tha animation duration
+ * based on the size of the delta. 1 unit means 100px/sec.
+ * @param {number} speed Speed value.
+ * @return {lime.animation.MoveBy} Object itself.
+ */
 lime.animation.MoveBy.prototype.setSpeed = function(speed) {
     this.speed_ = speed;
-    this.setDuration(this.speed_ * goog.math.Coordinate.distance(this.delta_, new goog.math.Coordinate(0, 0)) / 100);
+    this.setDuration(this.speed_ * goog.math.Coordinate.distance(
+        this.delta_, new goog.math.Coordinate(0, 0)) / 100);
     return this;
 };
 
-
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#makeTargetProp
+ */
 lime.animation.MoveBy.prototype.makeTargetProp = function(target) {
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.POSITION,
@@ -42,7 +57,11 @@ lime.animation.MoveBy.prototype.makeTargetProp = function(target) {
     return {startpos: target.getPosition()};
 };
 
-lime.animation.MoveBy.prototype.update = function(t,target) {
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#update
+ */
+lime.animation.MoveBy.prototype.update = function(t, target) {
     if (this.status_ == 0) return;
     var prop = this.getTargetProp(target);
 
@@ -53,6 +72,10 @@ lime.animation.MoveBy.prototype.update = function(t,target) {
 
 };
 
+/**
+ * Clear previously set transition values.
+ * @param {lime.Node} target Target node.
+ */
 lime.animation.MoveBy.prototype.clearTransition = function(target) {
 
     if (this.useTransitions()) {
@@ -63,6 +86,10 @@ lime.animation.MoveBy.prototype.clearTransition = function(target) {
 
 };
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#reverse
+ */
 lime.animation.MoveBy.prototype.reverse = function() {
     var d = this.delta_.clone();
     d.x *= -1;

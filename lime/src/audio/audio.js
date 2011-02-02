@@ -8,7 +8,7 @@ goog.require('goog.events');
 /**
  * Audio stream object
  * @constructor
- * @param {string} filePath
+ * @param {string} filePath Path to audio file.
  */
 lime.audio.Audio = function(filePath) {
 
@@ -67,7 +67,7 @@ lime.audio.Audio.prototype.loadHandler_ = function() {
 
 /**
  * Returns true if audio file has been loaded
- * @return {boolean}
+ * @return {boolean} Audio has been loaded.
  */
 lime.audio.Audio.prototype.isLoaded = function() {
     return this.loaded_;
@@ -75,7 +75,7 @@ lime.audio.Audio.prototype.isLoaded = function() {
 
 /**
  * Returns true if audio file is playing
- * @return {boolean}
+ * @return {boolean} Audio is playing.
  */
 lime.audio.Audio.prototype.isPlaying = function() {
     return this.playing_;

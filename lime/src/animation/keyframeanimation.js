@@ -55,7 +55,6 @@ lime.animation.KeyframeAnimation = function() {
     /**
      * Delay in seconds between frames
      * @type {Number}
-     * @public
      */
     this.delay = 1 / 15;
 };
@@ -114,7 +113,9 @@ lime.animation.KeyframeAnimation.prototype.play = function() {
 };
 
 /**
- * @inheritDoc
+ * Iterate time for animation
+ * @private
+ * @param {number} dt Time difference since last run.
  */
 lime.animation.KeyframeAnimation.prototype.step_ = function(dt) {
     if (!this.framesLoaded_) return;

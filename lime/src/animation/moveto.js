@@ -9,6 +9,7 @@ goog.require('lime.animation.Animation');
  * Move element to specific position
  * Also accepts two numbers (x and y)
  * @constructor
+ * @param {goog.math.Coordinate} position New position value.
  * @extends lime.animation.Animation
  */
 lime.animation.MoveTo = function(position) {
@@ -22,20 +23,35 @@ lime.animation.MoveTo = function(position) {
 };
 goog.inherits(lime.animation.MoveTo, lime.animation.Animation);
 
+/**
+ * @inheritDoc
+ */
 lime.animation.MoveTo.prototype.scope = 'move';
 
+/**
+ * Helper function that sets tha animation duration
+ * based on the size of the delta. 1 unit means 100px/sec.
+ * Calculation is based on first target node.
+ * @param {number} speed Speed value.
+ * @return {lime.animation.MoveBy} Object itself.
+ */
 lime.animation.MoveTo.prototype.setSpeed = function(speed) {
     this.speed_ = speed;
     return this;
 };
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#makeTargetProp
+ */
 lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
     var start = target.getPosition();
     var delta = new goog.math.Coordinate(
         this.position_.x - start.x,
         this.position_.y - start.y);
     if (this.speed_) {
-        this.setDuration(this.speed_ * goog.math.Coordinate.distance(delta, new goog.math.Coordinate(0, 0)) / 100);
+        this.setDuration(this.speed_ * goog.math.Coordinate.distance(
+            delta, new goog.math.Coordinate(0, 0)) / 100);
     }
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.POSITION,
@@ -47,7 +63,11 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
     return {startpos: start, delta: delta};
 };
 
-lime.animation.MoveTo.prototype.update = function(t,target) {
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#update
+ */
+lime.animation.MoveTo.prototype.update = function(t, target) {
     if (this.status_ == 0) return;
     var prop = this.getTargetProp(target);
 
@@ -57,6 +77,10 @@ lime.animation.MoveTo.prototype.update = function(t,target) {
     );
 };
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#clearTransition
+ */
 lime.animation.MoveTo.prototype.clearTransition = function(target) {
 
     if (this.useTransitions()) {
@@ -66,6 +90,3 @@ lime.animation.MoveTo.prototype.clearTransition = function(target) {
 
 };
 
-lime.animation.MoveTo.prototype.reverse = function() {
-    return (new lime.animation.MoveTo(this.position_)).setDuration(this.getDuration());
-};

@@ -49,6 +49,9 @@ goog.inherits(lime.animation.Animation, goog.events.EventTarget);
  */
 lime.animation.Animation.prototype.scope = '';
 
+/** @typedef {Array.<string,number>} */
+lime.animation.EasingFunction;
+
 
 /**
  * Animation event types
@@ -77,10 +80,20 @@ lime.animation.Animation.prototype.getDuration = function() {
      return this;
  };
 
+/**
+ * Set easing function for current animation
+ * @param {lime.animation.EasingFunction} ease Easing function.
+ * @return {lime.animation.Animation} object itself.
+ */
 lime.animation.Animation.prototype.setEasing = function(ease) {
     this.ease = ease;
     return this;
 };
+
+/**
+ * Return current easing function
+ * @return {lime.animation.EasingFunction} Easing function.
+ */
 lime.animation.Animation.prototype.getEasing = function() {
     return this.ease;
 };
@@ -116,9 +129,9 @@ lime.animation.Animation.prototype.play = function() {
 };
 
 /**
- * Stop playing the animtion
+ * Stop playing the animstion
  */
-lime.animation.Animation.prototype.stop = function(opt_targets) {
+lime.animation.Animation.prototype.stop = function() {
     if (this.status_ != 0) {
         var targets = this.initTargets_;
         if (this.useTransitions() && this.clearTransition) {
@@ -180,6 +193,7 @@ lime.animation.Animation.prototype.getDirector = function() {
 /**
  * Iterate time for animation
  * @private
+ * @throws {WrongParam} If easing function is not correct
  * @param {number} dt Time difference since last run.
  */
 lime.animation.Animation.prototype.step_ = function(dt) {
@@ -210,8 +224,8 @@ lime.animation.Animation.prototype.step_ = function(dt) {
  * @return {boolean} Transitions are being used?
  */
 lime.animation.Animation.prototype.useTransitions = function() {
-    return this.duration_ > 0 && lime.style.isTransitionsSupported && this.optimizations_; //&&
-        //goog.userAgent.MOBILE;
+    return this.duration_ > 0 && lime.style.isTransitionsSupported &&
+        this.optimizations_; //&& goog.userAgent.MOBILE;
     // I see no boost on mac, only on ios
 };
 
@@ -233,6 +247,16 @@ lime.animation.Animation.prototype.enableOptimizations = function(opt_value) {
  * @param {lime.Node} target Target node to update.
  */
 lime.animation.Animation.prototype.update = goog.abstractMethod;
+
+
+/**
+ * Return new animation with reveresed parameters from original
+ * @throws {NotSupported} No reverese animation possible.
+ * @return {?lime.animation.Animation} New animation.
+ */
+lime.animation.Animation.prototype.reverse = function() {
+    throws('Reverseform not supported for this animation');
+};
 
 
 /**
@@ -278,28 +302,49 @@ lime.animation.actionManager.stopAll = function(target) {
     }
 };
 
-lime.animation.solveCubic_ = function(a,b,c,d) {
+/**
+ * Solve cubic function to find correct easing position
+ * @private
+ * @param {number} a Input A.
+ * @param {number} b Input B.
+ * @param {number} c Input C.
+ * @param {number} d Input D.
+ * @return {number} Result.
+ */
+lime.animation.solveCubic_ = function(a, b, c, d) {
     var Q, R, H = 2 * Math.pow(b, 3) - 9 * a * b * c + 27 * a * a * d;
-	Q = Math.sqrt(Math.pow(H, 2) - 4 * Math.pow(b * b - 3 * a * c, 3));
-	R = Math.pow(.5 * (Q + H), 1 / 3);
-	return -b / (3 * a) - R / (3 * a) - (b * b - 3 * a * c) / (3 * a * R);
+    Q = Math.sqrt(Math.pow(H, 2) - 4 * Math.pow(b * b - 3 * a * c, 3));
+    R = Math.pow(.5 * (Q + H), 1 / 3);
+    return -b / (3 * a) - R / (3 * a) - (b * b - 3 * a * c) / (3 * a * R);
 };
 
-lime.animation.getEasingFunction = function(p1x,p1y,p2x,p2y) {
+/**
+ * Return easing function from Bezier curce points
+ * @see http://www.w3.org/TR/css3-transitions/#transition-timing-function_tag
+ * @param {number} p1x Point one X axis value.
+ * @param {number} p1y Point one Y axis value.
+ * @param {number} p2x Point two X axis value.
+ * @param {number} p2y Point two Y axis value.
+ * @return {lime.animation.EasingFunction} Easing function.
+ */
+lime.animation.getEasingFunction = function(p1x, p1y, p2x, p2y) {
     var A = -3 * p1x + 3 * p2x - 1,
-		B = 3 * p1x - 6 * p2x + 3,
-		C = 3 * p2x - 3,
-		that = lime.animation;
+        B = 3 * p1x - 6 * p2x + 3,
+        C = 3 * p2x - 3,
+        that = lime.animation;
     return [function(t) {
-		var t = that.solveCubic_(A, B, C, 1 - t);
-		var y = p1y * 3 * t * t * (1 - t) + p2y * 3 * t * (1 - t) * (1 - t) + (1 - t) * (1 - t) * (1 - t);
-		return y;
+        var t = that.solveCubic_(A, B, C, 1 - t);
+        var y = p1y * 3 * t * t * (1 - t) + p2y * 3 * t * (1 - t) *
+            (1 - t) + (1 - t) * (1 - t) * (1 - t);
+        return y;
     },p1x, p1y, p2x, p2y];
 
 };
 
-// todo: This is not quite correct as the functions are bit different
-// Real solution would involve generic cubic-bezier function in JS
+/**
+ * Predefined Easing functions
+ * @enum {lime.animation.EasingFunction}
+ */
 lime.animation.Easing = {
     EASE: lime.animation.getEasingFunction(0.25, 0.1, .25, 1),
     LINEAR: lime.animation.getEasingFunction(.21, .2, .51, .58),

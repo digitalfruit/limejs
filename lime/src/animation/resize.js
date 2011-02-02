@@ -7,17 +7,14 @@ goog.require('lime.animation.Animation');
 
 /**
  * Resize element
- * @param {goog.math.Size} size
  * @constructor
+ * @param {goog.math.Size} size New element size.
  * @extends lime.animation.Animation
  */
-lime.animation.Resize = function(scale) {
+lime.animation.Resize = function(size) {
     lime.animation.Animation.call(this);
 
-    if (arguments.length == 1 && goog.isNumber(scale)) {
-        this.size_ = new goog.math.Size(scale, scale);
-    }
-    else if (arguments.length == 2) {
+    if (arguments.length == 2) {
         this.size_ = new goog.math.Size(arguments[0], arguments[1]);
     }
     else this.size_ = size;
@@ -26,8 +23,15 @@ lime.animation.Resize = function(scale) {
 };
 goog.inherits(lime.animation.Resize, lime.animation.Animation);
 
+/**
+ * @inheritDoc
+ */
 lime.animation.Resize.prototype.scope = 'size';
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#makeTargetProp
+ */
 lime.animation.Resize.prototype.makeTargetProp = function(target) {
     var size = target.getSize(),
         delta = new goog.math.Vec2(this.size_.width - size.width,
@@ -37,7 +41,11 @@ lime.animation.Resize.prototype.makeTargetProp = function(target) {
             delta: delta};
 };
 
-lime.animation.Resize.prototype.update = function(t,target) {
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#update
+ */
+lime.animation.Resize.prototype.update = function(t, target) {
     if (this.status_ == 0) return;
     var prop = this.getTargetProp(target);
 

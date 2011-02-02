@@ -8,7 +8,7 @@ goog.require('lime.animation.Animation');
 /**
  * Scale by a factor
  * Also accepts one or two numbers
- * @param {goog.math.Vec2} factor
+ * @param {goog.math.Vec2} factor Factor to scale.
  * @constructor
  * @extends lime.animation.Animation
  */
@@ -27,8 +27,15 @@ lime.animation.ScaleBy = function(factor) {
 };
 goog.inherits(lime.animation.ScaleBy, lime.animation.Animation);
 
+/**
+ * @inheritDoc
+ */
 lime.animation.ScaleBy.prototype.scope = 'scale';
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#makeTargetProp
+ */
 lime.animation.ScaleBy.prototype.makeTargetProp = function(target) {
     var scale = target.getScale(),
         delta = new goog.math.Vec2(scale.x * this.factor_.x - scale.x,
@@ -45,7 +52,11 @@ lime.animation.ScaleBy.prototype.makeTargetProp = function(target) {
             delta: delta};
 };
 
-lime.animation.ScaleBy.prototype.update = function(t,target) {
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#update
+ */
+lime.animation.ScaleBy.prototype.update = function(t, target) {
     if (this.status_ == 0) return;
     var prop = this.getTargetProp(target);
 
@@ -55,6 +66,10 @@ lime.animation.ScaleBy.prototype.update = function(t,target) {
     );
 };
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#clearTransition
+ */
 lime.animation.ScaleBy.prototype.clearTransition = function(target) {
     if (this.useTransitions()) {
         target.clearTransition(lime.Transition.SCALE);
@@ -62,6 +77,10 @@ lime.animation.ScaleBy.prototype.clearTransition = function(target) {
     }
 };
 
+/**
+ * @inheritDoc
+ * @see lime.animation.Animation#reverse
+ */
 lime.animation.ScaleBy.prototype.reverse = function() {
     var f = this.factor_.clone();
     f.x = 1 / f.x;

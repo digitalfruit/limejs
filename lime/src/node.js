@@ -76,7 +76,6 @@ goog.inherits(lime.Node, goog.events.EventTarget);
 
 /**
  * Supported renderers for Node
- * @const
  * @type {Array.<lime.Renderer>}
  */
 lime.Node.prototype.supportedRenderers = [
