@@ -255,7 +255,7 @@ lime.animation.Animation.prototype.update = goog.abstractMethod;
  * @return {?lime.animation.Animation} New animation.
  */
 lime.animation.Animation.prototype.reverse = function() {
-    throws('Reverseform not supported for this animation');
+    throw('Reverseform not supported for this animation');
 };
 
 
