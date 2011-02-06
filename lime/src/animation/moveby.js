@@ -38,8 +38,7 @@ lime.animation.MoveBy.prototype.scope = 'move';
  */
 lime.animation.MoveBy.prototype.setSpeed = function(speed) {
     this.speed_ = speed;
-    this.setDuration(this.speed_ * goog.math.Coordinate.distance(
-        this.delta_, new goog.math.Coordinate(0, 0)) / 100);
+    delete this.speedCalcDone_;
     return this;
 };
 
@@ -56,6 +55,19 @@ lime.animation.MoveBy.prototype.makeTargetProp = function(target) {
     }
     return {startpos: target.getPosition()};
 };
+
+/**
+ * Calculate animations duration based on its speed.
+ * @private
+ */
+lime.animation.MoveBy.prototype.calcDurationFromSpeed_ = function(){
+    if(!this.speed_) return;
+    
+    this.setDuration(this.speed_ * goog.math.Coordinate.distance(
+        this.delta_, new goog.math.Coordinate(0, 0)) / 100);
+            
+    this.speedCalcDone_ = 1;
+}
 
 /**
  * @inheritDoc

@@ -37,6 +37,7 @@ lime.animation.MoveTo.prototype.scope = 'move';
  */
 lime.animation.MoveTo.prototype.setSpeed = function(speed) {
     this.speed_ = speed;
+    delete speedCalcDone_;
     return this;
 };
 
@@ -49,10 +50,7 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
     var delta = new goog.math.Coordinate(
         this.position_.x - start.x,
         this.position_.y - start.y);
-    if (this.speed_) {
-        this.setDuration(this.speed_ * goog.math.Coordinate.distance(
-            delta, new goog.math.Coordinate(0, 0)) / 100);
-    }
+        
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.POSITION,
             this.position_,
@@ -62,6 +60,25 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
 
     return {startpos: start, delta: delta};
 };
+
+
+/**
+ * Calculate animations duration based on its speed.
+ * @private
+ */
+lime.animation.MoveTo.prototype.calcDurationFromSpeed_ = function(){
+    if(!this.speed_ || !this.targets.length) return;
+    
+    var start = this.targets[0].getPosition();
+    var delta = new goog.math.Coordinate(
+        this.position_.x - start.x,
+        this.position_.y - start.y);
+    
+    this.setDuration(this.speed_ * goog.math.Coordinate.distance(
+            delta, new goog.math.Coordinate(0, 0)) / 100);
+            console.log('calc')
+    this.speedCalcDone_ = 1;
+}
 
 /**
  * @inheritDoc

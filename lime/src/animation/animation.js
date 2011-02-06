@@ -180,6 +180,9 @@ lime.animation.Animation.prototype.initTarget = function(target) {
     //todo: check if all this status_ mess can be removed now
     this.status_ = 1;
     goog.array.insert(this.initTargets_, target);
+    if(this.speed_ && !this.speedCalcDone_ && this.calcDurationFromSpeed_){
+        this.calcDurationFromSpeed_();
+    }
 };
 
 /**
@@ -197,6 +200,10 @@ lime.animation.Animation.prototype.getDirector = function() {
  * @param {number} dt Time difference since last run.
  */
 lime.animation.Animation.prototype.step_ = function(dt) {
+    if(this.speed_ && !this.speedCalcDone_ && this.calcDurationFromSpeed_){
+        this.calcDurationFromSpeed_();
+    }
+    
     this.playTime_ += dt;
     var t = this.playTime_ / (this.duration_ * 1000);
     if (isNaN(t)) t = 1;
