@@ -38,7 +38,7 @@ lime.animation.MoveBy.prototype.scope = 'move';
  */
 lime.animation.MoveBy.prototype.setSpeed = function(speed) {
     this.speed_ = speed;
-    delete this.speedCalcDone_;
+    this.calcDurationFromSpeed_();
     return this;
 };
 
