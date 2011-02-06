@@ -47,6 +47,8 @@ rb.loadMenu = function() {
     var scene = new lime.Scene(),
 	    layer = new lime.Layer().setPosition(rb.WIDTH / 2, 0);
 
+	if(rb.isBrokenChrome()) layer.setRenderer(lime.Renderer.CANVAS);
+
 
 	var title = new lime.Sprite().setFill('assets/main_title.png').setPosition(0, 290);
 	title.qualityRenderer = true;
@@ -118,6 +120,11 @@ rb.makeButton = function(text) {
     var btn = new rb.Button(text).setSize(300, 90);
     return btn;
 };
+
+rb.isBrokenChrome = function(){
+   return (/Chrome\/9\.0\.597\.84/).test(goog.userAgent.getUserAgentString());
+}
+
 /*
 rb.makeButton = function(size){
 

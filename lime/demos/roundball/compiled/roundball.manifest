@@ -2,13 +2,26 @@ CACHE MANIFEST
 
 # If you use more files you need to manually list them here.
 # Don't remove next line
-# Updated on: 2011-01-11 13:14:23
+# Updated on: 2011-02-06 09:59:17
 
 roundball.js
 roundball.html
 assets/startup.jpg
 assets/startup_ipad.jpg
 assets/icon.png
+
+assets/ball_0.png
+assets/ball_1.png
+assets/ball_2.png
+assets/ball_3.png
+assets/ball_4.png
+assets/ball_5.png
+assets/helper1.jpg
+assets/helper2.jpg
+assets/lime.png
+assets/main_title.png
+assets/selection.png
+assets/shadow.png
 
 NETWORK:
 *

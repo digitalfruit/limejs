@@ -2,11 +2,17 @@
 
 <html manifest="roundball.manifest">
 <head>
-	<title>roundball</title>
+	<title>Roundball</title>
     <script type="text/javascript">
         document.write('<link rel="apple-touch-startup-image" href="assets/startup'+(navigator.platform=='iPad'?'_ipad':'')+'.jpg">');
     </script>
     <link rel="apple-touch-icon" href="assets/icon.png"/>
+	<style>
+	body {
+	background:-webkit-gradient(radial, 50% 50%, 10, 50% 50%, 850, from(#1eb1d8), to(#1b345e), color-stop(.4,#1c6aa1));
+	background: -moz-radial-gradient(center 45deg, circle farthest-side, #1eb1d8 0%, #1c6aa1 40%, #1b345e 100%);
+	}
+	</style>
 </head>
 <body>
    	<script type="text/javascript">
@@ -24,7 +30,7 @@
 				}
 				return cur;
 			};
-			
+
 			function loadJS(call){
 				var script = document.createElement('script');
 				script.setAttribute('type','text/javascript');
@@ -32,7 +38,7 @@
 					(getObjectByName(callback))();
 					call();
 				};
-				
+
 				script.setAttribute('src',name);
 				document.getElementsByTagName('head')[0].appendChild(script);
 			}
@@ -62,33 +68,32 @@
 				var close = function(){
 					if(started) return;
 					el.innerHTML = 'Starting';
-					console.log('close');
 					loadJS(function(){
 						el.parentNode.removeChild(el);
 					});
 					started=1;
 					clearTimeout(timeout);
 				};
-				
-				var timeout = setTimeout(function(){console.log('timeout');close()},6000);
+
+				var timeout = setTimeout(function(){close()},6000);
 
 				webappCache.addEventListener('checking', function(){
-					console.log('checking');
-					el.innerHTML = 'Initializing';  
+					//console.log('checking');
+					el.innerHTML = 'Initializing';
 					},false);
 
 				webappCache.addEventListener('cached', function(){
-					console.log('cached');
+					//console.log('cached');
 					close();
 				},false);
 
 				webappCache.addEventListener('noupdate', function(){
-					console.log('noupdate');
+					//console.log('noupdate');
 					close();
 				},false);
 
 				webappCache.addEventListener('updateready', function(){
-					console.log('updateready');
+					//console.log('updateready');
 					webappCache.swapCache();
 					close();
 				},false);
@@ -99,16 +104,16 @@
 
 				webappCache.addEventListener('progress', function(e){
 					console.log('progress '+e.loaded+'/'+e.total);
-					el.innerHTML = 'Loading '+e.loaded+'/'+e.total; 
+					el.innerHTML = 'Loading '+e.loaded+'/'+e.total;
 				},false);
 */
 				webappCache.addEventListener('obsolete', function(){
-					console.log('obsolete')
+					//console.log('obsolete')
 					close();
 				}, false);
 
 				webappCache.addEventListener('error', function(e){
-					console.log('error');
+					//console.log('error');
 					close();
 				}, false);
 			}

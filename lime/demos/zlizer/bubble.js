@@ -16,7 +16,7 @@ zlizer.Bubble = function(value) {
     this.GRAVITY = 5;
 
     this.setAnchorPoint(0, 0);
-    this.setScale(1.5);
+    this.setScale(1.2);
 
     //this.setRenderer(lime.Renderer.CANVAS);
 

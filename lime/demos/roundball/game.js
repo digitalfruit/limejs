@@ -18,6 +18,8 @@ rb.Game = function(size) {
 
     //make board
     this.board = new rb.Board(size, size, this).setPosition(25, 174);
+    
+    if(rb.isBrokenChrome()) this.board.setRenderer(lime.Renderer.CANVAS);
 
     // static background bubbles for baord. try dfkit.Renderer.CANVAS for this one as it is quite static
     var back = new lime.RoundedRect().setSize(690, 690).setAnchorPoint(0, 0).setPosition(17, 166).setRadius(30);

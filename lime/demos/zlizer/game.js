@@ -38,6 +38,7 @@ zlizer.Game = function(level) {
 
 
     this.layer = new lime.Layer();
+    if(zlizer.isBrokenChrome()) this.layer.setRenderer(lime.Renderer.CANVAS);
     this.appendChild(this.layer);
     this.layer.setMask(this.mask);
     this.layer.setOpacity(.5);

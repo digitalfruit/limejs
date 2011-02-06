@@ -2,11 +2,18 @@
 
 <html manifest="zlizer.manifest">
 <head>
-	<title>zlizer</title>
+	<title>Zlizer</title>
     <script type="text/javascript">
         document.write('<link rel="apple-touch-startup-image" href="assets/startup'+(navigator.platform=='iPad'?'_ipad':'')+'.jpg">');
     </script>
     <link rel="apple-touch-icon" href="assets/icon.png"/>
+	<style>
+	body {
+	background:-webkit-gradient(radial, 50% 50%, 10, 50% 50%, 850, from(#93d81e), to(#2f5c1b), color-stop(.6,#5ea71d));
+	background: -moz-radial-gradient(center 45deg, circle farthest-side, #93d81e 0%, #5ea71d 60%, #2f5c1b 100%);
+
+	}
+	</style>
 </head>
 <body>
    	<script type="text/javascript">
@@ -24,7 +31,7 @@
 				}
 				return cur;
 			};
-			
+
 			function loadJS(call){
 				var script = document.createElement('script');
 				script.setAttribute('type','text/javascript');
@@ -32,7 +39,7 @@
 					(getObjectByName(callback))();
 					call();
 				};
-				
+
 				script.setAttribute('src',name);
 				document.getElementsByTagName('head')[0].appendChild(script);
 			}
@@ -68,12 +75,12 @@
 					started=1;
 					clearTimeout(timeout);
 				};
-				
+
 				var timeout = setTimeout(function(){close()},6000);
 
 				webappCache.addEventListener('checking', function(){
 					//console.log('checking');
-					el.innerHTML = 'Initializing';  
+					el.innerHTML = 'Initializing';
 					},false);
 
 				webappCache.addEventListener('cached', function(){
@@ -98,7 +105,7 @@
 
 				webappCache.addEventListener('progress', function(e){
 					console.log('progress '+e.loaded+'/'+e.total);
-					el.innerHTML = 'Loading '+e.loaded+'/'+e.total; 
+					el.innerHTML = 'Loading '+e.loaded+'/'+e.total;
 				},false);
 */
 				webappCache.addEventListener('obsolete', function(){

@@ -33,6 +33,11 @@ zlizer.start = function() {
 
 };
 
+zlizer.isBrokenChrome = function(){
+   return (/Chrome\/9\.0\.597\.84/).test(goog.userAgent.getUserAgentString());
+}
+
+
 zlizer.loadMenuScene = function(opt_transition) {
     var scene = new lime.Scene();
     zlizer.director.replaceScene(scene, opt_transition ? lime.transitions.MoveInDown : undefined);
@@ -67,6 +72,9 @@ zlizer.loadMenuScene = function(opt_transition) {
     var levels = new lime.Layer().setPosition(0, 690);
     contents.appendChild(levels);
 
+    if(zlizer.isBrokenChrome()){
+           levels.setRenderer(lime.Renderer.CANVAS);
+       }
 
     var lbl_levels = new lime.Label().setText(('Pick level:').toUpperCase()).setFontSize(30).setAnchorPoint(.5, 0).setPosition(0, 0).setFontColor('#fff');
     levels.appendChild(lbl_levels);
