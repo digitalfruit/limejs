@@ -81,6 +81,6 @@ lime.fill.Image.prototype.setDOMStyle = function(domEl) {
     domEl.style[lime.style.getCSSproperty('BackgroundSize')] = '100%';
     domEl.style['backgroundRepeat'] = 'no-repeat';
     if (this.qualityRenderer)
-    domEl.style['imageRendering'] = 'optmizeQuality';
+    domEl.style['imageRendering'] = 'optimizeQuality';
 };
 

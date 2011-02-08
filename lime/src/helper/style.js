@@ -31,8 +31,9 @@ lime.style.tryProperty = function(name) {
  * @return {string} Actual valid property name.
  */
 lime.style.getCSSproperty = function(name) {
+    var name_lower = name.charAt(0).toLowerCase() + name.substr(1);
     return lime.style.tryProperty(name) ?
-        name : lime.style.tryProperty(prefix + name);
+        name : (lime.style.tryProperty(name_lower)  ? name_lower : lime.style.tryProperty(prefix + name));
 };
 
 /**
@@ -182,7 +183,10 @@ lime.style.setTransformOrigin = (function() {
 
 
 var stylename = lime.style.getCSSproperty('Transition');
-lime.style.isTransitionsSupported = !!stylename;
+lime.style.isTransitionsSupported = !!stylename && !goog.userAgent.OPERA;
+// Opera's CSS3 transitions seem to be unstable atm. No shorthand plus
+// doesn't work if the duration property has not been previously set inside
+// CSS style sheet @tonis
 
 var clearProp = function(str, prop) {
     if (!str.length) return str;

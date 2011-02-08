@@ -27,9 +27,13 @@ lime.fill.LinearGradient.prototype.id = 'lineargradient';
  * @inheritDoc
  */
 lime.fill.LinearGradient.prototype.initForSprite = function(sprite) {
-
     this.sprite_ = sprite;
     sprite.setDirty(lime.Dirty.CONTENT);
+    
+    // no CSS3 gradients in Opera yet
+    if(goog.userAgent.OPERA){
+        sprite.setRenderer(lime.Renderer.CANVAS);
+    }
 };
 
 /**
