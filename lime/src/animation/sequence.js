@@ -30,7 +30,7 @@ lime.animation.Sequence = function(one, two) {
         this.actions = act;
     }
 
-
+    this.setEasing(lime.animation.Easing.LINEAR);
     this.setDuration(this.actions[0].duration_ + this.actions[1].duration_);
 
 };
