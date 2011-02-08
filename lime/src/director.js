@@ -127,6 +127,10 @@ lime.Director = function(parentElement) {
 
 
     this.invalidateSize_();
+    
+    if(goog.DEBUG){
+        goog.events.listen(goog.global['window'],['keyup'],this.keyUpHandler_,false,this);
+    }
 
 };
 goog.inherits(lime.Director, lime.Node);
@@ -493,6 +497,24 @@ lime.Director.prototype.makeMobileWebAppCapable = function() {
 lime.Director.prototype.updateDomOffset_ = function() {
     this.domOffset = goog.style.getPageOffset(this.domElement.parentNode);
 };
+
+/**
+ * @private
+ */
+lime.Director.prototype.keyUpHandler_ = function(e){
+   if(e.altKey && String.fromCharCode(e.keyCode).toLowerCase()=='d'){
+       if(this.debugModeOn_){
+           goog.style.uninstallStyles(this.debugModeOn_);
+           this.debugModeOn_ = null;
+       }
+       else {
+           this.debugModeOn_ = goog.style.installStyles('.lime-scene div,.lime-scene img,'+
+            '.lime-scene canvas{border: 1px solid #c00;}');
+       }
+       e.stopPropagation();
+       e.preventDefault();
+   }
+}
 
 /**
  * @inheritDoc
