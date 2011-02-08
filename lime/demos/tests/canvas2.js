@@ -1,6 +1,4 @@
-
-// pg - "Pot Game"
-goog.provide('test.canvas');
+goog.provide('test.canvas2');
 
 
 goog.require('lime');

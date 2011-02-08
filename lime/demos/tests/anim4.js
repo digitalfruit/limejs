@@ -1,6 +1,4 @@
-
-// pg - "Pot Game"
-goog.provide('test.anim3');
+goog.provide('test.anim4');
 
 
 goog.require('lime');

@@ -1,5 +1,3 @@
-
-// pg - "Pot Game"
 goog.provide('test.anim3');
 
 
