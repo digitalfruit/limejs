@@ -112,8 +112,8 @@ lime.Renderer.DOM.drawSizePosition = function() {
     }
 
     var rotation = -this.getRotation();
-    if (this.transitionsActive_[lime.Transition.ROTATION]) {
-        rotation = this.transitionsActive_[lime.Transition.ROTATION];
+    if (goog.isDef(this.transitionsActive_[lime.Transition.ROTATION])) {
+        rotation = -this.transitionsActive_[lime.Transition.ROTATION];
     }
 
     transform.translate(px, py).scale(realScale.x, realScale.y).

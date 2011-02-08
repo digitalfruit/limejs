@@ -125,8 +125,8 @@ lime.Renderer.CANVAS.drawCanvas = function() {
         if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
 
             var rotation = -this.getRotation();
-            if (this.transitionsActive_[lime.Transition.ROTATION]) {
-                rotation = this.transitionsActive_[lime.Transition.ROTATION];
+            if (goog.isDef(this.transitionsActive_[lime.Transition.ROTATION])) {
+                rotation = -this.transitionsActive_[lime.Transition.ROTATION];
             }
 
             lime.style.setTransform(this.domElement,

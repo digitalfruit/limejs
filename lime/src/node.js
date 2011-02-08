@@ -328,7 +328,7 @@ lime.Node.prototype.setAnchorPoint = function(value) {
  * @return {number} Rotation angle.
  */
 lime.Node.prototype.getRotation = function() {
-    return (this.rotation = this.rotation_ % 360);
+    return (this.rotation_ = this.rotation_ % 360);
 };
 
 /**
