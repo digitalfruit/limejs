@@ -161,7 +161,12 @@ lime.Renderer.CANVAS.drawCanvas = function() {
 * Update nodes dirty values and call draw after
 * @this {lime.Node}
 */
-lime.Renderer.CANVAS.update = function() {};
+lime.Renderer.CANVAS.update = function() {
+    if (this.isMask == 1 && this.getDirty()) {
+           this.setDirty(0);
+           lime.Renderer.DOM.updateMask.call(this);
+     }
+};
 
 
 /**
@@ -181,6 +186,7 @@ lime.Renderer.CANVAS.drawCanvasObject = function(context) {
         }
     }
 
+    // if element is mask the only update mask prop and return
     if (this.isMask == 1 && this.getDirty()) {
         this.setDirty(0);
         lime.Renderer.DOM.updateMask.call(this);
@@ -196,7 +202,7 @@ lime.Renderer.CANVAS.drawCanvasObject = function(context) {
     }
 
     if (this.activeMask_ && this.activeMask_.mPos) {
-        var m = this.activeMask_;
+        var m = this.activeMask_, scale = this.scale_;
         context.save();
         context.save();
         context.translate(m.mPos.x, m.mPos.y);
@@ -206,9 +212,9 @@ lime.Renderer.CANVAS.drawCanvasObject = function(context) {
         }
         context.beginPath();
         context.moveTo(0, 0);
-        context.lineTo(m.mWidth, 0);
-        context.lineTo(m.mWidth, m.mHeight);
-        context.lineTo(0, m.mHeight);
+        context.lineTo(m.mWidth/scale.x, 0);
+        context.lineTo(m.mWidth/scale.x, m.mHeight/scale.y);
+        context.lineTo(0, m.mHeight/scale.y);
         context.closePath();
         context.restore();
         context.clip();
