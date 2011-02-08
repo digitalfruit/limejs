@@ -745,10 +745,10 @@ lime.Node.prototype.update = function(opt_pass) {
                     lime.style.clearTransition(this.continerElement, property);
                 }
             }
+            var only_predraw = 0;
             for (i in this.transitionsAdd_) {
                 var value = this.transitionsAdd_[i];
-                var property = lime.Node.getPropertyForTransition(i);
-
+                
                 if (!value[3]) {
                     value[3] = 1;
                  //todo: combine into one - only one continue
@@ -756,27 +756,33 @@ lime.Node.prototype.update = function(opt_pass) {
                  if (i == lime.Transition.POSITION &&
                     this.positionDrawn_ != this.position_) {
                      this.setDirty(lime.Dirty.POSITION, 0, true);
-                     continue;
+                     only_predraw = 1;
                  }
 
                 if (i == lime.Transition.SCALE &&
                     this.scaleDrawn_ != this.scale_) {
                     this.setDirty(lime.Dirty.SCALE, 0, true);
-                    continue;
+                    only_predraw = 1;
                 }
 
                 if (i == lime.Transition.OPACITY &&
                     this.opacityDrawn_ != this.opacity_) {
                     this.setDirty(lime.Dirty.ALPHA, 0, true);
-                    continue;
+                    only_predraw = 1;
                 }
                 if (i == lime.Transition.ROTATION &&
                     this.rotationDrawn_ != this.rotation_) {
                     this.setDirty(lime.Dirty.ROTATION, 0, true);
-                    continue;
+                    only_predraw = 1;
                 }
 
                 }
+            }
+            if(!only_predraw)
+            for (i in this.transitionsAdd_) {
+                value = this.transitionsAdd_[i];
+                var property = lime.Node.getPropertyForTransition(i);
+                
                 this.transitionsActive_[i] = value[0];
                 lime.style.setTransition(this.domElement,
                     property, value[1], value[2]);
