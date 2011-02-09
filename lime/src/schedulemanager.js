@@ -1,6 +1,7 @@
 goog.provide('lime.scheduleManager');
 
 goog.require('goog.array');
+goog.require('goog.userAgent');
 goog.require('lime');
 
 
@@ -94,6 +95,14 @@ lime.scheduleManager.Task.prototype.step_ = function(dt) {
 lime.scheduleManager.taskStack_.push(new lime.scheduleManager.Task(0));
 
 /**
+ * Whether to use requestAnimationFrame instead of timer events
+ * Exposed here so it could be disabled if needed.
+ * @type {boolean}
+ */
+lime.scheduleManager.USE_ANIMATION_FRAME = goog.global['mozRequestAnimationFrame'] ||
+    goog.global['webkitRequestAnimationFrame'];
+
+/**
  * Returns maximum fire rate in ms. If you need FPS then use 1000/x
  * @this {lime.scheduleManager}
  * @return {number} Display rate.
@@ -106,6 +115,8 @@ lime.scheduleManager.getDisplayRate = function() {
 /**
  * Sets maximum fire rate for the scheduler in ms.
  * If you have FPS then send 1000/x
+ * Note that if animation frame methods are used browser chooses
+ * max display rate and this value has no effect.
  * @this {lime.scheduleManager}
  * @param {number} value New display rate.
  */
@@ -173,12 +184,29 @@ lime.scheduleManager.activate_ = function() {
     // Todo: Firefox 4beta has a neat API window.mozRequestAnimationFrame()
     // This could possibly do better job in this case (but will ruin mockClock)
     // http://weblogs.mozillazine.org/roc/archives/2010/08/mozrequestanima.html
-
-    this.lastRunTime_ = (new Date()).getTime();
-    this.intervalID_ = setInterval(goog.bind(this.step_, this),
-        this.getDisplayRate());
+    
+    this.lastRunTime_ = goog.now();
+    
+    if(lime.scheduleManager.USE_ANIMATION_FRAME){
+        // mozilla
+        if(window.mozRequestAnimationFrame){
+            window.mozRequestAnimationFrame();
+            this.beforePaintHandlerBinded_ = goog.bind(this.beforePaintHandler_,this);
+            window.addEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
+        }
+        else { // webkit
+            this.animationFrameHandlerBinded_ = goog.bind(this.animationFrameHandler_,this);
+            window.webkitRequestAnimationFrame(this.animationFrameHandlerBinded_);
+        }
+    }
+    else {
+        this.intervalID_ = setInterval(goog.bind(this.stepTimer_, this),
+            this.getDisplayRate());
+    }
     this.active_ = true;
 };
+
+
 
 /**
  * Stop interval timer functions
@@ -187,27 +215,70 @@ lime.scheduleManager.activate_ = function() {
  */
 lime.scheduleManager.disable_ = function() {
     if (!this.active_) return;
-
-    clearInterval(this.intervalID_);
+    
+    if(lime.scheduleManager.USE_ANIMATION_FRAME){
+        // mozilla
+        if(window.mozRequestAnimationFrame){
+            window.removeEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
+        }
+        else { //webkit
+            window.webkitCancelRequestAnimationFrame(this.animationFrameHandlerBinded_);
+        }
+    }
+    else {
+        clearInterval(this.intervalID_);
+    }
     this.active_ = false;
 };
 
 /**
- * Main step function that delegates to other objects waiting
+ * Webkit implemtation of requestAnimationFrame handler.
+ * @private
+ */
+lime.scheduleManager.animationFrameHandler_ = function(time){
+    var delta = time - this.lastRunTime_;
+    this.dispatch_(delta);
+    this.lastRunTime_ = time;
+    window.webkitRequestAnimationFrame(this.animationFrameHandlerBinded_);
+}
+
+/**
+ * Mozilla implemtation of requestAnimationFrame handler.
+ * @private
+ */
+lime.scheduleManager.beforePaintHandler_ = function(event){
+    var delta = event.timeStamp - this.lastRunTime_;
+    this.dispatch_(delta);
+    this.lastRunTime_ = event.timeStamp;
+    window.mozRequestAnimationFrame();
+}
+
+/**
+ * Timer events step function that delegates to other objects waiting
  * @this {lime.scheduleManager}
  * @private
  */
-lime.scheduleManager.step_ = function() {
+lime.scheduleManager.stepTimer_ = function() {
     var t;
     var curTime = goog.now();
     var delta = curTime - this.lastRunTime_;
     if (delta < 0) delta = 1;
+    this.dispatch_(delta);
+    this.lastRunTime_ = curTime;
+};
+
+/**
+ * Call all scheduled tasks
+ * @this {lime.scheduleManager}
+ * @param {number} delta Milliseconds since last run.
+ * @private
+ */
+lime.scheduleManager.dispatch_ = function(delta){
     var i = this.taskStack_.length;
     while (--i >= 0) {
         this.taskStack_[i].step_(delta);
     }
-    this.lastRunTime_ = curTime;
-};
+}
 
 /**
  * Change director's activity. Used for pausing updates when director is paused
