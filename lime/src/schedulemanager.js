@@ -181,9 +181,6 @@ lime.scheduleManager.unschedule = function(f, context) {
  */
 lime.scheduleManager.activate_ = function() {
     if (this.active_) return;
-    // Todo: Firefox 4beta has a neat API window.mozRequestAnimationFrame()
-    // This could possibly do better job in this case (but will ruin mockClock)
-    // http://weblogs.mozillazine.org/roc/archives/2010/08/mozrequestanima.html
     
     this.lastRunTime_ = goog.now();
     
