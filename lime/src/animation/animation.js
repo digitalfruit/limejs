@@ -206,7 +206,7 @@ lime.animation.Animation.prototype.step_ = function(dt) {
     }
     if(this.firstFrame_){
         delete this.firstFrame_;
-        dt = 0.001;
+        dt = 1;
     }
     
     this.playTime_ += dt;
