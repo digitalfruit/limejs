@@ -151,7 +151,7 @@ def update():
     opt = ' '.join(map(lambda x: '--root_with_prefix="'+os.path.join(basedir,x.rstrip())+'/ ../../../'+x.rstrip()+'/"',paths))
 
     call = os.path.join(closure_dir,'closure/bin/build/depswriter.py')+' --root_with_prefix="'+\
-        closure_dir+'/ ../../" '+opt+' > '+closure_deps_file
+        closure_dir+'/ ../../" '+opt+' --output_file="'+closure_deps_file+'"'
         
     print (call)
     
@@ -231,7 +231,7 @@ def build(name,options):
     if options.output:
         if options.output[-3:] == '.js':
             outname = options.output[:-3]
-        call+=" > "+outname+'.js'
+        call+=' --output_file="'+outname+'.js"'
         if not exists(os.path.dirname(outname)):
             os.makedirs(os.path.dirname(outname))
         
