@@ -87,7 +87,7 @@ lime.Renderer.CANVAS.drawCanvas = function() {
         var realScale = this.getScale().clone();
         if (this.transitionsActive_[lime.Transition.SCALE]) {
             realScale = this.transitionsActive_[lime.Transition.SCALE];
-            this.redraw_ = 1;
+            //this.redraw_ = 1;
         }
         if (pxsize.width != 0) {
             realScale.scale(bsize.width * ownquality / pxsize.width);
@@ -109,7 +109,7 @@ lime.Renderer.CANVAS.drawCanvas = function() {
 
         if (this.transitionsActive_[lime.Transition.POSITION]) {
             pos = this.transitionsActive_[lime.Transition.POSITION];
-            this.redraw_ = 1;
+            //this.redraw_ = 1;
         }
 
         pos.x *= ownquality;

@@ -124,6 +124,7 @@ lime.animation.Animation.prototype.removeTarget = function(target) {
 lime.animation.Animation.prototype.play = function() {
     this.playTime_ = 0;
     this.status_ = 1;
+    this.firstFrame_ = 1;
     lime.scheduleManager.schedule(this.step_, this);
     this.dispatchEvent({type: lime.animation.Event.START});
 };
@@ -203,18 +204,22 @@ lime.animation.Animation.prototype.step_ = function(dt) {
     if(this.speed_ && !this.speedCalcDone_ && this.calcDurationFromSpeed_){
         this.calcDurationFromSpeed_();
     }
+    if(this.firstFrame_){
+        delete this.firstFrame_;
+        dt = 0.001;
+    }
     
     this.playTime_ += dt;
     var t = this.playTime_ / (this.duration_ * 1000);
     if (isNaN(t)) t = 1;
-    if (t > 1) t = 1;
-    var t_orig = t;
-    var t = this.getEasing()[0](t);
-    if (isNaN(t)) {
-        throw ('Cubic equations with 3 roots not allowed atm.');
-        //t = t_orig;
+    if (t >= 1) t = 1;
+    else {
+        t = this.getEasing()[0](t);
+        if (isNaN(t)) {
+            throw ('Cubic equations with 3 roots not allowed atm.');
+            //t = t_orig;
+        }
     }
-    if (t_orig == 1) t = 1;
     var i = this.targets.length;
     while (--i >= 0) {
         this.update(t, this.targets[i]);

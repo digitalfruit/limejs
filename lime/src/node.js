@@ -718,9 +718,92 @@ lime.Node.prototype.update = function(opt_pass) {
    var pass = opt_pass || 0;
 
    var uid = goog.getUid(this);
-    if (this.dirty_ & lime.Dirty.LAYOUT) {
-        this.updateLayout();
+   if (this.dirty_ & lime.Dirty.LAYOUT) {
+       this.updateLayout();
+   }
+    
+   var do_draw = this.renderer.getType() == lime.Renderer.DOM || pass;
+
+    if (do_draw) {
+        
+        //clear transitions in the queue
+        for (var i in this.transitionsClear_) {
+            delete this.transitionsActive_[i];
+            delete this.transitionsActiveSet_[i];
+            property = lime.Node.getPropertyForTransition(i);
+            lime.style.clearTransition(this.domElement, property);
+            if (this.domElement != this.containerElement) {
+                lime.style.clearTransition(this.continerElement, property);
+            }
+        }
+        
+        // predraw is a check that elements are correctly drawn before the
+        // transition. if not then transition is started in the next frame not now.
+        var only_predraw = 0;
+        for (i in this.transitionsAdd_) {
+            var value = this.transitionsAdd_[i];
+            
+            // 3rd is an "already_activated" flag
+            if (!value[3]) {
+                value[3] = 1;
+                
+            if (i == lime.Transition.POSITION &&
+                this.positionDrawn_ != this.position_) {
+                 this.setDirty(lime.Dirty.POSITION, 0, true);
+                 only_predraw = 1;
+            }
+
+            if (i == lime.Transition.SCALE &&
+                this.scaleDrawn_ != this.scale_) {
+                this.setDirty(lime.Dirty.SCALE, 0, true);
+                only_predraw = 1;
+            }
+
+            if (i == lime.Transition.OPACITY &&
+                this.opacityDrawn_ != this.opacity_) {
+                this.setDirty(lime.Dirty.ALPHA, 0, true);
+                only_predraw = 1;
+            }
+            if (i == lime.Transition.ROTATION &&
+                this.rotationDrawn_ != this.rotation_) {
+                this.setDirty(lime.Dirty.ROTATION, 0, true);
+                only_predraw = 1;
+            }
+
+            }
+        }
+        
+        // activate the transitions
+        if(!only_predraw)
+        for (i in this.transitionsAdd_) {
+            value = this.transitionsAdd_[i];
+            var property = lime.Node.getPropertyForTransition(i);
+            
+            this.transitionsActive_[i] = value[0];
+            lime.style.setTransition(this.domElement,
+                property, value[1], value[2]);
+
+            if (this.domElement != this.containerElement &&
+                property == lime.style.transformProperty) {
+
+                lime.style.setTransition(this.containerElement,
+                    property, value[1], value[2]);
+
+            }
+            delete this.transitionsAdd_[i];
+        }
+
+        // cache last drawn values to for predraw check
+        this.positionDrawn_ = this.position_;
+        this.scaleDrawn_ = this.scale_;
+        this.opacityDrawn_ = this.opacity_;
+        this.rotationDrawn_ = this.rotation_;
+
+
+        this.transitionsClear_ = {};
+
     }
+
 
     if (pass) {
         this.renderer.drawCanvas.call(this);
@@ -734,92 +817,21 @@ lime.Node.prototype.update = function(opt_pass) {
             }
             lime.setObjectDirty(this.getDeepestParentWithDom(), 1);
         }
-
-        if (this.domElement) {
-            for (var i in this.transitionsClear_) {
-                delete this.transitionsActive_[i];
-                delete this.transitionsActiveSet_[i];
-                property = lime.Node.getPropertyForTransition(i);
-                lime.style.clearTransition(this.domElement, property);
-                if (this.domElement != this.containerElement) {
-                    lime.style.clearTransition(this.continerElement, property);
-                }
-            }
-            var only_predraw = 0;
-            for (i in this.transitionsAdd_) {
-                var value = this.transitionsAdd_[i];
-                
-                if (!value[3]) {
-                    value[3] = 1;
-                 //todo: combine into one - only one continue
-                 //      for every draw offset
-                 if (i == lime.Transition.POSITION &&
-                    this.positionDrawn_ != this.position_) {
-                     this.setDirty(lime.Dirty.POSITION, 0, true);
-                     only_predraw = 1;
-                 }
-
-                if (i == lime.Transition.SCALE &&
-                    this.scaleDrawn_ != this.scale_) {
-                    this.setDirty(lime.Dirty.SCALE, 0, true);
-                    only_predraw = 1;
-                }
-
-                if (i == lime.Transition.OPACITY &&
-                    this.opacityDrawn_ != this.opacity_) {
-                    this.setDirty(lime.Dirty.ALPHA, 0, true);
-                    only_predraw = 1;
-                }
-                if (i == lime.Transition.ROTATION &&
-                    this.rotationDrawn_ != this.rotation_) {
-                    this.setDirty(lime.Dirty.ROTATION, 0, true);
-                    only_predraw = 1;
-                }
-
-                }
-            }
-            if(!only_predraw)
-            for (i in this.transitionsAdd_) {
-                value = this.transitionsAdd_[i];
-                var property = lime.Node.getPropertyForTransition(i);
-                
-                this.transitionsActive_[i] = value[0];
-                lime.style.setTransition(this.domElement,
-                    property, value[1], value[2]);
-
-                if (this.domElement != this.containerElement &&
-                    property == lime.style.transformProperty) {
-
-                    lime.style.setTransition(this.containerElement,
-                        property, value[1], value[2]);
-
-                }
-                delete this.transitionsAdd_[i];
-            }
-
-
-
-
-            this.positionDrawn_ = this.position_;
-            this.scaleDrawn_ = this.scale_;
-            this.opacityDrawn_ = this.opacity_;
-            this.rotationDrawn_ = this.rotation_;
-
-
-            this.transitionsClear_ = {};
-
-        }
-
+        
+        // dom draw happens here
         this.renderer.update.call(this);
 
-         for (i in this.transitionsActive_) {
-                if (this.transitionsActive_[i]) {
-                    this.transitionsActiveSet_[i] = true;
-                }
-            }
-
+    }
+    
+    // set flags that transitions have been draw.
+    if(do_draw)
+    for (i in this.transitionsActive_) {
+        if (this.transitionsActive_[i]) {
+            this.transitionsActiveSet_[i] = true;
+        }
     }
 
+    //clear dirty
     this.setDirty(0, pass);
 
 };
