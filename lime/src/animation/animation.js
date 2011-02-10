@@ -314,21 +314,39 @@ lime.animation.actionManager.stopAll = function(target) {
     }
 };
 
-/**
- * Solve cubic function to find correct easing position
- * @private
- * @param {number} a Input A.
- * @param {number} b Input B.
- * @param {number} c Input C.
- * @param {number} d Input D.
- * @return {number} Result.
- */
-lime.animation.solveCubic_ = function(a, b, c, d) {
-    var Q, R, H = 2 * Math.pow(b, 3) - 9 * a * b * c + 27 * a * a * d;
-    Q = Math.sqrt(Math.pow(H, 2) - 4 * Math.pow(b * b - 3 * a * c, 3));
-    R = Math.pow(.5 * (Q + H), 1 / 3);
-    return -b / (3 * a) - R / (3 * a) - (b * b - 3 * a * c) / (3 * a * R);
-};
+
+(function(){
+    
+    // www.netzgesta.de/dev/cubic-bezier-timing-function.html
+    // currently used function to determine time
+    // 1:1 conversion to js from webkit source files
+    // UnitBezier.h, WebCore_animation_AnimationBase.cpp
+    var ax=0,bx=0,cx=0,ay=0,by=0,cy=0;
+	// `ax t^3 + bx t^2 + cx t' expanded using Horner's rule.
+    function sampleCurveX(t) {return ((ax*t+bx)*t+cx)*t;};
+    function sampleCurveY(t) {return ((ay*t+by)*t+cy)*t;};
+    function sampleCurveDerivativeX(t) {return (3.0*ax*t+2.0*bx)*t+cx;};
+	// The epsilon value to pass given that the animation is going to run over |dur| seconds. The longer the
+	// animation, the more precision is needed in the timing function result to avoid ugly discontinuities.
+	function solveEpsilon(duration) {return 1.0/(200.0*duration);};
+    function solve(x,epsilon) {return sampleCurveY(solveCurveX(x,epsilon));};
+	// Given an x value, find a parametric value it came from.
+	function fabs(n) {if(n>=0) {return n;}else {return 0-n;}}; 
+    function solveCurveX(x,epsilon) {var t0,t1,t2,x2,d2,i;
+        // First try a few iterations of Newton's method -- normally very fast.
+        for(t2=x, i=0; i<8; i++) {x2=sampleCurveX(t2)-x; if(fabs(x2)<epsilon) {return t2;} d2=sampleCurveDerivativeX(t2); if(fabs(d2)<1e-6) {break;} t2=t2-x2/d2;}
+        // Fall back to the bisection method for reliability.
+        t0=0.0; t1=1.0; t2=x; if(t2<t0) {return t0;} if(t2>t1) {return t1;}
+        while(t0<t1) {x2=sampleCurveX(t2); if(fabs(x2-x)<epsilon) {return t2;} if(x>x2) {t0=t2;}else {t1=t2;} t2=(t1-t0)*.5+t0;}
+        return t2; // Failure.
+    };
+    function CubicBezierAtTime(t,p1x,p1y,p2x,p2y,duration) {
+		// Calculate the polynomial coefficients, implicit first and last control points are (0,0) and (1,1).
+		cx=3.0*p1x; bx=3.0*(p2x-p1x)-cx; ax=1.0-cx-bx; cy=3.0*p1y; by=3.0*(p2y-p1y)-cy; ay=1.0-cy-by;
+		// Convert from input time to parametric value in curve, then from that to output time.
+    	return solve(t, solveEpsilon(duration));
+	};
+ 
 
 /**
  * Return easing function from Bezier curce points
@@ -340,28 +358,29 @@ lime.animation.solveCubic_ = function(a, b, c, d) {
  * @return {lime.animation.EasingFunction} Easing function.
  */
 lime.animation.getEasingFunction = function(p1x, p1y, p2x, p2y) {
-    var A = -3 * p1x + 3 * p2x - 1,
-        B = 3 * p1x - 6 * p2x + 3,
-        C = 3 * p2x - 3,
-        that = lime.animation;
+    var that = lime.animation;
     return [function(t) {
-        var t = that.solveCubic_(A, B, C, 1 - t);
-        var y = p1y * 3 * t * t * (1 - t) + p2y * 3 * t * (1 - t) *
-            (1 - t) + (1 - t) * (1 - t) * (1 - t);
-        return y;
+        return CubicBezierAtTime(t,p1x,p1y,p2x,p2y,100);
     },p1x, p1y, p2x, p2y];
 
 };
+
+    
+    
+})();
+
+
+	
 
 /**
  * Predefined Easing functions
  * @enum {lime.animation.EasingFunction}
  */
 lime.animation.Easing = {
-    EASE: lime.animation.getEasingFunction(0.25, 0.1, .25, 1),
-    LINEAR: lime.animation.getEasingFunction(.21, .2, .51, .58),
-    EASEIN: lime.animation.getEasingFunction(.81, .09, .97, .96),
-    EASEOUT: lime.animation.getEasingFunction(0.13, 0.43, .4, .78),
+    EASE: lime.animation.getEasingFunction(.25, .1, .25, 1),
+    LINEAR: lime.animation.getEasingFunction(0, 0, 1, 1),
+    EASEIN: lime.animation.getEasingFunction(.42, 0, 1, 1),
+    EASEOUT: lime.animation.getEasingFunction(0, 0, .58, 1),
     EASEINOUT: lime.animation.getEasingFunction(.42, 0, .58, 1)
 };
 
