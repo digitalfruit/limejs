@@ -76,7 +76,6 @@ lime.animation.MoveTo.prototype.calcDurationFromSpeed_ = function(){
     
     this.setDuration(this.speed_ * goog.math.Coordinate.distance(
             delta, new goog.math.Coordinate(0, 0)) / 100);
-            console.log('calc')
     this.speedCalcDone_ = 1;
 }
 
