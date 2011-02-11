@@ -280,7 +280,7 @@ lime.Renderer.DOM.addMask = function() {
         this.rootElement = goog.dom.createDom('div');
         this.rootElement.style.cssText = 'position:absolute;overflow:hidden;';
         //todo: combine into css class
-
+        lime.style.setTransformOrigin(this.rootElement,0,0);
         goog.dom.replaceNode(this.rootElement, this.domElement);
         this.rootElement.appendChild(this.domElement);
     }

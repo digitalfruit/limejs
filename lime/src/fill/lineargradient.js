@@ -30,8 +30,8 @@ lime.fill.LinearGradient.prototype.initForSprite = function(sprite) {
     this.sprite_ = sprite;
     sprite.setDirty(lime.Dirty.CONTENT);
     
-    // no CSS3 gradients in Opera yet
-    if(goog.userAgent.OPERA){
+    // no CSS3 gradients in Opera yet and IE filters aren't good solution
+    if(goog.userAgent.OPERA || goog.userAgent.IE){
         sprite.setRenderer(lime.Renderer.CANVAS);
     }
 };
