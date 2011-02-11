@@ -18,7 +18,7 @@ lime.animation.ColorTo = function(args) {
     var color = lime.fill.parse(arguments);
 
     if (color instanceof lime.fill.Color) {
-        this.rgb_ = color.getRgb();
+        this.rgba_ = color.getRgba();
     }
 };
 goog.inherits(lime.animation.ColorTo, lime.animation.Animation);
@@ -28,12 +28,11 @@ lime.animation.ColorTo.prototype.scope = 'color';
 
 /** @inheritDoc */
 lime.animation.ColorTo.prototype.makeTargetProp = function(target) {
-    var fill = target.getFill();
-    return (fill instanceof lime.fill.Color) ?
-        {start: [fill.r, fill.g, fill.b],
-         delta: [this.rgb_[0] - fill.r, this.rgb_[1] - fill.g,
-            this.rgb_[2] - fill.b]} :
-        {};
+    var fill = target.getFill(),
+        oldrgb = fill instanceof lime.fill.Color ? target.getFill().getRgba() : [255,255,255,0];
+    return {start: oldrgb,
+         delta: [this.rgba_[0] - oldrgb[0], this.rgba_[1] - oldrgb[1],
+            this.rgba_[2] - oldrgb[2], this.rgba_[3] - oldrgb[3]]};
 };
 
 /** @inheritDoc */
@@ -45,7 +44,8 @@ lime.animation.ColorTo.prototype.update = function(t, target) {
         target.setFill(
             Math.round(prop.start[0] + prop.delta[0] * t),
             Math.round(prop.start[1] + prop.delta[1] * t),
-            Math.round(prop.start[2] + prop.delta[2] * t)
+            Math.round(prop.start[2] + prop.delta[2] * t),
+            prop.start[3] + prop.delta[3] * t
         );
     }
 };

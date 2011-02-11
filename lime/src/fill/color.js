@@ -39,21 +39,22 @@ lime.fill.Color.prototype.initForSprite = function(sprite) {
 };
 
 /**
-* Gets color as RGB array.
-* @return {null|Array.<number>} RGB array.
+* Gets color as RGBA array.
+* @return {null|Array.<number>} RGBA array.
 */
-lime.fill.Color.prototype.getRgb = function() {
+lime.fill.Color.prototype.getRgba = function() {
     var out = null;
 
     if (goog.isNumber(this.r) && goog.isNumber(this.g) &&
         goog.isNumber(this.b)) {
-        out = [this.r, this.g, this.b];
+        out = [this.r, this.g, this.b, this.a];
 
     } else if (goog.isString(this.str)) {
         var color = goog.color.parse(this.str);
         if (color.type != 'named') {
             out = goog.color.hexToRgb(color.hex);
         }
+        out.push(1);
     }
 
     return out;
@@ -77,14 +78,17 @@ lime.fill.Color.prototype.addBrightness = function(value) {
 lime.fill.Color.prototype.modifyColor = function(mode, value) {
     var add = value || .1;
 
-    var rgb = this.getRgb();
+    var rgb = this.getRgba();
     if (!rgb) return this;
+
+    rgb.pop();
 
     var hsl = goog.color.rgbArrayToHsl(rgb);
     hsl[mode] += add;
     if (hsl[mode] > 1) hsl[mode] = 1;
 
     rgb = goog.color.hslArrayToRgb(hsl);
+    rgb.push(this.a);
     return this.setColor(rgb);
 };
 
