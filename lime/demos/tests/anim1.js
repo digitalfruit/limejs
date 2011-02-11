@@ -17,6 +17,7 @@ goog.require('lime.animation.RotateBy');
 goog.require('lime.animation.ScaleBy');
 goog.require('lime.animation.Sequence');
 goog.require('lime.animation.Spawn');
+goog.require('lime.animation.ColorTo');
 
 
 test.WIDTH = 600;
@@ -36,17 +37,23 @@ test.start = function() {
 	menuscene.appendChild(layer);
 
 
-	var sprite = new lime.Sprite().setFill('#0c0').setSize(50, 50);
+	var sprite = new lime.Sprite().setFill(100,0,0).setSize(50, 50).setRenderer(lime.Renderer.CANVAS);
 	layer.appendChild(sprite);
 
-	var anim = new lime.animation.Spawn(
+	var anim = new lime.animation.Sequence(new lime.animation.Spawn(
 	        new lime.animation.MoveBy(200, 0).setDuration(1.5),
-	        new lime.animation.ScaleBy(2)
-	    );
-	var a2 = new lime.animation.Sequence(anim, anim.reverse());
-	sprite.runAction(new lime.animation.Loop(a2).setLimit(5));
+	        new lime.animation.ScaleBy(2),
+            new lime.animation.ColorTo(0,200,0)
+            
+	    ),    new lime.animation.Spawn(
+        	        new lime.animation.MoveBy(-200, 0).setDuration(1.5),
+        	        new lime.animation.ScaleBy(.5),
+                    new lime.animation.ColorTo(200,0,0)
 
-	var sprite = new lime.Sprite().setFill('#0c0').setSize(50, 50).setPosition(0, 100);
+        	    ));
+	sprite.runAction(new lime.animation.Loop(anim).setLimit(5));
+
+	var sprite = new lime.Sprite().setFill('#0c0').setSize(50, 50).setPosition(0, 100).setRenderer(lime.Renderer.CANVAS);
 	layer.appendChild(sprite);
 
 	var anim = new lime.animation.Spawn(

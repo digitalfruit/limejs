@@ -32,7 +32,7 @@ test.start = function() {
     line = new lime.Sprite().setFill('#666').setSize(300, 2).setPosition(200, 200);
     flameLayer.appendChild(line);
 
-    var dragFunc = function(e) {e.startDrag()};
+    var dragFunc = function(e) {this.setFill('#F93269');e.startDrag();e.event.stopPropagation()};
 
 
     var box = new lime.Sprite().setFill('#00c').setSize(60, 60).setPosition(200, 200).setAnchorPoint(0.3, 0.9);//.setRotation(30)
@@ -53,7 +53,7 @@ test.start = function() {
 
     var box3_2 = new lime.Sprite().setFill('#cc0').setSize(50, 50).setAnchorPoint(0.5, 0).setPosition(40, 40).setRotation(-20);
     goog.events.listen(box3_2, ['mousedown', 'touchstart'], dragFunc);
-    box2.appendChild(box3_2);
+    box3_1.appendChild(box3_2);
 
 
 
