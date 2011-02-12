@@ -88,7 +88,15 @@ lime.Director = function(parentElement) {
 
         meta.content = content;
         document.getElementsByTagName('head').item(0).appendChild(meta);
-        window.scrollTo(0, 0);
+        
+        
+        //todo: look for a less hacky solution
+        if(goog.userAgent.MOBILE && !window.navigator.standalone){
+            var that = this;
+            setTimeout(
+                function(){window.scrollTo(0, 0);that.invalidateSize_()}
+            ,100);
+        }
     }
 
     var width, parentSize = goog.style.getSize(parentElement);
@@ -116,8 +124,7 @@ lime.Director = function(parentElement) {
 
     this.eventDispatcher = new lime.events.EventDispatcher(this);
 
-    // Prevent page scrolling on touch events
-    goog.events.listen(this, 'touchmove',
+    goog.events.listen(this, ['touchmove','touchstart'],
         function(e) {e.event.preventDefault();}, false, this);
 
     // todo: check if all those are really neccessary as Event code
@@ -455,6 +462,15 @@ lime.Director.prototype.invalidateSize_ = function() {
     }
 
     this.updateDomOffset_();
+    
+    // overflow hidden is for hiding away unused edges of document
+    // height addition is because scroll(0,0) doesn't work any more if the
+    // document has no edge @tonis todo:look for less hacky solution(iframe?).
+    if(goog.userAgent.MOBILE && this.domElement.parentNode==document.body){
+        if(this.overflowStyle_) goog.style.uninstallStyles(this.overflowStyle_);
+        this.overflowStyle_ = goog.style.installStyles(
+            'html{height:'+(stageSize.height+120)+'px;overflow:hidden;}');
+    }
 
 };
 

@@ -24,7 +24,7 @@ lime.events.EventDispatcher.prototype.register = function(node, eventType) {
         this.handlers[eventType] = [node];
         //base element switch here because safari fires touchend on
         //dom tree changes otherwise
-        goog.events.listen(eventType.substring(0, 5) == 'touch' ?
+        goog.events.listen(eventType.substring(0, 5) == 'touch' && node!=this.director ?
             document : (eventType.substring(0, 3) == 'key' ?
             window : this.director.domElement.parentNode), eventType,
             this, false, this);
@@ -145,7 +145,7 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
                 ee.targetObject = handler;
                 handler.dispatchEvent(ee);
-                didhandle = false;
+                didhandle = true;
 
                 if (ee.event.propagationStopped_) break;
             }
