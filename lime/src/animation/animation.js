@@ -237,8 +237,10 @@ lime.animation.Animation.prototype.step_ = function(dt) {
  */
 lime.animation.Animation.prototype.useTransitions = function() {
     return this.duration_ > 0 && lime.style.isTransitionsSupported &&
-        this.optimizations_; //&& goog.userAgent.MOBILE;
-    // I see no boost on mac, only on ios
+        this.optimizations_ &&
+    //  goog.userAgent.MOBILE &&  // I see no boost on mac, only on iOS
+        !lime.userAgent.ANDROID && // bug in 2.2 http://code.google.com/p/android/issues/detail?id=12451
+        !goog.userAgent.GECKO; // still many bugs on FF4Beta Mac when hardware acceleration in ON
 };
 
 /**
