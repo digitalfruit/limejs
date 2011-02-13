@@ -62,6 +62,12 @@ def makeProjectPaths(add):
 def rephook(a,b,c):
     sys.stdout.write("\r%2d%%" % ((100*a*b)/c) )
     sys.stdout.flush()
+    
+def escapeSpace(s):
+    return s.replace(" ","\\ ")
+    
+def quoteSpace(s):
+    return s.replace(" ","' '")
 
 def checkDependencies():
     
@@ -148,10 +154,10 @@ def update():
     paths.append('lime\n')
     paths.append('box2d\n')
     
-    opt = ' '.join(map(lambda x: '--root_with_prefix="'+os.path.join(basedir,x.rstrip())+'/ ../../../'+x.rstrip()+'/"',paths))
+    opt = ' '.join(map(lambda x: '--root_with_prefix="'+quoteSpace(os.path.join(basedir,x.rstrip()))+'/ ../../../'+x.rstrip()+'/"',paths))
 
-    call = os.path.join(closure_dir,'closure/bin/build/depswriter.py')+' --root_with_prefix="'+\
-        closure_dir+'/ ../../" '+opt+' --output_file="'+closure_deps_file+'"'
+    call = escapeSpace(os.path.join(closure_dir,'closure/bin/build/depswriter.py'))+' --root_with_prefix="'+\
+        quoteSpace(closure_dir)+'/ ../../" '+opt+' --output_file="'+closure_deps_file+'"'
         
     print (call)
     
@@ -214,7 +220,7 @@ def build(name,options):
 
     opt = ' '.join(map(lambda x: '--root="'+os.path.join(basedir,x.rstrip())+'/"',dir_list))
     
-    call = os.path.join(closure_dir,'closure/bin/build/closurebuilder.py')+' '+opt+' --namespace="'+name+'" '+\
+    call = escapeSpace(os.path.join(closure_dir,'closure/bin/build/closurebuilder.py'))+' '+opt+' --namespace="'+name+'" '+\
         '-o compiled -c '+compiler_path;
     
     
