@@ -86,5 +86,5 @@ lime.animation.ScaleBy.prototype.reverse = function() {
     f.x = 1 / f.x;
     f.y = 1 / f.y;
 
-    return (new lime.animation.ScaleBy(f)).setDuration(this.getDuration());
+    return new lime.animation.ScaleBy(f).cloneParam(this);
 };

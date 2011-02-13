@@ -111,6 +111,6 @@ lime.animation.Sequence.prototype.updateAll = function(t,targets) {
  * @see lime.animation.Animation#reverse
  */
 lime.animation.Sequence.prototype.reverse = function() {
-    return (new lime.animation.Sequence(this.actions[1].reverse(),
-        this.actions[0].reverse()));
+    return new lime.animation.Sequence(this.actions[1].reverse(),
+        this.actions[0].reverse());
 };

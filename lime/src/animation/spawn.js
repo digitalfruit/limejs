@@ -79,5 +79,5 @@ lime.animation.Spawn.prototype.updateAll = function(t, targets) {
  * @see lime.animation.Animation#reverse
  */
 lime.animation.Spawn.prototype.reverse = function() {
-    return (new lime.animation.Spawn(this.one.reverse(), this.two.reverse()));
+    return new lime.animation.Spawn(this.one.reverse(), this.two.reverse());
 };

@@ -65,6 +65,5 @@ lime.animation.RotateBy.prototype.clearTransition = function(target) {
  * @see lime.animation.Animation#reverse
  */
 lime.animation.RotateBy.prototype.reverse = function() {
-    return (new lime.animation.RotateBy(-this.angle_)).
-        setDuration(this.getDuration());
+    return new lime.animation.RotateBy(-this.angle_).cloneParam(this);
 };

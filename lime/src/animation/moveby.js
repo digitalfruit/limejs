@@ -107,5 +107,5 @@ lime.animation.MoveBy.prototype.reverse = function() {
     d.x *= -1;
     d.y *= -1;
 
-    return new lime.animation.MoveBy(d).setDuration(this.getDuration());
+    return new lime.animation.MoveBy(d).cloneParam(this);
 };

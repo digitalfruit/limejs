@@ -270,6 +270,13 @@ lime.animation.Animation.prototype.enableOptimizations = function(opt_value) {
  */
 lime.animation.Animation.prototype.update = goog.abstractMethod;
 
+/**
+ * Clone animation parmaters from another animation
+ * @protected
+ */
+lime.animation.Animation.prototype.cloneParam = function(origin){
+    return this.setDuration(origin.getDuration()).enableOptimizations(origin.optimizations_);
+}
 
 /**
  * Return new animation with reveresed parameters from original
@@ -380,7 +387,7 @@ lime.animation.getEasingFunction = function(p1x, p1y, p2x, p2y) {
 })();
 
 
-	
+
 
 /**
  * Predefined Easing functions
