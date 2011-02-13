@@ -60,13 +60,18 @@ lime.animation.Spawn.prototype.initTarget = function(target) {
 
 /**
  * @inheritDoc
- * @see lime.animation.Animation#update
+ * @see lime.animation.Animation#updateAll
  */
-lime.animation.Spawn.prototype.update = function(t, target) {
+lime.animation.Spawn.prototype.updateAll = function(t, targets) {
     if (this.status_ == 0) return;
-    var prop = this.getTargetProp(target);
-    this.one.update(t, target);
-    this.two.update(t, target);
+    var i = targets.length;
+    while (--i >= 0) {
+        this.getTargetProp(targets[i]);
+    }
+    this.one.updateAll(t, targets);
+    this.two.updateAll(t, targets);
+    
+    return t;
 };
 
 /**

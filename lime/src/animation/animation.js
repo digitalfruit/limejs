@@ -211,24 +211,32 @@ lime.animation.Animation.prototype.step_ = function(dt) {
     
     this.playTime_ += dt;
     var t = this.playTime_ / (this.duration_ * 1000);
-    if (isNaN(t)) t = 1;
-    if (t >= 1) t = 1;
-    else {
-        t = this.getEasing()[0](t);
-        if (isNaN(t)) {
-            throw ('Cubic equations with 3 roots not allowed atm.');
-            //t = t_orig;
-        }
-    }
-    var i = this.targets.length;
-    while (--i >= 0) {
-        this.update(t, this.targets[i]);
-    }
+    if (isNaN(t) || t>=1) t = 1;
+    t = this.updateAll(t,this.targets); 
 
     if (t == 1) {
         this.stop();
     }
 };
+
+/**
+ * Update all targets to new values.
+ * @param {number} t Time position of animation[0-1].
+ * @param {Array.<lime.Node>} targets All target nodes to update.
+ * @return {number} New time position(eased value).
+ */
+lime.animation.Animation.prototype.updateAll = function(t,targets){
+   t = this.getEasing()[0](t);
+   if (isNaN(t)) {
+        t = 1;
+    }
+    
+    var i = targets.length;
+    while (--i >= 0) {
+        this.update(t, targets[i]);
+    }
+    return t;
+}
 
 /**
  * Returns true if CSS transitions are used to make the animation.
