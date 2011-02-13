@@ -616,8 +616,9 @@ lime.Node.prototype.setOpacity = function(value) {
         this.setHidden(false);
     }
 
-    if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY]))
+    if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])){
         return this;
+    }
 
     this.setDirty(lime.Dirty.ALPHA);
     return this;
@@ -779,16 +780,19 @@ lime.Node.prototype.update = function(opt_pass) {
             value = this.transitionsAdd_[i];
             var property = lime.Node.getPropertyForTransition(i);
             
+            if(this.renderer.getType()==lime.Renderer.DOM || property!='opacity'){
+            
             this.transitionsActive_[i] = value[0];
             lime.style.setTransition(this.domElement,
                 property, value[1], value[2]);
-
+                
             if (this.domElement != this.containerElement &&
                 property == lime.style.transformProperty) {
 
                 lime.style.setTransition(this.containerElement,
                     property, value[1], value[2]);
 
+            }
             }
             delete this.transitionsAdd_[i];
         }
