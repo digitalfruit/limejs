@@ -27,9 +27,6 @@ lime.fill.LinearGradient.prototype.id = 'lineargradient';
  * @inheritDoc
  */
 lime.fill.LinearGradient.prototype.initForSprite = function(sprite) {
-    this.sprite_ = sprite;
-    sprite.setDirty(lime.Dirty.CONTENT);
-    
     // no CSS3 gradients in Opera yet and IE filters aren't good solution
     if(goog.userAgent.OPERA || goog.userAgent.IE){
         sprite.setRenderer(lime.Renderer.CANVAS);
@@ -112,7 +109,7 @@ lime.fill.LinearGradient.prototype.setDOMStyle = function(domEl, shape) {
             yy = (tana * xx + y0 - x0 * tana);
         xx -= x0;
         yy -= y0;
-        this.rate = Math.sqrt(x * x + y * y) / Math.sqrt(xx * xx + yy * yy);
+        this.rate = Math.sqrt((x * x + y * y) / (xx * xx + yy * yy));
     }
     var colors = goog.array.map(this.colors_, this.formatColorStop_, this);
 
