@@ -1,4 +1,4 @@
-goog.provide('test.frame1');
+goog.provide('test.frame2');
 
 
 goog.require('lime');
@@ -25,10 +25,16 @@ test.start = function() {
 	 layer = new lime.Layer();
 	gamescene.appendChild(layer);
 	
-	var sprite = new lime.Sprite().setPosition(200,200).setSize(200,200).setFill(
-	    new lime.fill.Frame('assets/nano.png',70,20,105,105).setSize(.5,.5,true).setOffset(.5,.5,true)
-	    );
+	var sprite = new lime.Sprite().setPosition(200,200).setSize(100,100);
 	layer.appendChild(sprite);
+	
+	var anim = new lime.animation.KeyframeAnimation();
+	for(var r=0;r<6;r++){
+	    for(var c=0;c<10;c++){
+	        anim.addFrame(new lime.fill.Frame('assets/glow/sheet.png',c*50,r*50,50,50).setSize(.5,.5,true));
+	    }
+	}
+	sprite.runAction(anim);
 	
     // set active scene
     test.director.replaceScene(gamescene);

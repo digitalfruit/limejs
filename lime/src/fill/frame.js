@@ -16,6 +16,10 @@ goog.require('goog.dom.classes');
 lime.fill.Frame = function(img,rect) {
     lime.fill.Image.call(this,img);
     
+    if(goog.isNumber(rect)){
+        rect = new goog.math.Rect(arguments[1],arguments[2],arguments[3],arguments[4]);
+    }
+    
     this.rect_ = rect;
     
     var r = this.rect_,key = [this.url_,r.width,r.height,r.left,r.top].join('_');
@@ -85,9 +89,22 @@ lime.fill.Frame.prototype.getNextCssClass_ = function(){
  * @private
  */
 lime.fill.Frame.prototype.makeFrameData_ = function(){
-    var r = this.rect_;
+    var r = this.rect_, w = r.width, h = r.height, l = r.left, t = r.top;
     
-    this.ctx.drawImage(this.image_,r.left,r.top,r.width,r.height,0,0,r.width,r.height);
+    if(l<0){
+        w+=l;
+        l=0;
+    }
+    if(t<0){
+        h+=t;
+        t=0;
+    }
+    
+    if(w+l>this.image_.width) w= this.image_.width-l;
+    if(h+t>this.image_.height) h= this.image_.height-t;
+    
+    
+    this.ctx.drawImage(this.image_,l,t,w,h,0,0,w,h);
 
     var rule = '.'+this.data_+'{background-image:url('+this.cvs.toDataURL("image/png")+') !important}';
     
@@ -104,10 +121,10 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
 lime.fill.Frame.prototype.setDOMStyle = function(domEl,shape) {
     if(this.data_!=shape.cvs_background_class_){
         if(shape.cvs_background_class_)
-        goog.dom.classes.remove(domEl.cvs_background_class_);
+        goog.dom.classes.remove(domEl,shape.cvs_background_class_);
         domEl.style['background-image'] = 'none';
         goog.dom.classes.add(domEl,this.data_);
-        this.cvs_background_class = this.data_;
+        shape.cvs_background_class_ = this.data_;
     }
     
     this.setDOMBackgroundProp_(domEl,shape);
