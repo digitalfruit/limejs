@@ -1,21 +1,24 @@
 goog.provide('lime.fill.Fill');
 
+goog.require('goog.events.EventTarget');
+
 /**
  * Abstract class for adding textures to sprites
  * @constructor
+ * @extends goog.events.EventTarget
  */
 lime.fill.Fill = function() {
-    this.sprite_ = null;
+    goog.base(this);
+    
 };
+goog.inherits(lime.fill.Fill, goog.events.EventTarget);
 
 /**
  * Initialize connection between fill and a sprite.
  * No drawing is performed here but common setup is done.
  * @param {lime.Sprite} sprite Sprite.
  */
-lime.fill.Fill.prototype.initForSprite = function(sprite) {
-    //don't draw but preload
-};
+lime.fill.Fill.prototype.initForSprite = goog.nullFunction;
 
 
 /**
@@ -28,7 +31,6 @@ lime.fill.parse = function(inp) {
     if (inp[0] instanceof lime.fill.Fill) return inp[0];
 
     if(!goog.isArray(inp)) inp = goog.array.toArray(arguments);
-
     if (inp.length > 2) {
         return new lime.fill.Color(inp);
     }

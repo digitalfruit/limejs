@@ -24,38 +24,12 @@ test.start = function() {
 	 layer = new lime.Layer();
 	gamescene.appendChild(layer);
 	
+    for(var r=1;r<=5;r++){
+        for(var c=1;c<=5;c++){
+            glow().setPosition(r*100,c*50+50);
+        }
+    }
 
-    glow().setPosition(100,100);
-    glow().setPosition(300,100);
-    glow().setPosition(200,100);
-    glow().setPosition(400,100);
-    glow().setPosition(500,100);
-    
-
-    glow().setPosition(100,150);
-    glow().setPosition(300,150);
-    glow().setPosition(200,150);
-    glow().setPosition(400,150);
-    glow().setPosition(500,150);
-    
-
-    glow().setPosition(100,200);
-    glow().setPosition(300,200);
-    glow().setPosition(200,200);
-    glow().setPosition(400,200);
-    glow().setPosition(500,200);
-    glow().setPosition(100,250);
-    glow().setPosition(300,250);
-    glow().setPosition(200,250);
-    glow().setPosition(400,250);
-    glow().setPosition(500,250);
-    
-
-    glow().setPosition(100,300);
-    glow().setPosition(300,300);
-    glow().setPosition(200,300);
-    glow().setPosition(400,300);
-    glow().setPosition(500,300);
     // set active scene
     test.director.replaceScene(gamescene);
 };

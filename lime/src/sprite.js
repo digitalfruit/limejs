@@ -61,7 +61,7 @@ lime.Sprite.prototype.getFill = function() {
  * @return {lime.Sprite} object itself.
  */
 lime.Sprite.prototype.setFill = function(fill) {
-    this.fill_ = lime.fill.parse(arguments);
+    this.fill_ = lime.fill.parse(goog.array.toArray(arguments));
     this.fill_.initForSprite(this);
     return  this.setDirty(lime.Dirty.CONTENT);
 };

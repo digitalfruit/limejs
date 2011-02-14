@@ -27,7 +27,7 @@ lime.animation.KeyframeAnimation = function() {
      * @type {Number}
      * @private
      */
-    //this.numFramesLoaded_ = 0;
+    this.numFramesLoaded_ = 0;
 
     /**
      * Have all the frames been loaded?
@@ -66,7 +66,7 @@ goog.inherits(lime.animation.KeyframeAnimation, lime.animation.Animation);
  */
 lime.animation.KeyframeAnimation.prototype.setFrames = function(frames) {
     this.frames_ = [];
-    //this.numFramesLoaded_ = 0;
+    this.numFramesLoaded_ = 0;
     this.currentFrame_ = -1;
 
     for (var i = 0; i < frames.length; i++) {
@@ -79,24 +79,27 @@ lime.animation.KeyframeAnimation.prototype.setFrames = function(frames) {
  * @param {string} frame Path to frame image.
  */
 lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
-    /*this.framesLoaded_ = false;
+    this.framesLoaded_ = false;
 
-    goog.events.listen(img, goog.events.EventType.LOAD,
-                this.frameLoadedHandler_, false, this);*/
-    this.frames_.push(lime.fill.parse([frame]));
+    var fill = lime.fill.parse([frame]);
+    
+    if(fill.id=='image' && !fill.isLoaded()){
+        goog.events.listen(fill, goog.events.EventType.LOAD,
+                this.frameLoadedHandler_, false, this);
+    }
+    else {
+        this.numFramesLoaded++;
+    }
+    this.frames_.push(fill);
 };
 
 /**
  * Handler to be called on every loaded frame image
  * @private
  */
- /*
 lime.animation.KeyframeAnimation.prototype.frameLoadedHandler_ = function() {
     this.numFramesLoaded_++;
-    if (this.numFramesLoaded_ >= this.frames_.length) {
-        this.framesLoaded_ = true;
-    }
-};*/
+};
 
 
 
@@ -116,7 +119,7 @@ lime.animation.KeyframeAnimation.prototype.play = function() {
  * @param {number} dt Time difference since last run.
  */
 lime.animation.KeyframeAnimation.prototype.step_ = function(dt) {
-    //if (!this.framesLoaded_) return;
+    if (this.numFramesLoaded_ < this.frames_.length_) return;
     var delay_msec = Math.round(this.delay * 1000);
 
     this.lastChangeTime_ += dt;

@@ -15,7 +15,7 @@ lime.animation.ColorTo = function(args) {
 
     this.rgb_ = null;
 
-    var color = lime.fill.parse(arguments);
+    var color = lime.fill.parse(goog.array.toArray(arguments));
 
     if (color instanceof lime.fill.Color) {
         this.rgba_ = color.getRgba();
@@ -30,6 +30,7 @@ lime.animation.ColorTo.prototype.scope = 'color';
 lime.animation.ColorTo.prototype.makeTargetProp = function(target) {
     var fill = target.getFill(),
         oldrgb = fill instanceof lime.fill.Color ? target.getFill().getRgba() : [255,255,255,0];
+        
     return {start: oldrgb,
          delta: [this.rgba_[0] - oldrgb[0], this.rgba_[1] - oldrgb[1],
             this.rgba_[2] - oldrgb[2], this.rgba_[3] - oldrgb[3]]};

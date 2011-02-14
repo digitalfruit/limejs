@@ -29,16 +29,6 @@ goog.inherits(lime.fill.Color, lime.fill.Fill);
 lime.fill.Color.prototype.id = 'color';
 
 /**
-* @inheritDoc
-*/
-lime.fill.Color.prototype.initForSprite = function(sprite) {
-
-    this.sprite_ = sprite;
-    sprite.setDirty(lime.Dirty.CONTENT);
-
-};
-
-/**
 * Gets color as RGBA array.
 * @return {null|Array.<number>} RGBA array.
 */
