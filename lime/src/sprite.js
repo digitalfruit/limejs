@@ -62,9 +62,8 @@ lime.Sprite.prototype.getFill = function() {
  */
 lime.Sprite.prototype.setFill = function(fill) {
     this.fill_ = lime.fill.parse(arguments);
-
     this.fill_.initForSprite(this);
-    return this;
+    return  this.setDirty(lime.Dirty.CONTENT);
 };
 
 /**

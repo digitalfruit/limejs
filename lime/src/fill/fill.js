@@ -27,6 +27,8 @@ lime.fill.Fill.prototype.initForSprite = function(sprite) {
 lime.fill.parse = function(inp) {
     if (inp[0] instanceof lime.fill.Fill) return inp[0];
 
+    if(!goog.isArray(inp)) inp = goog.array.toArray(arguments);
+
     if (inp.length > 2) {
         return new lime.fill.Color(inp);
     }

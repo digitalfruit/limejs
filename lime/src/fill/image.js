@@ -32,13 +32,14 @@ lime.fill.Image.prototype.initForSprite = function(sprite) {
 
     this.sprite_ = sprite;
 
-    if ((img instanceof lime.Sprite)) {
-        /*sprite.setRenderMode( lime.RenderMode.BACKGROUND_CANVAS );
+    /*if ((img instanceof lime.Sprite)) {
+        sprite.setRenderMode( lime.RenderMode.BACKGROUND_CANVAS );
         this.image_ = img;
         goog.events.listenOnce(this.image_.eventTarget, 'update',
-            this.updateHandler_, false, this);*/
+            this.updateHandler_, false, this);
     }
-    else if (goog.isString(img)) {
+    else */
+    if (goog.isString(img)) {
         this.image_ = new Image();
         goog.events.listen(this.image_, goog.events.EventType.LOAD,
             this.imageLoadedHandler_, false, this);
@@ -78,19 +79,21 @@ lime.fill.Image.prototype.imageLoadedHandler_ = function(e) {
 lime.fill.Image.prototype.setSize = function(size,opt_perc){
     if(goog.isNumber(size)){
         size = new goog.math.Size(arguments[0],arguments[1]);
-        opt_perc = arguments[3] || false;
+        opt_perc = arguments[2] || false;
     }
     this.size_ = size;
     this.size_perc_ = opt_perc;
+    return this;
 }
 
 lime.fill.Image.prototype.setOffset = function(offset,opt_perc){
     if(goog.isNumber(offset)){
         offset = new goog.math.Coordinate(arguments[0],arguments[1]);
-        opt_perc = arguments[3] || false;
+        opt_perc = arguments[2] || false;
     }
     this.offset_ = offset;
-    this.offset_perc_ = opt_perc;    
+    this.offset_perc_ = opt_perc;
+    return this;
 }
 
 /** @inheritDoc */
@@ -111,8 +114,8 @@ lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
     var offset = new goog.math.Coordinate(0,0);
     if(this.offset_){
         if(this.offset_perc_){
-            this.offset_.x*=this.x;
-            this.offset_.y*=this.y;
+            offset.x=size.width*this.offset_.x;
+            offset.y=size.height*this.offset_.y;
         }
         else {
             offset = this.offset_;
@@ -120,7 +123,7 @@ lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
     }
     domEl.style['backgroundPosition'] = offset.x+'px '+offset.y+'px';
     
-    domEl.style['backgroundRepeat'] = 'repeat-all';
+    //domEl.style['backgroundRepeat'] = 'no-repeat';
     if (this.qualityRenderer)
     domEl.style['imageRendering'] = 'optimizeQuality';
 };

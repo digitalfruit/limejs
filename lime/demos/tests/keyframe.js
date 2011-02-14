@@ -56,18 +56,18 @@ test.start = function() {
     glow().setPosition(200,300);
     glow().setPosition(400,300);
     glow().setPosition(500,300);
-    
     // set active scene
     test.director.replaceScene(gamescene);
 };
 
 function glow(){
-    var glow = new lime.Sprite().setPosition(150,150).setSize(70,70);
+    var glow = new lime.Sprite().setPosition(150,150).setSize(90,45);
 	layer.appendChild(glow);
 	
 	var anim = new lime.animation.KeyframeAnimation();
 	for(var i=1;i<=60;i++){
-	    anim.addFrame('assets/glow/frame_00'+(i>9?'':'0')+i+'.png');
+	    var fill = lime.fill.parse('assets/glow/frame_00'+(i>9?'':'0')+i+'.png').setSize(50,50).setOffset(.5,.5,true);
+	    anim.addFrame(fill);
 	}
 	
 	glow.runAction(anim);
