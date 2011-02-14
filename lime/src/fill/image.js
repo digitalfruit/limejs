@@ -26,8 +26,6 @@ lime.fill.Image = function(img) {
         }
         else {
             this.image_ = new Image();
-            goog.events.listen(this.image_, goog.events.EventType.LOAD,
-            this.imageLoadedHandler_, false, this);
             this.image_.src = img;
         }
     }
@@ -38,12 +36,12 @@ lime.fill.Image = function(img) {
         }
         else {
             this.image_ = img;
-            if (!this.isLoaded()){
-                goog.events.listen(this.image_, goog.events.EventType.LOAD,
-                this.imageLoadedHandler_, false, this);
-            }
         }
         
+    }
+    
+    if (!this.isLoaded()){
+        this.addLoadHandler_();
     }
     
     lime.fill.Image.loadedImages_[this.url_] = this.image_;
@@ -89,6 +87,13 @@ lime.fill.Image.prototype.initForSprite = function(sprite){
     }
 };
 
+/**
+ * @private
+ */
+lime.fill.Image.prototype.addLoadHandler_ = function(){
+    goog.events.listen(this.image_, goog.events.EventType.LOAD,
+        this.imageLoadedHandler_, false, this);
+}
 
 /**
  * Update sprite dimensions after image has been loaded

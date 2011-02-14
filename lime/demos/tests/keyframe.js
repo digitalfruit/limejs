@@ -35,6 +35,8 @@ test.start = function() {
 };
 
 function glow(){
+    // the glow demo frames are from Keith Peters SWFSheet sample http://bit-101.com/
+    
     var glow = new lime.Sprite().setPosition(150,150).setSize(90,45);
 	layer.appendChild(glow);
 	
