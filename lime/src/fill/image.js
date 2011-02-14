@@ -54,7 +54,7 @@ goog.inherits(lime.fill.Image, lime.fill.Fill);
  * Already loaded image cache to reuse all img objects.
  * @private
  */
-lime.fill.Image.loadedImages_ = [];
+lime.fill.Image.loadedImages_ = {};
 
 /**
  * Common name for Image objects
@@ -153,9 +153,11 @@ lime.fill.Image.prototype.setOffset = function(offset,opt_perc){
     return this;
 }
 
-/** @inheritDoc */
-lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
-    domEl.style['background'] = 'url(' + this.image_.src + ')';
+/**
+ * Common functionality so it could be reused on Frame
+ * @private
+ */
+lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
     var size = shape.getSize().clone();
     if(this.size_){
        if(this.size_perc_){
@@ -183,5 +185,11 @@ lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
     //domEl.style['backgroundRepeat'] = 'no-repeat';
     if (this.qualityRenderer)
     domEl.style['imageRendering'] = 'optimizeQuality';
+}
+
+/** @inheritDoc */
+lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
+    domEl.style['background'] = 'url(' + this.image_.src + ')';
+    this.setDOMBackgroundProp_(domEl,shape);
 };
 
