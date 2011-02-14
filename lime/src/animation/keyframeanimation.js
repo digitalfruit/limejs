@@ -131,7 +131,7 @@ lime.animation.KeyframeAnimation.prototype.step_ = function(dt) {
         if (i > 0) {
 
             // Todo: make CSS Canvas optional
-            if (!this.usesBackgroundCanvas_ &&
+           /* if (!this.usesBackgroundCanvas_ &&
                     goog.isFunction(document.getCSSCanvasContext)) {
 
                 this.bgSprite = new lime.Sprite;
@@ -140,7 +140,7 @@ lime.animation.KeyframeAnimation.prototype.step_ = function(dt) {
                 this.usesBackgroundCanvas_ = true;
 
             }
-
+*/
             if (this.usesBackgroundCanvas_) {
                 this.bgSprite.setFill(nextImage);
                 while (--i >= 0) {

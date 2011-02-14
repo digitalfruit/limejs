@@ -75,11 +75,52 @@ lime.fill.Image.prototype.imageLoadedHandler_ = function(e) {
             this.image_.width, this.image_.height));
 };
 
+lime.fill.Image.prototype.setSize = function(size,opt_perc){
+    if(goog.isNumber(size)){
+        size = new goog.math.Size(arguments[0],arguments[1]);
+        opt_perc = arguments[3] || false;
+    }
+    this.size_ = size;
+    this.size_perc_ = opt_perc;
+}
+
+lime.fill.Image.prototype.setOffset = function(offset,opt_perc){
+    if(goog.isNumber(offset)){
+        offset = new goog.math.Coordinate(arguments[0],arguments[1]);
+        opt_perc = arguments[3] || false;
+    }
+    this.offset_ = offset;
+    this.offset_perc_ = opt_perc;    
+}
+
 /** @inheritDoc */
-lime.fill.Image.prototype.setDOMStyle = function(domEl) {
+lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
     domEl.style['background'] = 'url(' + this.image_.src + ')';
-    domEl.style[lime.style.getCSSproperty('BackgroundSize')] = '100%';
-    domEl.style['backgroundRepeat'] = 'no-repeat';
+    var size = shape.getSize().clone();
+    if(this.size_){
+       if(this.size_perc_){
+           size.width*=this.size_.width;
+           size.height*=this.size_.height;
+       }
+       else {
+           size = this.size_;
+       }
+    }
+    domEl.style[lime.style.getCSSproperty('BackgroundSize')] = size.width+'px '+size.height+'px';
+    
+    var offset = new goog.math.Coordinate(0,0);
+    if(this.offset_){
+        if(this.offset_perc_){
+            this.offset_.x*=this.x;
+            this.offset_.y*=this.y;
+        }
+        else {
+            offset = this.offset_;
+        }
+    }
+    domEl.style['backgroundPosition'] = offset.x+'px '+offset.y+'px';
+    
+    domEl.style['backgroundRepeat'] = 'repeat-all';
     if (this.qualityRenderer)
     domEl.style['imageRendering'] = 'optimizeQuality';
 };
