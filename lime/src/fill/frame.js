@@ -36,13 +36,18 @@ lime.fill.Frame = function(img,rect) {
         this.data_.processed = false;
         this.data_.initializer = this;
         this.data_.classname = this.getNextCssClass_();
-    
-        this.cvs = document.createElement('canvas'),r = this.rect_;
-
-        this.ctx = this.cvs.getContext('2d');
-        this.cvs.width = r.width;
-        this.cvs.height = r.height;
-
+   
+        
+        if(this.USE_CSS_CANVAS){
+            this.ctx = document.getCSSCanvasContext('2d', this.data_.classname, r.width, r.height);
+        }
+        else {
+            //todo: FF4 has support for element backgrounds. probably faster than this png url.
+            this.cvs = document.createElement('canvas');
+            this.ctx = this.cvs.getContext('2d');
+            this.cvs.width = r.width;
+            this.cvs.height = r.height;
+        }
     
         if(this.isLoaded()){
             this.makeFrameData_();
@@ -65,6 +70,11 @@ lime.fill.Frame.prototype.id = 'frame';
  * @private
  */
 lime.fill.Frame.prototype.dataCache_ = {};
+
+/**
+ * @type {boolean}
+ */
+lime.fill.Frame.prototype.USE_CSS_CANVAS = goog.isFunction(document.getCSSCanvasContext);
 
 /**
  * @inheritDoc
@@ -117,15 +127,20 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
     
     
     this.ctx.drawImage(this.image_,l,t,w,h,0,0,w,h);
+    
+    if(!this.USE_CSS_CANVAS){
 
     var rule = '.'+this.data_.classname+'{background-image:url('+this.cvs.toDataURL("image/png")+') !important}';
-    
     if(!styleSheet){
-        goog.cssom.addCssText(rule);
-        styleSheet = document.styleSheets[document.styleSheets.length-1];
+        goog.style.installStyles(rule);
+       styleSheet = document.styleSheets[document.styleSheets.length-1];
     }
     else {
-        goog.cssom.addCssRule(styleSheet,rule,1);
+        // why doesn't addCssRule work in IE9???
+       if(goog.userAgent.IE) styleSheet.cssText+=rule;
+       else goog.cssom.addCssRule(styleSheet,rule);
+    }
+    
     }
     
     this.data_.processed = true;
@@ -136,9 +151,12 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
 
 /** @inheritDoc */
 lime.fill.Frame.prototype.setDOMStyle = function(domEl,shape) {
-    if(this.data_.classname!=shape.cvs_background_class_){
+    if(this.USE_CSS_CANVAS){
+        domEl.style['background-image'] = '-webkit-canvas('+this.data_.classname+')';
+    }    
+    else if(this.data_.classname!=shape.cvs_background_class_){
         goog.dom.classes.add(domEl,this.data_.classname);
-        domEl.style['background-image'] = 'none';
+        domEl.style['background-image'] = '';
         if(shape.cvs_background_class_)
         goog.dom.classes.remove(domEl,shape.cvs_background_class_);
         shape.cvs_background_class_ = this.data_.classname;
