@@ -87,6 +87,9 @@ lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
         goog.events.listen(fill, goog.events.EventType.LOAD,
                 this.frameLoadedHandler_, false, this);
     }
+    else if(fill.id=='frame' && !frame.isProcessed()){
+        goog.events.listen(fill,'processed',this.frameLoadedHandler_,false,this);
+    }
     else {
         this.numFramesLoaded++;
     }

@@ -25,9 +25,17 @@ lime.fill.Frame = function(img,rect) {
     var r = this.rect_,key = [this.url_,r.width,r.height,r.left,r.top].join('_');
     if(goog.isDef(this.dataCache_[key])){
         this.data_ = this.dataCache_[key];
+        if(!this.data_.processed){
+            goog.events.listen(this.data_.initializer,'processed',function(){
+                this.dispatchEvent(new goog.events.Event('processed'));
+            },false,this);
+        }
     }
     else {
-        this.data_ = this.getNextCssClass_();
+        this.data_ = {};
+        this.data_.processed = false;
+        this.data_.initializer = this;
+        this.data_.classname = this.getNextCssClass_();
     
         this.cvs = document.createElement('canvas'),r = this.rect_;
 
@@ -73,6 +81,10 @@ lime.fill.Frame.prototype.initForSprite = function(sprite){
     //switch to canvas if no support
 };
 
+lime.fill.Frame.prototype.isProcessed = function(){
+    return this.data_ && this.data_.processed;
+};
+
 (function(){
 
 var pfx='cvsbg_'+Math.round(Math.random()*1000)+'_',index=0,styleSheet;
@@ -106,25 +118,30 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
     
     this.ctx.drawImage(this.image_,l,t,w,h,0,0,w,h);
 
-    var rule = '.'+this.data_+'{background-image:url('+this.cvs.toDataURL("image/png")+') !important}';
+    var rule = '.'+this.data_.classname+'{background-image:url('+this.cvs.toDataURL("image/png")+') !important}';
     
     if(!styleSheet){
-        goog.style.installStyles(rule)
+        goog.cssom.addCssText(rule);
+        styleSheet = document.styleSheets[document.styleSheets.length-1];
     }
     else {
-        goog.cssom.addCssRule(styleSheet,rule);
+        goog.cssom.addCssRule(styleSheet,rule,1);
     }
-}
+    
+    this.data_.processed = true;
+    this.dispatchEvent(new goog.events.Event('processed'));
+};
+
 })();
 
 /** @inheritDoc */
 lime.fill.Frame.prototype.setDOMStyle = function(domEl,shape) {
-    if(this.data_!=shape.cvs_background_class_){
+    if(this.data_.classname!=shape.cvs_background_class_){
+        goog.dom.classes.add(domEl,this.data_.classname);
+        domEl.style['background-image'] = 'none';
         if(shape.cvs_background_class_)
         goog.dom.classes.remove(domEl,shape.cvs_background_class_);
-        domEl.style['background-image'] = 'none';
-        goog.dom.classes.add(domEl,this.data_);
-        shape.cvs_background_class_ = this.data_;
+        shape.cvs_background_class_ = this.data_.classname;
     }
     
     this.setDOMBackgroundProp_(domEl,shape);
