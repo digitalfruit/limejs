@@ -43,10 +43,7 @@ lime.fill.Frame = function(img,rect) {
         }
         else {
             //todo: FF4 has support for element backgrounds. probably faster than this png url.
-            this.cvs = document.createElement('canvas');
-            this.ctx = this.cvs.getContext('2d');
-            this.cvs.width = r.width;
-            this.cvs.height = r.height;
+            this.ctx = this.makeCanvas(r);
         }
     
         if(this.isLoaded()){
@@ -111,22 +108,7 @@ lime.fill.Frame.prototype.getNextCssClass_ = function(){
  * @private
  */
 lime.fill.Frame.prototype.makeFrameData_ = function(){
-    var r = this.rect_, w = r.width, h = r.height, l = r.left, t = r.top;
-    
-    if(l<0){
-        w+=l;
-        l=0;
-    }
-    if(t<0){
-        h+=t;
-        t=0;
-    }
-    
-    if(w+l>this.image_.width) w= this.image_.width-l;
-    if(h+t>this.image_.height) h= this.image_.height-t;
-    
-    
-    this.ctx.drawImage(this.image_,l,t,w,h,0,0,w,h);
+    this.writeToCanvas(this.ctx);
     
     if(!this.USE_CSS_CANVAS){
 
@@ -148,6 +130,46 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
 };
 
 })();
+
+/**
+ * @inheritDoc
+ */
+lime.fill.Frame.prototype.getImageElement = function(){
+    if(!this.frameImgCache_){
+        if(!this.cvs){console.log(22);
+            var ctx = this.makeCanvas(this.rect_);;
+            this.writeToCanvas(ctx);
+        }
+        this.frameImgCache_ = this.cvs;
+    }
+    return this.frameImgCache_;
+};
+
+lime.fill.Frame.prototype.makeCanvas = function(r){
+    this.cvs = document.createElement('canvas');
+    var ctx = this.cvs.getContext('2d');
+    this.cvs.width = r.width;
+    this.cvs.height = r.height;
+    return ctx;
+};
+
+lime.fill.Frame.prototype.writeToCanvas = function(ctx){
+    var r = this.rect_, w = r.width, h = r.height, l = r.left, t = r.top;
+
+    if(l<0){
+        w+=l;
+        l=0;
+    }
+    if(t<0){
+        h+=t;
+        t=0;
+    }
+
+    if(w+l>this.image_.width) w= this.image_.width-l;
+    if(h+t>this.image_.height) h= this.image_.height-t;
+
+    ctx.drawImage(this.image_,l,t,w,h,0,0,w,h);
+};
 
 /** @inheritDoc */
 lime.fill.Frame.prototype.setDOMStyle = function(domEl,shape) {
