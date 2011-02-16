@@ -18,10 +18,11 @@
 
 -----
 
+
+- programming guide is at lime/guide/ or http://www.limejs.com/
 - demos are available at lime/demos/
-- documentation is at lime/docs/
-- programming guide is at lime/guide/
 - unit tests are at lime/tests/
+- documentation is at http://limejs.digitalfruit.ee/docs/
 
 
 ###Windows users:
@@ -61,10 +62,9 @@ If you consider yourself advanced user and know how to use Git/Python you are pr
 
 ##Browser support:
 
-- *Current:* Chrome, Safari 5, Firefox 3.6+(4beta for best performance), Mobile Safari
-- *Working:* (but not quite supported): Opera, IE9
-- *Soon:* Android
-- *Maybe:* Blackberry Playbook, WebOS
+- *Current:* Chrome, Safari 5, Firefox 3.6+, Opera, IE9 RC, Mobile Safari
+- *Soon:* Android, Blackberry Playbook
+- *Maybe:* WebOS
 
 
 
@@ -91,20 +91,27 @@ Closure video from Google I/O 2010:
 
 ### Known issues:
 
-- Weird mixup on events on scaled elements(at least on polygons)
-- Opera & IE9 rotate wrong in potgame
-- Transition based animations don't fire stop events on Spawn&Sequence
+- RoundedRect radius wrong where quality!=1
+- Masks may show unmasked content for a single frame
 - ...add your issues to the github page
+
+
+### Browser issues:
+
+- Chrome 9 CSS transformation issue #71919 affecting big DOM trees
+  <http://code.google.com/p/chromium/issues/detail?id=71919>
+- Firefox 4 beta (Hardware Acceleration==ON) animation flickery
+- WebOS 1.4 Masking issue(appears on Roundball)
 
 
 ### Missing/broken:
 
-- Custom Canvas context
+- Custom Canvas context(partial done)
 - Custom WebGL context
-- Frame fill
+- Frame fill(in experimental)
 - Sprite fill
 - Web-app installing tutorial
-- Unit tests
+- Unit tests(partial)
 - Some basic fallback for non supported browsers
 
 
@@ -119,7 +126,7 @@ Closure video from Google I/O 2010:
 - Local cache support
 - Other mobile platforms support(Android,WebOS,Playbook)
 - Data support(endtable?)
-- Gradients
+- Radial Gradients
 - Resources loading
 - Preloader
 - WebGL Renderer
@@ -135,17 +142,4 @@ Closure video from Google I/O 2010:
 
 
 
-
-###Random notes on design (to be later formed into Programming Guide):
-
-It's built upon Google Closure JS library and uses its style but does not use goog.graphics and goog.fx
-Cocos2d is where we have taken the base design about what a game is and how it should be developed. Check their docs if you are confused about what director,scene,node and schedulemanager stand for. Animations are also using similar logic.
-
-You will have no problems with display object if you have build games with Flash in ActionScript. It's uses similar movieclip logic. There are layers,sprites and some custom shapes like circles and polygons.  You can change properties like dimensions, position,scale,opacity,anchorpoint,etc and stack them in drawing tree. Anchorpoints and autoresize masks make it easy to have flexible layouts. Masking is also similar to flash where you set one displayobject as mask for another. Fills are object that add displayobjects some visible form.
-
-Events are done in a way you only need game specific parts to make the game work for both mouse or touch screen. In any scenario. You can also swallow() an event so that it remains tied to this object until event ends(touchend,mouseup etc.).
-
-Don't use setTimeout(),setInterval(). There is no need. This is all done by the scheduleManager. You get your ON_ENTER_FRAME style event from that static object. It also draws all object in dirty-objects queue. If you for example change position of a node, the position is set as DIV elements transform property in next frame because object was now marked dirty. As a bonus for sticking with scheduleManager you get pausing support for director.
-
-There are currently two separate renderers. DOM and Canvas. This means that you can make your display list in JS and in any moment call setRenderer(lime.Renderer.DOM) or setRenderer(lime.Renderer.CANVAS) on any node. It will not change anything visually but internally it changes if tree is drawn as separate DIVs or one Canvas. This comes to play if you have different performing devices. For instance canvas is very quick on some PC browsers and dead slow on iOS4.2(where CSS is fast). You can use same code and render it with completely different lower-end technology. Also static content usually performes better on Canvas and dynamic better on CSS. WebGL renderer is also planned for the future.
 
