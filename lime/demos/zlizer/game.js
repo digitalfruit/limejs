@@ -111,7 +111,8 @@ zlizer.Game.prototype.start = function() {
     this.appendChild(canvas);
 
     this.ctx = canvas.getContext('2d');
-    this.ctx.globalCompositeOperation = 'copy';
+   if(goog.userAgent.MOBILE)
+   this.ctx.globalCompositeOperation = 'copy';
     this.isdown = false;
 
     goog.events.listen(this, ['mousedown', 'touchstart', 'keydown'],
@@ -136,6 +137,9 @@ zlizer.Game.prototype.drawTouches_ = function(dt) {
     ctx.lineWidth = 17;
     ctx.shadowBlur = 0;
     ctx.shadowColor = '#fff';
+    if(!goog.userAgent.MOBILE){
+        ctx.clearRect(0,0,zlizer.director.getSize().width,zlizer.director.getSize().height);
+    }
 
     var t = this.touches.length;
     while (--t >= 0) {
@@ -161,18 +165,18 @@ zlizer.Game.prototype.drawTouches_ = function(dt) {
 
    var yellow = [0xf1, 0xf9, 0x39];
    var diff = [255 - yellow[0], 255 - yellow[1], 255 - yellow[2]];
-   ctx.shadowBlur = 2;
+   //ctx.shadowBlur = 2;
    for (t = 0; t < this.touches.length; t++) {
        if (!this.touches[t])debugger;
        particles = this.touches[t].particles;
        for (i = 0; i < particles.length; i++) {
            p = particles[i];
            if (p.life < MAX) {
-               ctx.lineWidth = 4 + 4 * (p.life / MAX);
+               ctx.lineWidth = Math.ceil(4 + 4 * (p.life / MAX));
            }
            else {
                var r = REST - (p.life - MAX);
-               ctx.lineWidth = (r / REST) * 12;
+               ctx.lineWidth = Math.ceil((r / REST) * 12);
            }
            if (ctx.lineWidth > 2) {
            var d = p.life / (LIFE - 0.3);
