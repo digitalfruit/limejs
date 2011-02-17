@@ -222,13 +222,13 @@ def genSoy(path):
         if path[-4:]=='.soy':
             makeSoyJSFile(path,True)
 
-        else if mtype and ['image','audio','video'].count(mtype.split('/')[0]):
+        elif mtype and ['image','audio','video'].count(mtype.split('/')[0]):
             print ('not implemented yet for binary files')
             
         else :
             outfile = open(path+'.soy','w')
             fname = split(path)[1]
-            outfile.write('{namespace assets://'+fname+'}\n\n/**\n\n */\n{template .data}\n')
+            outfile.write('{namespace lime.ASSETS.'+fname+'}\n\n/**\n * Generated with "bin/lime.py gensoy filepath"\n */\n{template .data}\n')
             for line in fileinput.FileInput(path):
                 line = line.replace('{','[[LB_POS]]')
                 line = line.replace('}','[[RB_POS]]')
@@ -245,7 +245,9 @@ def genSoy(path):
                 if fname[-4:]=='.soy':
                     soypath = os.path.join(root,fname)
                     makeSoyJSFile(soypath,False)
-                    
+       
+    update()
+             
 
 def build(name,options):
     
