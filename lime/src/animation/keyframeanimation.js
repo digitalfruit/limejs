@@ -81,7 +81,7 @@ lime.animation.KeyframeAnimation.prototype.setFrames = function(frames) {
 lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
     this.framesLoaded_ = false;
 
-    var fill = lime.fill.parse([frame]);
+    var fill = lime.fill.parse(goog.array.toArray(arguments));
     
     if(fill.id=='image' && !fill.isLoaded()){
         goog.events.listen(fill, goog.events.EventType.LOAD,

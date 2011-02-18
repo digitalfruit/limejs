@@ -27,15 +27,17 @@ test.start = function() {
 	 layer = new lime.Layer();
 	gamescene.appendChild(layer);
 	
-	var sprite = new lime.Sprite().setPosition(200,200).setSize(100,100);
+	var sprite = new lime.Sprite().setPosition(200,200).setSize(300,230);
 	layer.appendChild(sprite);
 	
 	var ss = new lime.SpriteSheet('assets/glow/sheet.png',lime.ASSETS.spinner.zwoptex);
 	
 	var anim = new lime.animation.KeyframeAnimation();
 	for(var i=1;i<60;i++){
-	    anim.addFrame(ss.getFrame('frame_00'+(i>9?'':'0')+i+'.png'));
+	    anim.addFrame(ss.getFrame('frame_00'+(i>9?'':'0')+i+'.png').
+	        setSize(33,33).setOffset((60-i)/60,0,true));
 	}
+    
 	sprite.runAction(anim);
 	
     // set active scene

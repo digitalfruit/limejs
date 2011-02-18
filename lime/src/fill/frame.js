@@ -136,7 +136,7 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
  */
 lime.fill.Frame.prototype.getImageElement = function(){
     if(!this.frameImgCache_){
-        if(!this.cvs){console.log(22);
+        if(!this.cvs){
             var ctx = this.makeCanvas(this.rect_);;
             this.writeToCanvas(ctx);
         }
@@ -174,11 +174,11 @@ lime.fill.Frame.prototype.writeToCanvas = function(ctx){
 /** @inheritDoc */
 lime.fill.Frame.prototype.setDOMStyle = function(domEl,shape) {
     if(this.USE_CSS_CANVAS){
-        domEl.style['background-image'] = '-webkit-canvas('+this.data_.classname+')';
+        domEl.style['background'] = '-webkit-canvas('+this.data_.classname+')';
     }    
     else if(this.data_.classname!=shape.cvs_background_class_){
         goog.dom.classes.add(domEl,this.data_.classname);
-        domEl.style['background-image'] = '';
+        domEl.style['background'] = '';
         if(shape.cvs_background_class_)
         goog.dom.classes.remove(domEl,shape.cvs_background_class_);
         shape.cvs_background_class_ = this.data_.classname;

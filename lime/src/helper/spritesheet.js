@@ -12,5 +12,5 @@ lime.SpriteSheet = function(image,metadata,opt_parser){
 }
 
 lime.SpriteSheet.prototype.getFrame = function(name){
-    return new lime.fill.Frame(this.image_,this.metadata_[name]);
+    return new lime.fill.Frame(this.image_.image_,this.metadata_[name]);
 }
