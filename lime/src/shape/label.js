@@ -102,6 +102,7 @@ lime.Label.prototype.getText = function() {
 lime.Label.prototype.setText = function(txt) {
     this.text_ = txt + '';
     this.setDirty(lime.Dirty.CONTENT);
+    delete this.words_;
     return this;
 };
 
@@ -338,14 +339,22 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
 
     lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
 
-    if (this.dirty_ & lime.Dirty.CONTENT || !this.words_) {
+    var frame = this.getFrame(),
+        width = -frame.left - this.padding_[3] + frame.right - this.padding_[1],
+        dowrap = 0;
+    
+    if (!this.words_) {
         this.words_ = this.calcWordsArray();
+        dowrap = 1;
     }
-
-    var frame = this.getFrame();
+    
+    if(dowrap || width!=this.lastDrawnWidth_){
+        this.lines_ = this.wrapText(context, width);
+        this.lastDrawnWidth_ = width;
+    }
+    
 
     context.save();
-
     var align = this.getAlign();
     if (align == 'left') {
         context.translate(frame.left + this.padding_[3],
@@ -369,11 +378,6 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
         'px/' + lh + ' ' + this.getFontFamily();
     context.textAlign = align;
     context.textBaseline = 'top';
-
-    if (this.dirty_ || !this.lines_) {
-        this.lines_ = this.wrapText(context, -frame.left -
-            this.padding_[3] + frame.right - this.padding_[1]);
-    }
 
     if (this.lines_) {
         var lhpx = lh * this.getFontSize();
