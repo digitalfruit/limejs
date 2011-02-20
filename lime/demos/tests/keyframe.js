@@ -42,7 +42,7 @@ function glow(){
 	
 	var anim = new lime.animation.KeyframeAnimation();
 	for(var i=1;i<=60;i++){
-	    var fill = lime.fill.parse('assets/glow/frame_00'+(i>9?'':'0')+i+'.png').setSize(50,50).setOffset(.5,.5,true);
+	    var fill = lime.fill.parse('assets/spinner/frame_00'+(i>9?'':'0')+i+'.png').setSize(50,50).setOffset(.5,.5,true);
 	    anim.addFrame(fill);
 	}
 	

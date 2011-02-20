@@ -31,7 +31,7 @@ test.start = function() {
 	var anim = new lime.animation.KeyframeAnimation();
 	for(var r=0;r<6;r++){
 	    for(var c=0;c<10;c++){
-	        anim.addFrame(new lime.fill.Frame('assets/glow/sheet.png',c*50,r*50,50,50).setSize(.5,.5,true));
+	        anim.addFrame(new lime.fill.Frame('assets/spinner/spinner_sheet.png',c*50,r*50,50,50).setSize(.5,.5,true));
 	    }
 	}
 	sprite.runAction(anim);
