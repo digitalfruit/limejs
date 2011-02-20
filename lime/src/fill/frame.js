@@ -13,16 +13,20 @@ goog.require('goog.dom.classes');
  * @constructor
  * @extends lime.fill.Image
  */
-lime.fill.Frame = function(img,rect) {
+lime.fill.Frame = function(img,rect,opt_offset,opt_size) {
     lime.fill.Image.call(this,img);
     
     if(goog.isNumber(rect)){
         rect = new goog.math.Rect(arguments[1],arguments[2],arguments[3],arguments[4]);
+        opt_offset = false;
+        opt_size = false;
     }
     
     this.rect_ = rect;
+    this.offset_ = opt_offset || new goog.math.Vec2(0,0);
+    this.csize_ = opt_size || new goog.math.Size(this.rect_.width,this.rect_.height);
     
-    var r = this.rect_,key = [this.url_,r.width,r.height,r.left,r.top].join('_');
+    var r = this.rect_,key = [this.url_,r.width,r.height,r.left,r.top,this.offset_.x,this.offset_.y].join('_');
     if(goog.isDef(this.dataCache_[key])){
         this.data_ = this.dataCache_[key];
         if(!this.data_.processed){
@@ -39,11 +43,11 @@ lime.fill.Frame = function(img,rect) {
    
         
         if(this.USE_CSS_CANVAS){
-            this.ctx = document.getCSSCanvasContext('2d', this.data_.classname, r.width, r.height);
+            this.ctx = document.getCSSCanvasContext('2d', this.data_.classname, this.csize_.width, this.csize_.height);
         }
         else {
             //todo: FF4 has support for element backgrounds. probably faster than this png url.
-            this.ctx = this.makeCanvas(r);
+            this.ctx = this.makeCanvas();
         }
     
         if(this.isLoaded()){
@@ -80,7 +84,7 @@ lime.fill.Frame.prototype.initForSprite = function(sprite){
     
     var size = sprite.getSize();
     if(size.width==0 && size.height==0){
-        sprite.setSize(this.rect_.width,this.rect_.height);
+        sprite.setSize(this.csize_.width,this.csize_.height);
     }
     
     lime.fill.Image.prototype.initForSprite.call(this,sprite);
@@ -137,7 +141,7 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
 lime.fill.Frame.prototype.getImageElement = function(){
     if(!this.frameImgCache_){
         if(!this.cvs){
-            var ctx = this.makeCanvas(this.rect_);;
+            var ctx = this.makeCanvas();
             this.writeToCanvas(ctx);
         }
         this.frameImgCache_ = this.cvs;
@@ -145,11 +149,11 @@ lime.fill.Frame.prototype.getImageElement = function(){
     return this.frameImgCache_;
 };
 
-lime.fill.Frame.prototype.makeCanvas = function(r){
+lime.fill.Frame.prototype.makeCanvas = function(){
     this.cvs = document.createElement('canvas');
     var ctx = this.cvs.getContext('2d');
-    this.cvs.width = r.width;
-    this.cvs.height = r.height;
+    this.cvs.width = this.csize_.width;
+    this.cvs.height = this.csize_.height;
     return ctx;
 };
 
@@ -167,8 +171,11 @@ lime.fill.Frame.prototype.writeToCanvas = function(ctx){
 
     if(w+l>this.image_.width) w= this.image_.width-l;
     if(h+t>this.image_.height) h= this.image_.height-t;
-
-    ctx.drawImage(this.image_,l,t,w,h,0,0,w,h);
+    var ox = (this.csize_.width - this.rect_.width) / 2 - this.offset_.x,
+        oy = (this.csize_.height - this.rect_.height) / 2 - this.offset_.y;
+    
+    ctx.drawImage(this.image_,l,t,w,h,ox,oy,w,h);
+    
 };
 
 /** @inheritDoc */

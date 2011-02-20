@@ -2,6 +2,8 @@ goog.provide('lime.parser.ZWOPTEX');
 
 goog.require('goog.dom.xml');
 goog.require('goog.math.Rect');
+goog.require('goog.math.Vec2');
+goog.require('goog.math.Size');
 
 (function(){
 
@@ -38,8 +40,13 @@ lime.parser.ZWOPTEX = function(data){
     
     for(var i in d1){
         var d2 = makeDict(d1[i]);
-        dict[i] = new  goog.math.Rect(parseInt(d2['x'].firstChild.nodeValue,10),parseInt(d2['y'].firstChild.nodeValue,10),
-            parseInt(d2['width'].firstChild.nodeValue,10),parseInt(d2['height'].firstChild.nodeValue,10));
+        d2.getValue = function(v){
+            return parseFloat(d2[v].firstChild.nodeValue)
+        }
+        dict[i] = [new  goog.math.Rect(d2.getValue('x'),d2.getValue('y'),d2.getValue('width'),d2.getValue('height')),
+            new goog.math.Vec2(d2.getValue('offsetX'),d2.getValue('offsetY')),
+            new goog.math.Size(d2.getValue('originalWidth'),d2.getValue('originalHeight'))
+            ];
     }
     
     return dict;
