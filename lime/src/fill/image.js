@@ -85,6 +85,12 @@ lime.fill.Image.prototype.initForSprite = function(sprite){
             
         }
     }
+    
+    if(!this.isLoaded()){
+        goog.events.listen(this,goog.events.EventType.LOAD,function(){
+            sprite.setDirty(lime.Dirty.CONTENT);
+        },false,this);
+    }
 };
 
 /**

@@ -89,6 +89,12 @@ lime.fill.Frame.prototype.initForSprite = function(sprite){
     
     lime.fill.Image.prototype.initForSprite.call(this,sprite);
     
+    if(!this.isProcessed()){
+        goog.events.listen(this,'processed',function(){
+            sprite.setDirty(lime.Dirty.CONTENT);
+        },false,this);
+    }
+    
     //switch to canvas if no support
 };
 
