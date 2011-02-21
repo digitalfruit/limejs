@@ -99,8 +99,8 @@ lime.scheduleManager.taskStack_.push(new lime.scheduleManager.Task(0));
  * Exposed here so it could be disabled if needed.
  * @type {boolean}
  */
-lime.scheduleManager.USE_ANIMATION_FRAME = goog.global['mozRequestAnimationFrame'];/* ||
-    goog.global['webkitRequestAnimationFrame']; */ // broken in chrome10beta, was ok in canary
+lime.scheduleManager.USE_ANIMATION_FRAME = goog.global['mozRequestAnimationFrame'] ||
+    goog.global['webkitRequestAnimationFrame'];
 
 /**
  * Returns maximum fire rate in ms. If you need FPS then use 1000/x
@@ -234,6 +234,7 @@ lime.scheduleManager.disable_ = function() {
  * @private
  */
 lime.scheduleManager.animationFrameHandler_ = function(time){
+    if(!time) time=goog.now(); // no time parameter in Chrome10beta
     var delta = time - this.lastRunTime_;
     this.dispatch_(delta);
     this.lastRunTime_ = time;
