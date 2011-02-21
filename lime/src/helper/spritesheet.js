@@ -3,6 +3,9 @@ goog.provide('lime.SpriteSheet');
 goog.require('lime.fill.Frame');
 goog.require('lime.parser.ZWOPTEX');
 
+/**
+ * @constructor
+ */
 lime.SpriteSheet = function(image,metadata,opt_parser){
     this.image_ = new lime.fill.Image(image);
     

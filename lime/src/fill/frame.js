@@ -1,6 +1,7 @@
 goog.provide('lime.fill.Frame');
 
 goog.require('lime.fill.Fill');
+goog.require('lime.fill.Image');
 goog.require('goog.math.Rect');
 goog.require('goog.style');
 goog.require('goog.cssom');
