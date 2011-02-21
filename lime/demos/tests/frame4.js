@@ -25,7 +25,7 @@ test.start = function() {
 
 	var gamescene = new lime.Scene;
 	
-    layer = new lime.Layer().setRenderer(lime.Renderer.CANVAS);
+    layer = new lime.Layer();
 	gamescene.appendChild(layer);
 	
 	goog.events.listen(gamescene,['mousedown','touchstart'],function(e){
