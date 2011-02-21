@@ -60,6 +60,10 @@ lime.animation.KeyframeAnimation = function() {
 };
 goog.inherits(lime.animation.KeyframeAnimation, lime.animation.Animation);
 
+
+/** @inheritDoc */
+lime.animation.KeyframeAnimation.prototype.scope = 'keyframe';
+
 /**
  * Set array of frames to be used in the animation
  * @param {Array.<string>} frames Paths to frame images.
@@ -81,11 +85,14 @@ lime.animation.KeyframeAnimation.prototype.setFrames = function(frames) {
 lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
     this.framesLoaded_ = false;
 
-    var fill = lime.fill.parse([frame]);
+    var fill = lime.fill.parse(goog.array.toArray(arguments));
     
     if(fill.id=='image' && !fill.isLoaded()){
         goog.events.listen(fill, goog.events.EventType.LOAD,
                 this.frameLoadedHandler_, false, this);
+    }
+    else if(fill.id=='frame' && !frame.isProcessed()){
+        goog.events.listen(fill,'processed',this.frameLoadedHandler_,false,this);
     }
     else {
         this.numFramesLoaded++;
@@ -114,13 +121,17 @@ lime.animation.KeyframeAnimation.prototype.play = function() {
 };
 
 /**
- * Iterate time for animation
- * @private
- * @param {number} dt Time difference since last run.
+ * @inheritDoc
  */
-lime.animation.KeyframeAnimation.prototype.step_ = function(dt) {
+lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
     if (this.numFramesLoaded_ < this.frames_.length_) return;
+    var dt = this.dt_;
     var delay_msec = Math.round(this.delay * 1000);
+    
+    var i = targets.length;
+    while (--i >= 0) {
+        this.getTargetProp(targets[i]);
+    }
 
     this.lastChangeTime_ += dt;
     if (this.lastChangeTime_ > delay_msec) {
@@ -128,7 +139,7 @@ lime.animation.KeyframeAnimation.prototype.step_ = function(dt) {
         if (nextFrame >= this.frames_.length) nextFrame = 0;
         nextImage = this.frames_[nextFrame];
 
-        var i = this.targets.length;
+        var i = targets.length;
         if (i > 0) {
 
             // Todo: make CSS Canvas optional
@@ -144,11 +155,11 @@ lime.animation.KeyframeAnimation.prototype.step_ = function(dt) {
 */
             if (this.usesBackgroundCanvas_) {
                 this.bgSprite.setFill(nextImage);
-                while (--i >= 0) {
+               /* while (--i >= 0) {
                     this.targets[i].setRenderMode(
                         lime.RenderMode.BACKGROUND_CANVAS);
                     this.targets[i].setFill(this.bgSprite);
-                }
+                }*/
             }
             else {
                 while (--i >= 0) {

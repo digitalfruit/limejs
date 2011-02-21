@@ -12,6 +12,7 @@ import zipfile
 import re
 import shutil
 import fileinput
+import mimetypes
 from os.path import join, splitext, split, exists
 from shutil import copyfile
 from datetime import datetime
@@ -194,6 +195,19 @@ def create(name):
     
     update()
 
+def makeSoyJSFile(path,stringbuilder):
+
+    if path[-4:]=='.soy':
+        call = "java -jar "+soy_path+" --cssHandlingScheme goog --shouldProvideRequireSoyNamespaces --outputPathFormat "+path+".js "
+    
+    if not stringbuilder:
+        call+=  "--codeStyle concat "
+            
+    call += path;
+    
+    print (call)
+    subprocess.call(call,shell=True)
+    
 
 def genSoy(path):
     
@@ -201,13 +215,39 @@ def genSoy(path):
         logging.error('No such directory %s',path)
         exit(1)
         
-    for root,dirs,files in os.walk(path):
-        for fname in files:
-            if fname[-4:]=='.soy':
-                soypath = os.path.join(root,fname)
-                call = "java -jar "+soy_path+" --cssHandlingScheme goog --shouldProvideRequireSoyNamespaces --outputPathFormat "+soypath+".js "+soypath;
-                print (call)
-                subprocess.call(call,shell=True)
+    if os.path.isfile(path):
+        
+        mtype = mimetypes.guess_type(path)[0]
+        
+        if path[-4:]=='.soy':
+            makeSoyJSFile(path,True)
+
+        elif mtype and ['image','audio','video'].count(mtype.split('/')[0]):
+            print ('not implemented yet for binary files')
+            
+        else :
+            outfile = open(path+'.soy','w')
+            fname = split(path)[1]
+            outfile.write('{namespace lime.ASSETS.'+fname+'}\n\n/**\n * Generated with "bin/lime.py gensoy filepath"\n */\n{template .data}\n')
+            for line in fileinput.FileInput(path):
+                line = line.replace('{','[[LB_POS]]')
+                line = line.replace('}','[[RB_POS]]')
+                line = line.replace('[[LB_POS]]','{lb}')
+                line = line.replace('[[RB_POS]]','{rb}')
+                outfile.write(line);
+            outfile.write('\n{/template}\n')
+            outfile.close()
+            makeSoyJSFile(path+'.soy',False)
+        
+    else:    
+        for root,dirs,files in os.walk(path):
+            for fname in files:
+                if fname[-4:]=='.soy':
+                    soypath = os.path.join(root,fname)
+                    makeSoyJSFile(soypath,False)
+       
+    update()
+             
 
 def build(name,options):
     
