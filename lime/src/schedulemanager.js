@@ -230,6 +230,7 @@ lime.scheduleManager.disable_ = function() {
 
 /**
  * Webkit implemtation of requestAnimationFrame handler.
+ * @this {lime.scheduleManager}
  * @private
  */
 lime.scheduleManager.animationFrameHandler_ = function(time){
@@ -241,6 +242,7 @@ lime.scheduleManager.animationFrameHandler_ = function(time){
 
 /**
  * Mozilla implemtation of requestAnimationFrame handler.
+ * @this {lime.scheduleManager} 
  * @private
  */
 lime.scheduleManager.beforePaintHandler_ = function(event){
