@@ -108,13 +108,11 @@ lime.Renderer.CANVAS.SPRITE.draw = function(context) {
     var frame = this.getFrame();
 
 
-    if (fill.id == 'image') {
-        if (width>0 && height>0){ 
-        try {
-        context.drawImage(fill.image_, frame.left,
-            frame.top, width, height);
-        }catch(e){}
-        }
+    if (fill.id == 'image' || fill.id=='frame') {
+        /*
+        
+        */
+        fill.setCanvasStyle(context, this);
     }
     else {
         fill.setCanvasStyle(context, this);

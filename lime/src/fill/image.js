@@ -54,7 +54,7 @@ goog.inherits(lime.fill.Image, lime.fill.Fill);
  * Already loaded image cache to reuse all img objects.
  * @private
  */
-lime.fill.Image.loadedImages_ = [];
+lime.fill.Image.loadedImages_ = {};
 
 /**
  * Common name for Image objects
@@ -84,6 +84,12 @@ lime.fill.Image.prototype.initForSprite = function(sprite){
         sprite.setSize(this.image_.width,this.image_.height);
             
         }
+    }
+    
+    if(!this.isLoaded()){
+        goog.events.listen(this,goog.events.EventType.LOAD,function(){
+            sprite.setDirty(lime.Dirty.CONTENT);
+        },false,this);
     }
 };
 
@@ -153,9 +159,7 @@ lime.fill.Image.prototype.setOffset = function(offset,opt_perc){
     return this;
 }
 
-/** @inheritDoc */
-lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
-    domEl.style['background'] = 'url(' + this.image_.src + ')';
+lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape){
     var size = shape.getSize().clone();
     if(this.size_){
        if(this.size_perc_){
@@ -166,8 +170,6 @@ lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
            size = this.size_;
        }
     }
-    domEl.style[lime.style.getCSSproperty('BackgroundSize')] = size.width+'px '+size.height+'px';
-    
     var offset = new goog.math.Coordinate(0,0);
     if(this.offset_){
         if(this.offset_perc_){
@@ -178,10 +180,46 @@ lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
             offset = this.offset_;
         }
     }
+    return [size,offset];
+}
+
+
+/**
+ * Common functionality so it could be reused on Frame
+ * @private
+ */
+lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
+    var so = this.getPixelSizeAndOffset(shape),size=so[0],offset=so[1];
+    domEl.style[lime.style.getCSSproperty('BackgroundSize')] = size.width+'px '+size.height+'px';
+    
     domEl.style['backgroundPosition'] = offset.x+'px '+offset.y+'px';
     
     //domEl.style['backgroundRepeat'] = 'no-repeat';
     if (this.qualityRenderer)
     domEl.style['imageRendering'] = 'optimizeQuality';
+}
+
+/** @inheritDoc */
+lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
+    domEl.style['background'] = 'url(' + this.image_.src + ')';
+    this.setDOMBackgroundProp_(domEl,shape);
 };
 
+lime.fill.Image.prototype.setCanvasStyle = function(context,shape) {
+    var size = shape.getSize(),frame = shape.getFrame();
+    if (!size.width || !size.height) return;
+    try {
+        var img = this.getImageElement();
+        var so = this.getPixelSizeAndOffset(shape),s=so[0],offset=so[1];
+        /* todo: No idea if drawimage() with loops is faster or if the
+           pattern object needs to be cached. Needs to be tested! */
+        var ptrn = context.createPattern(img,'repeat');
+        var aspx = s.width/img.width, aspy =s.height/img.height; 
+        context.save();
+        context.translate(frame.left+offset.x,frame.top+offset.y);
+        context.scale(aspx,aspy);
+        context.fillStyle = ptrn;
+        context.fillRect(-offset.x/aspx,-offset.y/aspy,size.width/aspx, size.height/aspy);
+        context.restore();
+    }catch(e){}
+};
