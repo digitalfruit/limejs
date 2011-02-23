@@ -177,9 +177,6 @@ def create(name):
     
     proj = os.path.relpath(path,basedir)
     
-    if proj!='.':
-        makeProjectPaths(os.path.relpath(path,basedir))
-    
     shutil.copytree(os.path.join(basedir,'lime/templates/default'),path)
     
     for root, dirs, files in os.walk(path):
@@ -192,6 +189,10 @@ def create(name):
                 print(line.rstrip())
             
     print ('Created %s' % path)
+    
+    
+    if proj!='.':
+        makeProjectPaths(os.path.relpath(path,basedir))
     
     update()
 
