@@ -885,16 +885,83 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
 };
 
 /**
+ * Return number of childnodes current element has.
+ * @return {number} Number of children.
+ */
+lime.Node.prototype.getNumberOfChildren = function(){
+    return this.children_.length;
+}
+
+/**
+ * Return the child at defined index.
+ * @param {number} index Child index.
+ * @return {lime.Node} Child element.
+ */
+lime.Node.prototype.getChildAt = function(index){
+    if(index>=0 && this.getNumberOfChildren()>index)
+        return this.children_[index];
+};
+
+/**
+ * Return the index position of a child.
+ * @param {lime.Node} child Child to search.
+ * @return {number} Index number.
+ */
+lime.Node.prototype.getChildIndex = function(child){
+    return this.children_.indexOf(child);
+};
+
+/**
  * Remove element from the childrens array
  * @param {lime.Node|domElement} child Child node.
  * @return {lime.Node} object itself.
  */
 lime.Node.prototype.removeChild = function(child) {
-    if (this.inTree_) child.wasRemovedFromTree();
-    child.removeDomElement();
-    child.parent_ = null;
-    this.children_.splice(this.children_.indexOf(child), 1);
-    return this.setDirty(lime.Dirty.LAYOUT);
+    return this.removeChildAt(this.getChildIndex(child));
+};
+
+/**
+ * Remove element at a given index from the childrens array
+ * @param {number} index Index of element to remove.
+ * @return {lime.Node} object itself.
+ */
+lime.Node.prototype.removeChildAt = function(index){
+    if(index>=0 && this.getNumberOfChildren()>index){
+        var child = this.getChildAt(index);
+        if (this.inTree_) child.wasRemovedFromTree();
+        child.removeDomElement();
+        child.parent_ = null;
+        this.children_.splice(index, 1);
+        return this.setDirty(lime.Dirty.LAYOUT);
+    }
+    return this;
+};
+
+/**
+ * Removes all children of a node.
+ * @return {lime.Node} object itself.
+ */
+lime.Node.prototype.removeAllChildren = function(){
+    while(this.getNumberOfChildren()){
+        this.removeChildAt(0);
+    }
+    return this;
+};
+
+/**
+ * Move a child to another index in the childrens array.
+ * @param {lime.Node} child Child node.
+ * @param {number} index New index for the child.
+ * @return {lime.Node} object itself.
+ */
+lime.Node.prototype.setChildIndex = function(child,index){
+    var oldindex = this.getChildIndex(child);
+    if(oldindex!=-1 && oldindex!=index){
+        this.children_.splice(oldindex,1);
+        goog.array.insertAt(this.children_, child, index);
+        return this.setDirty(lime.Dirty.LAYOUT);
+    }
+    return this;
 };
 
 /**
