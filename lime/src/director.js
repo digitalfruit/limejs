@@ -496,7 +496,7 @@ lime.Director.prototype.makeMobileWebAppCapable = function() {
     }
 
     var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
-    if (ios && !window.navigator.standalone && COMPILED && !visited) {
+    if (ios && !window.navigator.standalone && COMPILED && !visited && this.domElement.parentNode==document.body) {
         alert('Please install this page as a web app by ' +
             'clicking Share + Add to home screen.');
         if (goog.isDef(localStorage)) {
