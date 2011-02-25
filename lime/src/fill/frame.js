@@ -6,6 +6,7 @@ goog.require('goog.math.Rect');
 goog.require('goog.style');
 goog.require('goog.cssom');
 goog.require('goog.dom.classes');
+goog.require('goog.dom')
 
 /**
  * Image fill.
@@ -41,7 +42,7 @@ lime.fill.Frame = function(img,rect,opt_offset,opt_size) {
         this.data_.processed = false;
         this.data_.initializer = this;
         this.data_.classname = this.getNextCssClass_();
-   
+        this.dataCache_[key] = this.data_;
         
         if(this.USE_CSS_CANVAS){
             this.ctx = document.getCSSCanvasContext('2d', this.data_.classname, this.csize_.width, this.csize_.height);
@@ -157,7 +158,7 @@ lime.fill.Frame.prototype.getImageElement = function(){
 };
 
 lime.fill.Frame.prototype.makeCanvas = function(){
-    this.cvs = document.createElement('canvas');
+    this.cvs = goog.dom.createDom('canvas');
     var ctx = this.cvs.getContext('2d');
     this.cvs.width = this.csize_.width;
     this.cvs.height = this.csize_.height;
@@ -166,7 +167,6 @@ lime.fill.Frame.prototype.makeCanvas = function(){
 
 lime.fill.Frame.prototype.writeToCanvas = function(ctx){
     var r = this.rect_, w = r.width, h = r.height, l = r.left, t = r.top;
-
     if(l<0){
         w+=l;
         l=0;
@@ -188,7 +188,7 @@ lime.fill.Frame.prototype.writeToCanvas = function(ctx){
 /** @inheritDoc */
 lime.fill.Frame.prototype.setDOMStyle = function(domEl,shape) {
     if(this.USE_CSS_CANVAS){
-        domEl.style['background'] = '-webkit-canvas('+this.data_.classname+')';
+        domEl.style['background'] = '-webkit-canvas('+this.data_.classname+')';    
     }    
     else if(this.data_.classname!=shape.cvs_background_class_){
         goog.dom.classes.add(domEl,this.data_.classname);
