@@ -959,6 +959,8 @@ lime.Node.prototype.setChildIndex = function(child,index){
     if(oldindex!=-1 && oldindex!=index){
         this.children_.splice(oldindex,1);
         goog.array.insertAt(this.children_, child, index);
+        if(this.getDirector())
+        this.getDirector().eventDispatcher.updateDispatchOrder(child);
         return this.setDirty(lime.Dirty.LAYOUT);
     }
     return this;
@@ -1047,6 +1049,8 @@ lime.Node.prototype.wasRemovedFromTree = function() {
        if (!this.getDirector()) debugger;
         this.getDirector().eventDispatcher.release(this, type);
     }
+    
+    this.getDirector().eventDispatcher.updateDispatchOrder(this);
 
     this.inTree_ = false;
     this.director_ = null;
@@ -1072,6 +1076,8 @@ lime.Node.prototype.wasAddedToTree = function() {
         this.eventHandlers_[type][0] = 1;
         this.getDirector().eventDispatcher.register(this, type);
     }
+    
+    this.getDirector().eventDispatcher.updateDispatchOrder(this);
 };
 
 /**

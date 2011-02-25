@@ -54,6 +54,19 @@ lime.events.EventDispatcher.prototype.release = function(node, eventType) {
 };
 
 /**
+ * Update order of handler nodes. Called on tree changes.
+ * @param {lime.Node} node Node that has changed.
+ */
+lime.events.EventDispatcher.prototype.updateDispatchOrder = function(node){
+    for(var eventType in this.handlers){
+        var handlers = this.handlers[eventType];
+        if(goog.array.contains(handlers,node)){
+            handlers.sort(lime.Node.compareNode).reverse(); // todo: why reverse?
+        }
+    }
+}
+
+/**
  * Setup swallow rule for an event. Swallow means that next events from
  * same interaction will go straight to the handler
  * @param {lime.events.Event} e Event.
@@ -137,7 +150,7 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
             if (this.director.getCurrentScene() != handler.getScene() &&
                 handler != this.director) continue;
 
-            if (handler.getHidden()) continue;
+            if (handler.getHidden() || !handler.inTree_) continue;
 
             ee.targetObject = handler;
 
