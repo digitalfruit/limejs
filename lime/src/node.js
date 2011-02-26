@@ -866,7 +866,16 @@ lime.Node.prototype.getParent = function() {
  * @return {lime.Node} obejct itself.
  */
 lime.Node.prototype.appendChild = function(child, opt_pos) {
+    
+    if (child instanceof lime.Node && child.getParent()) {
+        child.getParent().removeChild(child);
+    }
+    else if(child.parentNode){
+        goog.dom.removeNode(child);
+    }
+    
     child.parent_ = this;
+    
     if (opt_pos == undefined) {
         this.children_.push(child);
     }
