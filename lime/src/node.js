@@ -459,6 +459,16 @@ lime.Node.prototype.setQuality = function(value) {
     return this;
 };
 
+/**
+ * Return cumulative quality value relative to screen full quality.
+ * @return {number} Quality value.
+ */
+lime.Node.prototype.getRelativeQuality = function(){
+    if(!this.relativeQuality_)
+        this.calcRelativeQuality();
+        
+    return this.relativeQuality_;
+}
 
 /**
  * Calculates relative quality change from the

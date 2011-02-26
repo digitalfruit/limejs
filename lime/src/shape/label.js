@@ -308,6 +308,15 @@ lime.Label.prototype.wrapText = function(context, width) {
     return lines;
 };
 
+/** @inheritDoc */
+lime.Label.prototype.update = function(){
+    
+    if(this.getDirty() & lime.Dirty.CONTENT)
+        delete this.lastDrawnWidth_;
+    
+    lime.Node.prototype.update.apply(this,arguments);
+}
+
 
 /**
  * @inheritDoc
@@ -322,10 +331,10 @@ lime.Renderer.DOM.LABEL.draw = function(el) {
     }
     if (this.dirty_ & lime.Dirty.FONT) {
         style['lineHeight'] = this.getLineHeight();
-        style['padding'] = this.padding_.join('px ') + 'px';
+        style['padding'] = goog.array.map(this.padding_,function(p){return p*this.getRelativeQuality()},this).join('px ') + 'px';
         style['color'] = this.getFontColor();
         style['fontFamily'] = this.getFontFamily();
-        style['fontSize'] = this.getFontSize() + 'px';
+        style['fontSize'] = this.getFontSize()*this.getRelativeQuality() + 'px';
         style['fontWeight'] = this.getFontWeight();
         style['textAlign'] = this.getAlign();
     }
@@ -348,11 +357,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
         dowrap = 1;
     }
     
-    if(dowrap || width!=this.lastDrawnWidth_){
-        this.lines_ = this.wrapText(context, width);
-        this.lastDrawnWidth_ = width;
-    }
-    
+
 
     context.save();
     var align = this.getAlign();
@@ -378,6 +383,12 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
         'px/' + lh + ' ' + this.getFontFamily();
     context.textAlign = align;
     context.textBaseline = 'top';
+    
+    if(dowrap || width!=this.lastDrawnWidth_){
+        this.lines_ = this.wrapText(context, width);
+        this.lastDrawnWidth_ = width;
+    }
+    
 
     if (this.lines_) {
         var lhpx = lh * this.getFontSize();
