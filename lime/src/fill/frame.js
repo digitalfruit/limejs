@@ -154,11 +154,16 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
  */
 lime.fill.Frame.prototype.getImageElement = function(){
     if(!this.frameImgCache_){
+        if(this.data_.initializer && this.data_.initializer.frameImgCache_){
+            this.frameImgCache_ = this.data_.initializer.frameImgCache_;
+        }
+        else {
         if(!this.cvs){
             var ctx = this.makeCanvas();
             this.writeToCanvas(ctx);
         }
         this.frameImgCache_ = this.cvs;
+        }
     }
     return this.frameImgCache_;
 };
