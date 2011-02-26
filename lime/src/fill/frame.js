@@ -124,7 +124,8 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
     
     if(!this.USE_CSS_CANVAS){
 
-    var rule = '.'+this.data_.classname+'{background-image:url('+this.cvs.toDataURL("image/png")+') !important}';
+    var contents = this.cvs.toDataURL("image/png"),
+        rule = '.'+this.data_.classname+'{background-image:url('+contents+') !important}';
     if(!styleSheet){
         goog.style.installStyles(rule);
        styleSheet = document.styleSheets[document.styleSheets.length-1];
@@ -135,10 +136,15 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
        else goog.cssom.addCssRule(styleSheet,rule);
     }
     
+    // laoding into image to avoid flickery onf firefox firat load
+    this.data_.img = goog.dom.createDom('img');
+    this.data_.img.src = contents;
+
     }
     
     this.data_.processed = true;
     this.dispatchEvent(new goog.events.Event('processed'));
+    
 };
 
 })();
