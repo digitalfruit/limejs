@@ -224,6 +224,14 @@ def genSoy(path):
         
         if path[-4:]=='.soy':
             makeSoyJSFile(path,True)
+            
+        elif path[-5:]=='.json':
+            infile= open(path,'r')
+            outfile = open(path+'.js','w')
+            outfile.write('goog.provide(\'lime.ASSETS.'+fname+'\');\ngoog.require(\'soy\');\n\n'+ \
+                'lime.ASSETS.'+fname+'.data = function(opt_data) { \nreturn '+infile.read()+';\n}')
+            infile.close()
+            outfile.close()
 
         elif mtype and ['image','audio','video'].count(mtype.split('/')[0]):
             infile= open(path,'r')

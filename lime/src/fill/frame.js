@@ -25,10 +25,10 @@ lime.fill.Frame = function(img,rect,opt_offset,opt_size) {
     }
     
     this.rect_ = rect;
-    this.offset_ = opt_offset || new goog.math.Vec2(0,0);
+    this.coffset_ = opt_offset || new goog.math.Vec2(0,0);
     this.csize_ = opt_size || new goog.math.Size(this.rect_.width,this.rect_.height);
     
-    var r = this.rect_,key = [this.url_,r.width,r.height,r.left,r.top,this.offset_.x,this.offset_.y].join('_');
+    var r = this.rect_,key = [this.url_,r.width,r.height,r.left,r.top,this.coffset_.x,this.coffset_.y].join('_');
     if(goog.isDef(this.dataCache_[key])){
         this.data_ = this.dataCache_[key];
         if(!this.data_.processed){
@@ -186,13 +186,9 @@ lime.fill.Frame.prototype.writeToCanvas = function(ctx){
         h+=t;
         t=0;
     }
-
     if(w+l>this.image_.width) w= this.image_.width-l;
     if(h+t>this.image_.height) h= this.image_.height-t;
-    var ox = (this.csize_.width - this.rect_.width) / 2 - this.offset_.x,
-        oy = (this.csize_.height - this.rect_.height) / 2 - this.offset_.y;
-    
-    ctx.drawImage(this.image_,l,t,w,h,ox,oy,w,h);
+    ctx.drawImage(this.image_,l,t,w,h,this.coffset_.x,this.coffset_.y,w,h);
     
 };
 
