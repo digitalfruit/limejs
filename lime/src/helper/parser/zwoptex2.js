@@ -45,12 +45,26 @@ lime.parser.ZWOPTEX2 = function(data){
     for(var i in d1){
         var d2 = makeDict(d1[i]);
         d2.getValue = parse;
-        var tr = d2.getValue('textureRect'), ss = d2.getValue('spriteSourceSize'),
-            scr = d2.getValue('spriteColorRect');
+        
+        var frame_ = d2['textureRect'] ? 'textureRect' : 'frame',
+            sourceSize_ = d2['spriteSourceSize'] ? 'spriteSourceSize' : 'sourceSize',
+            sourceColorRect_ = d2['spriteColorRect'] ? 'spriteColorRect' : 'sourceColorRect',
+            rotated_ = d2['textureRotated'] ? 'textureRotated' : 'rotated';
+        
+        var tr = d2.getValue(frame_), ss = d2.getValue(sourceSize_),
+            scr = d2.getValue(sourceColorRect_);
+             
+        var rotated = d2[rotated_].tagName.toLowerCase()=='true';
+                
+        if(rotated && rotated_=='rotated'){
+            var c = tr[1][0];
+            tr[1][0] = tr[1][1];
+            tr[1][1] = c;
+        }
         dict[i] = [new  goog.math.Rect(tr[0][0],tr[0][1],tr[1][0],tr[1][1]),
-            new goog.math.Vec2(scr[0][0],scr[0][1]),
-            new goog.math.Size(ss[0],ss[1]),d2['textureRotated'].tagName.toLowerCase()=='true'
-            ];
+                new goog.math.Vec2(scr[0][0],scr[0][1]),
+                new goog.math.Size(ss[0],ss[1]),rotated
+                ];
     }
     
     return dict;
