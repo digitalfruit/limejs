@@ -6,10 +6,14 @@ goog.require('lime.parser.ZWOPTEX');
 /**
  * @constructor
  */
-lime.SpriteSheet = function(image,metadata,opt_parser){
+lime.SpriteSheet = function(image,metadata,parser){
     this.image_ = new lime.fill.Image(image);
     
-    var parser = opt_parser || lime.parser.ZWOPTEX;
+    if(!goog.isDef(parser) && goog.DEBUG && goog.global['console'] && goog.global['console']['warn']){
+        goog.global['console']['warn']('DEPRECATED: SpriteSheet 3rd parser parameter is now required.');
+    }
+    
+    var parser = parser || lime.parser.ZWOPTEX;
     
     this.metadata_ = parser(metadata.data());
 }
