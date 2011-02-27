@@ -15,18 +15,20 @@ goog.require('goog.dom')
  * @constructor
  * @extends lime.fill.Image
  */
-lime.fill.Frame = function(img,rect,opt_offset,opt_size) {
+lime.fill.Frame = function(img,rect,opt_offset,opt_size,opt_rotated) {
     lime.fill.Image.call(this,img);
     
     if(goog.isNumber(rect)){
         rect = new goog.math.Rect(arguments[1],arguments[2],arguments[3],arguments[4]);
         opt_offset = false;
         opt_size = false;
+        opt_rotated = false;
     }
     
     this.rect_ = rect;
     this.coffset_ = opt_offset || new goog.math.Vec2(0,0);
     this.csize_ = opt_size || new goog.math.Size(this.rect_.width,this.rect_.height);
+    this.rotated_ = opt_rotated || false;
     
     var r = this.rect_,key = [this.url_,r.width,r.height,r.left,r.top,this.coffset_.x,this.coffset_.y].join('_');
     if(goog.isDef(this.dataCache_[key])){
@@ -177,7 +179,7 @@ lime.fill.Frame.prototype.makeCanvas = function(){
 };
 
 lime.fill.Frame.prototype.writeToCanvas = function(ctx){
-    var r = this.rect_, w = r.width, h = r.height, l = r.left, t = r.top;
+    var r = this.rect_, w = r.width, h = r.height, l = r.left, t = r.top,ox,oy;
     if(l<0){
         w+=l;
         l=0;
@@ -188,8 +190,18 @@ lime.fill.Frame.prototype.writeToCanvas = function(ctx){
     }
     if(w+l>this.image_.width) w= this.image_.width-l;
     if(h+t>this.image_.height) h= this.image_.height-t;
-    ctx.drawImage(this.image_,l,t,w,h,this.coffset_.x,this.coffset_.y,w,h);
+    if(this.rotated_){
+        ctx.rotate(-Math.PI*.5);
+        ctx.translate(-this.csize_.height,0);
+        ox = this.csize_.height-this.coffset_.y-w;
+        oy = this.coffset_.x;
+    }
+    else {
+        ox = this.coffset_.x;
+        oy = this.coffset_.y;
+    }
     
+    ctx.drawImage(this.image_,l,t,w,h,ox,oy,w,h);
 };
 
 /** @inheritDoc */

@@ -48,7 +48,7 @@ lime.parser.ZWOPTEX = function(data){
             ox =  (ow - w) / 2 + d2.getValue('offsetX'), oy = (oh - h) / 2 + d2.getValue('offsetY');
         dict[i] = [new  goog.math.Rect(d2.getValue('x'),d2.getValue('y'),w,h),
             new goog.math.Vec2(ox,oy),
-            new goog.math.Size(ow,oh)
+            new goog.math.Size(ow,oh),false
             ];
     }
     

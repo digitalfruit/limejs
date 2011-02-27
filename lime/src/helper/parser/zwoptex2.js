@@ -47,10 +47,9 @@ lime.parser.ZWOPTEX2 = function(data){
         d2.getValue = parse;
         var tr = d2.getValue('textureRect'), ss = d2.getValue('spriteSourceSize'),
             scr = d2.getValue('spriteColorRect');
-      
         dict[i] = [new  goog.math.Rect(tr[0][0],tr[0][1],tr[1][0],tr[1][1]),
             new goog.math.Vec2(scr[0][0],scr[0][1]),
-            new goog.math.Size(ss[0],ss[1])
+            new goog.math.Size(ss[0],ss[1]),d2['textureRotated'].tagName.toLowerCase()=='true'
             ];
     }
     
