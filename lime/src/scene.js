@@ -24,3 +24,8 @@ goog.inherits(lime.Scene, lime.Node);
 lime.Scene.prototype.getScene = function() {
     return this;
 };
+
+/** @inheritDoc */
+lime.Scene.prototype.measureContents = function() {
+    return this.getFrame();
+}
