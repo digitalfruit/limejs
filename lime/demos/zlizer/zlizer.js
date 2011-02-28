@@ -101,6 +101,18 @@ zlizer.loadGame = function(level) {
     zlizer.director.replaceScene(zlizer.activeGame, lime.transitions.MoveInUp);
 };
 
+// add lime credintials to a scene
+zlizer.builtWithLime = function(scene) {
+    var lm = new lime.Sprite().setFill('assets/lime.png');
+    var txt = new lime.Label().setText('Built with').setFontColor('#fff').setFontSize(24).setPosition(550, 950);
+    var btn = new lime.Button(lm).setScale(.3).setPosition(670, 950);
+    goog.events.listen(btn, 'click', function() {
+        goog.global['location']['href'] = 'http://www.limejs.com/';
+    });
+    scene.appendChild(txt);
+    scene.appendChild(btn);
+};
+
 
 function Particle(x0, y0, x1, y1) {
     this.p0 = [x0, y0];

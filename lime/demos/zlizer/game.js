@@ -69,6 +69,10 @@ zlizer.Game = function(level) {
     goog.events.listen(btn, 'click', function() {zlizer.loadMenuScene(lime.transitions.MoveInUp);});
 
     this.startup();
+    
+    
+	//lime logo
+	zlizer.builtWithLime(this);
 };
 goog.inherits(zlizer.Game, lime.Scene);
 
