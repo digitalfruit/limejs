@@ -10,6 +10,7 @@ goog.require('lime.animation.Spawn');
 goog.require('zlizer.Bubble');
 goog.require('zlizer.Progress');
 goog.require('zlizer.dialogs');
+goog.require('lime.CanvasContext');
 
 /**
  * @constructor
@@ -70,6 +71,9 @@ zlizer.Game = function(level) {
 
     this.startup();
     
+    //only needed to use pointInPath() function. no actual drawing.
+    var canvas = goog.dom.createDom('canvas');
+    this.ctx = canvas.getContext('2d');
     
 	//lime logo
 	zlizer.builtWithLime(this);
@@ -108,42 +112,47 @@ zlizer.Game.prototype.start = function() {
     this.touches = [];
 
     this.layer.runAction(new lime.animation.FadeTo(1));
+    
+    this.graphics = new lime.CanvasContext().setSize(zlizer.director.getSize().clone()).setAnchorPoint(0,0).setQuality(.5);
+    this.appendChild(this.graphics);
+    this.graphics.draw = goog.bind(this.drawTouches_,this);
 
-    var canvas = document.createElement('canvas');
-    canvas.width = zlizer.director.getSize().width;
-    canvas.height = zlizer.director.getSize().height;
-    this.appendChild(canvas);
-
-    this.ctx = canvas.getContext('2d');
-   if(goog.userAgent.MOBILE)
-   this.ctx.globalCompositeOperation = 'copy';
+   
     this.isdown = false;
 
     goog.events.listen(this, ['mousedown', 'touchstart', 'keydown'],
          this.downHandler_, false, this);
 
-    lime.scheduleManager.schedule(this.drawTouches_, this);
+    lime.scheduleManager.schedule(function(){
+     this.graphics.setDirty(lime.Dirty.CONTENT);
+     }, this);
 };
 
-zlizer.Game.prototype.drawTouches_ = function(dt) {
-    var ctx = this.ctx,
+zlizer.Game.prototype.drawTouches_ = function(ctx) {
+    
+    var now = goog.now();
+    if(!this.lastRun_) this.lastRun_ = now;
+    var dt = now-this.lastRun_,
         dt_ms = dt / 1000,
         LIFE = this.LIFE,
         MAX = this.MAX,
         REST = this.LIFE - this.MAX,
         t, i, p, particles;
 
-
-
+        this.lastRun_ = now;
+        
+    if(goog.userAgent.MOBILE)
+       this.ctx.globalCompositeOperation = 'copy';
+    else 
+        ctx.clearRect(0,0,zlizer.director.getSize().width,zlizer.director.getSize().height);
+          
     // style for clear. clearRect is very slow on ios
     ctx.strokeStyle = 'rgba(0,0,0,0)';
     ctx.lineCap = 'round';
     ctx.lineWidth = 17;
     ctx.shadowBlur = 0;
     ctx.shadowColor = '#fff';
-    if(!goog.userAgent.MOBILE){
-        ctx.clearRect(0,0,zlizer.director.getSize().width,zlizer.director.getSize().height);
-    }
+   
 
     var t = this.touches.length;
     while (--t >= 0) {
@@ -209,6 +218,7 @@ zlizer.Game.prototype.downHandler_ = function(e) {
 
     e.swallow(['mousemove', 'touchmove'], goog.partial(this.moveHandler_, touch));
     e.swallow(['mouseup', 'touchend', 'touchcancel', 'keyup'], goog.partial(this.upHandler_, touch));
+    
 };
 zlizer.Game.prototype.moveHandler_ = function(touch,e) {
     if (!goog.isDef(touch.pos)) {
@@ -305,7 +315,6 @@ zlizer.Game.prototype.upHandler_ = function(touch,e) {
             }
         }
     }
-
 };
 
 zlizer.Game.prototype.startup = function() {
