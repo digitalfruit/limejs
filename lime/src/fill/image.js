@@ -197,10 +197,10 @@ lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape){
  * @private
  */
 lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
-    var so = this.getPixelSizeAndOffset(shape),size=so[0],offset=so[1];
-    domEl.style[lime.style.getCSSproperty('BackgroundSize')] = size.width+'px '+size.height+'px';
+    var so = this.getPixelSizeAndOffset(shape),size=so[0],offset=so[1],q = shape.getRelativeQuality();
+    domEl.style[lime.style.getCSSproperty('BackgroundSize')] = size.width*q+'px '+size.height*q+'px';
     
-    domEl.style['backgroundPosition'] = offset.x+'px '+offset.y+'px';
+    domEl.style['backgroundPosition'] = offset.x*q+'px '+offset.y*q+'px';
     
     //domEl.style['backgroundRepeat'] = 'no-repeat';
     if (this.qualityRenderer)
