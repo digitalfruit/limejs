@@ -97,7 +97,7 @@ test.makeLayerOfStuff = function(){
         setFill(255,0,150,.5).setPosition(400,70).setRotation(190).setScale(1.5);
     layer.appendChild(poly);
     
-    poly.runAction(
+    mask.runAction(
         new lime.animation.Loop(
             new lime.animation.RotateBy(30).setDuration(1)
         )

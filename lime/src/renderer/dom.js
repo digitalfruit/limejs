@@ -192,8 +192,6 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
     var cos = Math.cos(rot);
     var sin = Math.sin(rot);
 
-    tl.x = Math.round(tl.x);
-    tl.y = Math.round(tl.y);
 
     this.mWidth = Math.round(Math.sqrt(x1 * x1 + y1 * y1));
     this.mHeight = Math.round(Math.sqrt(x2 * x2 + y2 * y2));
@@ -204,7 +202,7 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
         //todo: can be optimized
         goog.style.setSize(el, this.mWidth, this.mHeight);
 
-        lime.style.setTransform(el, new lime.style.Transform().
+        lime.style.setTransform(el, new lime.style.Transform().setPrecision(.1).
             translate(tl.x, tl.y).rotate(-rot, 'rad'));
     }
 
