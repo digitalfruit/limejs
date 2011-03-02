@@ -222,6 +222,11 @@ lime.Node.prototype.setDirty = function(value, opt_pass, opt_nextframe) {
         this.dirty_ = 0;
         lime.clearObjectDirty(this, opt_pass, opt_nextframe);
     }
+    if(value && this.maskTarget_){
+        this.mSet = false;
+        this.maskTarget_.setDirty(~0);
+    }
+    
     return this;
 };
 
@@ -292,7 +297,17 @@ lime.Node.prototype.getMask = function() {
 lime.Node.prototype.setMask = function(value) {
     if (value == this.mask_) return;
 
+    if(this.mask_){
+        this.mask_.releaseDependencies();
+        delete this.mask_.maskTarget_;
+    }
+
     this.mask_ = value;
+    
+    if(this.mask_){
+        this.mask_.setupDependencies();
+        this.mask_.maskTarget_ = this;
+    }
 
     return this.setDirty(lime.Dirty.CONTENT);
 };
@@ -816,7 +831,7 @@ lime.Node.prototype.update = function(opt_pass) {
         if (this.renderer.getType() == lime.Renderer.CANVAS) {
             var parent = this.getDeepestParentWithDom();
             parent.redraw_ = 1;
-            if (parent == this && this.dirty_ == lime.Dirty.POSITION) {
+            if (parent == this && this.dirty_ == lime.Dirty.POSITION && !this.mask_) {
                 parent.redraw_ = 0;
             }
             lime.setObjectDirty(this.getDeepestParentWithDom(), 1);
@@ -832,6 +847,12 @@ lime.Node.prototype.update = function(opt_pass) {
     for (i in this.transitionsActive_) {
         if (this.transitionsActive_[i]) {
             this.transitionsActiveSet_[i] = true;
+        }
+    }
+    
+    if(this.dependencies_){
+        for(var i=0;i<this.dependencies_.length;i++){
+            this.dependencies_[i].setDirty(lime.Dirty.ALL);
         }
     }
 
@@ -966,6 +987,10 @@ lime.Node.prototype.getScene = function() {
  * Handle removing Node from DOM tree
  */
 lime.Node.prototype.wasRemovedFromTree = function() {
+    
+    if(!this.dependencySet_){
+        this.removeDependency(this.getParent());
+    }
 
     // Call remove for all children
     for (var i = 0; child = this.children_[i]; i++) {
@@ -984,6 +1009,7 @@ lime.Node.prototype.wasRemovedFromTree = function() {
     this.inTree_ = false;
     this.director_ = null;
     this.scene_ = null;
+    
 };
 
 /**
@@ -1005,7 +1031,40 @@ lime.Node.prototype.wasAddedToTree = function() {
         this.eventHandlers_[type][0] = 1;
         this.getDirector().eventDispatcher.register(this, type);
     }
+    
+    if(this.dependencySet_){
+        this.setupDependencies();
+    }
 };
+
+lime.Node.prototype.setupDependencies = function(){
+   this.dependencySet_ = true;
+   if(this.inTree_){
+       this.addDependency(this.getParent());
+   }
+}
+
+lime.Node.prototype.addDependency = function(other){
+    if(!other.dependencies_) other.dependencies_ = [];
+    
+    goog.array.insert(other.dependencies_,this);
+    if(!other && !(other.getParent() instanceof lime.Scene)){
+        this.addDependency(other.getParent());
+    }
+    
+}
+
+lime.Node.prototype.removeDependency = function(other){
+    if(!other || !other.dependencies_) return;
+
+    goog.array.remove(other.dependencies_,this);
+    this.removeDependency(other.getParent());
+}
+
+lime.Node.prototype.releaseDependencies = function(){
+    delete this.dependencySet_;
+    this.removeDependency(this.getParent());
+}
 
 /**
  * Returns bounding box for element is elements own coordinate space

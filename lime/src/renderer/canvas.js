@@ -128,9 +128,8 @@ lime.Renderer.CANVAS.drawCanvas = function() {
             if (goog.isDef(this.transitionsActive_[lime.Transition.ROTATION])) {
                 rotation = -this.transitionsActive_[lime.Transition.ROTATION];
             }
-
             lime.style.setTransform(this.domElement,
-                new lime.style.Transform().translate(pos.x, pos.y).
+                new lime.style.Transform().setPrecision(.1).translate(pos.x, pos.y).
                 scale(realScale.x, realScale.y).rotate(rotation));
         }
 
@@ -162,10 +161,6 @@ lime.Renderer.CANVAS.drawCanvas = function() {
 * @this {lime.Node}
 */
 lime.Renderer.CANVAS.update = function() {
-    if (this.isMask == 1 && this.getDirty()) {
-           this.setDirty(0);
-           lime.Renderer.DOM.updateMask.call(this);
-     }
 };
 
 
@@ -187,9 +182,7 @@ lime.Renderer.CANVAS.drawCanvasObject = function(context) {
     }
 
     // if element is mask the only update mask prop and return
-    if (this.isMask == 1 && this.getDirty()) {
-        this.setDirty(0);
-        lime.Renderer.DOM.updateMask.call(this);
+    if (this.maskTarget_) {
         return;
     }
 
@@ -201,7 +194,8 @@ lime.Renderer.CANVAS.drawCanvasObject = function(context) {
         context.globalAlpha *= this.opacity_;
     }
 
-    if (this.activeMask_ && this.activeMask_.mPos) {
+    if (this.mask_) {
+        lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);
         var m = this.activeMask_, scale = this.scale_;
         context.save();
         context.save();

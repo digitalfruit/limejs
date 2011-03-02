@@ -105,8 +105,9 @@ lime.Renderer.DOM.drawSizePosition = function() {
 
     var transform = new lime.style.Transform().setPrecision(.1);
 
-    if (this.mask_ && this.mask_.mSet) {
-       transform.//setPrecision(.1).
+    if (this.mask_) {
+      lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);
+       transform.setPrecision(.1).
             translate(-this.mask_.mX - ax, -this.mask_.mY - ay).
             rotate(this.mask_.mRot, 'rad').translate(ax, ay).setPrecision(1);
     }
@@ -149,11 +150,7 @@ lime.Renderer.DOM.update = function() {
         this.domElement.style['display'] = this.hidden_ ? 'none' : 'block';
     }
 
-    if (this.isMask == 1) {
-        lime.Renderer.DOM.updateMask.call(this);
-    }
-
-
+    if(!this.maskTarget_)
     this.renderer.draw.call(this, this.domElement);
 
 };
@@ -162,7 +159,7 @@ lime.Renderer.DOM.update = function() {
  * Update the mask changes to reflect on the element
  * @this {lime.Node}
  */
-lime.Renderer.DOM.updateMask = function() {
+lime.Renderer.DOM.calculateMaskPosition = function() {
 
     if (!goog.isDef(this.targetNode)) return;
 
@@ -221,9 +218,11 @@ lime.Renderer.DOM.updateMask = function() {
     this.mX = cos * tl.x - sin * tl.y;
     this.mY = cos * tl.y + sin * tl.x;
     this.mRot = rot;
-
+/*
     target.setDirty(lime.Dirty.POSITION);
     target.update();
+*/
+    
 };
 
 /**
