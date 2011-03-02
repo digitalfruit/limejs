@@ -6,6 +6,7 @@ goog.require('goog.math.Rect');
 goog.require('goog.style');
 goog.require('goog.cssom');
 goog.require('goog.dom.classes');
+goog.require('goog.dom')
 
 /**
  * Image fill.
@@ -14,20 +15,22 @@ goog.require('goog.dom.classes');
  * @constructor
  * @extends lime.fill.Image
  */
-lime.fill.Frame = function(img,rect,opt_offset,opt_size) {
+lime.fill.Frame = function(img,rect,opt_offset,opt_size,opt_rotated) {
     lime.fill.Image.call(this,img);
     
     if(goog.isNumber(rect)){
         rect = new goog.math.Rect(arguments[1],arguments[2],arguments[3],arguments[4]);
         opt_offset = false;
         opt_size = false;
+        opt_rotated = false;
     }
     
     this.rect_ = rect;
-    this.offset_ = opt_offset || new goog.math.Vec2(0,0);
+    this.coffset_ = opt_offset || new goog.math.Vec2(0,0);
     this.csize_ = opt_size || new goog.math.Size(this.rect_.width,this.rect_.height);
+    this.rotated_ = opt_rotated || false;
     
-    var r = this.rect_,key = [this.url_,r.width,r.height,r.left,r.top,this.offset_.x,this.offset_.y].join('_');
+    var r = this.rect_,key = [this.url_,r.width,r.height,r.left,r.top,this.coffset_.x,this.coffset_.y].join('_');
     if(goog.isDef(this.dataCache_[key])){
         this.data_ = this.dataCache_[key];
         if(!this.data_.processed){
@@ -41,7 +44,7 @@ lime.fill.Frame = function(img,rect,opt_offset,opt_size) {
         this.data_.processed = false;
         this.data_.initializer = this;
         this.data_.classname = this.getNextCssClass_();
-   
+        this.dataCache_[key] = this.data_;
         
         if(this.USE_CSS_CANVAS){
             this.ctx = document.getCSSCanvasContext('2d', this.data_.classname, this.csize_.width, this.csize_.height);
@@ -123,7 +126,8 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
     
     if(!this.USE_CSS_CANVAS){
 
-    var rule = '.'+this.data_.classname+'{background-image:url('+this.cvs.toDataURL("image/png")+') !important}';
+    var contents = this.cvs.toDataURL("image/png"),
+        rule = '.'+this.data_.classname+'{background-image:url('+contents+') !important}';
     if(!styleSheet){
         goog.style.installStyles(rule);
        styleSheet = document.styleSheets[document.styleSheets.length-1];
@@ -134,10 +138,15 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
        else goog.cssom.addCssRule(styleSheet,rule);
     }
     
+    // laoding into image to avoid flickery onf firefox firat load
+    this.data_.img = goog.dom.createDom('img');
+    this.data_.img.src = contents;
+
     }
     
     this.data_.processed = true;
     this.dispatchEvent(new goog.events.Event('processed'));
+    
 };
 
 })();
@@ -147,17 +156,22 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
  */
 lime.fill.Frame.prototype.getImageElement = function(){
     if(!this.frameImgCache_){
+        if(this.data_.initializer && this.data_.initializer.frameImgCache_){
+            this.frameImgCache_ = this.data_.initializer.frameImgCache_;
+        }
+        else {
         if(!this.cvs){
             var ctx = this.makeCanvas();
             this.writeToCanvas(ctx);
         }
         this.frameImgCache_ = this.cvs;
+        }
     }
     return this.frameImgCache_;
 };
 
 lime.fill.Frame.prototype.makeCanvas = function(){
-    this.cvs = document.createElement('canvas');
+    this.cvs = goog.dom.createDom('canvas');
     var ctx = this.cvs.getContext('2d');
     this.cvs.width = this.csize_.width;
     this.cvs.height = this.csize_.height;
@@ -165,8 +179,7 @@ lime.fill.Frame.prototype.makeCanvas = function(){
 };
 
 lime.fill.Frame.prototype.writeToCanvas = function(ctx){
-    var r = this.rect_, w = r.width, h = r.height, l = r.left, t = r.top;
-
+    var r = this.rect_, w = r.width, h = r.height, l = r.left, t = r.top,ox,oy;
     if(l<0){
         w+=l;
         l=0;
@@ -175,20 +188,26 @@ lime.fill.Frame.prototype.writeToCanvas = function(ctx){
         h+=t;
         t=0;
     }
-
     if(w+l>this.image_.width) w= this.image_.width-l;
     if(h+t>this.image_.height) h= this.image_.height-t;
-    var ox = (this.csize_.width - this.rect_.width) / 2 - this.offset_.x,
-        oy = (this.csize_.height - this.rect_.height) / 2 - this.offset_.y;
+    if(this.rotated_){
+        ctx.rotate(-Math.PI*.5);
+        ctx.translate(-this.csize_.height,0);
+        ox = this.csize_.height-this.coffset_.y-w;
+        oy = this.coffset_.x;
+    }
+    else {
+        ox = this.coffset_.x;
+        oy = this.coffset_.y;
+    }
     
     ctx.drawImage(this.image_,l,t,w,h,ox,oy,w,h);
-    
 };
 
 /** @inheritDoc */
 lime.fill.Frame.prototype.setDOMStyle = function(domEl,shape) {
     if(this.USE_CSS_CANVAS){
-        domEl.style['background'] = '-webkit-canvas('+this.data_.classname+')';
+        domEl.style['background'] = '-webkit-canvas('+this.data_.classname+')';    
     }    
     else if(this.data_.classname!=shape.cvs_background_class_){
         goog.dom.classes.add(domEl,this.data_.classname);

@@ -43,9 +43,12 @@ lime.parser.ZWOPTEX = function(data){
         d2.getValue = function(v){
             return parseFloat(d2[v].firstChild.nodeValue)
         }
-        dict[i] = [new  goog.math.Rect(d2.getValue('x'),d2.getValue('y'),d2.getValue('width'),d2.getValue('height')),
-            new goog.math.Vec2(d2.getValue('offsetX'),d2.getValue('offsetY')),
-            new goog.math.Size(d2.getValue('originalWidth'),d2.getValue('originalHeight'))
+        var ow = d2.getValue('originalWidth'), oh = d2.getValue('originalHeight'),
+            w = d2.getValue('width'), h = d2.getValue('height'),
+            ox =  (ow - w) / 2 + d2.getValue('offsetX'), oy = (oh - h) / 2 + d2.getValue('offsetY');
+        dict[i] = [new  goog.math.Rect(d2.getValue('x'),d2.getValue('y'),w,h),
+            new goog.math.Vec2(ox,oy),
+            new goog.math.Size(ow,oh),false
             ];
     }
     

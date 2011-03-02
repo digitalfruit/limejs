@@ -60,6 +60,7 @@ test.start = function() {
 
                 this.box.normalColor_ = this.box.getFill();
                 this.box.runAction(new lime.animation.ColorTo(this.box.normalColor_.clone().addBrightness(.3).addSaturation(-.3)).setDuration(.5));
+                this.getParent().setChildIndex(this,this.getParent().getNumberOfChildren()-1);
 
                 e.swallow(['touchmove', 'mousemove'], function(e) {
 
@@ -74,6 +75,8 @@ test.start = function() {
                     //this.box.setFill(0,150,0);
 
                 });
+                
+                e.event.stopPropagation();
 
 	        }
 

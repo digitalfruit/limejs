@@ -142,6 +142,11 @@ lime.events.Drag.prototype.moveHandler_ = function(e) {
     var results = [];
     for (var i = 0; i < this.dropTargets_.length; i++) {
         var loc = this.dropTargets_[i];
+        if(goog.isFunction(loc.confirmTargetActive)){
+            if(!loc.confirmTargetActive(this.target)){
+                continue;
+            }
+        }
         var dropFrame = loc.getFrame();
         var tl = loc.localToNode(new goog.math.Coordinate(
             dropFrame.left, dropFrame.top), this.target);

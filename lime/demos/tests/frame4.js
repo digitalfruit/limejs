@@ -62,7 +62,7 @@ test.start = function() {
 test.makeMonster = function(){
     var sprite = new lime.Sprite().setPosition(200,200)
         .setFill(test.ss.getFrame('walking-s0001.png'));
-	layer.appendChild(sprite);
+	//layer.appendChild(sprite);
 	
 	// show if monster is selected
 	var light = new lime.Circle().setSize(6,6).setFill('#f90').setPosition(0,-40).setHidden(true);

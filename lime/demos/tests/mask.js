@@ -51,8 +51,8 @@ test.start = function() {
 
 
 
-	goog.events.listen(three, ['mousedown', 'touchstart'], function(e) {
-	   two.runAction(new lime.animation.MoveTo(220, 220).setDuration(2));
+	goog.events.listen(three, ['mousedown', 'touchstart'], function(e) {console.log('click');
+	   three.runAction(new lime.animation.MoveTo(220, 220).setDuration(2));
 	   //two.setPosition(100,100);
 	});
 

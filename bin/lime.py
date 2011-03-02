@@ -16,6 +16,7 @@ import mimetypes
 from os.path import join, splitext, split, exists
 from shutil import copyfile
 from datetime import datetime
+import base64
 
 if sys.version_info[0]==3:
     from urllib.request import urlretrieve
@@ -177,9 +178,6 @@ def create(name):
     
     proj = os.path.relpath(path,basedir)
     
-    if proj!='.':
-        makeProjectPaths(os.path.relpath(path,basedir))
-    
     shutil.copytree(os.path.join(basedir,'lime/templates/default'),path)
     
     for root, dirs, files in os.walk(path):
@@ -192,6 +190,10 @@ def create(name):
                 print(line.rstrip())
             
     print ('Created %s' % path)
+    
+    
+    if proj!='.':
+        makeProjectPaths(os.path.relpath(path,basedir))
     
     update()
 
@@ -218,16 +220,32 @@ def genSoy(path):
     if os.path.isfile(path):
         
         mtype = mimetypes.guess_type(path)[0]
+        fname = split(path)[1]
         
         if path[-4:]=='.soy':
             makeSoyJSFile(path,True)
+            
+        elif path[-5:]=='.json':
+            infile= open(path,'r')
+            outfile = open(path+'.js','w')
+            outfile.write('goog.provide(\'lime.ASSETS.'+fname+'\');\ngoog.require(\'soy\');\n\n'+ \
+                'lime.ASSETS.'+fname+'.data = function(opt_data) { \nreturn '+infile.read()+';\n}')
+            infile.close()
+            outfile.close()
 
         elif mtype and ['image','audio','video'].count(mtype.split('/')[0]):
-            print ('not implemented yet for binary files')
+            infile= open(path,'r')
+            outfile = open(path+'.soy','w')
+            outfile.write('{namespace lime.ASSETS.'+fname+'}\n\n/**\n * Generated with "bin/lime.py gensoy filepath"\n */\n{template .data}\n{literal}')
+            outfile.write('data:'+mtype+';base64,')
+            outfile.write(base64.b64encode(infile.read()))
+            outfile.write('{/literal}\n{/template}\n')
+            infile.close()
+            outfile.close()
+            makeSoyJSFile(path+'.soy',False)
             
         else :
             outfile = open(path+'.soy','w')
-            fname = split(path)[1]
             outfile.write('{namespace lime.ASSETS.'+fname+'}\n\n/**\n * Generated with "bin/lime.py gensoy filepath"\n */\n{template .data}\n')
             for line in fileinput.FileInput(path):
                 line = line.replace('{','[[LB_POS]]')

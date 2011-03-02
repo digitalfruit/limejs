@@ -70,7 +70,7 @@ lime.Renderer.DOM.ROUNDEDRECT.draw = function(el) {
 
     lime.Renderer.DOM.SPRITE.draw.call(this, el);
 
-    lime.style.setBorderRadius(el, this.radius_, this.radius_);
+    lime.style.setBorderRadius(el, this.radius_*this.getQuality(), this.radius_*this.getQuality());
 
 };
 

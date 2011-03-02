@@ -42,7 +42,9 @@ lime.Renderer.CANVAS.drawCanvas = function() {
     }
     else {
         if (this.staticCanvas != 1 && this.children_.length != 0) {
-            bounds.expand(PADDING, PADDING, PADDING, PADDING);
+           if(!(this instanceof lime.Scene)){
+               bounds.expand(PADDING, PADDING, PADDING, PADDING);
+           }
         }
     }
 

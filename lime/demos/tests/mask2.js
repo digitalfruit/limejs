@@ -27,7 +27,7 @@ test.start = function() {
 	gamescene.appendChild(flameLayer);
 
 
-	var one = new lime.Sprite().setRenderer(lime.Renderer.CANVAS).setQuality(.5).
+	var one = new lime.Sprite().
 	    setPosition(100, 100).setRotation(30).
 	    setFill('assets/nano.png');
 

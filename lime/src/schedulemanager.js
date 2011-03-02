@@ -186,14 +186,14 @@ lime.scheduleManager.activate_ = function() {
     
     if(lime.scheduleManager.USE_ANIMATION_FRAME){
         // mozilla
-        if(window.mozRequestAnimationFrame){
-            window.mozRequestAnimationFrame();
+        if(goog.global['mozRequestAnimationFrame']){
+            goog.global['mozRequestAnimationFrame']();
             this.beforePaintHandlerBinded_ = goog.bind(this.beforePaintHandler_,this);
-            window.addEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
+            goog.global.addEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
         }
         else { // webkit
             this.animationFrameHandlerBinded_ = goog.bind(this.animationFrameHandler_,this);
-            window.webkitRequestAnimationFrame(this.animationFrameHandlerBinded_);
+            goog.global['webkitRequestAnimationFrame'](this.animationFrameHandlerBinded_);
         }
     }
     else {
@@ -215,11 +215,11 @@ lime.scheduleManager.disable_ = function() {
     
     if(lime.scheduleManager.USE_ANIMATION_FRAME){
         // mozilla
-        if(window.mozRequestAnimationFrame){
-            window.removeEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
+        if(goog.global['mozRequestAnimationFrame']){
+            goog.global.removeEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
         }
         else { //webkit
-            window.webkitCancelRequestAnimationFrame(this.animationFrameHandlerBinded_);
+            goog.global['webkitCancelRequestAnimationFrame'](this.animationFrameHandlerBinded_);
         }
     }
     else {
@@ -230,24 +230,27 @@ lime.scheduleManager.disable_ = function() {
 
 /**
  * Webkit implemtation of requestAnimationFrame handler.
+ * @this {lime.scheduleManager}
  * @private
  */
 lime.scheduleManager.animationFrameHandler_ = function(time){
+    if(!time) time=goog.now(); // no time parameter in Chrome10beta
     var delta = time - this.lastRunTime_;
     this.dispatch_(delta);
     this.lastRunTime_ = time;
-    window.webkitRequestAnimationFrame(this.animationFrameHandlerBinded_);
+    goog.global['webkitRequestAnimationFrame'](this.animationFrameHandlerBinded_);
 }
 
 /**
  * Mozilla implemtation of requestAnimationFrame handler.
+ * @this {lime.scheduleManager} 
  * @private
  */
 lime.scheduleManager.beforePaintHandler_ = function(event){
     var delta = event.timeStamp - this.lastRunTime_;
     this.dispatch_(delta);
     this.lastRunTime_ = event.timeStamp;
-    window.mozRequestAnimationFrame();
+    goog.global['mozRequestAnimationFrame']();
 }
 
 /**
