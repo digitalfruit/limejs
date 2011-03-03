@@ -101,7 +101,7 @@ lime.Renderer.CANVAS.SPRITE.draw = function(context) {
     var size = this.getSize(), fill = this.fill_;
 
     if (!fill) return;
-console.log('draw');
+    
     var width = size.width;
     var height = size.height;
 
