@@ -65,8 +65,27 @@ goog.inherits(lime.animation.KeyframeAnimation, lime.animation.Animation);
 lime.animation.KeyframeAnimation.prototype.scope = 'keyframe';
 
 /**
+ * Returns the delay in seconds between frames.
+ * @return {number} Delay between frames.
+ */
+lime.animation.KeyframeAnimation.prototype.getDelay = function(){
+    return this.delay;
+};
+
+/**
+ * Set the delay between frames to specific value.
+ * @param {number} New delay value.
+ * @return {lime.animation.KeyframeAnimation} object itself.
+ */
+lime.animation.KeyframeAnimation.prototype.setDelay = function(value){
+    this.delay = value;
+    return this;
+}
+
+/**
  * Set array of frames to be used in the animation
  * @param {Array.<string>} frames Paths to frame images.
+ * @return {lime.animation.KeyframeAnimation} object itself.
  */
 lime.animation.KeyframeAnimation.prototype.setFrames = function(frames) {
     this.frames_ = [];
@@ -76,11 +95,13 @@ lime.animation.KeyframeAnimation.prototype.setFrames = function(frames) {
     for (var i = 0; i < frames.length; i++) {
         this.addFrame(lime.fill.parse([frames[i]]));
     }
+    return this;
 };
 
 /**
  * Add frame to the current animation
  * @param {string} frame Path to frame image.
+ * @return {lime.animation.KeyframeAnimation} object itself.
  */
 lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
     this.framesLoaded_ = false;
@@ -98,6 +119,7 @@ lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
         this.numFramesLoaded++;
     }
     this.frames_.push(fill);
+    return this;
 };
 
 /**

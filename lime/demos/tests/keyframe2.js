@@ -33,19 +33,15 @@ test.start = function() {
 
     var sprite = new lime.RoundedRect().setRadius(10).setSize(50,50).setPosition(100,200);
     layer.appendChild(sprite);
-    var anim = new lime.animation.KeyframeAnimation;
-    anim.delay = 1/2;
-    anim.addFrame('#c00');
-    anim.addFrame('#0c0');
-    anim.addFrame('#00c');
+    var anim = new lime.animation.KeyframeAnimation().setDelay(.5).
+        addFrame('#c00').addFrame('#0c0').addFrame('#00c');
     sprite.runAction(anim);
 
 
 
     var circle = new lime.Circle().setSize(120,120).setPosition(250,200);
     layer.appendChild(circle);
-    var anim2 = new lime.animation.KeyframeAnimation;
-    anim2.delay = 1/15;
+    var anim2 = new lime.animation.KeyframeAnimation().setDelay(1/15);
     for(var i=1;i<=10;i++){
         anim2.addFrame(new lime.fill.LinearGradient().setDirection(0,0,i/10,i/10).
             addColorStop(i/11,'#c00').addColorStop(1,'#00c'));
@@ -61,8 +57,7 @@ test.start = function() {
     var sign = new lime.Polygon().setPoints(10,0,60,60,50,20,120,20,120,-20,50,-20,60,-60).
         setPosition(450,200);
     layer.appendChild(sign);
-    var anim3 = new lime.animation.KeyframeAnimation;
-    anim3.delay = 1/30;
+    var anim3 = new lime.animation.KeyframeAnimation().setDelay(1/30);
     for(var i=1;i<=100;i++){
         anim3.addFrame(new lime.fill.Image('assets/sign.png').setSize(200,33).
             setOffset(1-i/100,0,true));
