@@ -140,7 +140,10 @@ lime.Renderer.CANVAS.POLYGON.draw = function(context) {
 
     var size = this.getSize(), fill = this.fill_;
 
+    if(!fill) return;
+
     var pt = this.getPoints();
+    
 
     if (pt.length > 2) {
 
