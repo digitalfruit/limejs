@@ -27,7 +27,7 @@ test.start = function() {
 	gamescene.appendChild(flameLayer);
 
 
-    sprite = new lime.Sprite().setRenderer(lime.Renderer.CANVAS);
+    sprite = new lime.Sprite().setRenderer(lime.Renderer.WEBGL);
     flameLayer.appendChild(sprite);
 
      ch1 = new lime.Circle().setSize(30, 30).setPosition(100, 100).setFill('#c00');

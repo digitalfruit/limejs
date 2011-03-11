@@ -1,5 +1,9 @@
 goog.provide('lime.webgl');
 
+goog.require('lime.webgl.GLController');
+goog.require('lime.webgl.Buffer');
+goog.require('lime.webgl.Program');
+
 // many algorithms are directly ported from sylvester
 // http://sylvester.jcoglan.com/
 

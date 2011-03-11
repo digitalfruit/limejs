@@ -34,7 +34,7 @@ test.start = function() {
 	flameLayer.setPosition(100, 0);
 
 	// canvas rendering for no reason
-	flameLayer.setRenderer(lime.Renderer.CANVAS);
+	flameLayer.setRenderer(lime.Renderer.WEBGL);
 
 	gamescene.appendChild(flameLayer);
 	var quality = 4;

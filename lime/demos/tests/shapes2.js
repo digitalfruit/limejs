@@ -73,7 +73,7 @@ test.start = function() {
 	var mode = lime.Renderer.DOM;
 	var b1 = makeButton('Toggle Mode');
 	goog.events.listen(b1, 'click', function() {
-	    mode = mode == lime.Renderer.DOM ? lime.Renderer.CANVAS : lime.Renderer.DOM;
+	    mode = mode == lime.Renderer.DOM ? lime.Renderer.WEBGL : lime.Renderer.DOM;
 	    box2.setRenderer(mode);
     });
     blayer.appendChild(b1);

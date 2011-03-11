@@ -11,6 +11,8 @@ goog.require('lime.DirtyObject');
 
 goog.require('lime.Renderer.CANVAS');
 goog.require('lime.Renderer.DOM');
+goog.require('lime.Renderer.WEBGL');
+
 
 
 /**
@@ -80,7 +82,8 @@ goog.inherits(lime.Node, goog.events.EventTarget);
  */
 lime.Node.prototype.supportedRenderers = [
     lime.Renderer.DOM,
-    lime.Renderer.CANVAS
+    lime.Renderer.CANVAS,
+    lime.Renderer.WEBGL
 ];
 
 /**
@@ -115,7 +118,7 @@ lime.Node.prototype.setRenderer = function(value) {
  */
 lime.Node.prototype.needsDomElement = function() {
     return !(this.parent_ &&
-        this.parent_.renderer.getType() == lime.Renderer.CANVAS);
+        this.parent_.renderer.getType() != lime.Renderer.DOM);
 };
 
 /**
@@ -656,7 +659,7 @@ lime.Node.prototype.setOpacity = function(value) {
 lime.Node.prototype.createDomElement = function() {
 
     var newTagName =
-        this.renderer.getType() == lime.Renderer.CANVAS ? 'canvas' : 'div';
+        this.renderer.getType() == lime.Renderer.DOM ? 'div' : 'canvas';
     var create = function() {
         this.domElement = this.rootElement =
             this.containerElement = goog.dom.createDom(newTagName);
@@ -838,7 +841,7 @@ lime.Node.prototype.update = function(opt_pass) {
         this.renderer.drawCanvas.call(this);
     }
     else {
-        if (this.renderer.getType() == lime.Renderer.CANVAS) {
+        if (this.renderer.getType() != lime.Renderer.DOM) {
             var parent = this.getDeepestParentWithDom();
             parent.redraw_ = 1;
             if (parent == this && this.dirty_ == lime.Dirty.POSITION && !this.mask_) {

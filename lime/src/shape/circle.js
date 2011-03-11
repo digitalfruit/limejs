@@ -1,10 +1,12 @@
 goog.provide('lime.Circle');
 goog.provide('lime.Renderer.CANVAS.CIRCLE');
 goog.provide('lime.Renderer.DOM.CIRCLE');
+goog.provide('lime.Renderer.WEBGL.CIRCLE');
 
 
 goog.require('lime.Renderer.CANVAS.SPRITE');
 goog.require('lime.Renderer.DOM.SPRITE');
+goog.require('lime.Renderer.WEBGL.SPRITE');
 goog.require('lime.Sprite');
 goog.require('lime.style');
 
@@ -30,7 +32,8 @@ lime.Circle.prototype.id = 'circle';
 /** @inheritDoc */
 lime.Circle.prototype.supportedRenderers = [
     lime.Renderer.DOM.SPRITE.makeSubRenderer(lime.Renderer.DOM.CIRCLE),
-    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.CIRCLE)
+    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.CIRCLE),
+    lime.Renderer.WEBGL.SPRITE.makeSubRenderer(lime.Renderer.WEBGL.CIRCLE)
 ];
 
 /**
@@ -87,3 +90,7 @@ lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
     lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
     context.restore();
 };
+
+lime.Renderer.WEBGL.CIRCLE.draw = function(glc){
+    lime.Renderer.WEBGL.SPRITE.draw.call(this, glc);    
+}

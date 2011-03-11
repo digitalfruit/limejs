@@ -1,5 +1,6 @@
 goog.provide('lime.Renderer.CANVAS.SPRITE');
 goog.provide('lime.Renderer.DOM.SPRITE');
+goog.provide('lime.Renderer.WEBGL.SPRITE');
 goog.provide('lime.Sprite');
 
 goog.require('goog.events');
@@ -40,11 +41,11 @@ goog.inherits(lime.Sprite, lime.Node);
  * @const
  */
 lime.Sprite.prototype.id = 'sprite';
-
 /** @inheritDoc */
 lime.Sprite.prototype.supportedRenderers = [
     lime.Renderer.DOM.makeSubRenderer(lime.Renderer.DOM.SPRITE),
-    lime.Renderer.CANVAS.makeSubRenderer(lime.Renderer.CANVAS.SPRITE)
+    lime.Renderer.CANVAS.makeSubRenderer(lime.Renderer.CANVAS.SPRITE),
+    lime.Renderer.WEBGL.makeSubRenderer(lime.Renderer.WEBGL.SPRITE)
 ];
 
 /**
@@ -101,7 +102,6 @@ lime.Renderer.CANVAS.SPRITE.draw = function(context) {
     var size = this.getSize(), fill = this.fill_;
 
     if (!fill) return;
-console.log('draw');
     var width = size.width;
     var height = size.height;
 
@@ -122,4 +122,33 @@ console.log('draw');
     }
 
 };
+
+lime.Renderer.WEBGL.SPRITE.draw = function(glc){
+    var size = this.getSize(), fill = this.fill_;
+
+    if (!fill) return;
+    var width = size.width;
+    var height = size.height;
+
+    var frame = this.getFrame();
+    
+    var buffer = new lime.webgl.Buffer({float:2},[
+        frame.left,frame.top,
+        frame.left,frame.bottom,
+        frame.right,frame.top,
+        frame.right,frame.bottom]);
+        
+    var colors = new lime.webgl.Buffer({float:4},[
+        1,0,0,1,
+        0,1,0,1,
+        0,0,1,1,
+        1,1,0,1
+        ]);
+        
+    glc.program.setuMVMatrix(glc.model);
+    glc.program.setaVertexPosition(buffer);
+    glc.program.setaVertexColor(colors);
+    
+    glc.program.draw(glc.gl.TRIANGLE_STRIP);
+}
 

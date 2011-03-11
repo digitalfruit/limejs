@@ -30,6 +30,7 @@ lime.webgl.GLController = function(opt_element){
         return;
     }
     
+    this.element.glcontroller_ = this;
     this.gl = gl;
     this.setSize(element.width,element.height);
 
@@ -51,9 +52,9 @@ lime.webgl.GLController.prototype.setSize = function(value){
     }
     this.size_ = value;
     
+    this.gl.viewport(0, 0, value.width, value.height);
     this.element.width = value.width;
     this.element.height = value.height;
-    this.gl.viewport(0, 0, value.width, value.height);
 };
 
 lime.webgl.GLController.prototype.aspectRatio = function(){
