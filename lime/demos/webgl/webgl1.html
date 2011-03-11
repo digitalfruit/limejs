@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title>Demo WebGl</title>
+<script type="text/javascript" src="../../../closure/closure/goog/base.js"></script>
+ 
+<script type="text/javascript">
+	goog.require('lime.webgl');
+	goog.require('lime.webgl.GLController');
+	goog.require('lime.webgl.Program');
+	goog.require('lime.webgl.Buffer');
+	goog.require('lime.webgl.shaders.plain');
+	
+	function setup(){
+	  
+	    var glc = lime.webgl.GLController.forCanvas('canvas'), gl = glc.gl
+	
+		var program = glc.makeProgram().setShader(lime.webgl.shaders.plain);
+		
+		var vertices = [
+		    0.0,  1.0,  0.0,    1, 0, 0, 1,
+		    -1.0, -1.0,  0.0,   0, 1, 0, 1,
+		    1.0, -1.0,  0.0,    0, 0, 1, 0
+		];
+        var triangle = new lime.webgl.Buffer([{float:3},{float:4}],vertices);
+
+        vertices = [
+		     1.0,  1.0,  0.0,
+		    -1.0,  1.0,  0.0,
+		     1.0, -1.0,  0.0,
+		    -1.0, -1.0,  0.0
+		];		
+		var square = new lime.webgl.Buffer({float:3},vertices);
+		/*
+        vertices = [
+		      1.0,  0.0,  0.0,1.0,
+		      0.0,  1.0,  0.0,1.0,
+		      0.0,  0.0,  1.0,1.0,
+		      1.0,  1.0,  0.0,1.0
+		];
+		
+        var colors = new lime.webgl.Buffer({float:4},vertices);
+	*/
+			
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		
+		var pMatrix = lime.webgl.perspective(45,1, 0.1, 100.0);
+		//	var pMatrix = lime.webgl.ortho(-5,5,-5,5,-1000,100);
+			  
+		var mMatrix = lime.webgl.M4().identity().translate(-1.5, 0.0, -7.0);
+		
+		program.setaVertexPosition(triangle.subBuffer(0));
+		program.setaVertexColor(triangle.subBuffer(1));
+		
+		program.setuPMatrix(pMatrix);
+		program.setuMVMatrix(mMatrix);
+			
+		program.draw(gl.TRIANGLES);
+			  
+
+		mMatrix.translate(3.5, 0,-3).scale(1.2,1.2);
+		
+		program.setaVertexPosition(square);
+        program.setaVertexColor(0,0,1,.5);
+       // program.setaVertexColor(colors);
+        program.setuMVMatrix(mMatrix);
+	    
+	    program.draw(gl.TRIANGLE_STRIP);	
+		
+	}
+</script>
+
+<style type="text/css">
+
+</style>
+
+
+</head>
+
+<body onload="setup()" style="background:#ddd">
+
+    <canvas id="canvas" width="700" height="700"></canvas>
+
+</body>
+
+</html>

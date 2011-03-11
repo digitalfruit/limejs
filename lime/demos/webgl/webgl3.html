@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title>Demo WebGl</title>
+<script type="text/javascript" src="../../../closure/closure/goog/base.js"></script>
+ 
+<script type="text/javascript">
+	goog.require('lime.webgl');
+	goog.require('lime.webgl.GLController');
+	goog.require('lime.webgl.Program');
+	goog.require('lime.webgl.Buffer');
+	goog.require('lime.webgl.shaders.brick');
+	goog.require('goog.events');
+	goog.require('lime.webgl.models.teapot');
+	var gl,program,rotate=0,lastp,mMatrix;
+	
+	function setup(){
+		glc = lime.webgl.GLController.forCanvas('canvas'), gl = glc.gl;
+		var onmove = function(e){
+			var p = [e.offsetX,e.offsetY];
+			
+			var diff = [p[0]-lastp[0],p[1]-lastp[1]];
+			diff[1]*-1;
+			
+			var totalrot = Math.sqrt(diff[0]*diff[0] + diff[1]*diff[1])*.3;
+			var m = mMatrix.elements;
+			mMatrix.rotate(totalrot*Math.PI/180,lime.webgl.V3(
+				(diff[0]/totalrot) * m[4] + (diff[1]/totalrot) * m[0],
+				(diff[0]/totalrot) * m[5] + (diff[1]/totalrot) * m[1],
+				(diff[0]/totalrot) * m[6] + (diff[1]/totalrot) * m[2]
+				));
+			
+			lastp = p;
+		};
+		goog.events.listen(canvas,'mousedown',function(e){
+			lastp=[e.offsetX,e.offsetY];
+			goog.events.listen(canvas,'mousemove',onmove);
+		});
+		
+		goog.events.listen(canvas,'mouseup',function(e){
+			goog.events.unlisten(canvas,'mousemove',onmove);
+		});
+		
+		
+		program = glc.makeProgram().setShader(lime.webgl.shaders.brick);
+		
+		gl.clearColor(0.0, 0.0, 0.0, 0.1);
+		gl.clearDepth(1.0);
+ 		gl.enable(gl.DEPTH_TEST);
+		gl.depthFunc(gl.LEQUAL);
+		
+		teapot = new lime.webgl.Buffer({float:3},lime.webgl.models.teapot.VERTICES);
+		teapot_normals = new lime.webgl.Buffer({float:3},lime.webgl.models.teapot.NORMALS);
+		teapot_indices = new lime.webgl.Buffer({uint16:1},lime.webgl.models.teapot.INDICES);
+
+		mMatrix = lime.webgl.M4().identity().translate(0,0,-10).scale(.08);
+			
+		setInterval(draw,30);	
+		
+	}
+	function draw(){
+		rotate+=0.04;
+	
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+		var pMatrix = lime.webgl.perspective(45, glc.aspectRatio(), 0.1, 150.0);
+		//  var pMatrix = lime.webgl.ortho(-10,10,-10,10,-1000,100);
+			
+        program.setnormal(teapot_normals);
+        program.setposition(teapot);
+
+        program.setprojMatrix(pMatrix);
+        program.setmodelViewMatrix(mMatrix);
+        program.setnormalMatrix(mMatrix.clone().inverse().transpose());
+		program.setLightPosition(60 ,50,15,0);
+		program.setBrickSize( 4.35, 3.25);
+		program.setBrickPct( 0.9, 0.9);
+		program.setBrickColor( .7, 0.0, 0.0);
+		program.setMortarColor(1.0, 1.0, 1.0);
+
+        program.drawElements(teapot_indices,gl.TRIANGLES);
+    }
+	
+	
+</script>
+
+<style type="text/css">
+
+</style>
+
+
+</head>
+
+<body onload="setup()" style="background:#ddd">
+
+    <canvas id="canvas" width="600" height="600"></canvas>
+
+</body>
+
+</html>

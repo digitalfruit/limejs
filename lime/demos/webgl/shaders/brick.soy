@@ -1,0 +1,88 @@
+{namespace lime.webgl.shaders.brick}
+
+/*
+Abstract: Brick Shader (from the "orange book")
+			 
+Copyright (C) 2002-2004  3Dlabs Inc. Ltd.
+All rights reserved.
+
+See 3Dlabs-License.txt for license information
+*/
+
+/***/
+{template .vertex}
+{literal}
+
+attribute vec4 position;
+attribute vec4 normal;
+
+uniform vec4 LightPosition;
+uniform mat4 modelViewMatrix;
+uniform mat4 projMatrix;
+uniform mat4 normalMatrix;
+
+const float SpecularContribution = 0.3;
+const float DiffuseContribution  = 1.0 - SpecularContribution;
+
+varying float LightIntensity;
+varying vec2  MCposition;
+
+void main() 
+{
+	vec3 ecPosition = (modelViewMatrix * position).xyz;
+	vec3 tnorm      = normalize((normalMatrix * normal).xyz);
+	vec3 lightVec   = normalize(LightPosition.xyz - ecPosition);
+	vec3 reflectVec = reflect(-lightVec, tnorm);	
+	vec3 viewVec    = normalize(-ecPosition);
+	float diffuse   = max(dot(lightVec, tnorm), 0.0);
+	float spec      = 0.0;
+
+	if (diffuse > 0.0) {
+		spec = dot(reflectVec, viewVec);
+		spec = pow(spec, 16.0);
+	}
+
+	LightIntensity = DiffuseContribution * diffuse ;
+
+	MCposition  = position.xy;
+	gl_Position = projMatrix*modelViewMatrix * position;
+}
+
+{/literal}
+{/template}
+
+
+/***/
+{template .fragment}
+{literal}
+
+precision highp float;
+
+uniform vec3 BrickColor, MortarColor;
+uniform vec2 BrickSize;
+uniform vec2 BrickPct;
+
+varying vec2  MCposition;
+varying float LightIntensity;
+
+void main() {
+	vec3 color;
+	vec2 position, useBrick;
+
+	position = MCposition / BrickSize;
+	
+	if (fract(position.y * 0.5) > 0.5)
+		position.x += 0.5;
+
+	position = fract(position);
+
+	useBrick = step(position, BrickPct);
+
+	color    = mix(MortarColor, BrickColor, useBrick.x * useBrick.y);
+	//color = vec3(0.7,0,0);
+	color   *= LightIntensity*1.5;
+	gl_FragColor = vec4(color, 1.0);
+//	gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+}
+{/literal}
+{/template}

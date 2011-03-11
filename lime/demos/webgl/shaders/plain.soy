@@ -1,0 +1,39 @@
+{namespace lime.webgl.shaders.plain}
+
+/***/
+{template .vertex}
+{literal}
+
+attribute vec3 aVertexPosition;
+attribute vec4 aVertexColor;
+ 
+uniform mat4 uMVMatrix;
+uniform mat4 uPMatrix;
+
+varying lowp vec4 color;
+ 
+void main(void) {
+	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+	color = aVertexColor;
+}
+
+{/literal}
+{/template}
+
+
+/***/
+{template .fragment}
+{literal}
+
+#ifdef GL_ES
+precision highp float;
+#endif
+
+varying lowp vec4 color;
+
+void main(void) {
+  gl_FragColor = color;
+}
+
+{/literal}
+{/template}
