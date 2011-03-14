@@ -17,6 +17,7 @@
 	
 	function setup(){
 		glc = lime.webgl.GLController.forCanvas('canvas'), gl = glc.gl;
+		canvas = glc.element;
 		var onmove = function(e){
 			var p = [e.offsetX,e.offsetY];
 			

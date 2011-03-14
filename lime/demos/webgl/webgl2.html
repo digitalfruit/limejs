@@ -16,6 +16,7 @@
 	
 	function setup(){
 		glc = lime.webgl.GLController.forCanvas('canvas'), gl = glc.gl;
+		canvas = glc.element;
 		var onmove = function(e){
 			var p = [e.offsetX,e.offsetY];
 			var diff = [p[0]-lastp[0],p[1]-lastp[1]];
