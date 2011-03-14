@@ -140,16 +140,17 @@ lime.Renderer.WEBGL.drawCanvas = function() {
         if (this.redraw_) {
             var glc = lime.webgl.GLController.forCanvas(this.domElement), gl = glc.gl,
                 rquality = this.relativeQuality_ || 1;
+              
             glc.setSize(pxsize.width, pxsize.height);
-            gl.clearColor(1,0,0,.1);
+            gl.clearColor(0,0,0,0);
             gl.clear(gl.COLOR_BUFFER_BIT);
             
-            glc.proj = lime.webgl.ortho(0,pxsize.width,pxsize.height,0,-1000,100);
+            glc.proj = lime.webgl.ortho(0,pxsize.width,pxsize.height,0,-100,100);
             glc.model = lime.webgl.M4().identity().translate(this.ax,this.ay,0).
-                scale(rquality,rquality);
+                scale(rquality,rquality,1);
                 if(!glc.program){
             glc.program = glc.makeProgram().setShader(lime.webgl.shaders.plain);
-        }
+            }
             /*
             context.clearRect(0, 0, pxsize.width, pxsize.height);
             context.save();
@@ -162,15 +163,16 @@ lime.Renderer.WEBGL.drawCanvas = function() {
             glc.program.setuPMatrix(glc.proj);
             glc.program.setaVertexColor(0,1,0,.5);
             
-            glc.model.translate(size.width * anchor.x, size.height * anchor.y);
+            glc.model.translate(size.width * anchor.x, size.height * anchor.y,0);
             
             this.renderer.drawCanvasObject.call(this, glc);
             /*
             context.restore();
             */
             this.redraw_ = 0;
-
-
+            gl.flush();
+            glc.flush();
+            
         }
     };
 
@@ -240,7 +242,7 @@ lime.Renderer.WEBGL.drawCanvasObject = function(glc) {
     for (var i = 0, child; child = this.children_[i]; i++) {
         var pos = child.localToParent(zero).clone(), rot = child.getRotation(), scale = child.getScale();
         glc.model.save();
-        glc.model.translate(pos.x,pos.y).scale(scale.x,scale.y);
+        glc.model.translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);
         /*context.save();
         context.translate(pos.x, pos.y);
         context.scale(scale.x,scale.y);*/

@@ -131,23 +131,23 @@ lime.Renderer.WEBGL.SPRITE.draw = function(glc){
     var height = size.height;
 
     var frame = this.getFrame();
-    
-    var buffer = new lime.webgl.Buffer({float:2},[
+    //if(!this.buffer){
+    this.buffer = new lime.webgl.Buffer({float:2},[
         frame.left,frame.top,
         frame.left,frame.bottom,
         frame.right,frame.top,
         frame.right,frame.bottom]);
         
-    var colors = new lime.webgl.Buffer({float:4},[
+    this.colors = new lime.webgl.Buffer({float:4},[
         1,0,0,1,
         0,1,0,1,
         0,0,1,1,
         1,1,0,1
         ]);
-        
+    
     glc.program.setuMVMatrix(glc.model);
-    glc.program.setaVertexPosition(buffer);
-    glc.program.setaVertexColor(colors);
+    glc.program.setaVertexPosition(this.buffer);
+    glc.program.setaVertexColor(this.colors);
     
     glc.program.draw(glc.gl.TRIANGLE_STRIP);
 }

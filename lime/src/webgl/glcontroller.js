@@ -17,11 +17,11 @@ lime.webgl.GLController = function(opt_element){
     
     var gl;
     try {
-      gl = this.element.getContext("webgl");
+      gl = document.createElement('canvas').getContext("webgl");
     } catch(e) {}
     if (!gl) {
         try {
-        gl = this.element.getContext("experimental-webgl",{antialias:true});
+        gl = document.createElement('canvas').getContext("experimental-webgl",{antialias:true});
         } catch(e) {}
     }
     if(!gl){   
@@ -29,6 +29,7 @@ lime.webgl.GLController = function(opt_element){
         this.gl = null;
         return;
     }
+    
     
     this.element.glcontroller_ = this;
     this.gl = gl;
@@ -51,10 +52,12 @@ lime.webgl.GLController.prototype.setSize = function(value){
         value = new goog.math.Size(arguments[0], arguments[1]);
     }
     this.size_ = value;
-    
-    this.gl.viewport(0, 0, value.width, value.height);
     this.element.width = value.width;
     this.element.height = value.height;
+    this.gl.canvas.width = value.width;
+    this.gl.canvas.height = value.height;
+    this.gl.viewport(0, 0, value.width, value.height);
+    this.gl.clear();
 };
 
 lime.webgl.GLController.prototype.aspectRatio = function(){
@@ -65,3 +68,8 @@ lime.webgl.GLController.prototype.makeProgram = function(){
     var p = new lime.webgl.Program(this.gl);
     return p;
 };
+lime.webgl.GLController.prototype.flush = function(){
+   // this.element.getContext('2d').clearColor(0,0,0,0);
+
+     this.element.getContext('2d').drawImage(this.gl.canvas,0,0,this.gl.canvas.width,this.gl.canvas.height);
+}
