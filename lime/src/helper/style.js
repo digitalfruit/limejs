@@ -61,6 +61,17 @@ lime.style.setBorderRadius = (function() {
 // There are classes like CSSMatrix in some browsers.
 // Maybe this would make more sense.
 
+(function(){
+    
+    /*
+     Workaround to not use transforms where possible due to bug
+     https://bugzilla.mozilla.org/show_bug.cgi?id=637597
+     in Firefox4. You may wish to set it to false if you need
+     setPrecision() */
+    
+    var IS_FF4 = /Firefox\/4./.test(goog.userAgent.getUserAgentString());
+     
+
 /**
  * Object representing CSS Transform.
  * @constructor
@@ -72,6 +83,11 @@ lime.style.Transform = function(opt_precision) {
     if (this.opt_precision) {
         this.setPrecision(opt_precision);
     }
+    if(IS_FF4){
+        this.scalex_ = this.scaley_ = 1;
+        this.x_ = this.y_ = 0;
+        this.angleSet_ = false;
+    }
 };
 
 /**
@@ -82,7 +98,15 @@ lime.style.Transform = function(opt_precision) {
  */
 lime.style.Transform.prototype.scale = function(sx, sy) {
     //if(sx!=1 && sy!=1)
+    if(IS_FF4){
+        sx = sx.toFixed(2);
+        sy = sy.toFixed(2);
+    }
+    
     this.values.push('scale(' + sx + ',' + sy + ')');
+    if(IS_FF4){
+        this.scalex_ *= sx, this.scaley_ *= sy;
+    }
     return this;
 };
 
@@ -96,6 +120,10 @@ lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
     var rot_str = 'rotate(' + angle + (opt_unit ? opt_unit : 'deg') + ')';
     if (angle != 0)
         this.values.push(rot_str);
+        
+    if(IS_FF4 && angle!=0){
+        this.angleSet_ = true;
+    }
     return this;
 };
 
@@ -114,6 +142,11 @@ lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
     val += '(' + (tx * p) + 'px,' + (ty * p) + 'px';
     if (lime.userAgent.IOS) val += ',' + ((opt_tz ? opt_tz : 0) * p) + 'px';
     this.values.push(val + ')');
+    
+    if(IS_FF4){
+        this.x_ += this.scalex_ * tx, this.y_ += this.scaley_ * ty;
+    }
+    
     return this;
 };
 
@@ -124,6 +157,8 @@ lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
  * @return {lime.style.Transform} obejct itself.
  */
 lime.style.Transform.prototype.setPrecision = function(p) {
+    if(IS_FF4) return this;
+    
     if (this.precision != 1) {
         var opposite = 1 / this.precision;
         this.scale(opposite, opposite);
@@ -156,11 +191,31 @@ lime.style.setTransform = (function() {
     var stylename = lime.style.getCSSproperty('Transform');
     return function(el, transform) {
         var value = transform.toString();
-        if (value != el.transform_cache_) {
-            el.style[stylename] = el.transform_cache_ = value;
-            //console.log('transform'+stylename+el.style[stylename]);
+        
+        if(IS_FF4){//console.log('ff4 '+transform.scalex_+' '+ transform.scaley_);
+            if(!transform.angleSet_ && transform.scalex_ == 1 && transform.scaley_ == 1){
+                el.style[stylename] = '';
+                el.style['left'] = transform.x_ + 'px';
+                el.style['top'] = transform.y_ + 'px';
+            }
+            else {
+                if (value != el.transform_cache_) {
+                    el.style[stylename] = el.transform_cache_ = value;
+                }
+                el.style['left'] = '0px';
+                el.style['top'] = '0px';
+            }
         }
+        else {
+            if (value != el.transform_cache_) {
+                el.style[stylename] = el.transform_cache_ = value;
+            }
+        }
+        
+        
     }
+})();
+
 })();
 
 /**
