@@ -1,10 +1,12 @@
 goog.provide('lime.Label');
 goog.provide('lime.Renderer.CANVAS.LABEL');
 goog.provide('lime.Renderer.DOM.LABEL');
+goog.provide('lime.Renderer.WEBGL.LABEL');
 
 
 goog.require('lime.Renderer.CANVAS.SPRITE');
 goog.require('lime.Renderer.DOM.SPRITE');
+goog.require('lime.Renderer.WEBGL.SPRITE');
 goog.require('lime.Sprite');
 
 /**
@@ -49,7 +51,8 @@ lime.Label.defaultFont = 'Arial';
 /** @inheritDoc */
 lime.Label.prototype.supportedRenderers = [
     lime.Renderer.DOM.SPRITE.makeSubRenderer(lime.Renderer.DOM.LABEL),
-    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.LABEL)
+    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.LABEL),
+    lime.Renderer.WEBGL.SPRITE.makeSubRenderer(lime.Renderer.WEBGL.LABEL)
 ];
 
 (function() {
@@ -402,6 +405,10 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     context.restore();
 };
 
+lime.Renderer.WEBGL.LABEL.draw = function(glc){
+    lime.Renderer.WEBGL.SPRITE.draw.call(this, glc);    
+}
+
 /**
  * Helper function to install new font file so you can use
  * the font name as font-family.
@@ -414,3 +421,4 @@ lime.Label.installFont = function(name, fileurl, opt_format) {
     goog.style.installStyles('@font-face{font-family: "' + name +
         '";src: url(' + fileurl + ') format("' + format + '");})');
 };
+

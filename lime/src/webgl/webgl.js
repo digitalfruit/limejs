@@ -4,8 +4,10 @@ goog.require('lime.webgl.GLController');
 goog.require('lime.webgl.Buffer');
 goog.require('lime.webgl.Program');
 
-// many algorithms are directly ported from sylvester
-// http://sylvester.jcoglan.com/
+// many algorithms are directly ported from:
+// sylvester http://sylvester.jcoglan.com/
+// glMatrix http://code.google.com/p/glmatrix/
+// many algorithms non optimized. not useful for production yet.
 
 lime.webgl.PRECISION = 1e-6;
 
@@ -101,7 +103,7 @@ lime.webgl.V.prototype.scale = function(scale){
     return this;
 };
 
-lime.webgl.V.prototype.invert = function(){
+lime.webgl.V.prototype.negate = function(){
     return this.scale(-1);
 };
 
@@ -115,10 +117,21 @@ lime.webgl.V.prototype.multiply = function(vector){
     ]);
 };
 
+lime.webgl.V.prototype.multiply = function(m){
+    var vec = this.elements,x = vec[0], y = vec[1], z = vec[2],mat = m.elements;
+
+    vec[0] = mat[0]*x + mat[4]*y + mat[8]*z + mat[12];
+    vec[1] = mat[1]*x + mat[5]*y + mat[9]*z + mat[13];
+    vec[2] = mat[2]*x + mat[6]*y + mat[10]*z + mat[14];
+
+    return this;
+}
+
 lime.webgl.V.prototype.save = function(){
     var v = this.clone();
     if(!this.history_) this.history_ = [];
     this.history_.push(v);
+    return this;
 };
 
 lime.webgl.V.prototype.restore = function(){
@@ -213,9 +226,7 @@ lime.webgl.M.prototype.identity = function(){
 
 lime.webgl.M.prototype.clone = function(){
     var v = new lime.webgl.M(this.msize,this.type), n = this.size;
-    while(--n>=0){
-        v.elements[n] = this.elements[n];
-    }
+    v.elements = new this.type(this.elements);
     return v;
 };
 
@@ -291,51 +302,22 @@ lime.webgl.M.prototype.rotate = function(theta,a){
 };
 
 
-// Make the matrix upper (right) triangular by Gaussian elimination.
-// This method only adds multiples of rows to other rows. No rows are
-// scaled up or switched, and the determinant is preserved.
-lime.webgl.M.prototype.toRightTriangular_ = function(array) {
-  var M = array.slice(), els;
-  var n = M.length, k = n, i, np, kp = M[0].length, p;
-  do { i = k - n;
-    if (M[i][i] == 0) {
-      for (j = i + 1; j < k; j++) {
-        if (M[j][i] != 0) {
-          els = []; np = kp;
-          do { p = kp - np;
-            els.push(M[i][p] + M[j][p]);
-          } while (--np);
-          M[i] = els;
-          break;
-        }
-      }
-    }
-    if (M[i][i] != 0) {
-      for (j = i + 1; j < k; j++) {
-        var multiplier = M[j][i] / M[i][i];
-        els = []; np = kp;
-        do { p = kp - np;
-          // Elements with column numbers up to an including the number
-          // of the row that we're subtracting can safely be set straight to
-          // zero, since that's the point of this routine and it avoids having
-          // to loop over and correct rounding errors later
-          els.push(p <= i ? 0 : M[j][p] - M[i][p] * multiplier);
-        } while (--np);
-        M[j] = els;
-      }
-    }
-  } while (--n);
- return M;
-};
 
 // Returns the determinant for square matrices
 lime.webgl.M.prototype.determinant = function() {
-  var M = this.toRightTriangular_(this.toArray());
-  var det = M[0][0], n = M.length - 1, k = n, i;
-  do { i = k - n + 1;
-    det = det * M[i][i];
-  } while (--n);
-  return det;
+    // Cache the matrix values (makes for huge speed increases!)
+    var mat = this.elements;
+    var a00 = mat[0], a01 = mat[1], a02 = mat[2], a03 = mat[3];
+    var a10 = mat[4], a11 = mat[5], a12 = mat[6], a13 = mat[7];
+    var a20 = mat[8], a21 = mat[9], a22 = mat[10], a23 = mat[11];
+    var a30 = mat[12], a31 = mat[13], a32 = mat[14], a33 = mat[15];
+
+    return  a30*a21*a12*a03 - a20*a31*a12*a03 - a30*a11*a22*a03 + a10*a31*a22*a03 +
+            a20*a11*a32*a03 - a10*a21*a32*a03 - a30*a21*a02*a13 + a20*a31*a02*a13 +
+            a30*a01*a22*a13 - a00*a31*a22*a13 - a20*a01*a32*a13 + a00*a21*a32*a13 +
+            a30*a11*a02*a23 - a10*a31*a02*a23 - a30*a01*a12*a23 + a00*a31*a12*a23 +
+            a10*a01*a32*a23 - a00*a11*a32*a23 - a20*a11*a02*a33 + a10*a21*a02*a33 +
+            a20*a01*a12*a33 - a00*a21*a12*a33 - a10*a01*a22*a33 + a00*a11*a22*a33;
 };
 
 
@@ -347,53 +329,48 @@ lime.webgl.M.prototype.isSingular = function() {
 // Returns the inverse (if one exists) using Gauss-Jordan
 // todo: seems buggy
 lime.webgl.M.prototype.inverse = function() {
-   if (this.isSingular()) { return null; }
-   var ni = this.msize, ki = ni, i, j;
-   var M = (this.augment_(this,new lime.webgl.M(this.msize).identity()));
-   var np, kp = M[0].length, p, els, divisor;
-   var inverse_elements = [], new_element;
-   // Matrix is non-singular so there will be no zeros on the diagonal
-   // Cycle through rows from last to first
-   do { i = ni - 1;
-     // First, normalise diagonal elements to 1
-     els = []; np = kp;
-     inverse_elements[i] = [];
-     divisor = M[i][i];
-     do { p = kp - np;
-       new_element = M[i][p] / divisor;
-       els.push(new_element);//console.log('a',p,ki)
-       // Shuffle of the current row of the right hand side into the results
-       // array as it will not be modified by later runs through this loop
-       if (p >= ki) { /*console.log('in');*/inverse_elements[i].push(new_element); }
-     } while (--np);
-     M[i] = els;
-     // Then, subtract this row from those above it to
-     // give the identity matrix on the left hand side
-     for (j = 0; j < i; j++) {
-       els = []; np = kp;
-       do { p = kp - np;
-         els.push(M[j][p] - M[i][p] * M[j][i]);
-       } while (--np);
-       M[j] = els;
-     }
-   } while (--ni);
-   return this.set(inverse_elements);
+    // Cache the matrix values (makes for huge speed increases!)
+    var mat = this.elements;
+    var a00 = mat[0], a01 = mat[1], a02 = mat[2], a03 = mat[3];
+    var a10 = mat[4], a11 = mat[5], a12 = mat[6], a13 = mat[7];
+    var a20 = mat[8], a21 = mat[9], a22 = mat[10], a23 = mat[11];
+    var a30 = mat[12], a31 = mat[13], a32 = mat[14], a33 = mat[15];
+
+    var b00 = a00*a11 - a01*a10;
+    var b01 = a00*a12 - a02*a10;
+    var b02 = a00*a13 - a03*a10;
+    var b03 = a01*a12 - a02*a11;
+    var b04 = a01*a13 - a03*a11;
+    var b05 = a02*a13 - a03*a12;
+    var b06 = a20*a31 - a21*a30;
+    var b07 = a20*a32 - a22*a30;
+    var b08 = a20*a33 - a23*a30;
+    var b09 = a21*a32 - a22*a31;
+    var b10 = a21*a33 - a23*a31;
+    var b11 = a22*a33 - a23*a32;
+
+    // Calculate the determinant (inlined to avoid double-caching)
+    var invDet = 1/(b00*b11 - b01*b10 + b02*b09 + b03*b08 - b04*b07 + b05*b06);
+
+    mat[0] = (a11*b11 - a12*b10 + a13*b09)*invDet;
+    mat[1] = (-a01*b11 + a02*b10 - a03*b09)*invDet;
+    mat[2] = (a31*b05 - a32*b04 + a33*b03)*invDet;
+    mat[3] = (-a21*b05 + a22*b04 - a23*b03)*invDet;
+    mat[4] = (-a10*b11 + a12*b08 - a13*b07)*invDet;
+    mat[5] = (a00*b11 - a02*b08 + a03*b07)*invDet;
+    mat[6] = (-a30*b05 + a32*b02 - a33*b01)*invDet;
+    mat[7] = (a20*b05 - a22*b02 + a23*b01)*invDet;
+    mat[8] = (a10*b10 - a11*b08 + a13*b06)*invDet;
+    mat[9] = (-a00*b10 + a01*b08 - a03*b06)*invDet;
+    mat[10] = (a30*b04 - a31*b02 + a33*b00)*invDet;
+    mat[11] = (-a20*b04 + a21*b02 - a23*b00)*invDet;
+    mat[12] = (-a10*b09 + a11*b07 - a12*b06)*invDet;
+    mat[13] = (a00*b09 - a01*b07 + a02*b06)*invDet;
+    mat[14] = (-a30*b03 + a31*b01 - a32*b00)*invDet;
+    mat[15] = (a20*b03 - a21*b01 + a22*b00)*invDet;
+    return this;
 };
 
-// Returns the result of attaching the given argument to the right-hand side of the matrix
-lime.webgl.M.prototype.augment_ = function(matrix1,matrix2) {
-  var M = matrix2.toArray();
-  var T = matrix1.toArray(), cols = T[0].length;
-  var ni = T.length, ki = ni, i, nj, kj = M[0].length, j;
-  if (ni != M.length) { return null; }
-  do { i = ki - ni;
-    nj = kj;
-    do { j = kj - nj;
-      T[i][cols + j] = M[i][j];
-    } while (--nj);
-  } while (--ni);
-  return T;
-};
 
 lime.webgl.M.prototype.multiply = function(matrix){
     //console.log(matrix);

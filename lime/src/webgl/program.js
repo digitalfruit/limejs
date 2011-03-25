@@ -122,7 +122,8 @@ lime.webgl.Program.prototype.SETTERS = {
     0x8B59 : ['uniform4iv','vertexAttrib4iv',Boolean,4], // BOOL_VEC4
     0x8B5A : ['uniformMatrix2fv','',Float32Array,2,true], // FLOAT_MAT2
     0x8B5B : ['uniformMatrix3fv','',Float32Array,3,true], // FLOAT_MAT3
-    0x8B5C : ['uniformMatrix4fv','',Float32Array,4,true]  // FLOAT_MAT4
+    0x8B5C : ['uniformMatrix4fv','',Float32Array,4,true],  // FLOAT_MAT4
+    0x8B5E : ['uniform1iv','vertexAttrib1iv',Int32Array,1], // SAMPLER_2D
 };
 
 

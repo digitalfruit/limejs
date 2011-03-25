@@ -1,10 +1,12 @@
 goog.provide('lime.Renderer.CANVAS.ROUNDEDRECT');
 goog.provide('lime.Renderer.DOM.ROUNDEDRECT');
+goog.provide('lime.Renderer.WEBGL.ROUNDEDRECT');
 goog.provide('lime.RoundedRect');
 
 
 goog.require('lime.Renderer.CANVAS.SPRITE');
 goog.require('lime.Renderer.DOM.SPRITE');
+goog.require('lime.Renderer.WEBGL.SPRITE');
 goog.require('lime.Sprite');
 goog.require('lime.style');
 
@@ -31,7 +33,8 @@ lime.RoundedRect.prototype.id = 'roundedrect';
 lime.RoundedRect.prototype.supportedRenderers = [
     lime.Renderer.DOM.SPRITE.makeSubRenderer(lime.Renderer.DOM.ROUNDEDRECT),
     lime.Renderer.CANVAS.SPRITE.makeSubRenderer(
-        lime.Renderer.CANVAS.ROUNDEDRECT)
+        lime.Renderer.CANVAS.ROUNDEDRECT),
+    lime.Renderer.WEBGL.SPRITE.makeSubRenderer(lime.Renderer.WEBGL.ROUNDEDRECT),
 ];
 
 /**
