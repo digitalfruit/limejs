@@ -1,5 +1,6 @@
 goog.provide('lime.webgl.Buffer');
 
+
 lime.webgl.Buffer = function(type,opt_data){
     if(!goog.isArray(type)) type = [type];
     this.type = type;
@@ -8,6 +9,7 @@ lime.webgl.Buffer = function(type,opt_data){
     this.length = 0;
     this.elementSize = 0;
     this.byteSize = 0;
+    this.cursor = [];
     for(var j=0;j<type.length;j++){
     for(var i in type[j]){
         i = i.toLowerCase();
@@ -21,12 +23,15 @@ lime.webgl.Buffer = function(type,opt_data){
         this.items.push([def[0],def[1],def[2],type[j][i],this.byteSize]);
         this.byteSize+=def[1]*type[j][i];
         this.elementSize += type[j][i];
+        this.cursor.push(null);
     }
     }
     this.dirty_ = true;
-    
+    this.size = this.length = 0;
     this.set(opt_data);
 };
+
+lime.webgl.Buffer.prototype.BUFFER_INCREMENT = 200;
 
 lime.webgl.Buffer.prototype.definitions_ = {
   'float'   : [Float32Array,4,0x1406],
@@ -54,7 +59,6 @@ lime.webgl.Buffer.prototype.set = function(data){
   var len = this.length = data.length/this.elementSize;
   
   var buffer = new ArrayBuffer(len*this.byteSize);
-  
   var items = this.items;
   
   //todo: should provide faster algorithm for this.items.length==1
@@ -73,6 +77,7 @@ lime.webgl.Buffer.prototype.set = function(data){
   
   this.dirty_ = true;
   this.length = len;
+  this.size = this.length;
   
   return this;
   
@@ -106,6 +111,40 @@ lime.webgl.Buffer.prototype.subBuffer = function(index){
         return null;
     }
     return new lime.webgl.SubBuffer(this,index);
+};
+
+lime.webgl.Buffer.prototype.setSize = function(n){
+    var buffer = new ArrayBuffer(n*this.byteSize);
+    if(this.buffer){
+    var uint = new Uint8Array(this.buffer,0,this.byteSize*this.length);
+    var uint2 = new Uint8Array(buffer,0,n*this.byteSize);
+    uint2.set(uint);
+    }
+    if(this.length>n){
+        this.length = n;
+    }
+    this.size = n;
+    this.dirty_ = true;
+    this.buffer = buffer;
+};
+
+lime.webgl.Buffer.prototype.reset = function(){
+    this.length = 0;
+    this.dirty_ = true;
+};
+
+lime.webgl.Buffer.prototype.getNext = function(){
+    var cursor = this.cursor,items = this.items,l = this.length,
+        b = this.byteSize;
+    if((l+1)>=this.size){;
+        this.setSize(this.size+this.BUFFER_INCREMENT);
+    }
+    for(var i=0;i<items.length;i++){
+        var item = items[i];
+        cursor[i] = new item[0](this.buffer,l*b+item[4],item[1]);
+    }
+    this.length++;
+    return cursor;
 };
 
 lime.webgl.SubBuffer = function(buffer,index){

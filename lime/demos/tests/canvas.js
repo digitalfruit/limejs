@@ -30,16 +30,14 @@ test.start = function() {
     sprite = new lime.Sprite().setRenderer(lime.Renderer.WEBGL);
     flameLayer.appendChild(sprite);
 
-     ch1 = new lime.Circle().setSize(30, 30).setPosition(100, 100).setFill('#c00');
+     ch1 = new lime.Circle().setSize(30, 30).setPosition(100, 100).setFill('#100');
     sprite.appendChild(ch1);
 
-     ch2 = new lime.Circle().setSize(30, 30).setPosition(150, 100).setFill('#c00');
+     ch2 = new lime.Sprite().setSize(40, 30).setPosition(150, 100).setFill('#c00');
     sprite.appendChild(ch2);
 
-     ch3 = new lime.Circle().setSize(30, 30).setPosition(200, 100).setFill('#c00');
+     ch3 = new lime.Circle().setSize(30, 30).setPosition(200, 100).setFill('#c90');
     sprite.appendChild(ch3);
-
-
 
 
     // set active scene

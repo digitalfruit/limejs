@@ -20,6 +20,7 @@ pong.Game = function(mode) {
 
     this.setAnchorPoint(0, 0);
     this.setSize(320, 460);
+    this.setRenderer(lime.Renderer.WEBGL);
 
     var back = new lime.fill.LinearGradient().addColorStop(0, '#bbb').addColorStop(1, '#DDD');
     this.setFill(back);

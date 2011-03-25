@@ -5,6 +5,7 @@ goog.require('goog.math.Size.scaleVec2');
 goog.require('lime.Renderer');
 goog.require('lime.webgl');
 goog.require('lime.webgl.shaders.plain');
+goog.require('lime.webgl.BufferV3C4T2');
 
 /**
 * WebGL renderer. This renders as canvas element or just
@@ -142,21 +143,28 @@ lime.Renderer.WEBGL.drawCanvas = function() {
                 rquality = this.relativeQuality_ || 1;
               
             glc.setSize(pxsize.width, pxsize.height);
+            
             gl.clearColor(0,0,0,0);
             gl.clear(gl.COLOR_BUFFER_BIT);
             
             glc.proj = lime.webgl.ortho(0,pxsize.width,pxsize.height,0,-100,100);
             glc.model = lime.webgl.M4().identity().translate(this.ax,this.ay,0).
                 scale(rquality,rquality,1);
-                if(!glc.program){
+            if(!glc.buffer){
+                glc.buffer = new lime.webgl.BufferV3C4T2();
+                console.log('make',goog.getUid(this));
+            }
+            glc.transform = new lime.webgl.M4().identity();
+            
+            if(!glc.program){
             glc.program = glc.makeProgram().setShader(lime.webgl.shaders.plain);
             }
-            /*
-            context.clearRect(0, 0, pxsize.width, pxsize.height);
+            
+            /*context.clearRect(0, 0, pxsize.width, pxsize.height);
             context.save();
             context.translate(this.ax, this.ay);
-            context.scale(rquality, rquality);
-            */
+            context.scale(rquality, rquality);*/
+            
 
             var size = this.getSize(), anchor = this.getAnchorPoint();
             
@@ -164,14 +172,19 @@ lime.Renderer.WEBGL.drawCanvas = function() {
             glc.program.setaVertexColor(0,1,0,.5);
             
             glc.model.translate(size.width * anchor.x, size.height * anchor.y,0);
+            glc.buffer.reset();
             
             this.renderer.drawCanvasObject.call(this, glc);
-            /*
-            context.restore();
-            */
+            
+            glc.program.setuMVMatrix(glc.model);
+            glc.program.setaVertexPosition(glc.buffer.subBuffer(0));
+            glc.program.setaVertexColor(glc.buffer.subBuffer(1));
+
+            glc.program.draw(glc.gl.TRIANGLES);
+            
+            //context.restore();
+          
             this.redraw_ = 0;
-            gl.flush();
-            glc.flush();
             
         }
     };
@@ -241,18 +254,22 @@ lime.Renderer.WEBGL.drawCanvasObject = function(glc) {
 
     for (var i = 0, child; child = this.children_[i]; i++) {
         var pos = child.localToParent(zero).clone(), rot = child.getRotation(), scale = child.getScale();
-        glc.model.save();
-        glc.model.translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);
+        //glc.model.save();
+       // glc.model.translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);
         /*context.save();
         context.translate(pos.x, pos.y);
         context.scale(scale.x,scale.y);*/
-
+        
+        glc.transform.save().translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);
+        
         if (rot != 0) {
-            glc.model.rotate(-rot * Math.PI / 180,new lime.webgl.V3(0,0,1));
+            glc.transform.rotate(-rot * Math.PI / 180,new lime.webgl.V3(0,0,1));
         }
         this.renderer.drawCanvasObject.call(child, glc);
+        
+        glc.transform.restore();
         //context.restore();
-        glc.model.restore();
+       // glc.model.restore();
 
     }
 

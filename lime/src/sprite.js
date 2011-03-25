@@ -130,25 +130,45 @@ lime.Renderer.WEBGL.SPRITE.draw = function(glc){
     var width = size.width;
     var height = size.height;
 
-    var frame = this.getFrame();
-    //if(!this.buffer){
-    this.buffer = new lime.webgl.Buffer({float:2},[
-        frame.left,frame.top,
-        frame.left,frame.bottom,
-        frame.right,frame.top,
-        frame.right,frame.bottom]);
-        
-    this.colors = new lime.webgl.Buffer({float:4},[
-        1,0,0,1,
-        0,1,0,1,
-        0,0,1,1,
-        1,1,0,1
-        ]);
+    var frame = this.getFrame(), V3 = lime.webgl.V3;
     
-    glc.program.setuMVMatrix(glc.model);
-    glc.program.setaVertexPosition(this.buffer);
-    glc.program.setaVertexColor(this.colors);
+    var tl = new V3(frame.left, frame.top, 0).multiply(glc.transform),
+        bl = new V3(frame.left, frame.bottom, 0).multiply(glc.transform),
+        tr = new V3(frame.right, frame.top, 0).multiply(glc.transform),
+        br = new V3(frame.right, frame.bottom, 0).multiply(glc.transform);
     
-    glc.program.draw(glc.gl.TRIANGLE_STRIP);
+    var color = [5,0,0,.1];
+    
+    if(this.fill_ instanceof lime.fill.Color){
+        color = this.fill_.getRgba();
+        color[0]/=255;
+        color[1]/=255;
+        color[2]/=255;
+    }color[3]=.2;
+    
+    var cursor = glc.buffer.getNext();
+    cursor[0].set(tl.elements);
+    cursor[1].set(color);
+    
+    cursor = glc.buffer.getNext();    
+    cursor[0].set(bl.elements);
+    cursor[1].set(color);
+ 
+    cursor = glc.buffer.getNext();
+    cursor[0].set(br.elements);
+    cursor[1].set(color);
+    
+    cursor = glc.buffer.getNext();    
+    cursor[0].set(tl.elements);
+    cursor[1].set(color);
+    
+    cursor = glc.buffer.getNext();
+    cursor[0].set(br.elements);
+    cursor[1].set(color);
+    
+    cursor = glc.buffer.getNext();
+    cursor[0].set(tr.elements);
+    cursor[1].set(color);
+    //console.log(tl.elements[0],tl.elements[1]);
 }
 
