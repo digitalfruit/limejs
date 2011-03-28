@@ -17,7 +17,10 @@ var dirtyObjectQueueNext = [[], []];
 lime.setObjectDirty = function(obj, opt_pass, opt_nextframe) {
     var queue = opt_nextframe ? dirtyObjectQueueNext : dirtyObjectQueue;
     var pass = opt_pass || 0;
-    goog.array.insert(queue[pass], obj);
+    if(queue[pass].indexOf(obj)==-1){
+        queue[pass].push(obj);
+    }
+   // goog.array.insert(queue[pass], obj);
 }
 
 /**
