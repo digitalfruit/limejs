@@ -22,6 +22,7 @@ lime.webgl.V = function(size,opt_type,opt_data){
     var type = goog.isFunction(opt_type) ? opt_type : Float32Array;
     this.type = type;
     this.elements = new type(size);
+    lime.webgl.count++;
     if(opt_data){
         var n = opt_data.length;
         while(--n>=0){
@@ -32,11 +33,8 @@ lime.webgl.V = function(size,opt_type,opt_data){
 }
 
 lime.webgl.V.prototype.set = function(data){
-    
-    var n = data.length;
-    while(--n>=0){
-        this.elements[n] = data[n];
-    }
+    this.elements.set(data);
+    return this;
 }
 
 lime.webgl.V.prototype.modulus =  function() {
@@ -106,7 +104,7 @@ lime.webgl.V.prototype.scale = function(scale){
 lime.webgl.V.prototype.negate = function(){
     return this.scale(-1);
 };
-
+/*
 lime.webgl.V.prototype.multiply = function(vector){
     if (this.size != 3 || vector.length != 3) { return null; }
     var A = this.elements;
@@ -115,7 +113,7 @@ lime.webgl.V.prototype.multiply = function(vector){
       (A[2] * B[0]) - (A[0] * B[2]),
       (A[0] * B[1]) - (A[1] * B[0])
     ]);
-};
+};*/
 
 lime.webgl.V.prototype.multiply = function(m){
     var vec = this.elements,x = vec[0], y = vec[1], z = vec[2],mat = m.elements;
@@ -128,16 +126,27 @@ lime.webgl.V.prototype.multiply = function(m){
 }
 
 lime.webgl.V.prototype.save = function(){
-    var v = this.clone();
-    if(!this.history_) this.history_ = [];
-    this.history_.push(v);
+    if(!this.history_){
+        this.history_ = [];
+        this.h_index_ = 0;
+    }
+    if(this.history_.length<=this.h_index_){
+        this.history_.push(new this.type(this.elements));
+    }
+    else {
+        this.history_[this.h_index_].set(this.elements);
+    }
+    
+    this.h_index_++;
     return this;
 };
 
 lime.webgl.V.prototype.restore = function(){
     if(!this.history_ || !this.history_.length) return;
-    var v = this.history_.pop();
-    this.elements = v.elements;
+    this.h_index_--;
+    var temp = this.elements;
+    this.elements = this.history_[this.h_index_];
+    this.history_[this.h_index_] = temp;
 };
 
 lime.webgl.V.prototype.toArray = function(){
@@ -226,47 +235,47 @@ lime.webgl.M.prototype.identity = function(){
 
 lime.webgl.M.prototype.clone = function(){
     var v = new lime.webgl.M(this.msize,this.type), n = this.size;
-    v.elements = new this.type(this.elements);
+    v.elements.set(this.elements);
     return v;
 };
 
-lime.webgl.M.prototype.Translation = function(v){
-    if(v.elements) v = c.elements;
-    else if (!v.length) v = goog.array.toArray(arguments);
-    this.identity();
-    var e = this.elements;
-    if(this.msize==3){
-        e[6] = v[0];
-        e[7] = v[1];
-    }
-    else if(this.msize>3){
-        e[12] = v[0];
-        e[13] = v[1];
-        e[14] = v[2];
-    }
+
+lime.webgl.M.prototype.translate = function(vec){
+    if(vec.elements) vec = vec.elements;
+    else if (!vec.length) vec = goog.array.toArray(arguments);
+    
+    var x = vec[0], y = vec[1], z = vec[2];
+    var mat = this.elements;
+    
+    mat[12] += mat[0]*x + mat[4]*y + mat[8]*z;
+	mat[13] += mat[1]*x + mat[5]*y + mat[9]*z;
+	mat[14] += mat[2]*x + mat[6]*y + mat[10]*z;
+	mat[15] += mat[3]*x + mat[7]*y + mat[11]*z;
+    
     return this;
 };
 
-lime.webgl.M.prototype.translate = function(){
-  return this.multiply(new lime.webgl.M(this.msize).Translation(arguments));
-};
-
-lime.webgl.M.prototype.Scale = function(v){
-    if(v.elements) v = c.elements;
-    else if (!v.length) v = goog.array.toArray(arguments);
-    this.identity();
-    if(v.length==1){
-        v[1]=v[2]=v[0];
-    }
-    var e = this.elements;
-    e[0] = v[0];
-    e[this.msize+1] = v[1];
-    if(this.msize>3){ e[this.msize*2+2] = v[2];}
+lime.webgl.M.prototype.scale = function(vec){
+    if(vec.elements) vec = vec.elements;
+    else if (!vec.length) vec = goog.array.toArray(arguments);
+    
+    var x = vec[0], y = vec[1] || x, z = vec[2] || 1;
+    
+    var mat = this.elements;
+    mat[0]*=x;
+	mat[1]*=x;
+	mat[2]*=x;
+	mat[3]*=x;
+	mat[4]*=y;
+	mat[5]*=y;
+	mat[6]*=y;
+	mat[7]*=y;
+	mat[8]*=z;
+	mat[9]*=z;
+	mat[10]*=z;
+	mat[11]*=z;
     return this;
-};
 
-lime.webgl.M.prototype.scale = function(){
-    return this.multiply(new lime.webgl.M(this.msize).Scale(arguments));
 }
 
 lime.webgl.M.prototype.toArray = function(){
@@ -280,25 +289,54 @@ lime.webgl.M.prototype.toArray = function(){
     return arr;
 };
 
-lime.webgl.M.prototype.rotation = function(theta,a){
-    if(!a || this.msize<3){
-        return this.set([
-            [Math.cos(theta),-Math.sin(theta)],
-            [Math.sin(theta),Math.cos(theta)]]);
-    }
-    var axis = a.clone();
-    if(axis.size!=3) return null;
-    var mod = axis.modulus();
-    var x = axis.elements[0]/mod, y = axis.elements[1]/mod, z = axis.elements[2]/mod;
-    var s = Math.sin(theta), c = Math.cos(theta), t = 1 - c;
-    return this.identity().set([
-         [t*x*x + c, t*x*y - s*z, t*x*z + s*y] ,
-         [t*x*y + s*z, t*y*y + c, t*y*z - s*x] ,
-         [t*x*z - s*y, t*y*z + s*x, t*z*z + c]]);
-}
 
-lime.webgl.M.prototype.rotate = function(theta,a){
-   return this.multiply(new lime.webgl.M(this.msize).rotation(theta,a));
+
+lime.webgl.M.prototype.rotate = function(theta,axis){
+    if(this.msize<3){
+           return this.set([
+               [Math.cos(theta),-Math.sin(theta)],
+               [Math.sin(theta),Math.cos(theta)]]);
+     }
+     if(axis.elements)
+    axis = axis.elements; 
+ 	var x = axis[0], y = axis[1], z = axis[2];
+    var len = x*x + y*y + z*z;
+    if(len!=1){ // non normalized
+        len = 1 / Math.sqrt(len);
+        x *= len;
+        y *= len;
+        z *= len;
+    }
+    var s = Math.sin(theta), c = Math.cos(theta), t = 1 - c;
+    
+	var mat = this.elements;
+	
+    // Cache the matrix values (makes for huge speed increases!)
+	var a00 = mat[0], a01 = mat[1], a02 = mat[2], a03 = mat[3];
+	var a10 = mat[4], a11 = mat[5], a12 = mat[6], a13 = mat[7];
+	var a20 = mat[8], a21 = mat[9], a22 = mat[10], a23 = mat[11];
+	
+	// Construct the elements of the rotation matrix
+	var b00 = x*x*t + c, b01 = y*x*t + z*s, b02 = z*x*t - y*s;
+	var b10 = x*y*t - z*s, b11 = y*y*t + c, b12 = z*y*t + x*s;
+	var b20 = x*z*t + y*s, b21 = y*z*t - x*s, b22 = z*z*t + c;
+	
+	mat[0] = a00*b00 + a10*b01 + a20*b02;
+	mat[1] = a01*b00 + a11*b01 + a21*b02;
+	mat[2] = a02*b00 + a12*b01 + a22*b02;
+	mat[3] = a03*b00 + a13*b01 + a23*b02;
+	
+	mat[4] = a00*b10 + a10*b11 + a20*b12;
+	mat[5] = a01*b10 + a11*b11 + a21*b12;
+	mat[6] = a02*b10 + a12*b11 + a22*b12;
+	mat[7] = a03*b10 + a13*b11 + a23*b12;
+	
+	mat[8] = a00*b20 + a10*b21 + a20*b22;
+	mat[9] = a01*b20 + a11*b21 + a21*b22;
+	mat[10] = a02*b20 + a12*b21 + a22*b22;
+	mat[11] = a03*b20 + a13*b21 + a23*b22;
+	
+	return this;
 };
 
 

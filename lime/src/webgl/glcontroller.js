@@ -21,7 +21,7 @@ lime.webgl.GLController = function(opt_element){
     } catch(e) {}
     if (!gl) {
         try {
-        gl = element.getContext("experimental-webgl");
+        gl = element.getContext("experimental-webgl",{alpha:true,antialias:true});
         } catch(e) {}
     }
     if(!gl){   

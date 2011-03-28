@@ -133,12 +133,16 @@ lime.webgl.Buffer.prototype.reset = function(){
     this.dirty_ = true;
 };
 
+lime.webgl.Buffer.prototype.assureEmptyPositions = function(n){
+    if((this.length+n)>=this.size){;
+        this.setSize(this.size+this.BUFFER_INCREMENT);
+    }
+}
+
 lime.webgl.Buffer.prototype.getNext = function(){
     var cursor = this.cursor,items = this.items,l = this.length,
         b = this.byteSize;
-    if((l+1)>=this.size){;
-        this.setSize(this.size+this.BUFFER_INCREMENT);
-    }
+    this.assureEmptyPositions(1);
     for(var i=0;i<items.length;i++){
         var item = items[i];
         cursor[i] = new item[0](this.buffer,l*b+item[4],item[1]);
@@ -146,6 +150,7 @@ lime.webgl.Buffer.prototype.getNext = function(){
     this.length++;
     return cursor;
 };
+
 
 lime.webgl.SubBuffer = function(buffer,index){
     this.buffer = buffer;

@@ -139,6 +139,7 @@ lime.Renderer.WEBGL.drawCanvas = function() {
         }
 
         if (this.redraw_) {
+            lime.webgl.count=0;
             var glc = lime.webgl.GLController.forCanvas(this.domElement), gl = glc.gl,
                 rquality = this.relativeQuality_ || 1;
               
@@ -152,7 +153,11 @@ lime.Renderer.WEBGL.drawCanvas = function() {
                 scale(rquality,rquality,1);
             if(!glc.buffer){
                 glc.buffer = new lime.webgl.BufferV3C4T2();
-                console.log('make',goog.getUid(this));
+                glc.tl = new lime.webgl.V3();
+                glc.tr = new lime.webgl.V3();
+                glc.bl = new lime.webgl.V3();
+                glc.br = new lime.webgl.V3();
+                
             }
             glc.transform = new lime.webgl.M4().identity();
             
@@ -187,6 +192,7 @@ lime.Renderer.WEBGL.drawCanvas = function() {
             this.redraw_ = 0;
             
         }
+       // console.log(lime.webgl.count);
     };
 
 /**
@@ -263,7 +269,7 @@ lime.Renderer.WEBGL.drawCanvasObject = function(glc) {
         glc.transform.save().translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);
         
         if (rot != 0) {
-            glc.transform.rotate(-rot * Math.PI / 180,new lime.webgl.V3(0,0,1));
+            glc.transform.rotate(-rot * Math.PI / 180,[0,0,1]);
         }
         this.renderer.drawCanvasObject.call(child, glc);
         

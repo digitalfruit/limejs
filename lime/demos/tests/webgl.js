@@ -29,24 +29,24 @@ test.start = function() {
 	layer = new lime.Layer;
 	scene.appendChild(layer);
 
-    var numboxes = 150;
-    
+    var numboxes = 1000;
+
     for(var i=0;i<numboxes;i++){
         
-        var sprite = new lime.Sprite().setSize(20+Math.random()*40,20+Math.random()*40).setPosition(Math.random()*600,Math.random()*400).setFill(Math.round(Math.random()*255),Math.round(Math.random()*255),Math.round(Math.random()*255));
+        var sprite = new lime.Sprite().setSize(10+Math.random()*20,10+Math.random()*20).setPosition(Math.random()*600,Math.random()*400).setFill(Math.round(Math.random()*255),Math.round(Math.random()*255),Math.round(Math.random()*255));
           /*  setPosition(Math.random()*600,Math.random()*400).
             setSize(10+Math.random()*20,10+Math.random()*20).
             setFill(Math.random()*255,Math.random()*255,Math.random()*255,.1);*/
         layer.appendChild(sprite);
         
-        sprite.runAction(
-            new lime.animation.Spawn(
+        var anim =  new lime.animation.Spawn(
             new lime.animation.ScaleBy(1+Math.random()).setDuration(5),
             new lime.animation.RotateBy(360*Math.random()).setDuration(15)
-            )
-        );
+            );
+        sprite.runAction(anim);
     }
 
+   // anim.play();
 
     // set active scene
     test.director.replaceScene(scene);

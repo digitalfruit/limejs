@@ -203,7 +203,7 @@ lime.webgl.Program.prototype.draw = function(mode,opt_offset,opt_length){
 		    if(!length || this.activeBuffers_[i].length<length)
 		        length= this.activeBuffers_[i].length;
 		}
-    }
+    }//console.log(this.activeBuffers_);console.log('draw',offset,length);
     this.gl.drawArrays(mode,offset,length);
 };
 

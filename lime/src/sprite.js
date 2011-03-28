@@ -132,43 +132,39 @@ lime.Renderer.WEBGL.SPRITE.draw = function(glc){
 
     var frame = this.getFrame(), V3 = lime.webgl.V3;
     
-    var tl = new V3(frame.left, frame.top, 0).multiply(glc.transform),
-        bl = new V3(frame.left, frame.bottom, 0).multiply(glc.transform),
-        tr = new V3(frame.right, frame.top, 0).multiply(glc.transform),
-        br = new V3(frame.right, frame.bottom, 0).multiply(glc.transform);
-    
+    var tl = glc.tl.set([frame.left, frame.top, 0]).multiply(glc.transform),
+        bl = glc.bl.set([frame.left, frame.bottom, 0]).multiply(glc.transform),
+        tr = glc.tr.set([frame.right, frame.top, 0]).multiply(glc.transform),
+        br = glc.br.set([frame.right, frame.bottom, 0]).multiply(glc.transform);
     var color = [5,0,0,.1];
     
     if(this.fill_ instanceof lime.fill.Color){
+        var MULT=0.003921568;
         color = this.fill_.getRgba();
-        color[0]/=255;
-        color[1]/=255;
-        color[2]/=255;
+        color[0]*=MULT,color[1]*=MULT,color[2]*=MULT;
     }color[3]=.2;
     
-    var cursor = glc.buffer.getNext();
-    cursor[0].set(tl.elements);
-    cursor[1].set(color);
+    glc.buffer.assureEmptyPositions(6);
     
-    cursor = glc.buffer.getNext();    
-    cursor[0].set(bl.elements);
-    cursor[1].set(color);
- 
-    cursor = glc.buffer.getNext();
-    cursor[0].set(br.elements);
-    cursor[1].set(color);
+    var vct = glc.buffer.vct,es = glc.buffer.elementSize;
+    var index = glc.buffer.length*es;
+  //  console.log(index,vct,glc.buffer.elementSize);
+  
+    vct.set(tl.elements,index);
+    vct.set(bl.elements,es+index);
+    vct.set(br.elements,2*es+index);
+    vct.set(tl.elements,3*es+index);
+    vct.set(br.elements,4*es+index);
+    vct.set(tr.elements,5*es+index);
     
-    cursor = glc.buffer.getNext();    
-    cursor[0].set(tl.elements);
-    cursor[1].set(color);
     
-    cursor = glc.buffer.getNext();
-    cursor[0].set(br.elements);
-    cursor[1].set(color);
+    vct.set(color,index+3);
+    vct.set(color,es+index+3);
+    vct.set(color,2*es+index+3);
+    vct.set(color,3*es+index+3);
+    vct.set(color,4*es+index+3);
+    vct.set(color,5*es+index+3);
     
-    cursor = glc.buffer.getNext();
-    cursor[0].set(tr.elements);
-    cursor[1].set(color);
-    //console.log(tl.elements[0],tl.elements[1]);
+    glc.buffer.length+=6;
 }
 
