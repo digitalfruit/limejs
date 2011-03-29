@@ -660,17 +660,19 @@ lime.Node.prototype.createDomElement = function() {
 
     var newTagName =
         this.renderer.getType() == lime.Renderer.DOM ? 'div' : 'canvas';
+    var webgl = this.renderer.getType() == lime.Renderer.WEBGL ? 'webgl' : '';
     var create = function() {
         this.domElement = this.rootElement =
             this.containerElement = goog.dom.createDom(newTagName);
         if (this.domClassName)
             goog.dom.classes.add(this.domElement, this.domClassName);
+        this.domElement.webgl=webgl;
         this.dirty_ |= ~0;
     };
 
     if (this.domElement) {
         var curtag = this.domElement.tagName.toLowerCase();
-        if (curtag != newTagName) {
+        if (curtag != newTagName || this.domElement.webgl!=webgl) {
             var oldEl = this.rootElement;
             create.call(this);
             if (oldEl.parentNode)
