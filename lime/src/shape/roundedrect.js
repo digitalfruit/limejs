@@ -34,7 +34,7 @@ lime.RoundedRect.prototype.supportedRenderers = [
     lime.Renderer.DOM.SPRITE.makeSubRenderer(lime.Renderer.DOM.ROUNDEDRECT),
     lime.Renderer.CANVAS.SPRITE.makeSubRenderer(
         lime.Renderer.CANVAS.ROUNDEDRECT),
-    lime.Renderer.WEBGL.SPRITE.makeSubRenderer(lime.Renderer.WEBGL.ROUNDEDRECT),
+    lime.Renderer.WEBGL.SPRITE.makeSubRenderer(lime.Renderer.WEBGL.ROUNDEDRECT)
 ];
 
 /**

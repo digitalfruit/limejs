@@ -11,6 +11,9 @@ goog.require('lime.webgl.Program');
 
 lime.webgl.PRECISION = 1e-6;
 
+/**
+ * @constructor
+ */
 lime.webgl.V = function(size,opt_type,opt_data){
     if(!arguments.length) return;
     if(!(this instanceof lime.webgl.V)){
