@@ -32,21 +32,21 @@ test.start = function() {
     line = new lime.Sprite().setFill('#666').setSize(300, 2).setPosition(200, 200);
     flameLayer.appendChild(line);
 
-    var dragFunc = function(e) {this.setFill('#F93269');e.startDrag();e.event.stopPropagation()};
+    var dragFunc = function(e) {e.startDrag();e.event.stopPropagation()};
 
 
-    var box = new lime.Sprite().setFill('#00c').setSize(60, 60).setPosition(200, 200).setAnchorPoint(0.3, 0.9);//.setRotation(30)
+    var box = new lime.Sprite().setFill('#00c').setSize(60, 60).setPosition(200, 200).setAnchorPoint(0.3, 0.9).setSkew(0,5);
        // .setQuality(.5);
     goog.events.listen(box, ['mousedown', 'touchstart'], dragFunc);
     flameLayer.appendChild(box);
 
 
-    var box2 = new lime.Sprite().setFill('#0c0').setSize(70, 70).setAnchorPoint(1, 1).setRotation(0).setPosition(10, 0);
+    var box2 = new lime.Sprite().setFill('#0c0').setSize(70, 70).setAnchorPoint(1, 1).setRotation(0).setPosition(10, 0)
     goog.events.listen(box2, ['mousedown', 'touchstart'], dragFunc);
     box.appendChild(box2);
 
 
-    var box3_1 = new lime.Sprite().setFill('#c00').setSize(50, 50).setAnchorPoint(0, 0).setPosition(-40, 0).setRotation(15);
+    var box3_1 = new lime.Sprite().setFill('#c00').setSize(50, 50).setAnchorPoint(0, 0).setPosition(-40, 0).setRotation(15).setSkew(0,20);
     goog.events.listen(box3_1, ['mousedown', 'touchstart'], dragFunc);
     box2.appendChild(box3_1);
 
@@ -73,8 +73,8 @@ test.start = function() {
 	var mode = lime.Renderer.DOM;
 	var b1 = makeButton('Toggle Mode');
 	goog.events.listen(b1, 'click', function() {
-	    mode = mode == lime.Renderer.DOM ? lime.Renderer.WEBGL : lime.Renderer.DOM;
-	    box2.setRenderer(mode);
+	    mode = mode == lime.Renderer.DOM ? lime.Renderer.CANVAS : lime.Renderer.DOM;
+	    box.setRenderer(mode);
     });
     blayer.appendChild(b1);
 

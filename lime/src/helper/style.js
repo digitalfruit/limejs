@@ -78,11 +78,23 @@ lime.style.Transform = function(opt_precision) {
  * Scale current transform object
  * @param {number} sx X-axis scale factor.
  * @param {number} sy y-axis scale factor.
- * @return {lime.style.Transform} obejct itself.
+ * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.scale = function(sx, sy) {
     //if(sx!=1 && sy!=1)
     this.values.push('scale(' + sx + ',' + sy + ')');
+    return this;
+};
+    
+/**
+ * Skew current transform object
+ * @param {number} sx X-axis skew angle.
+ * @param {number} sy y-axis skew angle.
+ * @return {lime.style.Transform} object itself.
+ */
+lime.style.Transform.prototype.skew = function(sx, sy) {
+    if(sx!=0 || sy!=0)
+    this.values.push('skew(' + sx + 'deg,' + sy + 'deg)');
     return this;
 };
 

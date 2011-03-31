@@ -449,6 +449,44 @@ lime.webgl.M.prototype.multiply = function(matrix){
 	return this;
 };
 
+//2d skew
+lime.webgl.M.prototype.skew = function(sx,sy){
+    
+    
+    var mat = this.elements;
+    
+	// Cache the matrix values (makes for huge speed increases!)
+	var a00 = mat[0], a01 = mat[1], a02 = mat[2], a03 = mat[3];
+	var a10 = mat[4], a11 = mat[5], a12 = mat[6], a13 = mat[7];
+	var a20 = mat[8], a21 = mat[9], a22 = mat[10], a23 = mat[11];
+	var a30 = mat[12], a31 = mat[13], a32 = mat[14], a33 = mat[15];
+	
+	var b00 = 1, b01 = Math.tan(sy), b02 = 0, b03 = 0;
+    var b10 = Math.tan(sx), b11 = 1, b12 = 0, b13 = 0;
+    var b20 = 0, b21 = 0, b22 = 1, b23 = 0;
+    var b30 = 0, b31 = 0, b32 = 0, b33 = 1;
+    
+    mat[0] = b00*a00 + b01*a10 + b02*a20 + b03*a30;
+	mat[1] = b00*a01 + b01*a11 + b02*a21 + b03*a31;
+	mat[2] = b00*a02 + b01*a12 + b02*a22 + b03*a32;
+	mat[3] = b00*a03 + b01*a13 + b02*a23 + b03*a33;
+	mat[4] = b10*a00 + b11*a10 + b12*a20 + b13*a30;
+	mat[5] = b10*a01 + b11*a11 + b12*a21 + b13*a31;
+	mat[6] = b10*a02 + b11*a12 + b12*a22 + b13*a32;
+	mat[7] = b10*a03 + b11*a13 + b12*a23 + b13*a33;
+	mat[8] = b20*a00 + b21*a10 + b22*a20 + b23*a30;
+	mat[9] = b20*a01 + b21*a11 + b22*a21 + b23*a31;
+	mat[10] = b20*a02 + b21*a12 + b22*a22 + b23*a32;
+	mat[11] = b20*a03 + b21*a13 + b22*a23 + b23*a33;
+	mat[12] = b30*a00 + b31*a10 + b32*a20 + b33*a30;
+	mat[13] = b30*a01 + b31*a11 + b32*a21 + b33*a31;
+	mat[14] = b30*a02 + b31*a12 + b32*a22 + b33*a32;
+	mat[15] = b30*a03 + b31*a13 + b32*a23 + b33*a33;
+	
+	return this;
+    
+}
+
 lime.webgl.M.prototype.transpose = function(){
     return  new lime.webgl.M(this.msize,this.type,this.elements);
 };

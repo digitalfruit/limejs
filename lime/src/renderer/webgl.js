@@ -135,7 +135,7 @@ lime.Renderer.WEBGL.drawCanvas = function() {
             }
             lime.style.setTransform(this.domElement,
                 new lime.style.Transform().setPrecision(.1).translate(pos.x, pos.y).
-                scale(realScale.x, realScale.y).rotate(rotation));
+                scale(realScale.x, realScale.y).rotate(rotation).skew(this.skew_.x,this.skew_.y));
         }
 
         if (this.redraw_) {
@@ -260,17 +260,19 @@ lime.Renderer.WEBGL.drawCanvasObject = function(glc) {
 
     for (var i = 0, child; child = this.children_[i]; i++) {
         var pos = child.localToParent(zero).clone(), rot = child.getRotation(), scale = child.getScale();
-        //glc.model.save();
-       // glc.model.translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);
+        glc.transform.save();
+        glc.transform.translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);
         /*context.save();
         context.translate(pos.x, pos.y);
         context.scale(scale.x,scale.y);*/
-        
-        glc.transform.save().translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);
+       /* 
+       console.log(child.getTransformationMatrix().inverse()); glc.transform.save().multiply(child.getTransformationMatrix().inverse())/*.translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);*/
         
         if (rot != 0) {
             glc.transform.rotate(-rot * Math.PI / 180,[0,0,1]);
         }
+       glc.transform.skew(child.skew_.x*Math.PI/170,child.skew_.y*Math.PI/180);
+        
         this.renderer.drawCanvasObject.call(child, glc);
         
         glc.transform.restore();

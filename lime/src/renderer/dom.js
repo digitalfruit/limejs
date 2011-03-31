@@ -118,7 +118,7 @@ lime.Renderer.DOM.drawSizePosition = function() {
     }
 
     transform.translate(px, py).scale(realScale.x, realScale.y).
-        rotate(rotation);
+        rotate(rotation).skew(this.skew_.x,this.skew_.y);
 
     if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
        //     console.log('transform',this.transition_position_set_,this.transition_position_);

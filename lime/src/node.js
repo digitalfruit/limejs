@@ -8,6 +8,7 @@ goog.require('goog.math.Size');
 goog.require('goog.math.Vec2');
 goog.require('lime');
 goog.require('lime.DirtyObject');
+goog.provide('lime.webgl');
 
 goog.require('lime.Renderer.CANVAS');
 goog.require('lime.Renderer.DOM');
@@ -56,6 +57,8 @@ lime.Node = function() {
     this.setPosition(0, 0);
 
     this.setSize(0, 0);
+    
+    this.setSkew(0, 0);
 
     this.quality_ = 1.0;
 
@@ -262,6 +265,33 @@ lime.Node.prototype.setScale = function(value) {
 };
 
 /**
+ * Returns skew angles vector for the element. 0,0 means no skew
+ * @return {goog.math.Vec2} skew vector.
+ */
+lime.Node.prototype.getSkew = function() {
+    return this.skew_;
+};
+/**
+ * Sets new scale vector for element. This function also accepts
+ * 2 numbers or 1 number that would be coverted to vector before use
+ * @param {goog.math.Vec2} value New scale vector.
+ * @return {lime.Node} Node itself.
+ */
+lime.Node.prototype.setSkew = function(value) {
+    if (arguments.length == 1 && goog.isNumber(value)) {
+        this.skew_ = new goog.math.Vec2(value, value);
+    }
+    else if (arguments.length == 2) {
+        this.skew_ = new goog.math.Vec2(arguments[0], arguments[1]);
+    }
+    else {
+        this.skew_ = value;
+    }
+    //if (this.transitionsActive_[lime.Transition.SKEW]) return this;
+    return this.setDirty(lime.Dirty.POSITION);
+};
+
+/**
  * Returns element's position coordinate
  * @return {goog.math.Coordinate} Current position coordinate.
  */
@@ -362,6 +392,7 @@ lime.Node.prototype.setRotation = function(value) {
 
     return this.setDirty(lime.Dirty.POSITION);
 };
+
 
 
 /**
@@ -539,6 +570,20 @@ lime.Node.prototype.screenToLocal = function(coord) {
     return this.parentToLocal(coord);
 };
 
+lime.Node.prototype.getTransformationMatrix = function(){
+  
+  if(this.matrix_cache_) return this.matrix_;
+  // this function needs caching + transitions support
+  var m = this.matrix_ || new lime.webgl.M4();
+  
+  m.identity().skew(-this.skew_.x*Math.PI/180,-this.skew_.y*Math.PI/180).
+    rotate(this.rotation_ * Math.PI / 180,[0,0,1]).translate(-this.position_.x,-this.position_.y,0).
+    scale(1/this.scale_.x,1/this.scale_.y,1);
+  
+  return m;
+  
+};
+
 /**
  * Covert coordinate form parent node space to
  * current node space
@@ -547,7 +592,12 @@ lime.Node.prototype.screenToLocal = function(coord) {
  */
 lime.Node.prototype.parentToLocal = function(coord) {
     if (!this.getParent()) return;
+    
+   // console.log('1st: inp:'+coord.x+' '+coord.y);
 
+    var m = this.getTransformationMatrix();
+    var v = new lime.webgl.V3(coord.x,coord.y,0);
+/*
     coord.x -= this.position_.x;
     coord.y -= this.position_.y;
 
@@ -562,6 +612,13 @@ lime.Node.prototype.parentToLocal = function(coord) {
         coord.x = cos * c2.x - sin * c2.y;
         coord.y = cos * c2.y + sin * c2.x;
     }
+*/
+   // console.log('2nd: out:'+coord.x+' '+coord.y);
+    v.multiply(m);
+   // console.log('3rd: out:'+v.elements[0]+' '+v.elements[1]);
+
+   coord.x = v.elements[0];
+   coord.y = v.elements[1];
 
     return coord;
 };
@@ -585,8 +642,11 @@ lime.Node.prototype.localToScreen = function(coord) {
  */
 lime.Node.prototype.localToParent = function(coord) {
     if (!this.getParent()) return coord;
-    var coord = coord.clone();
+  //  var coord = coord.clone();
 
+    var m = this.getTransformationMatrix().clone().inverse();
+    var v = new lime.webgl.V3(coord.x,coord.y,0);
+/*
     if (this.rotation_ != 0) {
         var c2 = coord.clone(),
             rot = -this.rotation_ * Math.PI / 180,
@@ -601,6 +661,12 @@ lime.Node.prototype.localToParent = function(coord) {
 
     coord.x += this.position_.x;
     coord.y += this.position_.y;
+    */
+   //  console.log('2nd: out:'+coord.x+' '+coord.y);
+     v.multiply(m);
+   //  console.log('3rd: out:'+v.elements[0]+' '+v.elements[1]);
+   coord.x = v.elements[0];
+   coord.y = v.elements[1];
 
     return coord;
 };
