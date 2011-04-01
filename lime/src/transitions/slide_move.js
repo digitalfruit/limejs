@@ -71,6 +71,7 @@ lime.transitions.SlideIn.prototype.start = function() {
             delta.y = -size.height;
         break;
     }
+    this.incoming_.setHidden(false);
 
     var move = new lime.animation.MoveBy(delta).
             setDuration(this.getDuration());

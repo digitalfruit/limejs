@@ -283,6 +283,7 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
     this.sceneStack_.length = 0;
 
     this.sceneStack_.push(scene);
+    scene.domElement.style['display']='none';
     this.domElement.appendChild(scene.domElement);
     scene.parent_ = this;
     scene.wasAddedToTree();

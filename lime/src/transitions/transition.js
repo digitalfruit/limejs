@@ -53,7 +53,7 @@ lime.transitions.Transition.prototype.setFinishCallback = function(value) {
 lime.transitions.Transition.prototype.start = function() {
 
     this.incoming_.setPosition(new goog.math.Coordinate(0, 0));
-
+    this.incoming_.setHidden(false);
     this.finish();
 };
 
