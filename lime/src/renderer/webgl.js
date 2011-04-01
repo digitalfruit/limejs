@@ -252,32 +252,14 @@ lime.Renderer.WEBGL.drawCanvasObject = function(glc) {
         context.restore();
         context.clip();*/
     }
-
-
-    var zero = new goog.math.Coordinate(0, 0);
-
+    
     this.renderer.draw.call(this, glc);
 
     for (var i = 0, child; child = this.children_[i]; i++) {
-        var pos = child.localToParent(zero).clone(), rot = child.getRotation(), scale = child.getScale();
         glc.transform.save();
-        glc.transform.translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);
-        /*context.save();
-        context.translate(pos.x, pos.y);
-        context.scale(scale.x,scale.y);*/
-       /* 
-       console.log(child.getTransformationMatrix().inverse()); glc.transform.save().multiply(child.getTransformationMatrix().inverse())/*.translate(pos.x,pos.y,0).scale(scale.x,scale.y,1);*/
-        
-        if (rot != 0) {
-            glc.transform.rotate(-rot * Math.PI / 180,[0,0,1]);
-        }
-       glc.transform.skew(child.skew_.x*Math.PI/170,child.skew_.y*Math.PI/180);
-        
+        glc.transform.multiply(child.getTransformationMatrix());
         this.renderer.drawCanvasObject.call(child, glc);
-        
         glc.transform.restore();
-        //context.restore();
-       // glc.model.restore();
 
     }
 

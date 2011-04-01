@@ -260,6 +260,8 @@ lime.Node.prototype.setScale = function(value) {
     else {
         this.scale_ = value;
     }
+    
+    this.matrix_cachei_ = this.matrix_cache_ = false;
     if (this.transitionsActive_[lime.Transition.SCALE]) return this;
     return this.setDirty(lime.Dirty.SCALE);
 };
@@ -287,6 +289,8 @@ lime.Node.prototype.setSkew = function(value) {
     else {
         this.skew_ = value;
     }
+    
+    this.matrix_cachei_ = this.matrix_cache_ = false;
     //if (this.transitionsActive_[lime.Transition.SKEW]) return this;
     return this.setDirty(lime.Dirty.POSITION);
 };
@@ -311,6 +315,7 @@ lime.Node.prototype.setPosition = function(value) {
     else {
         this.position_ = value;
     }
+    this.matrix_cachei_ = this.matrix_cache_ = false;
     if (this.transitionsActive_[lime.Transition.POSITION]) return this;
     return this.setDirty(lime.Dirty.POSITION);
 };
@@ -387,7 +392,8 @@ lime.Node.prototype.getRotation = function() {
 lime.Node.prototype.setRotation = function(value) {
 
     this.rotation_ = value;
-
+    
+    this.matrix_cachei_ = this.matrix_cache_ = false;
     if (this.transitionsActive_[lime.Transition.ROTATION]) return this;
 
     return this.setDirty(lime.Dirty.POSITION);
@@ -561,28 +567,48 @@ lime.Node.prototype.setAutoResize = function(value) {
 /**
  * Convert screen coordinate to node coordinate space
  * @param {goog.math.Coordinate} coord Screen coordinate.
+ * @param {goog.math.Coordinate} opt_noclone Function does not need to copy param.
  * @return {goog.math.Coordinate} Local coordinate.
  */
-lime.Node.prototype.screenToLocal = function(coord) {
+lime.Node.prototype.screenToLocal = function(coord,opt_noclone) {
     if (!this.inTree_) return coord;
-    var coord = this.getParent().screenToLocal(coord);
+    
+    if(!opt_noclone) coord = coord.clone();
+    
+    var coord = this.getParent().screenToLocal(coord,true);
 
-    return this.parentToLocal(coord);
+    return this.parentToLocal(coord,true);
 };
 
 lime.Node.prototype.getTransformationMatrix = function(){
   
   if(this.matrix_cache_) return this.matrix_;
-  // this function needs caching + transitions support
   var m = this.matrix_ || new lime.webgl.M4();
   
-  m.identity().skew(-this.skew_.x*Math.PI/180,-this.skew_.y*Math.PI/180).
-    rotate(this.rotation_ * Math.PI / 180,[0,0,1]).translate(-this.position_.x,-this.position_.y,0).
-    scale(1/this.scale_.x,1/this.scale_.y,1);
+  m.identity().translate(this.position_.x,this.position_.y,0).
+    scale(this.scale_.x,this.scale_.y,1).
+    rotate(-this.rotation_ * Math.PI / 180,[0,0,1]).
+    skew(this.skew_.x*Math.PI/180,this.skew_.y*Math.PI/180);
+  
+  this.matrix_ = m;
+  this.matrix_cache_ = true;
   
   return m;
   
 };
+
+lime.Node.prototype.getTransformationMatrixi = function(){
+    if(this.matrix_cachei_) return this.matrixi_;
+    var m = this.matrixi_ || new lime.webgl.M4();
+    
+    m.elements.set(this.getTransformationMatrix().elements);
+    m.inverse();
+    
+    this.matrixi_ = m;
+    this.matrix_cachei_ = true;
+    
+    return m;
+}
 
 /**
  * Covert coordinate form parent node space to
@@ -590,36 +616,20 @@ lime.Node.prototype.getTransformationMatrix = function(){
  * @param {goog.math.Coordinate} coord Parent coordinate.
  * @return {goog.math.Coordinate} Local coordinate.
  */
-lime.Node.prototype.parentToLocal = function(coord) {
+lime.Node.prototype.parentToLocal = function(coord,opt_noclone) {
     if (!this.getParent()) return;
     
-   // console.log('1st: inp:'+coord.x+' '+coord.y);
+    if(!opt_noclone) coord = coord.clone();
+    var m = this.getTransformationMatrix().clone().inverse();
+    return this.transformCoord(coord,m);
+};
 
-    var m = this.getTransformationMatrix();
-    var v = new lime.webgl.V3(coord.x,coord.y,0);
-/*
-    coord.x -= this.position_.x;
-    coord.y -= this.position_.y;
+lime.Node.prototype.transformCoord = function(coord,m){
+    var x = coord.x, y=coord.y,mat = m.elements;
 
-    coord.x /= this.scale_.x;
-    coord.y /= this.scale_.y;
-
-    if (this.rotation_ != 0) {
-        var c2 = coord.clone(),
-            rot = this.rotation_ * Math.PI / 180,
-            cos = Math.cos(rot),
-            sin = Math.sin(rot);
-        coord.x = cos * c2.x - sin * c2.y;
-        coord.y = cos * c2.y + sin * c2.x;
-    }
-*/
-   // console.log('2nd: out:'+coord.x+' '+coord.y);
-    v.multiply(m);
-   // console.log('3rd: out:'+v.elements[0]+' '+v.elements[1]);
-
-   coord.x = v.elements[0];
-   coord.y = v.elements[1];
-
+    coord.x = mat[0]*x + mat[4]*y + mat[12];
+    coord.y = mat[1]*x + mat[5]*y + mat[13];
+    
     return coord;
 };
 
@@ -628,10 +638,12 @@ lime.Node.prototype.parentToLocal = function(coord) {
  * @param {goog.math.Coordinate} coord Local coordinate.
  * @return {goog.math.Coordinate} Screen coordinate.
  */
-lime.Node.prototype.localToScreen = function(coord) {
+lime.Node.prototype.localToScreen = function(coord,opt_noclone) {
     if (!this.inTree_) return coord;
+    
+    if(!opt_noclone) coord = coord.clone();
 
-    return this.getParent().localToScreen(this.localToParent(coord));
+    return this.getParent().localToScreen(this.localToParent(coord,true),true);
 };
 
 /**
@@ -640,35 +652,14 @@ lime.Node.prototype.localToScreen = function(coord) {
  * @param {goog.math.Coordinate} coord Local coordinate.
  * @return {goog.math.Coordinate} Parent coordinate.
  */
-lime.Node.prototype.localToParent = function(coord) {
+lime.Node.prototype.localToParent = function(coord,opt_noclone) {
     if (!this.getParent()) return coord;
-  //  var coord = coord.clone();
+  
+    if(!opt_noclone) coord = coord.clone();
 
-    var m = this.getTransformationMatrix().clone().inverse();
-    var v = new lime.webgl.V3(coord.x,coord.y,0);
-/*
-    if (this.rotation_ != 0) {
-        var c2 = coord.clone(),
-            rot = -this.rotation_ * Math.PI / 180,
-            cos = Math.cos(rot),
-            sin = Math.sin(rot);
-        coord.x = cos * c2.x - sin * c2.y;
-        coord.y = cos * c2.y + sin * c2.x;
-    }
+    var m = this.getTransformationMatrix();
 
-    coord.x *= this.scale_.x;
-    coord.y *= this.scale_.y;
-
-    coord.x += this.position_.x;
-    coord.y += this.position_.y;
-    */
-   //  console.log('2nd: out:'+coord.x+' '+coord.y);
-     v.multiply(m);
-   //  console.log('3rd: out:'+v.elements[0]+' '+v.elements[1]);
-   coord.x = v.elements[0];
-   coord.y = v.elements[1];
-
-    return coord;
+    return this.transformCoord(coord,m);
 };
 
 /**
@@ -681,7 +672,7 @@ lime.Node.prototype.localToNode = function(coord, node) {
     // Todo: this can be optimized.
     // maybe with goog.dom.findCommonAncestor but probably even more
     if (!this.inTree_) return coord;
-    return node.screenToLocal(this.localToScreen(coord));
+    return node.screenToLocal(this.localToScreen(coord,true),true);
 
 };
 

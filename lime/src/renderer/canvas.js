@@ -216,31 +216,14 @@ lime.Renderer.CANVAS.drawCanvasObject = function(context) {
         context.clip();
     }
 
-
-    var zero = new goog.math.Coordinate(0, 0);
-
     this.renderer.draw.call(this, context);
 
     for (var i = 0, child; child = this.children_[i]; i++) {
-        var pos = child.localToParent(zero).clone(), rot = child.getRotation(), scale = child.getScale();
         context.save();
-        /*context.translate(pos.x, pos.y);
-        context.scale(scale.x,scale.y);
-
-        if (rot != 0) {
-            context.rotate(-rot * Math.PI / 180);
-        }
-        console.log(child.skew_.x*Math.PI/180,child.skew_.y*Math.PI/180);
-        context.transform(1,Math.tan(child.skew_.y*Math.PI/180),Math.tan(child.skew_.x*Math.PI/180),1,0,0);
-        console.log('draw');*/
-        
-        var matrix = child.getTransformationMatrix().inverse();
-        var m = matrix.elements;console.log(m);
+        var m = child.getTransformationMatrix().elements;
         context.transform(m[0],m[1],m[4],m[5],m[12],m[13]);
-        
         this.renderer.drawCanvasObject.call(child, context);
         context.restore();
-
     }
 
     if (this.opacity_ != 1) {
