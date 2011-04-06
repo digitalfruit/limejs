@@ -161,7 +161,7 @@ lime.Renderer.DOM.update = function() {
  */
 lime.Renderer.DOM.calculateMaskPosition = function() {
 
-    if (!goog.isDef(this.targetNode)) return;
+    if (!goog.isDef(this.targetNode) || !this.targetNode.inTree_) return;
 
     var target = this.targetNode;
     //todo: replace with bounds method

@@ -173,6 +173,8 @@ lime.Renderer.CANVAS.update = function() {
 */
 lime.Renderer.CANVAS.drawCanvasObject = function(context) {
 
+    if(!this.inTree_) return;
+
     if (this.mask_ != this.activeMask_) {
         if (this.activeMask_) {
             lime.Renderer.DOM.removeMask.call(this);

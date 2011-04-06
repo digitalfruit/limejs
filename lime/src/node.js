@@ -968,6 +968,9 @@ lime.Node.prototype.removeChild = function(child) {
 lime.Node.prototype.removeChildAt = function(index){
     if(index>=0 && this.getNumberOfChildren()>index){
         var child = this.getChildAt(index);
+        if(child.maskTarget_){
+            child.maskTarget_.setMask(null);
+        }
         if (this.inTree_) child.wasRemovedFromTree();
         child.removeDomElement();
         child.parent_ = null;
