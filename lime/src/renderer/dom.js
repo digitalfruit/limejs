@@ -260,7 +260,7 @@ lime.Renderer.DOM.makeContainer = function() {
 lime.Renderer.DOM.removeMask = function() {
     if (this.domElement == this.rootElement) return;
     if (this.renderer.getType() == lime.Renderer.DOM) {
-        goog.dom.remove(this.domElement);
+        goog.dom.removeNode(this.domElement);
         goog.dom.replaceNode(this.domElement, this.rootElement);
         this.rootElement = this.domElement;
     }
