@@ -194,7 +194,7 @@ lime.style.setTransform = (function() {
         
         if(IS_FF4){//console.log('ff4 '+transform.scalex_+' '+ transform.scaley_);
             if(!transform.angleSet_ && transform.scalex_ == 1 && transform.scaley_ == 1){
-                el.style[stylename] = '';
+                el.style[stylename] = el.transform_cache_ =  '';
                 el.style['left'] = transform.x_ + 'px';
                 el.style['top'] = transform.y_ + 'px';
             }
