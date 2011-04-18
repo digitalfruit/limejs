@@ -24,8 +24,7 @@ else :
     from urllib import urlretrieve
 
 
-basedir = os.path.join(os.path.dirname(os.path.abspath(__file__)),'..')
-basedir = os.path.normpath(basedir)
+basedir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 curdir = os.path.abspath('.')
 
 closure_dir = os.path.join(basedir,'closure')
