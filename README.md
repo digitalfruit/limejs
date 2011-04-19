@@ -62,7 +62,7 @@ If you consider yourself advanced user and know how to use Git/Python you are pr
 
 ##Browser support:
 
-- *Current:* Chrome, Safari 5, Firefox 3.6+, Opera, IE9 RC, Mobile Safari
+- *Current:* Chrome, Safari 5, Firefox 3.6+, Opera, IE9, Mobile Safari
 - *Soon:* Android, Blackberry Playbook
 - *Maybe:* WebOS
 
@@ -91,24 +91,20 @@ Closure video from Google I/O 2010:
 
 ### Known issues:
 
-- RoundedRect radius wrong where quality!=1
-- Masks may show unmasked content for a single frame
+- lime.py build problems when directories contain spaces
 - ...add your issues to the github page
 
 
 ### Browser issues:
 
-- Chrome 9 CSS transformation issue #71919 affecting big DOM trees
-  <http://code.google.com/p/chromium/issues/detail?id=71919>
-- Firefox 4 beta (Hardware Acceleration==ON) animation flickery
+- Firefox 4 animation flickery https://bugzilla.mozilla.org/show_bug.cgi?id=637597
+- IE10, Opera 11 don't use CSS gradients but fallback to Canvas.
 - WebOS 1.4 Masking issue(appears on Roundball)
 
 
 ### Missing/broken:
 
-- Custom Canvas context(partial done)
 - Custom WebGL context
-- Frame fill(in experimental)
 - Sprite fill
 - Web-app installing tutorial
 - Unit tests(partial)
