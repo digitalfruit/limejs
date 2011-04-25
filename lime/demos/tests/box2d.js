@@ -60,14 +60,14 @@ test.start = function() {
 	test.director.replaceScene(gamescene);
 
 
-	var gravity = new box2d.Vec2(30, 30);
+	var gravity = new box2d.Vec2(5, 30);
 	var bounds = new box2d.AABB();
 	bounds.minVertex.Set(0, 0);
 	bounds.maxVertex.Set(test.WIDTH, test.HEIGHT);
 	var world = new box2d.World(bounds, gravity, true);
 
 	var bodyDef = new box2d.BodyDef;
-	bodyDef.position.Set(0, 210);
+	bodyDef.position.Set(200, 210);
 
 
 	var circleDef = new box2d.CircleDef;
@@ -84,19 +84,19 @@ test.start = function() {
 	ground.resitution = .0;
 	//ground.density = 1.0;
 	ground.friction = 0;
-	ground.extents.Set(60, 20);
+	ground.extents.Set(30, 10);
 //    ground.SetVertices([-30,-10],[30,-10],[30,10],[-30,10]);
 
 
     var bdef = new box2d.BodyDef;
     bdef.AddShape(ground);
-    bdef.position.Set(50, 300);
+    bdef.position.Set(220, 300);
     var b = world.CreateBody(bdef);
 
     var box = (new lime.Sprite)
         .setFill(0, 100, 0)
         .setRenderer(lime.Renderer.CANVAS)
-        .setAnchorPoint(0, 1)
+       // .setAnchorPoint(0, 1)
 	    .setSize(60, 20);
     flameLayer.appendChild(box);
 
@@ -107,7 +107,7 @@ test.start = function() {
         var pos = body.GetCenterPosition().clone();
 
         flame.setPosition(pos);
-        var pos = b.GetOriginPosition().clone();
+        var pos = b.GetCenterPosition().clone();
 
         box.setPosition(pos);
     },this);
