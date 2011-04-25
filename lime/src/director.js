@@ -75,7 +75,6 @@ lime.Director = function(parentElement) {
     parentElement.style['overflow'] = 'hidden';
 
     if (parentElement == document.body) {
-        //todo: installstyles is better
         goog.style.installStyles('html,body{margin:0;padding:0;height:100%;}');
 
         var meta = document.createElement('meta');
@@ -91,7 +90,7 @@ lime.Director = function(parentElement) {
         
         
         //todo: look for a less hacky solution
-        if(goog.userAgent.MOBILE && !window.navigator.standalone){
+        if(goog.userAgent.MOBILE && !goog.global['navigator'].standalone){
             var that = this;
             setTimeout(
                 function(){window.scrollTo(0, 0);that.invalidateSize_()}
@@ -101,21 +100,20 @@ lime.Director = function(parentElement) {
 
     var width, parentSize = goog.style.getSize(parentElement);
 
-    // todo: this 400x400 default should probably be constants instead
     this.setSize(new goog.math.Size(
-        width = arguments[1] || parentSize.width || 400,
-        arguments[2] || parentSize.height * width / parentSize.width || 400
+        width = arguments[1] || parentSize.width || lime.Director.DEFAULT_WIDTH,
+        arguments[2] || parentSize.height * width / parentSize.width || lime.Director.DEFAULT_HEIGHT
     ));
 
     // --define goog.debug=false
-    this.setDisplayFPS(goog.DEBUG);//todo: connect with DEBUG flags
+    this.setDisplayFPS(goog.DEBUG);
     this.setPaused(false);
 
 
     var vsm = new goog.dom.ViewportSizeMonitor();
     goog.events.listen(vsm, goog.events.EventType.RESIZE,
         this.invalidateSize_, false, this);
-    goog.events.listen(window, 'orientationchange',
+    goog.events.listen(goog.global, 'orientationchange',
         this.invalidateSize_, false, this);
 
 
@@ -136,7 +134,7 @@ lime.Director = function(parentElement) {
     this.invalidateSize_();
     
     if(goog.DEBUG){
-        goog.events.listen(goog.global['window'],['keyup'],this.keyUpHandler_,false,this);
+        goog.events.listen(goog.global,'keyup',this.keyUpHandler_,false,this);
     }
 
 };
@@ -150,6 +148,20 @@ goog.inherits(lime.Director, lime.Node);
  */
 lime.Director.FPS_INTERVAL = 100;
 
+/**
+ * Default width of the Director
+ * @const
+ * @type {number}
+ */
+lime.Director.DEFAULT_WIDTH = 400;
+
+
+/**
+ * Default height of the Director
+ * @const
+ * @type {number}
+ */
+lime.Director.DEFAULT_HEIGHT = 400;
 
 
 /**

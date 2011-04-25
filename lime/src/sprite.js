@@ -97,28 +97,20 @@ lime.Renderer.DOM.SPRITE.draw = function(el) {
  * @this {lime.Sprite}
  */
 lime.Renderer.CANVAS.SPRITE.draw = function(context) {
-    //todo: remove domElement, add getContext
     var size = this.getSize(), fill = this.fill_;
 
     if (!fill) return;
     
-    var width = size.width;
-    var height = size.height;
-
     var frame = this.getFrame();
 
-
     if (fill.id == 'image' || fill.id=='frame') {
-        /*
-        
-        */
         fill.setCanvasStyle(context, this);
     }
     else {
         fill.setCanvasStyle(context, this);
 
         context.fillRect(frame.left,frame.top,
-            width, height);
+            size.width, size.height);
     }
 
 };

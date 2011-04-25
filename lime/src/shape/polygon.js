@@ -115,7 +115,6 @@ lime.Polygon.prototype.hitTest = function(e) {
         coord = this.screenToLocal(e.screenPosition),
         inPoly = false;
 
-    //todo:no scale && rotation calc
     if (plen > 2) {
         var i, j, c = 0;
 

@@ -32,7 +32,7 @@ lime.events.EventDispatcher.prototype.register = function(node, eventType) {
     else {
         if (!goog.array.contains(this.handlers[eventType], node)) {
             this.handlers[eventType].push(node);
-            this.handlers[eventType].sort(lime.Node.compareNode).reverse();
+            this.handlers[eventType].sort(lime.Node.compareNode);
         }
     }
 };
@@ -61,7 +61,7 @@ lime.events.EventDispatcher.prototype.updateDispatchOrder = function(node){
     for(var eventType in this.handlers){
         var handlers = this.handlers[eventType];
         if(goog.array.contains(handlers,node)){
-            handlers.sort(lime.Node.compareNode).reverse(); // todo: why reverse?
+            handlers.sort(lime.Node.compareNode);
         }
     }
 }

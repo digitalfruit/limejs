@@ -170,14 +170,14 @@ lime.Node.compareNode = function(n1, n2) {
 
     var i = 0;
     while (true) {
-        if (s1.length <= i) {return -1}
-        if (s2.length <= i) {return 1}
+        if (s1.length <= i) return 1;
+        if (s2.length <= i) return -1;
 
         if (s1[i] == s2[i]) {
             i++;
         }
         else {
-            return s1[i] > s2[i] ? 1 : -1;
+            return s1[i] > s2[i] ? -1 : 1;
         }
     }
 };
