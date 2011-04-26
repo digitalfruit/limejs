@@ -26,7 +26,7 @@ lime.fill.Image = function(img) {
     if (goog.isString(img)) {
         this.url_ = img;
         if(this.url_.length>50)
-            this.url_ = this.url_.substr(0,50);
+            this.url_ = this.url_.substr(-50);
         if(lime.fill.Image.loadedImages_[this.url_]){
             this.image_ = lime.fill.Image.loadedImages_[this.url_];
         }
@@ -38,7 +38,7 @@ lime.fill.Image = function(img) {
     else {
         this.url_ = img.src;
         if(this.url_.length>50)
-            this.url_ = this.url_.substr(0,50);
+            this.url_ = this.url_.substr(-50);
         if(lime.fill.Image.loadedImages_[this.url_]){
             this.image_ = lime.fill.Image.loadedImages_[this.url_];
         }
