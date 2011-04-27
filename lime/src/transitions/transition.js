@@ -5,18 +5,19 @@ goog.provide('lime.transitions.Transition');
  * @param {lime.scene} outgoing Outgoing scene.
  * @param {lime.scene} incoming Incoming scene.
  * @constructor
+ * @extends goog.events.EventTarget
  */
 lime.transitions.Transition = function(outgoing, incoming) {
+    goog.events.EventTarget.call(this);
 
     this.duration_ = 1.0; //sec
 
     this.outgoing_ = outgoing;
     this.incoming_ = incoming;
 
-    this.finishCallback_ = goog.nullFunction;
-
     this.finished_ = false;
 };
+goog.inherits(lime.transitions.Transition,goog.events.EventTarget);
 
 /**
  * Returns the animation duration in seconds.
@@ -38,12 +39,15 @@ lime.transitions.Transition.prototype.setDuration = function(value) {
 
 /**
  * Set finish callback for transition. This function will be called
- * after the transition has finished
+ * after the transition has finished. DEPRECATED! Use event listeners instead.
+ * @deprecated
  * @param {function()} value Callback.
  * @return {lime.transitions.Transition} object itself.
  */
 lime.transitions.Transition.prototype.setFinishCallback = function(value) {
-    this.finishCallback_ = value;
+    if(goog.DEBUG && console && console.warn){
+        console.warn('Transition.prototype.setFinishCallback() is deprecated. Use event listeners.');
+    }
     return this;
 };
 
@@ -61,7 +65,6 @@ lime.transitions.Transition.prototype.start = function() {
  * Complete the transition animation
  */
 lime.transitions.Transition.prototype.finish = function() {
-    if (this.finished_) return;
-    this.finishCallback_();
+    this.dispatchEvent(new goog.events.Event('end'));
     this.finished_ = true;
 };
