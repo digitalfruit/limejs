@@ -16,6 +16,7 @@ goog.require('lime.CoverNode');
 goog.require('lime.Director');
 goog.require('lime.Layer');
 goog.require('lime.Scene');
+goog.require('lime.fill.LinearGradient');
 
 
 test.WIDTH = 600;
@@ -31,87 +32,90 @@ test.start = function() {
 
     */
 
-
 	//director
 	test.director = new lime.Director(document.body, test.WIDTH, test.HEIGHT);
 	test.director.makeMobileWebAppCapable();
 
-	var gamescene = new lime.Scene;
+	var gamescene = new lime.Scene();
 
-	var flameLayer = new lime.Layer;
-	flameLayer.setPosition(100, 0);
-	gamescene.appendChild(flameLayer);
-
-	var quality = 1;
-	var scale = 1;
-
-
-    var flame = (new lime.Circle)
-        .setFill(100, 0, 0)
-        .setRenderer(lime.Renderer.CANVAS)
-	//    .setFill(100,0,0)
-	    .setSize(40, 40);
-//	flame.setQuality(quality);
-//	flame.setScale(flame.getScale().clone().scale(scale));
-
-     flameLayer.appendChild(flame);
+	var layer = new lime.Layer;
+	layer.setPosition(100, 0);
+	gamescene.appendChild(layer);
 
 	// set active scene
 	test.director.replaceScene(gamescene);
+/*	
+    // new API proposal
 
+	var physics = new lime.Physics(layer).setGravity(0,10);
+	physics.world
+	
+	circle.enablePhysics(physics).setAngularDamping(.1).setDesity(.5);
+	circle.enablePhysics(physics,bodyDef);
+	
+	circle.getPhysicsBody();
+	
+	var phdata = new lime.PhysicsData(lime.ASSETS.filename);
+	var circle = phdata.createShape('icecream',physics).setPosition(100,0).setFill();
+	
 
-	var gravity = new box2d.Vec2(5, 30);
+*/
+	
+
+	var gravity = new box2d.Vec2(0, 100);
 	var bounds = new box2d.AABB();
-	bounds.minVertex.Set(0, 0);
-	bounds.maxVertex.Set(test.WIDTH, test.HEIGHT);
-	var world = new box2d.World(bounds, gravity, true);
+	bounds.minVertex.Set(-test.WIDTH, -test.HEIGHT);
+	bounds.maxVertex.Set(2*test.WIDTH,2*test.HEIGHT);
+	var world = new box2d.World(bounds, gravity, false);
 
-	var bodyDef = new box2d.BodyDef;
-	bodyDef.position.Set(200, 210);
 
+    var circle = (new lime.Circle)
+        .setFill(new lime.fill.LinearGradient().addColorStop(0.49,200,0,0).addColorStop(.5,0,0,250))
+	    .setSize(40, 40);
+    layer.appendChild(circle);
+	
+	
+	var cbodyDef = new box2d.BodyDef;
+	cbodyDef.position.Set(200, 0);
+    cbodyDef.angularDamping = .001;
 
 	var circleDef = new box2d.CircleDef;
-	circleDef.radius = 20;
-	circleDef.density = 1.0;
-	circleDef.resitution = .0;
-	circleDef.friction = 0;
-//	bodyDef.linearVelocity = new box2d.Vec2(-150.0,150.0);
-	bodyDef.AddShape(circleDef);
+	circleDef.radius = 15;
+	circleDef.density = 1;
+	circleDef.restitution =.8;
+	circleDef.friction = 1;
+	
+	cbodyDef.AddShape(circleDef);
+	
 
-	var body = world.CreateBody(bodyDef);
+	var circle_body = world.CreateBody(cbodyDef);
 
-    var ground = new box2d.BoxDef;
-	ground.resitution = .0;
-	//ground.density = 1.0;
-	ground.friction = 0;
-	ground.extents.Set(30, 10);
-//    ground.SetVertices([-30,-10],[30,-10],[30,10],[-30,10]);
-
-
-    var bdef = new box2d.BodyDef;
-    bdef.AddShape(ground);
-    bdef.position.Set(220, 300);
-    var b = world.CreateBody(bdef);
+    var ground = new box2d.PolyDef;
+	ground.restitution = .9
+	ground.density = 0;
+	ground.friction = 1;
+//	ground.extents.Set(30, 10);//box version
+    ground.SetVertices([[-30,-5],[30,-10],[30,10],[-30,10]]); // actually not a box
+    
+    var gbodyDef = new box2d.BodyDef;
+    gbodyDef.position.Set(220, 300);
+    gbodyDef.AddShape(ground);
+    var ground_body = world.CreateBody(gbodyDef);
 
     var box = (new lime.Sprite)
-        .setFill(0, 100, 0)
-        .setRenderer(lime.Renderer.CANVAS)
-       // .setAnchorPoint(0, 1)
+        .setFill(0,100,0)
 	    .setSize(60, 20);
-    flameLayer.appendChild(box);
-
-
+    layer.appendChild(box);
 
     lime.scheduleManager.schedule(function(dt) {
         world.Step(dt / 1000, 3);
-        var pos = body.GetCenterPosition().clone();
-
-        flame.setPosition(pos);
-        var pos = b.GetCenterPosition().clone();
-
+        var pos = circle_body.GetCenterPosition().clone();
+        var rot = circle_body.GetRotation();
+        circle.setRotation(-rot/Math.PI*180);
+        circle.setPosition(pos);
+        var pos = ground_body.GetCenterPosition().clone();
         box.setPosition(pos);
     },this);
-
 
 
 };
