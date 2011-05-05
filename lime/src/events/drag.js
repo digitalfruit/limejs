@@ -153,7 +153,7 @@ lime.events.Drag.prototype.moveHandler_ = function(e) {
         var br = loc.localToNode(new goog.math.Coordinate(
             dropFrame.right, dropFrame.bottom), this.target);
         var droprect = goog.math.Rect.createFromBox(
-            new goog.math.Box(tl.y, br.x, br.y, tl.x));
+            new goog.math.Box(Math.min(tl.y, br.y), Math.max(tl.x, br.x), Math.max(tl.y,br.y), Math.min(br.x,tl.x)));
         var intersection;
 
         if (intersection = goog.math.Rect.intersection(currect, droprect)) {
