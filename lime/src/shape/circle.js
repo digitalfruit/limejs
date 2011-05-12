@@ -71,13 +71,14 @@ lime.Renderer.DOM.CIRCLE.draw = function(el) {
  */
 lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
    // console.log('draw');
-    var size = this.getSize(), fill = this.fill_;
+    var size = this.getSize(), fill = this.fill_,ap = this.getAnchorPoint();
     var frame = this.getFrame();
     var cx = (frame.right - frame.left) * .5;
     var cy = (frame.bottom - frame.top) * .5;
     context.save();
     context.save();
     context.scale(cx, cy);
+    context.translate(1-2*ap.x,1-2*ap.y);
     context.beginPath();
     context.arc(0, 0, 1, 0, 2 * Math.PI, false);
     context.closePath();
