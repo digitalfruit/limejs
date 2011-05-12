@@ -67,10 +67,19 @@ lime.Sprite.prototype.setFill = function(fill) {
     return  this.setDirty(lime.Dirty.CONTENT);
 };
 
+/**
+ * Return Stroke object if one is set
+ * @return {lime.fill.Stroke} Stroke object.
+ */
 lime.Sprite.prototype.getStroke = function(){
     return this.stroke_;
 };
 
+/**
+ * Sets stroke parameters.
+ * @param {mixed} stroke Stroke object or width and (mixed type) Color.
+ * @return {lime.Sprite} object itself.
+ */
 lime.Sprite.prototype.setStroke = function(stroke){
     if(stroke && !(stroke instanceof lime.fill.Stroke)){
         stroke = new lime.fill.Stroke(goog.array.toArray(arguments));

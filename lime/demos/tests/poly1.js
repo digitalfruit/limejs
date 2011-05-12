@@ -31,13 +31,13 @@ test.start = function() {
        line = new lime.Sprite().setFill('#666').setSize(300, 2).setPosition(200, 200);
        flameLayer.appendChild(line);
 
-	var poly = new lime.Polygon(-130, -130, 130, -130, 130, 130, -130, 130, -190, 0).setFill(100, 0, 0).setPosition(200, 200);
+	var poly = new lime.Polygon(-130, -130, 130, -130, 130, 130, -130, 130, -190, 0).setFill(100, 0, 0).setPosition(200, 200).setStroke(5,'#f00');
 	flameLayer.appendChild(poly);
 
 	 var p2 = new lime.Polygon(0, -160, 140, 120, -140, 120).setFill(
 	     new lime.fill.LinearGradient().setDirection(0, 0, 1, 0).addColorStop(.1, 100, 0, 0)
 	        .addColorStop(.5, 0, 0, 100).addColorStop(.9, 0, 100, 0)
-	     );
+	     ).setStroke(10,'#f90');
 	poly.appendChild(p2);
 
  	goog.events.listen(poly, ['mousedown', 'touchstart'], function(e) {
