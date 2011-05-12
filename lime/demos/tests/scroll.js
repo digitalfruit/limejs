@@ -48,9 +48,9 @@ test.start = function() {
     var scroll2 = new lime.ui.Scroller().setFill(
         new lime.fill.LinearGradient().addColorStop(0, 100, 0, 0, .4).addColorStop(1, 100, 0, 0, .0)
         ).setAnchorPoint(0, 0)
-        .setSize(170, 230).setPosition(100, 160).setDirection(lime.ui.Scroller.Direction.VERTICAL);
+        .setSize(170, 230).setDirection(lime.ui.Scroller.Direction.VERTICAL);
 
-    layer.appendChild(scroll2);
+    scroll.appendChild(scroll2);
 
     for (var i = 0; i < lipsum.length; i++) {
         var b = new lime.Label(lipsum[i]).setFill(0, 100, 0, .2).setPosition(10, i * 40).setSize(150, 30).setAnchorPoint(0, 0).setPadding(7);

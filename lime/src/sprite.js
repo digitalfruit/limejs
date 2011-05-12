@@ -8,6 +8,7 @@ goog.require('goog.math.Size');
 goog.require('lime');
 goog.require('lime.Node');
 goog.require('lime.fill.Color');
+goog.require('lime.fill.Stroke');
 goog.require('lime.fill.Fill');
 goog.require('lime.fill.Image');
 
@@ -66,6 +67,18 @@ lime.Sprite.prototype.setFill = function(fill) {
     return  this.setDirty(lime.Dirty.CONTENT);
 };
 
+lime.Sprite.prototype.getStroke = function(){
+    return this.stroke_;
+};
+
+lime.Sprite.prototype.setStroke = function(stroke){
+    if(stroke && !(stroke instanceof lime.fill.Stroke)){
+        stroke = new lime.fill.Stroke(goog.array.toArray(arguments));
+    }
+    this.stroke_ = stroke;
+    return this.setDirty(lime.Dirty.CONTENT);
+};
+
 /**
  * @private
  */
@@ -90,6 +103,11 @@ lime.Renderer.DOM.SPRITE.draw = function(el) {
     if (!goog.isNull(this.fill_)) {
         this.fill_.setDOMStyle(el, this);
     }
+    if (!goog.isNull(this.stroke_)) {
+        this.stroke_.setDOMStyle(el, this);
+    } else {
+        el.style.border='none';
+    }
 };
 
 /**
@@ -97,19 +115,26 @@ lime.Renderer.DOM.SPRITE.draw = function(el) {
  * @this {lime.Sprite}
  */
 lime.Renderer.CANVAS.SPRITE.draw = function(context) {
-    var size = this.getSize(), fill = this.fill_;
+    var size = this.getSize(), fill = this.fill_, stroke = this.stroke_;
 
-    if (!fill) return;
+    if (!fill && !stroke) return;
     
     var frame = this.getFrame();
-
-    if (fill.id == 'image' || fill.id=='frame') {
+    
+    
+    if(fill){
         fill.setCanvasStyle(context, this);
+    
+        if(fill.id != 'image' && fill.id!='frame'){
+            context.fillRect(frame.left,frame.top,
+                size.width, size.height);
+        }
     }
-    else {
-        fill.setCanvasStyle(context, this);
-
-        context.fillRect(frame.left,frame.top,
+    
+    
+    if(stroke){
+        stroke.setCanvasStyle(context,this);
+        context.strokeRect(frame.left,frame.top,
             size.width, size.height);
     }
 

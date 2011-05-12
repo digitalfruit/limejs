@@ -15,7 +15,7 @@ lime.fill.Color = function(clr) {
     lime.fill.Fill.call(this);
 
     this.a = 1;
-
+    
     this.setColor(clr);
 
 };

@@ -75,13 +75,16 @@ lime.Renderer.DOM.drawSizePosition = function() {
     lime.style.setTransformOrigin(this.domElement,
         this.anchorPoint_.x * 100, this.anchorPoint_.y * 100, true);
 
+
     var ax = this.anchorPoint_.x * size.width * rquality;
     var ay = this.anchorPoint_.y * size.height * rquality;
-
+  
     var px = position.x * rquality / quality - ax,
         py = position.y * rquality / quality - ay;
+        
+    var so = this.stroke_ ? this.stroke_.width_ : 0;
 
-    if ((ax != 0 || ay != 0) && this.domElement == this.containerElement &&
+    if (((ax-so) != 0 || (ay-so) != 0) && this.domElement == this.containerElement &&
             this.children_.length) {
         lime.Renderer.DOM.makeContainer.call(this);
     }
@@ -90,7 +93,7 @@ lime.Renderer.DOM.drawSizePosition = function() {
     if (this.domElement != this.containerElement) {
         if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION])
         lime.style.setTransform(this.containerElement,
-                new lime.style.Transform().translate(ax, ay));
+                new lime.style.Transform().translate(ax-so, ay-so));
     }
 
     if (this.mask_ != this.activeMask_) {
