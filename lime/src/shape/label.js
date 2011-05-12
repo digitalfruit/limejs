@@ -70,9 +70,10 @@ lime.Label.prototype.measureText = function() {
     mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
+    var stroke = this.stroke_?this.stroke_.width_:0;
     return new goog.math.Size(
-        this.padding_[1] + this.padding_[3] + w,
-        this.padding_[0] + this.padding_[2] + lh * this.getFontSize()
+        this.padding_[1] + this.padding_[3] + w + stroke*2,
+        this.padding_[0] + this.padding_[2] + lh * this.getFontSize() + stroke*2
     );
 }
 })();
@@ -357,23 +358,23 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
         dowrap = 1;
     }
     
-
+    var stroke = this.stroke_?this.stroke_.width_:0;
 
     context.save();
     var align = this.getAlign();
     if (align == 'left') {
-        context.translate(frame.left + this.padding_[3],
-            frame.top + this.padding_[0]);
+        context.translate(frame.left + this.padding_[3]+stroke,
+            frame.top + this.padding_[0]+stroke);
     }
     else if (align == 'right') {
-        context.translate(frame.right - this.padding_[1],
-            frame.top + this.padding_[0]);
+        context.translate(frame.right - this.padding_[1]-stroke,
+            frame.top + this.padding_[0]+stroke);
     }
     else if (align == 'center') {
         context.translate(
             (frame.left + this.padding_[3] +
                 frame.right - this.padding_[1]) * .5,
-            frame.top + this.padding_[0]);
+            frame.top + this.padding_[0]+stroke);
     }
 
     var lh = this.getLineHeight();

@@ -65,11 +65,6 @@ lime.Renderer.DOM.drawSizePosition = function() {
     if (width != 0) realScale.scale(size.width / (width * quality / rquality));
     else realScale.scale(1 / quality);
 
-    if (this instanceof lime.Label) {
-        width -= (this.padding_[1] + this.padding_[3])*rquality;
-        height -= (this.padding_[0] + this.padding_[2])*rquality;
-    }
-
     lime.style.setSize(this.domElement, width, height);
 
     lime.style.setTransformOrigin(this.domElement,

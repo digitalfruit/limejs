@@ -135,7 +135,7 @@ lime.Renderer.CANVAS.SPRITE.draw = function(context) {
     if(stroke){
         stroke.setCanvasStyle(context,this);
         
-        if(this.id=='sprite'){
+        if(this.id=='sprite' || this.id=='label'){
         var lw = stroke.width_/2;
         context.strokeRect(frame.left+lw,frame.top+lw,
             size.width-2*lw, size.height-2*lw);
