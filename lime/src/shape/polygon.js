@@ -139,8 +139,6 @@ lime.Renderer.CANVAS.POLYGON.draw = function(context) {
 
     var size = this.getSize(), fill = this.fill_;
 
-    if(!fill) return;
-
     var pt = this.getPoints();
     
 
@@ -156,6 +154,7 @@ lime.Renderer.CANVAS.POLYGON.draw = function(context) {
        }
 
        context.closePath();
+       if(fill)
        context.fillStyle = fill.str;
 
 
@@ -164,6 +163,12 @@ lime.Renderer.CANVAS.POLYGON.draw = function(context) {
 
 
     lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
+    
+    if(this.stroke_){
+        context.lineWidth*=2;
+        context.stroke();
+    }
+    
     context.restore();
     }
 };

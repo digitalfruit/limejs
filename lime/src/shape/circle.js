@@ -86,5 +86,11 @@ lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
     context.clip();
 
     lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
+    
+    if(this.stroke_){
+        context.lineWidth*=2;
+        context.stroke();
+    }
+    
     context.restore();
 };

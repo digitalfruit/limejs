@@ -30,13 +30,14 @@ goog.inherits(lime.fill.Stroke, lime.fill.Fill);
 lime.fill.Stroke.prototype.id = 'stroke';
 
 /** @inheritDoc */
-lime.fill.Stroke.prototype.setDOMStyle = function(domEl) {console.log( this.width_+'px solid '+this.color_.str);
+lime.fill.Stroke.prototype.setDOMStyle = function(domEl) {
     domEl.style['border'] = this.width_+'px solid '+this.color_.str;
 };
 
 /** @inheritDoc */
 lime.fill.Stroke.prototype.setCanvasStyle = function(context) {
-    context.fillStyle = this.str;
+    context.strokeStyle = this.color_.str;
+    context.lineWidth = this.width_;
 };
 
 /**
