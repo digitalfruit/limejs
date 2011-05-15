@@ -329,7 +329,7 @@ lime.Director.prototype.updateLayout = function() {
  * @param {lime.Scene} scene New scene.
  */
 lime.Director.prototype.pushScene = function(scene) {
-
+	scene.setSize(this.getSize().clone());
     this.sceneStack_.push(scene);
     this.domElement.appendChild(scene.domElement);
     scene.parent_ = this;
