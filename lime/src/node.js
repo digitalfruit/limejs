@@ -971,9 +971,15 @@ lime.Node.prototype.removeChildAt = function(index){
         if(child.maskTarget_){
             child.maskTarget_.setMask(null);
         }
-        if (this.inTree_) child.wasRemovedFromTree();
-        child.removeDomElement();
-        child.parent_ = null;
+        if(child instanceof lime.Node){
+            if (this.inTree_)
+                child.wasRemovedFromTree();
+            child.removeDomElement();
+            child.parent_ = null;
+        }
+        else 
+            goog.dom.removeNode(child);
+        
         this.children_.splice(index, 1);
         return this.setDirty(lime.Dirty.LAYOUT);
     }
