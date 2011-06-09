@@ -284,7 +284,7 @@ lime.Label.prototype.calcWordsArray = function() {
 /**
  * Wrap text on words array to lines based on current
  * font size and given maximum width.
- * @param {Canvas2DContext} context Context used to measure.
+ * @param {Object} context Canvas2DContext used to measure.
  * @param {number} width Maximum line width.
  * @return {Array.<string>} Lines of text.
  */

@@ -136,8 +136,8 @@ lime.Renderer.CANVAS.drawCanvas = function() {
         }
 
         if (this.redraw_) {
-            var context = this.domElement.getContext('2d'),
-                rquality = this.relativeQuality_ || 1;
+            var context = this.domElement.getContext('2d');
+            rquality = this.relativeQuality_ || 1;
 
             context.clearRect(0, 0, pxsize.width, pxsize.height);
             context.save();
@@ -168,7 +168,7 @@ lime.Renderer.CANVAS.update = function() {
 
 /**
 * Draw single object to the canvas context
-* @param {Canvas2DContext} context Context where to draw.
+* @param {Object} context Canvas2DContext where to draw.
 * @this {lime.Node}
 */
 lime.Renderer.CANVAS.drawCanvasObject = function(context) {

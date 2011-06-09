@@ -531,9 +531,9 @@ lime.Node.prototype.setAutoResize = function(value) {
  */
 lime.Node.prototype.screenToLocal = function(coord) {
     if (!this.inTree_) return coord;
-    var coord = this.getParent().screenToLocal(coord);
+    var newcoord = this.getParent().screenToLocal(coord);
 
-    return this.parentToLocal(coord);
+    return this.parentToLocal(newcoord);
 };
 
 /**
@@ -582,24 +582,24 @@ lime.Node.prototype.localToScreen = function(coord) {
  */
 lime.Node.prototype.localToParent = function(coord) {
     if (!this.getParent()) return coord;
-    var coord = coord.clone();
+    var newcoord = coord.clone();
 
     if (this.rotation_ != 0) {
-        var c2 = coord.clone(),
+        var c2 = newcoord.clone(),
             rot = -this.rotation_ * Math.PI / 180,
             cos = Math.cos(rot),
             sin = Math.sin(rot);
-        coord.x = cos * c2.x - sin * c2.y;
-        coord.y = cos * c2.y + sin * c2.x;
+        newcoord.x = cos * c2.x - sin * c2.y;
+        newcoord.y = cos * c2.y + sin * c2.x;
     }
 
-    coord.x *= this.scale_.x;
-    coord.y *= this.scale_.y;
+    newcoord.x *= this.scale_.x;
+    newcoord.y *= this.scale_.y;
 
-    coord.x += this.position_.x;
-    coord.y += this.position_.y;
+    newcoord.x += this.position_.x;
+    newcoord.y += this.position_.y;
 
-    return coord;
+    return newcoord;
 };
 
 /**
@@ -741,6 +741,8 @@ lime.Node.prototype.updateLayout = function() {
  */
 lime.Node.prototype.update = function(opt_pass) {
  // if (!this.renderer) return;
+    var property,
+        value;
    var pass = opt_pass || 0;
 
    var uid = goog.getUid(this);
@@ -767,7 +769,7 @@ lime.Node.prototype.update = function(opt_pass) {
         // transition. if not then transition is started in the next frame not now.
         var only_predraw = 0;
         for (i in this.transitionsAdd_) {
-            var value = this.transitionsAdd_[i];
+            value = this.transitionsAdd_[i];
             
             // 3rd is an "already_activated" flag
             if (!value[3]) {
@@ -803,7 +805,7 @@ lime.Node.prototype.update = function(opt_pass) {
         if(!only_predraw)
         for (i in this.transitionsAdd_) {
             value = this.transitionsAdd_[i];
-            var property = lime.Node.getPropertyForTransition(i);
+            property = lime.Node.getPropertyForTransition(i);
             
             if(this.renderer.getType()==lime.Renderer.DOM || property!='opacity'){
             
@@ -1253,7 +1255,7 @@ lime.Node.prototype.clearTransition = function(property) {
  * Checks if event should fire on element based on the position.
  * Before returning true this function should set the position property
  * of the event to the hit position in elements coordinate space
- * @param {lime.Event} e Event object.
+ * @param {lime.events.Event} e Event object.
  * @return {boolean} If node should handle the event.
  */
 lime.Node.prototype.hitTest = function(e) {
@@ -1267,7 +1269,7 @@ lime.Node.prototype.hitTest = function(e) {
 
 /**
  * Add Node to action targets list and start the animation
- * @param {lime.Animation} action Animation to run.
+ * @param {lime.animation.Animation} action Animation to run.
  */
 lime.Node.prototype.runAction = function(action) {
     action.addTarget(this);

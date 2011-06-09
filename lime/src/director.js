@@ -410,8 +410,8 @@ lime.Director.prototype.getBounds = function(box) {
 /**
  * @inheritDoc
  */
-lime.Director.prototype.screenToLocal = function(coord) {
-    var coord = coord.clone();
+lime.Director.prototype.screenToLocal = function(c) {
+    var coord = c.clone();
     coord.x -= this.domOffset.x + this.position_.x;
     coord.y -= this.domOffset.y + this.position_.y;
 
@@ -423,8 +423,8 @@ lime.Director.prototype.screenToLocal = function(coord) {
 /**
  * @inheritDoc
  */
-lime.Director.prototype.localToScreen = function(coord) {
-    var coord = coord.clone();
+lime.Director.prototype.localToScreen = function(c) {
+    var coord = c.clone();
     coord.x *= this.scale_.x;
     coord.y *= this.scale_.y;
 

@@ -224,8 +224,8 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
 /**
  * Helper function to add DOM node to the specific position
  * as a child.
- * @param {domElement} p Parent element.
- * @param {domElement} c Child element.
+ * @param {Object} p Parent DOM element.
+ * @param {Object} c Child DOM element.
  * @param {number} opt_pos Position of the child.
  * @private
  */

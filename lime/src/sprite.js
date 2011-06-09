@@ -58,7 +58,7 @@ lime.Sprite.prototype.getFill = function() {
 
 /**
  * Sets fill parameters
- * @param {mixed} fill Fill.
+ * @param {*} fill Fill.
  * @return {lime.Sprite} object itself.
  */
 lime.Sprite.prototype.setFill = function(fill) {
@@ -77,7 +77,7 @@ lime.Sprite.prototype.getStroke = function(){
 
 /**
  * Sets stroke parameters.
- * @param {mixed} stroke Stroke object or width and (mixed type) Color.
+ * @param {*} stroke Stroke object or width and (mixed type) Color.
  * @return {lime.Sprite} object itself.
  */
 lime.Sprite.prototype.setStroke = function(stroke){
