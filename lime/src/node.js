@@ -1084,6 +1084,7 @@ lime.Node.prototype.getScene = function() {
  * Handle removing Node from DOM tree
  */
 lime.Node.prototype.wasRemovedFromTree = function() {
+    var child;
     
     if(!this.dependencySet_){
         this.removeDependency(this.getParent());

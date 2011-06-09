@@ -149,6 +149,7 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
     if (this.numFramesLoaded_ < this.frames_.length_) return;
     var dt = this.dt_;
     var delay_msec = Math.round(this.delay * 1000);
+    var nextImage = null;
     
     var i = targets.length;
     while (--i >= 0) {
