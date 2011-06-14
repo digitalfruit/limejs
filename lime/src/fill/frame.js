@@ -6,7 +6,7 @@ goog.require('goog.math.Rect');
 goog.require('goog.style');
 goog.require('goog.cssom');
 goog.require('goog.dom.classes');
-goog.require('goog.dom')
+goog.require('goog.dom');
 
 /**
  * Image fill.
