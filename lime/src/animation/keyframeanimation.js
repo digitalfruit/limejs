@@ -74,7 +74,7 @@ lime.animation.KeyframeAnimation.prototype.getDelay = function(){
 
 /**
  * Set the delay between frames to specific value.
- * @param {number} value New delay value.
+ * @param {number} New delay value.
  * @return {lime.animation.KeyframeAnimation} object itself.
  */
 lime.animation.KeyframeAnimation.prototype.setDelay = function(value){
@@ -107,7 +107,7 @@ lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
     this.framesLoaded_ = false;
 
     var fill = lime.fill.parse(goog.array.toArray(arguments));
-
+    
     if(fill.id=='image' && !fill.isLoaded()){
         goog.events.listen(fill, goog.events.EventType.LOAD,
                 this.frameLoadedHandler_, false, this);
@@ -147,11 +147,11 @@ lime.animation.KeyframeAnimation.prototype.play = function() {
  */
 lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
     if (this.numFramesLoaded_ < this.frames_.length_) return;
-    var dt = this.dt_,
-        delay_msec = Math.round(this.delay * 1000),
-        nextImage = null,
-        i = targets.length;
+    var dt = this.dt_;
+    var delay_msec = Math.round(this.delay * 1000);
+    var nextImage = null;
     
+    var i = targets.length;
     while (--i >= 0) {
         this.getTargetProp(targets[i]);
     }
@@ -162,7 +162,7 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
         if (nextFrame >= this.frames_.length) nextFrame = 0;
         nextImage = this.frames_[nextFrame];
 
-        i = targets.length;
+        var i = targets.length;
         if (i > 0) {
 
             // Todo: make CSS Canvas optional
@@ -187,7 +187,7 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
             else {
                 while (--i >= 0) {
                     this.targets[i].setFill(nextImage);
-
+                    
                 }
             }
         }
