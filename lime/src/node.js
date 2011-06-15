@@ -241,7 +241,7 @@ lime.Node.prototype.getScale = function() {
 /**
  * Sets new scale vector for element. This function also accepts
  * 2 numbers or 1 number that would be coverted to vector before use
- * @param {goog.math.Vec2} value New scale vector.
+ * @param {(goog.math.Vec2|number)} value New scale vector.
  * @return {lime.Node} Node itself.
  */
 lime.Node.prototype.setScale = function(value) {
@@ -325,7 +325,7 @@ lime.Node.prototype.getAnchorPoint = function() {
  * when positioning the element to position coordinate. [0,0] means
  * top left corner, [1,1] bottom right, [.5,.5] means that element
  * is position by the center. You can also pass in 2 numbers.
- * @param {goog.math.Vec2} value AnchorPoint vector.
+ * @param {(goog.math.Vec2|number)} value AnchorPoint vector.
  * @return {lime.Node} object itself.
  */
 lime.Node.prototype.setAnchorPoint = function(value) {
