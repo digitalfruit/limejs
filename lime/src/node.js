@@ -242,9 +242,10 @@ lime.Node.prototype.getScale = function() {
  * Sets new scale vector for element. This function also accepts
  * 2 numbers or 1 number that would be coverted to vector before use
  * @param {(goog.math.Vec2|number)} value New scale vector.
+ * @param {number=} opt_y Optionaly set scale using x,y.
  * @return {lime.Node} Node itself.
  */
-lime.Node.prototype.setScale = function(value) {
+lime.Node.prototype.setScale = function(value, opt_y) {
     if (arguments.length == 1 && goog.isNumber(value)) {
         this.scale_ = new goog.math.Vec2(value, value);
     }
