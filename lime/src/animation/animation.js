@@ -55,11 +55,11 @@ lime.animation.EasingFunction;
 
 /**
  * Animation event types
- * @enum {number}
+ * @enum {string}
  */
 lime.animation.Event = {
-  START: 1,
-  STOP: 2
+  START: 'start',
+  STOP: 'stop'
 };
 
 /**
