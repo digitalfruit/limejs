@@ -295,7 +295,7 @@ lime.Node.prototype.getMask = function() {
  * @return {lime.Node} object itself.
  */
 lime.Node.prototype.setMask = function(value) {
-    if (value == this.mask_) return;
+    if (value == this.mask_) return this;
 
     if(this.mask_){
         this.mask_.releaseDependencies();
