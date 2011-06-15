@@ -23,7 +23,7 @@ lime.Sprite = function() {
 
     /**
      * Fill object used while drawing
-     * @type {lime.Fill}
+     * @type {lime.fill.Fill}
      * @private
      */
     this.fill_ = null;
