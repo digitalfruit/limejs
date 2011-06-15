@@ -98,7 +98,7 @@ lime.Node.prototype.setRenderer = function(value) {
                 break;
             }
         }
-        if (index == -1) return; //not supported
+        if (index == -1) return this; //not supported
 
         this.renderer = this.supportedRenderers[i];
         this.setDirty(lime.Dirty.LAYOUT);
@@ -200,8 +200,8 @@ lime.Node.prototype.getDirty = function() {
  * Sets a dirty value true. This means that object needs that
  * kind of updates before next draw.
  * @param {number} value Values to be added to the bitmask.
- * @param {number} opt_pass Pass number (0-1).
- * @param {boolean} opt_nextframe Register for next frame.
+ * @param {number=} opt_pass Pass number (0-1).
+ * @param {boolean=} opt_nextframe Register for next frame.
  * @return {lime.Node} Node itself.
  */
 lime.Node.prototype.setDirty = function(value, opt_pass, opt_nextframe) {
