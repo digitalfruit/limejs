@@ -268,9 +268,9 @@ lime.Director.prototype.step_ = function(delta) {
 /**
  * Replace current scene with new scene
  * @param {lime.Scene} scene New scene.
- * @param {function(lime.scene,lime.scene,boolean=)} opt_transition
+ * @param {function(lime.scene,lime.scene,boolean=)=} opt_transition
  *        Transition played.
- * @param {number} opt_duration Duration of transition.
+ * @param {number=} opt_duration Duration of transition.
  */
 lime.Director.prototype.replaceScene = function(scene, opt_transition,
         opt_duration) {
