@@ -328,9 +328,10 @@ lime.Node.prototype.getAnchorPoint = function() {
  * top left corner, [1,1] bottom right, [.5,.5] means that element
  * is position by the center. You can also pass in 2 numbers.
  * @param {(goog.math.Vec2|number)} value AnchorPoint vector.
+ * @param {number=} opt_y Optionaly set anchorpoint with x,y.
  * @return {lime.Node} object itself.
  */
-lime.Node.prototype.setAnchorPoint = function(value) {
+lime.Node.prototype.setAnchorPoint = function(value, opt_y) {
     if (arguments.length == 2) {
         this.anchorPoint_ = new goog.math.Vec2(arguments[0], arguments[1]);
     }
