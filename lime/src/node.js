@@ -268,7 +268,7 @@ lime.Node.prototype.getPosition = function() {
 
 /**
  * Sets new position for element. Also accepts 2 numbers(x and y value)
- * @param {goog.math.Coordinate} value Position coordinate.
+ * @param {(goog.math.Coordinate|number)} value Position coordinate.
  * @return {lime.Node} object itself.
  */
 lime.Node.prototype.setPosition = function(value) {
