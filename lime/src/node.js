@@ -391,11 +391,12 @@ lime.Node.prototype.getSize = function() {
 /**
  * Sets dimensions for element. This funciton also
  * accepts 2 numbers: width,height
- * @param {goog.math.Size} value Elements new size.
+ * @param {goog.math.Size|number} value Elements new size.
  * @return {lime.Node} object itself.
  */
 lime.Node.prototype.setSize = function(value) {
     var oldSize = this.size_, newval;
+    var scale;
     if (arguments.length == 2) {
         newval = new goog.math.Size(arguments[0], arguments[1]);
     }
@@ -419,7 +420,7 @@ lime.Node.prototype.setSize = function(value) {
                 if (ar & lime.AutoResize.WIDTH) fixed -= c2;
                 if (ar & lime.AutoResize.RIGHT) fixed -= c3;
                 if (fixed != oldSize.width) {
-                    var scale = (newval.width - fixed) /
+                    scale = (newval.width - fixed) /
                         (oldSize.width - fixed);
                     if (ar & lime.AutoResize.LEFT) c1 *= scale;
                     if (ar & lime.AutoResize.WIDTH) c2 *= scale;
