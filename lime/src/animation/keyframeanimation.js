@@ -147,11 +147,11 @@ lime.animation.KeyframeAnimation.prototype.play = function() {
  */
 lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
     if (this.numFramesLoaded_ < this.frames_.length_) return;
-    var dt = this.dt_;
-    var delay_msec = Math.round(this.delay * 1000);
-    var nextImage = null;
+    var dt = this.dt_,
+        delay_msec = Math.round(this.delay * 1000),
+        nextImage = null,
+        i = targets.length;
     
-    var i = targets.length;
     while (--i >= 0) {
         this.getTargetProp(targets[i]);
     }
