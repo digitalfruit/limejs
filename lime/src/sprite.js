@@ -64,7 +64,8 @@ lime.Sprite.prototype.getFill = function() {
 lime.Sprite.prototype.setFill = function(fill) {
     this.fill_ = lime.fill.parse(goog.array.toArray(arguments));
     this.fill_.initForSprite(this);
-    return  this.setDirty(lime.Dirty.CONTENT);
+    this.setDirty(lime.Dirty.CONTENT);
+    return this;
 };
 
 /**
@@ -85,7 +86,8 @@ lime.Sprite.prototype.setStroke = function(stroke){
         stroke = new lime.fill.Stroke(goog.array.toArray(arguments));
     }
     this.stroke_ = stroke;
-    return this.setDirty(lime.Dirty.CONTENT);
+    this.setDirty(lime.Dirty.CONTENT);
+    return this;
 };
 
 /**
