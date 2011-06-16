@@ -99,7 +99,7 @@ lime.Sprite.prototype.getCanvasContextName_ = (function() {
     return function() {
 
         if (!goog.isDef(this.canvasContextName_)) {
-            this.canvasContextName_ = 'limedc' + (lime.Sprite.contextID_++);
+            this.canvasContextName_ = 'limedc' + (contextID_++);
         }
         return this.canvasContextName_;
     };
