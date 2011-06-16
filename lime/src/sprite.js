@@ -23,7 +23,7 @@ lime.Sprite = function() {
 
     /**
      * Fill object used while drawing
-     * @type {lime.Fill}
+     * @type {lime.fill.Fill}
      * @private
      */
     this.fill_ = null;
@@ -58,13 +58,14 @@ lime.Sprite.prototype.getFill = function() {
 
 /**
  * Sets fill parameters
- * @param {mixed} fill Fill.
+ * @param {*} fill Fill.
  * @return {lime.Sprite} object itself.
  */
 lime.Sprite.prototype.setFill = function(fill) {
     this.fill_ = lime.fill.parse(goog.array.toArray(arguments));
     this.fill_.initForSprite(this);
-    return  this.setDirty(lime.Dirty.CONTENT);
+    this.setDirty(lime.Dirty.CONTENT);
+    return this;
 };
 
 /**
@@ -77,7 +78,7 @@ lime.Sprite.prototype.getStroke = function(){
 
 /**
  * Sets stroke parameters.
- * @param {mixed} stroke Stroke object or width and (mixed type) Color.
+ * @param {*} stroke Stroke object or width and (mixed type) Color.
  * @return {lime.Sprite} object itself.
  */
 lime.Sprite.prototype.setStroke = function(stroke){
@@ -85,7 +86,8 @@ lime.Sprite.prototype.setStroke = function(stroke){
         stroke = new lime.fill.Stroke(goog.array.toArray(arguments));
     }
     this.stroke_ = stroke;
-    return this.setDirty(lime.Dirty.CONTENT);
+    this.setDirty(lime.Dirty.CONTENT);
+    return this;
 };
 
 /**
@@ -97,7 +99,7 @@ lime.Sprite.prototype.getCanvasContextName_ = (function() {
     return function() {
 
         if (!goog.isDef(this.canvasContextName_)) {
-            this.canvasContextName_ = 'limedc' + (lime.Sprite.contextID_++);
+            this.canvasContextName_ = 'limedc' + (contextID_++);
         }
         return this.canvasContextName_;
     };

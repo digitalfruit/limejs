@@ -53,7 +53,7 @@ lime.RoundedRect.prototype.getUnitPercentage = function() {
 /**
  * Sets the corner radius for object
  * @param {number} value Radius.
- * @param {boolean} opt_percentage use percentage units.
+ * @param {boolean=} opt_percentage use percentage units.
  */
 lime.RoundedRect.prototype.setRadius = function(value, opt_percentage) {
     this.unitPercentage_ = opt_percentage || false;

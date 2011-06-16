@@ -2,8 +2,8 @@ goog.provide('lime.transitions.Transition');
 
 /**
  * Animation for switching active scenes
- * @param {lime.scene} outgoing Outgoing scene.
- * @param {lime.scene} incoming Incoming scene.
+ * @param {lime.Scene} outgoing Outgoing scene.
+ * @param {lime.Scene} incoming Incoming scene.
  * @constructor
  * @extends goog.events.EventTarget
  */
