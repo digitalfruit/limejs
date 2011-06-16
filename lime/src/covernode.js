@@ -6,7 +6,6 @@ goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.math.Box');
 goog.require('goog.style');
-goog.require('lime.Director');
 goog.require('lime.Node');
 
 
@@ -19,7 +18,7 @@ lime.CoverNode = function() {
     lime.Node.call(this);
 
     // Switch to canvas element
-    oldElement = this.baseElement;
+    var oldElement = this.baseElement;
     this.baseElement = document.createElement('canvas');
     goog.dom.replaceNode(this.baseElement, oldElement);
 

@@ -1,6 +1,7 @@
 goog.provide('lime.Director');
 
 
+goog.require('lime.CoverNode');
 goog.require('goog.array');
 goog.require('goog.dom');
 goog.require('goog.dom.ViewportSizeMonitor');
