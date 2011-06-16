@@ -591,12 +591,11 @@ lime.Node.prototype.localToParent = function(coord) {
     var newcoord = coord.clone();
 
     if (this.rotation_ != 0) {
-        var c2 = newcoord.clone(),
-            rot = -this.rotation_ * Math.PI / 180,
+        var rot = -this.rotation_ * Math.PI / 180,
             cos = Math.cos(rot),
             sin = Math.sin(rot);
-        newcoord.x = cos * c2.x - sin * c2.y;
-        newcoord.y = cos * c2.y + sin * c2.x;
+        newcoord.x = cos * coord.x - sin * coord.y;
+        newcoord.y = cos * coord.y + sin * coord.x;
     }
 
     newcoord.x *= this.scale_.x;
