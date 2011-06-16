@@ -194,9 +194,9 @@ lime.Label.prototype.getPadding = function() {
 /**
  * Set new padding box around text contents.
  * @param {number} top Top padding.
- * @param {number} opt_right Right padding.
- * @param {number} opt_bottom Bottom padding.
- * @param {number} opt_left Left padding.
+ * @param {number=} opt_right Right padding.
+ * @param {number=} opt_bottom Bottom padding.
+ * @param {number=} opt_left Left padding.
  * @return {lime.Label} object itself.
  */
 lime.Label.prototype.setPadding = function(top, opt_right,
@@ -222,7 +222,7 @@ lime.Label.prototype.setPadding = function(top, opt_right,
  * Sets the line height used in multiline strings. Can be in pixels
  * or factor from font size.
  * @param {number} value Line height.
- * @param {boolean} opt_absolute If height is in pixels.
+ * @param {boolean=} opt_absolute If height is in pixels.
  */
 lime.Label.prototype.setLineHeight = function(value, opt_absolute) {
     this.lineHeightAbsolute_ = opt_absolute || false;
@@ -284,7 +284,7 @@ lime.Label.prototype.calcWordsArray = function() {
 /**
  * Wrap text on words array to lines based on current
  * font size and given maximum width.
- * @param {Canvas2DContext} context Context used to measure.
+ * @param {Object} context Canvas2DContext used to measure.
  * @param {number} width Maximum line width.
  * @return {Array.<string>} Lines of text.
  */

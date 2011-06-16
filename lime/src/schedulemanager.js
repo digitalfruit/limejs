@@ -131,9 +131,9 @@ lime.scheduleManager.setDisplayRate = function(value) {
 /**
  * Schedule a function. Passed function will be called on every frame
  * with delta time from last run time
- * @this {lime.ScheduleManager}
+ * @this {lime.scheduleManager}
  * @param {function(number)} f Function to be called.
- * @param {object} context The context used when calling function.
+ * @param {Object} context The context used when calling function.
  * @param {lime.scheduleManager.Task} opt_task Task object.
  */
 lime.scheduleManager.schedule = function(f, context, opt_task) {
@@ -147,9 +147,9 @@ lime.scheduleManager.schedule = function(f, context, opt_task) {
 
 /**
  * Unschedule a function. For functions that have be previously scheduled
- * @this {lime.ScheduleManager}
+ * @this {lime.scheduleManager}
  * @param {function(number)} f Function to be unscheduled.
- * @param {object} context Context used when scheduling.
+ * @param {Object} context Context used when scheduling.
  */
 lime.scheduleManager.unschedule = function(f, context) {
     var j = this.taskStack_.length;
@@ -300,27 +300,29 @@ lime.scheduleManager.dispatch_ = function(delta){
  * @param {boolean} value Active or inactive?
  */
 lime.scheduleManager.changeDirectorActivity = function(director, value) {
-    var t, j = this.taskStack_.length;
+    var t, context, f, d, i,
+    j = this.taskStack_.length;
     while (--j >= 0) {
 
-    var t = this.taskStack_[j], f, context, d, i = t.functionStack_.length;
-    while (--i >= 0) {
-        f = t.functionStack_[i];
-        context = f[2];
-        if (goog.isFunction(context.getDirector)) {
-            d = context.getDirector();
-            if (d == director) {
-                f[0] = value;
+        t = this.taskStack_[j];
+        i = t.functionStack_.length;
+        while (--i >= 0) {
+            f = t.functionStack_[i];
+            context = f[2];
+            if (goog.isFunction(context.getDirector)) {
+                d = context.getDirector();
+                if (d == director) {
+                    f[0] = value;
+                }
             }
         }
-    }
     }
 };
 
 /**
  * Set up function to be called once after a delay
  * @param {function(number)} f Function to be called.
- * @param {object} context Context used when calling object.
+ * @param {Object} context Context used when calling object.
  * @param {number} delay Delay before calling.
  */
 lime.scheduleManager.callAfter = function(f, context, delay) {
@@ -330,7 +332,7 @@ lime.scheduleManager.callAfter = function(f, context, delay) {
 /**
  * Set up function to be called repeatedly after a delay
  * @param {function(number)} f Function to be called.
- * @param {object} context Context used when calling object.
+ * @param {Object} context Context used when calling object.
  * @param {number} delay Delay before calling.
  * @param {number} opt_limit Number of times to call.
  * @this {lime.scheduleManager}

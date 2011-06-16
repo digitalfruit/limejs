@@ -137,8 +137,8 @@ lime.fill.Image.prototype.isLoaded = function(){
 /**
  * Set the drawing size for the fill. Size can also be passed in 
  * with two numbers.
- * @param {goog.math.Size} size Image fill size.
- * @param {boolean=} opt_perc If size is relative factor from original.
+ * @param {(goog.math.Size|number)} size Image fill size.
+ * @param {(boolean=|number)} opt_perc If size is relative factor from original.
  * @return {lime.fill.Image} object itself.
  */
 lime.fill.Image.prototype.setSize = function(size,opt_perc){

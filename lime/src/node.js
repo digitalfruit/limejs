@@ -98,7 +98,7 @@ lime.Node.prototype.setRenderer = function(value) {
                 break;
             }
         }
-        if (index == -1) return; //not supported
+        if (index == -1) return this; //not supported
 
         this.renderer = this.supportedRenderers[i];
         this.setDirty(lime.Dirty.LAYOUT);
@@ -200,8 +200,8 @@ lime.Node.prototype.getDirty = function() {
  * Sets a dirty value true. This means that object needs that
  * kind of updates before next draw.
  * @param {number} value Values to be added to the bitmask.
- * @param {number} opt_pass Pass number (0-1).
- * @param {boolean} opt_nextframe Register for next frame.
+ * @param {number=} opt_pass Pass number (0-1).
+ * @param {boolean=} opt_nextframe Register for next frame.
  * @return {lime.Node} Node itself.
  */
 lime.Node.prototype.setDirty = function(value, opt_pass, opt_nextframe) {
@@ -241,10 +241,11 @@ lime.Node.prototype.getScale = function() {
 /**
  * Sets new scale vector for element. This function also accepts
  * 2 numbers or 1 number that would be coverted to vector before use
- * @param {goog.math.Vec2} value New scale vector.
+ * @param {(goog.math.Vec2|number)} value New scale vector.
+ * @param {number=} opt_y Optionaly set scale using x,y.
  * @return {lime.Node} Node itself.
  */
-lime.Node.prototype.setScale = function(value) {
+lime.Node.prototype.setScale = function(value, opt_y) {
     if (arguments.length == 1 && goog.isNumber(value)) {
         this.scale_ = new goog.math.Vec2(value, value);
     }
@@ -268,10 +269,11 @@ lime.Node.prototype.getPosition = function() {
 
 /**
  * Sets new position for element. Also accepts 2 numbers(x and y value)
- * @param {goog.math.Coordinate} value Position coordinate.
+ * @param {(goog.math.Coordinate|number)} value Position coordinate.
+ * @param {number=} opt_y Optionaly set position using x,y.
  * @return {lime.Node} object itself.
  */
-lime.Node.prototype.setPosition = function(value) {
+lime.Node.prototype.setPosition = function(value, opt_y) {
     if (arguments.length == 2) {
         this.position_ = new goog.math.Coordinate(arguments[0], arguments[1]);
     }
@@ -295,7 +297,7 @@ lime.Node.prototype.getMask = function() {
  * @return {lime.Node} object itself.
  */
 lime.Node.prototype.setMask = function(value) {
-    if (value == this.mask_) return;
+    if (value == this.mask_) return this;
 
     if(this.mask_){
         this.mask_.releaseDependencies();
@@ -325,10 +327,11 @@ lime.Node.prototype.getAnchorPoint = function() {
  * when positioning the element to position coordinate. [0,0] means
  * top left corner, [1,1] bottom right, [.5,.5] means that element
  * is position by the center. You can also pass in 2 numbers.
- * @param {goog.math.Vec2} value AnchorPoint vector.
+ * @param {(goog.math.Vec2|number)} value AnchorPoint vector.
+ * @param {number=} opt_y Optionaly set anchorpoint with x,y.
  * @return {lime.Node} object itself.
  */
-lime.Node.prototype.setAnchorPoint = function(value) {
+lime.Node.prototype.setAnchorPoint = function(value, opt_y) {
     if (arguments.length == 2) {
         this.anchorPoint_ = new goog.math.Vec2(arguments[0], arguments[1]);
     }
@@ -391,11 +394,14 @@ lime.Node.prototype.getSize = function() {
 /**
  * Sets dimensions for element. This funciton also
  * accepts 2 numbers: width,height
- * @param {goog.math.Size} value Elements new size.
+ * @param {(goog.math.Size|number)} value Elements new size.
+ * @param {number=} opt_height Optionaly use widht,height as parameter.
  * @return {lime.Node} object itself.
  */
-lime.Node.prototype.setSize = function(value) {
-    var oldSize = this.size_, newval;
+lime.Node.prototype.setSize = function(value, opt_height) {
+    var oldSize = this.size_,
+        newval,
+        scale;
     if (arguments.length == 2) {
         newval = new goog.math.Size(arguments[0], arguments[1]);
     }
@@ -419,7 +425,7 @@ lime.Node.prototype.setSize = function(value) {
                 if (ar & lime.AutoResize.WIDTH) fixed -= c2;
                 if (ar & lime.AutoResize.RIGHT) fixed -= c3;
                 if (fixed != oldSize.width) {
-                    var scale = (newval.width - fixed) /
+                    scale = (newval.width - fixed) /
                         (oldSize.width - fixed);
                     if (ar & lime.AutoResize.LEFT) c1 *= scale;
                     if (ar & lime.AutoResize.WIDTH) c2 *= scale;
@@ -531,9 +537,9 @@ lime.Node.prototype.setAutoResize = function(value) {
  */
 lime.Node.prototype.screenToLocal = function(coord) {
     if (!this.inTree_) return coord;
-    var coord = this.getParent().screenToLocal(coord);
+    var newcoord = this.getParent().screenToLocal(coord);
 
-    return this.parentToLocal(coord);
+    return this.parentToLocal(newcoord);
 };
 
 /**
@@ -582,24 +588,24 @@ lime.Node.prototype.localToScreen = function(coord) {
  */
 lime.Node.prototype.localToParent = function(coord) {
     if (!this.getParent()) return coord;
-    var coord = coord.clone();
+    var newcoord = coord.clone();
 
     if (this.rotation_ != 0) {
-        var c2 = coord.clone(),
+        var c2 = newcoord.clone(),
             rot = -this.rotation_ * Math.PI / 180,
             cos = Math.cos(rot),
             sin = Math.sin(rot);
-        coord.x = cos * c2.x - sin * c2.y;
-        coord.y = cos * c2.y + sin * c2.x;
+        newcoord.x = cos * c2.x - sin * c2.y;
+        newcoord.y = cos * c2.y + sin * c2.x;
     }
 
-    coord.x *= this.scale_.x;
-    coord.y *= this.scale_.y;
+    newcoord.x *= this.scale_.x;
+    newcoord.y *= this.scale_.y;
 
-    coord.x += this.position_.x;
-    coord.y += this.position_.y;
+    newcoord.x += this.position_.x;
+    newcoord.y += this.position_.y;
 
-    return coord;
+    return newcoord;
 };
 
 /**
@@ -741,6 +747,8 @@ lime.Node.prototype.updateLayout = function() {
  */
 lime.Node.prototype.update = function(opt_pass) {
  // if (!this.renderer) return;
+    var property,
+        value;
    var pass = opt_pass || 0;
 
    var uid = goog.getUid(this);
@@ -767,7 +775,7 @@ lime.Node.prototype.update = function(opt_pass) {
         // transition. if not then transition is started in the next frame not now.
         var only_predraw = 0;
         for (i in this.transitionsAdd_) {
-            var value = this.transitionsAdd_[i];
+            value = this.transitionsAdd_[i];
             
             // 3rd is an "already_activated" flag
             if (!value[3]) {
@@ -803,7 +811,7 @@ lime.Node.prototype.update = function(opt_pass) {
         if(!only_predraw)
         for (i in this.transitionsAdd_) {
             value = this.transitionsAdd_[i];
-            var property = lime.Node.getPropertyForTransition(i);
+            property = lime.Node.getPropertyForTransition(i);
             
             if(this.renderer.getType()==lime.Renderer.DOM || property!='opacity'){
             
@@ -893,7 +901,7 @@ lime.Node.prototype.getParent = function() {
 /**
  * Append element to the end of childrens array
  * @param {lime.Node|domElement} child Child node.
- * @param {number} opt_pos Position of new child.
+ * @param {number=} opt_pos Position of new child.
  * @return {lime.Node} obejct itself.
  */
 lime.Node.prototype.appendChild = function(child, opt_pos) {
@@ -1253,7 +1261,7 @@ lime.Node.prototype.clearTransition = function(property) {
  * Checks if event should fire on element based on the position.
  * Before returning true this function should set the position property
  * of the event to the hit position in elements coordinate space
- * @param {lime.Event} e Event object.
+ * @param {lime.events.Event} e Event object.
  * @return {boolean} If node should handle the event.
  */
 lime.Node.prototype.hitTest = function(e) {
@@ -1267,7 +1275,7 @@ lime.Node.prototype.hitTest = function(e) {
 
 /**
  * Add Node to action targets list and start the animation
- * @param {lime.Animation} action Animation to run.
+ * @param {lime.animation.Animation} action Animation to run.
  */
 lime.Node.prototype.runAction = function(action) {
     action.addTarget(this);

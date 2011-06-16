@@ -73,10 +73,10 @@ lime.Renderer.DOM.drawSizePosition = function() {
 
     var ax = this.anchorPoint_.x * size.width * rquality;
     var ay = this.anchorPoint_.y * size.height * rquality;
-  
+
     var px = position.x * rquality / quality - ax,
         py = position.y * rquality / quality - ay;
-        
+
     var so = this.stroke_ ? this.stroke_.width_ : 0;
 
     if (((ax-so) != 0 || (ay-so) != 0) && this.domElement == this.containerElement &&
@@ -218,14 +218,14 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
     target.setDirty(lime.Dirty.POSITION);
     target.update();
 */
-    
+
 };
 
 /**
  * Helper function to add DOM node to the specific position
  * as a child.
- * @param {domElement} p Parent element.
- * @param {domElement} c Child element.
+ * @param {Object} p Parent DOM element.
+ * @param {Object} c Child DOM element.
  * @param {number} opt_pos Position of the child.
  * @private
  */
@@ -242,7 +242,8 @@ lime.Renderer.DOM.appendAt_ = function(p, c, opt_pos) {
  */
 lime.Renderer.DOM.makeContainer = function() {
     this.containerElement = goog.dom.createDom('div');
-    var fragment = document.createDocumentFragment();
+    var fragment = document.createDocumentFragment(),
+        child;
     while ((child = this.domElement.firstChild)) {
        this.domElement.removeChild(child);
        fragment.appendChild(child);
