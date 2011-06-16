@@ -162,7 +162,7 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
         if (nextFrame >= this.frames_.length) nextFrame = 0;
         nextImage = this.frames_[nextFrame];
 
-        var i = targets.length;
+        i = targets.length;
         if (i > 0) {
 
             // Todo: make CSS Canvas optional
