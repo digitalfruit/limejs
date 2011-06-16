@@ -48,7 +48,7 @@ goog.inherits(lime.events.Drag, goog.events.EventTarget);
 
 /**
  * Enum for dragging related events
- * @enum {number}
+ * @enum {string}
  */
 lime.events.Drag.Event = {
     START: 'start',
