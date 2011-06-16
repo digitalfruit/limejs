@@ -24,7 +24,7 @@ lime.fill.Fill.prototype.initForSprite = goog.nullFunction;
 /**
  * Parse fill object out of mixed inputs.
  * Accepts: RGB(A) values, color strings, urls to images
- * @param {mixed} inp Mixed inputs.
+ * @param {*} inp Mixed inputs.
  * @return {lime.fill.Fill} Fill object.
  */
 lime.fill.parse = function(inp) {
@@ -45,7 +45,7 @@ lime.fill.parse = function(inp) {
 
 /**
  * Set color as a DOM style for dom element.
- * @param {domElement} domEl DOM Element.
+ * @param {Element} domEl DOM Element.
  * @param {lime.Node=} shape The shape to draw in.
  */
 lime.fill.Fill.prototype.setDOMStyle = goog.nullFunction;
@@ -53,7 +53,7 @@ lime.fill.Fill.prototype.setDOMStyle = goog.nullFunction;
 
 /**
  * Set color as Canvas fillStyle.
- * @param {Canvas2DContext} context Canvas context.
+ * @param {CanvasRenderingContext2D} context Canvas context.
  * @param {lime.Node=} shape The shape to draw in.
  */
 lime.fill.Fill.prototype.setCanvasStyle = goog.nullFunction;

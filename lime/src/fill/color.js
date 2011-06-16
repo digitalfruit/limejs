@@ -7,7 +7,7 @@ goog.require('lime.fill.Fill');
 
 /**
 * Color fill
-* @param {mixed} clr Color value.
+* @param {*} clr Color value.
 * @constructor
 * @extends lime.fill.Fill
 */
@@ -62,7 +62,7 @@ lime.fill.Color.prototype.addBrightness = function(value) {
 /**
  * Modify color value
  * @param {number} mode Settings to change.
- * @param {value} value Amount factor.
+ * @param {number} value Amount factor.
  * @return {lime.fill.Color} object itself.
  */
 lime.fill.Color.prototype.modifyColor = function(mode, value) {
@@ -93,7 +93,7 @@ lime.fill.Color.prototype.addSaturation = function(value) {
 
 /**
 * Set color value of the object. Accepts raw RGB(A) values and strings.
-* @param {mixed} clr New color value.
+* @param {*} clr New color value.
 * @return {lime.fill.Color} object itself.
 */
 lime.fill.Color.prototype.setColor = function(clr) {

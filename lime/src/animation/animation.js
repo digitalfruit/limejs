@@ -152,7 +152,7 @@ lime.animation.Animation.prototype.stop = function() {
 /**
  * Make property object for target that hold animation helper values.
  * @param {lime.Node} target Target node.
- * @return {object} Properties object.
+ * @return {Object} Properties object.
  */
 lime.animation.Animation.prototype.makeTargetProp = function(target) {
     return {};
@@ -161,7 +161,7 @@ lime.animation.Animation.prototype.makeTargetProp = function(target) {
 /**
  * Get properties object for target.
  * @param {lime.Node} target Target node.
- * @return {object} Properties object.
+ * @return {Object} Properties object.
  */
 lime.animation.Animation.prototype.getTargetProp = function(target) {
     var uid = goog.getUid(target);

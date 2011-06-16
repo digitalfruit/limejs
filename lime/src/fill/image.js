@@ -111,7 +111,7 @@ lime.fill.Image.prototype.addLoadHandler_ = function(){
 
 /**
  * Update sprite dimensions after image has been loaded
- * @param {event} e Event.
+ * @param {Event} e Event.
  * @private
  */
 lime.fill.Image.prototype.imageLoadedHandler_ = function(e) {
@@ -120,7 +120,7 @@ lime.fill.Image.prototype.imageLoadedHandler_ = function(e) {
 
 /**
  * Return core DOM Image element for the fill.
- * @return {DOMElement} Image element.
+ * @return {Element} Image element.
  */
 lime.fill.Image.prototype.getImageElement = function(){
     return this.image_;
