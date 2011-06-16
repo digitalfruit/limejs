@@ -292,6 +292,7 @@ lime.animation.Animation.prototype.reverse = function() {
 /**
  * ActionManager. Doesn't let animations that modify same parameters
  * run together on same targets.
+ * @constructor
  */
 lime.animation.actionManager = new (function() {
     this.actions = {};
