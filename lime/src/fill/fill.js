@@ -44,15 +44,17 @@ lime.fill.parse = function(inp) {
 };
 
 /**
- * Set color as a DOM style for dom element
+ * Set color as a DOM style for dom element.
  * @param {domElement} domEl DOM Element.
+ * @param {lime.Node=} shape The shape to draw in.
  */
 lime.fill.Fill.prototype.setDOMStyle = goog.nullFunction;
 
 
 /**
- * Set color as Canvas fillStyle
+ * Set color as Canvas fillStyle.
  * @param {Canvas2DContext} context Canvas context.
+ * @param {lime.Node=} shape The shape to draw in.
  */
 lime.fill.Fill.prototype.setCanvasStyle = goog.nullFunction;
 
