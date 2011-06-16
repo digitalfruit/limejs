@@ -74,7 +74,7 @@ lime.animation.KeyframeAnimation.prototype.getDelay = function(){
 
 /**
  * Set the delay between frames to specific value.
- * @param {number} New delay value.
+ * @param {number} value New delay value.
  * @return {lime.animation.KeyframeAnimation} object itself.
  */
 lime.animation.KeyframeAnimation.prototype.setDelay = function(value){
