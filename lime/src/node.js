@@ -86,7 +86,7 @@ lime.Node.prototype.supportedRenderers = [
 /**
  * Set renderer for the node. Renderer defines what lower
  * level technology will be used for drawing node on screen
- * @param {lime.renderer.Renderer} value Renderer object.
+ * @param {lime.Renderer} value Renderer object.
  * @return {lime.Node} Node itself.
  */
 lime.Node.prototype.setRenderer = function(value) {
@@ -121,7 +121,7 @@ lime.Node.prototype.needsDomElement = function() {
 /**
  * Return deepest element in DOM tree that is used
  * for drawing the Node.
- * @return {domElement} Deepest DOM element.
+ * @return {Element} Deepest DOM element.
  */
 lime.Node.prototype.getDeepestDomElement = function() {
     return this.getDeepestParentWithDom().domElement;
@@ -900,7 +900,7 @@ lime.Node.prototype.getParent = function() {
 
 /**
  * Append element to the end of childrens array
- * @param {lime.Node|domElement} child Child node.
+ * @param {lime.Node|Element} child Child node.
  * @param {number=} opt_pos Position of new child.
  * @return {lime.Node} obejct itself.
  */
@@ -961,7 +961,7 @@ lime.Node.prototype.getChildIndex = function(child){
 
 /**
  * Remove element from the childrens array
- * @param {lime.Node|domElement} child Child node.
+ * @param {lime.Node|Element} child Child node.
  * @return {lime.Node} object itself.
  */
 lime.Node.prototype.removeChild = function(child) {
@@ -1192,7 +1192,7 @@ lime.Node.prototype.getFrame = function() {
 
 /**
  * Returns bounding box for element in parents coordinate space.
- * @param {goog.math.Bpx} opt_frame Optional frame box for element.
+ * @param {goog.math.Box} opt_frame Optional frame box for element.
  * @return {goog.math.Box} Bounding box.
  */
 lime.Node.prototype.getBoundingBox = function(opt_frame) {
@@ -1241,9 +1241,9 @@ lime.Node.prototype.measureContents = function() {
 /**
  * Register transition property. Use through animations.
  * @param {number} property Transition property constant.
- * @param {mixed} value New value.
+ * @param {*} value New value.
  * @param {number} duration Transition duration.
- * @param {Array.<mixed>} ease Easing function.
+ * @param {Array.<*>} ease Easing function.
  */
 lime.Node.prototype.addTransition = function(property, value, duration, ease) {
     this.transitionsAdd_[property] = [value, duration, ease, 0];
