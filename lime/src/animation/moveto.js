@@ -9,7 +9,8 @@ goog.require('lime.animation.Animation');
  * Move element to specific position
  * Also accepts two numbers (x and y)
  * @constructor
- * @param {goog.math.Coordinate} position New position value.
+ * @param {(goog.math.Coordinate|number)} position New position value.
+ * @param {number=} opt_y Optionaly use x,y
  * @extends lime.animation.Animation
  */
 lime.animation.MoveTo = function(position) {
