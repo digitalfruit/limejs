@@ -34,7 +34,7 @@ lime.transitions.Dissolve.prototype.start = function() {
     this.incoming_.runAction(show);
 
     goog.events.listen(show, lime.animation.Event.STOP,
-        this.finish, false, this);
+        lime.transitions.Dissolve.superClass_.finish, false, this);
 
 
 };
