@@ -55,7 +55,7 @@ lime.style.setBorderRadius = (function() {
         if (value != el.border_radius_cache_) {
             el.style[stylename] = el.border_radius_cache_ = value;
         }
-    }
+    };
 })();
 
 // There are classes like CSSMatrix in some browsers.
@@ -66,7 +66,7 @@ lime.style.setBorderRadius = (function() {
 /**
  * Object representing CSS Transform.
  * @constructor
- * @param {opt_precision=} number Default precision.
+ * @param {number=} opt_precision Default precision.
  */
 lime.style.Transform = function(opt_precision) {
     this.values = [];
@@ -106,7 +106,7 @@ lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
  * Translate(move) current transform object
  * @param {number} tx Offset in x-axis.
  * @param {number} ty Offset in y-axis.
- * @param {number=} tz Offset in z-axis.
+ * @param {number=} opt_tz Offset in z-axis.
  * @return {lime.style.Transform} obejct itself.
  */
 lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {

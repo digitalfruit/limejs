@@ -41,7 +41,7 @@ lime.GlossyButton.prototype.makeState_ = function() {
 
 /**
  * Set button base color
- * @param {mixed} clr New base color.
+ * @param {*} clr New base color.
  * @return {lime.GlossyButton} object itself.
  */
 lime.GlossyButton.prototype.setColor = function(clr) {

@@ -24,14 +24,14 @@ lime.animation.KeyframeAnimation = function() {
 
     /**
      * Number of frame images loaded
-     * @type {Number}
+     * @type {number}
      * @private
      */
     this.numFramesLoaded_ = 0;
 
     /**
      * Have all the frames been loaded?
-     * @type {Boolean}
+     * @type {boolean}
      * @private
      */
     //this.framesLoaded_ = false;
@@ -40,23 +40,30 @@ lime.animation.KeyframeAnimation = function() {
      * Animation is using Background Canvas
      * to make the changes. Faster if there are many targets
      * but only supported on Webkit.
-     * @type {Boolean}
+     * @type {boolean}
      * @private
      */
     this.usesBackgroundCanvas_ = false;
 
     /**
      * Current frame index of the playhead
-     * @type {Number}
+     * @type {number}
      * @private
      */
-    this.currentFrame_ = 0;
+    this.currentFrame_ = -1;
 
     /**
      * Delay in seconds between frames
-     * @type {Number}
+     * @type {number}
      */
     this.delay = 1 / 15;
+
+    /**
+     * Should the animation keep looping or stop when frame animation done.
+     * Setting loopoing to true, this is deafault behaviour.
+     * @type {boolean}
+     */
+    this.looping = true;
 };
 goog.inherits(lime.animation.KeyframeAnimation, lime.animation.Animation);
 
@@ -68,19 +75,19 @@ lime.animation.KeyframeAnimation.prototype.scope = 'keyframe';
  * Returns the delay in seconds between frames.
  * @return {number} Delay between frames.
  */
-lime.animation.KeyframeAnimation.prototype.getDelay = function(){
+lime.animation.KeyframeAnimation.prototype.getDelay = function() {
     return this.delay;
 };
 
 /**
  * Set the delay between frames to specific value.
- * @param {number} New delay value.
+ * @param {number} value New delay value.
  * @return {lime.animation.KeyframeAnimation} object itself.
  */
-lime.animation.KeyframeAnimation.prototype.setDelay = function(value){
+lime.animation.KeyframeAnimation.prototype.setDelay = function(value) {
     this.delay = value;
     return this;
-}
+};
 
 /**
  * Set array of frames to be used in the animation
@@ -99,6 +106,16 @@ lime.animation.KeyframeAnimation.prototype.setFrames = function(frames) {
 };
 
 /**
+ * Set the keyframe animation to keep loopoing or just play the animation once.
+ * @param {boolean} looping Keep looping or not.
+ * @return {lime.animation.KeyframeAnimation} object itself.
+ */
+lime.animation.KeyframeAnimation.prototype.setLooping = function(looping) {
+    this.looping = looping;
+    return this;
+};
+
+/**
  * Add frame to the current animation
  * @param {string} frame Path to frame image.
  * @return {lime.animation.KeyframeAnimation} object itself.
@@ -107,16 +124,16 @@ lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
     this.framesLoaded_ = false;
 
     var fill = lime.fill.parse(goog.array.toArray(arguments));
-    
-    if(fill.id=='image' && !fill.isLoaded()){
+
+    if (fill.id == 'image' && !fill.isLoaded()) {
         goog.events.listen(fill, goog.events.EventType.LOAD,
                 this.frameLoadedHandler_, false, this);
     }
-    else if(fill.id=='frame' && !frame.isProcessed()){
-        goog.events.listen(fill,'processed',this.frameLoadedHandler_,false,this);
+    else if (fill.id == 'frame' && !frame.isProcessed()) {
+        goog.events.listen(fill, 'processed', this.frameLoadedHandler_, false, this);
     }
     else {
-        this.numFramesLoaded++;
+        this.numFramesLoaded_++;
     }
     this.frames_.push(fill);
     return this;
@@ -146,56 +163,71 @@ lime.animation.KeyframeAnimation.prototype.play = function() {
  * @inheritDoc
  */
 lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
-    if (this.numFramesLoaded_ < this.frames_.length_) return;
     var dt = this.dt_,
         delay_msec = Math.round(this.delay * 1000),
         nextImage = null,
-        i = targets.length;
-    
+        i = targets.length,
+        looping = this.looping,
+        validframe;
+
     while (--i >= 0) {
         this.getTargetProp(targets[i]);
     }
 
     this.lastChangeTime_ += dt;
+    var nextFrame = this.currentFrame_ + 1;
     if (this.lastChangeTime_ > delay_msec) {
-        var nextFrame = this.currentFrame_ + 1;
-        if (nextFrame >= this.frames_.length) nextFrame = 0;
-        nextImage = this.frames_[nextFrame];
+        if (nextFrame < this.frames_.length) {
+            validframe = true;
+        }else if (looping && nextFrame >= this.frames_.length) {
+            validframe = true;
+            nextFrame = 0;
+        }else {
+            validframe = false;
+        }
+        if (validframe) {
+            nextImage = this.frames_[nextFrame];
 
-        var i = targets.length;
-        if (i > 0) {
+            i = targets.length;
+            if (i > 0) {
 
-            // Todo: make CSS Canvas optional
-           /* if (!this.usesBackgroundCanvas_ &&
-                    goog.isFunction(document.getCSSCanvasContext)) {
+                // Todo: make CSS Canvas optional
+                /* if (!this.usesBackgroundCanvas_ &&
+                 goog.isFunction(document.getCSSCanvasContext)) {
 
-                this.bgSprite = new lime.Sprite;
-                this.bgSprite.setRenderMode(lime.RenderMode.CSS_CANVAS);
-                this.bgSprite.setQuality(this.targets[0].getQuality());
-                this.usesBackgroundCanvas_ = true;
+                 this.bgSprite = new lime.Sprite;
+                 this.bgSprite.setRenderMode(lime.RenderMode.CSS_CANVAS);
+                 this.bgSprite.setQuality(this.targets[0].getQuality());
+                 this.usesBackgroundCanvas_ = true;
 
-            }
-*/
-            if (this.usesBackgroundCanvas_) {
-                this.bgSprite.setFill(nextImage);
-               /* while (--i >= 0) {
-                    this.targets[i].setRenderMode(
-                        lime.RenderMode.BACKGROUND_CANVAS);
-                    this.targets[i].setFill(this.bgSprite);
-                }*/
-            }
-            else {
-                while (--i >= 0) {
-                    this.targets[i].setFill(nextImage);
-                    
+                 }
+                 */
+                if (this.usesBackgroundCanvas_) {
+                    this.bgSprite.setFill(nextImage);
+                    /* while (--i >= 0) {
+                     this.targets[i].setRenderMode(
+                     lime.RenderMode.BACKGROUND_CANVAS);
+                     this.targets[i].setFill(this.bgSprite);
+                     }*/
+                }
+                else {
+                    while (--i >= 0) {
+                        this.targets[i].setFill(nextImage);
+
+                    }
                 }
             }
+
+            this.currentFrame_ = nextFrame;
+
+            this.lastChangeTime_ -= delay_msec;
+            this.lastChangeTime_ %= delay_msec;
         }
-
-        this.currentFrame_ = nextFrame;
-
-        this.lastChangeTime_ -= delay_msec;
-        this.lastChangeTime_ %= delay_msec;
     }
 
+    if (!looping) {
+        return nextFrame / this.frames_.length;
+    }else {
+        return 0;
+    }
 };

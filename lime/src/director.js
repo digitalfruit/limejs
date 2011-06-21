@@ -1,6 +1,7 @@
 goog.provide('lime.Director');
 
 
+goog.require('lime.CoverNode');
 goog.require('goog.array');
 goog.require('goog.dom');
 goog.require('goog.dom.ViewportSizeMonitor');
@@ -21,7 +22,7 @@ goog.require('lime.transitions.Transition');
 
 /**
  * Director object. Base object for every game.
- * @param {DOMElement} parentElement Parent element for director.
+ * @param {Element} parentElement Parent element for director.
  * @constructor
  * @extends lime.Node
  */
@@ -268,8 +269,7 @@ lime.Director.prototype.step_ = function(delta) {
 /**
  * Replace current scene with new scene
  * @param {lime.Scene} scene New scene.
- * @param {function(lime.scene,lime.scene,boolean=)=} opt_transition
- *        Transition played.
+ * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.
  * @param {number=} opt_duration Duration of transition.
  */
 lime.Director.prototype.replaceScene = function(scene, opt_transition,

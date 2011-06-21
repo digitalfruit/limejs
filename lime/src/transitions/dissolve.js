@@ -6,11 +6,11 @@ goog.require('lime.transitions.Transition');
 /**
  * Dissolve transition
  * @inheritDoc
+ * @extends lime.transitions.Transition
  * @constructor
  */
 lime.transitions.Dissolve = function(outgoing, incoming) {
-    goog.base(this, outgoing, incoming);
-
+    lime.transitions.Transition.call(this, outgoing, incoming);
 };
 goog.inherits(lime.transitions.Dissolve, lime.transitions.Transition);
 

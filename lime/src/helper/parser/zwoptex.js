@@ -41,8 +41,8 @@ lime.parser.ZWOPTEX = function(data){
     for(var i in d1){
         var d2 = makeDict(d1[i]);
         d2.getValue = function(v){
-            return parseFloat(d2[v].firstChild.nodeValue)
-        }
+            return parseFloat(d2[v].firstChild.nodeValue);
+        };
         var ow = d2.getValue('originalWidth'), oh = d2.getValue('originalHeight'),
             w = d2.getValue('width'), h = d2.getValue('height'),
             ox =  (ow - w) / 2 + d2.getValue('offsetX'), oy = (oh - h) / 2 + d2.getValue('offsetY');
