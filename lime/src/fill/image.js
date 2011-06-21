@@ -111,7 +111,7 @@ lime.fill.Image.prototype.addLoadHandler_ = function(){
 
 /**
  * Update sprite dimensions after image has been loaded
- * @param {event} e Event.
+ * @param {Event} e Event.
  * @private
  */
 lime.fill.Image.prototype.imageLoadedHandler_ = function(e) {
@@ -120,7 +120,7 @@ lime.fill.Image.prototype.imageLoadedHandler_ = function(e) {
 
 /**
  * Return core DOM Image element for the fill.
- * @return {DOMElement} Image element.
+ * @return {Element} Image element.
  */
 lime.fill.Image.prototype.getImageElement = function(){
     return this.image_;
@@ -138,7 +138,7 @@ lime.fill.Image.prototype.isLoaded = function(){
  * Set the drawing size for the fill. Size can also be passed in 
  * with two numbers.
  * @param {(goog.math.Size|number)} size Image fill size.
- * @param {(boolean=|number)} opt_perc If size is relative factor from original.
+ * @param {(boolean|number)=} opt_perc If size is relative factor from original.
  * @return {lime.fill.Image} object itself.
  */
 lime.fill.Image.prototype.setSize = function(size,opt_perc){

@@ -5,7 +5,7 @@ goog.require('lime.fill.Fill');
 /**
 * Stroke 
 * @param {number} width Stroke width.
-* @param {mixed} color Stroke color.
+* @param {*} color Stroke color.
 * @constructor
 * @extends lime.fill.Fill
 */
@@ -69,7 +69,7 @@ lime.fill.Stroke.prototype.getColor = function(){
 
 /**
  * Set new color for the stroke.
- * @param {mixed} color New color.
+ * @param {*} color New color.
  * @return {lime.fill.Stroke} Stroke object itself.
  */
 lime.fill.Stroke.prototype.setColor = function(color){
