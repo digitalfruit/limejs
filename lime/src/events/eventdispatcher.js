@@ -104,7 +104,8 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
     var ee = new lime.events.Event(this);
     ee.type = e.type;
     ee.event = e;
-
+    ee.noPreventDefault_ = false;
+    
     if (e.type.substring(0, 5) == 'touch') {
         var touch = e.getBrowserEvent().changedTouches[touchIndex];
         ee.screenPosition = new goog.math.Coordinate(touch.pageX, touch.pageY);
@@ -169,7 +170,7 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
     }
 
-    if (didhandle)
-    e.preventDefault();
-
+    if (didhandle && !ee.noPreventDefault_){
+        e.preventDefault();
+    }
 };

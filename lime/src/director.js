@@ -124,7 +124,10 @@ lime.Director = function(parentElement) {
     this.eventDispatcher = new lime.events.EventDispatcher(this);
 
     goog.events.listen(this, ['touchmove','touchstart'],
-        function(e) {e.event.preventDefault();}, false, this);
+        function(e) {
+            if(!e.noPreventDefault_)
+                e.event.preventDefault();
+            }, false, this);
 
     // todo: check if all those are really neccessary as Event code
     // is much more mature now

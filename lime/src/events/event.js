@@ -6,12 +6,16 @@ goog.require('lime.events.Drag');
  * Dfkit Event object
  * @param {lime.events.EventDispatcher} dispatcher Dispatcher.
  * @constructor
+ * @extends goog.events.Event
  */
 lime.events.Event = function(dispatcher) {
+    goog.base(this);
+    
     this.dispatcher_ = dispatcher;
 
     this.identifier = 0;
 };
+goog.inherits(lime.events.Event,goog.events.Event);
 
 /**
  * Swallow an event. This means that next event from the same
