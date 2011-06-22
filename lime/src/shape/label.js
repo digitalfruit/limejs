@@ -70,6 +70,10 @@ lime.Label.prototype.measureText = function() {
     mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
+    
+    if(lime.userAgent.IOS5)
+        w+=1; // iOS5 beta bug
+        
     var stroke = this.stroke_?this.stroke_.width_:0;
     return new goog.math.Size(
         this.padding_[1] + this.padding_[3] + w + stroke*2,
@@ -106,6 +110,26 @@ lime.Label.prototype.setText = function(txt) {
     delete this.words_;
     return this;
 };
+
+lime.Label.prototype.getEditable = function(){
+    return this.editable_;
+}
+
+lime.Label.prototype.setEditable = function(value){
+    var editable = !goog.isDef(value) || !!value; // undefined is true
+    
+    if(editable && !this.editable_){
+        // set up listeners
+        goog.events.listen(this,['touchstart','mousedown'],this.startEditHandler_,false,this);
+    }
+    else if(!editable && this.editable_){
+        // remove the listeners
+        goog.events.unlisten(this,['touchstart','moudedown'],this.startEditHandler_,false,this);
+    }
+    
+    this.editable_ = editable;
+    return this;
+}
 
 /**
  * Returns font used to draw the label
@@ -256,6 +280,60 @@ lime.Label.prototype.setAlign = function(value) {
     this.setDirty(lime.Dirty.FONT);
     return this;
 };
+
+lime.Label.prototype.startEditHandler_ = function(e){
+    var inp = this.getInputElement_();
+    goog.dom.removeNode(inp);
+    document.body.appendChild(inp);
+    inp.limeLabel_ = this;
+    
+    var offset = new goog.math.Coordinate(25,25);
+    var p = goog.math.Coordinate.difference(e.screenPosition,offset);
+    goog.style.setPosition(inp,p);
+    e.noPreventDefault_ = true;
+    var t = this;
+    e.swallow(['mousemove','touchmove'],function(ev){
+        
+        var p = goog.math.Coordinate.difference(e.screenPosition,offset);
+        goog.style.setPosition(inp,p);
+         ev.noPreventDefault_ = true;
+    });
+    
+    e.swallow(['mouseup','touchend','touchcancel'],function(ev){
+         setTimeout(function(){
+             inp.value=t.getText();
+             if(!lime.userAgent.ANDROID)
+                inp.style.left='-100px';
+           },500);
+         inp.focus();
+         ev.noPreventDefault_ = true;
+    });
+};
+
+lime.Label.prototype.getInputElement_ = function(e){
+    if(!lime.Label.inputElementCache_){
+        var input = document.createElement('input');
+        input.style['position'] = 'absolute';
+        goog.style.setOpacity(input,0);
+        input.style['width'] = '50px';
+        input.style['height'] = '50px';
+        lime.Label.inputElementCache_ = input;
+        
+        goog.events.listen(input,'keyup',function(){
+            if(this.limeLabel_){
+                this.limeLabel_.setText(this.value);
+            }
+        },false,input);
+        
+        goog.events.listen(input,'blur',function(){
+            this.limeLabel_ = null;
+            this.value='';
+            goog.dom.removeNode(this);
+        },false,input);
+        
+    }
+    return lime.Label.inputElementCache_;
+}
 
 /**
  * Break text into array of line breakable words
