@@ -942,11 +942,14 @@ lime.Node.prototype.getNumberOfChildren = function(){
 /**
  * Return the child at defined index.
  * @param {number} index Child index.
- * @return {lime.Node} Child element.
+ * @return {lime.Node|null} Child element.
  */
 lime.Node.prototype.getChildAt = function(index){
-    if(index>=0 && this.getNumberOfChildren()>index)
+    if(index>=0 && this.getNumberOfChildren()>index) {
         return this.children_[index];
+    }else {
+        return null;
+    }
 };
 
 /**
