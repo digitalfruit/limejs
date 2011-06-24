@@ -4,8 +4,8 @@ goog.require('lime.fill.Fill');
 
 /**
 * Stroke 
-* @param {number} width Stroke width.
-* @param {*} color Stroke color.
+* @param {number|Array.<*>} width Stroke width.
+* @param {*=} color Stroke color.
 * @constructor
 * @extends lime.fill.Fill
 */

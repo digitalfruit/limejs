@@ -59,9 +59,12 @@ lime.Sprite.prototype.getFill = function() {
 /**
  * Sets fill parameters
  * @param {*} fill Fill.
+ * @param {number=} opt_g Optionaly use r,g,b,a as parameter.
+ * @param {number=} opt_b Optionaly use r,g,b,a as parameter.
+ * @param {number=} opt_a Optionaly use r,g,b,a as parameter.
  * @return {lime.Sprite} object itself.
  */
-lime.Sprite.prototype.setFill = function(fill) {
+lime.Sprite.prototype.setFill = function(fill, opt_g, opt_b, opt_a) {
     this.fill_ = lime.fill.parse(goog.array.toArray(arguments));
     this.fill_.initForSprite(this);
     this.setDirty(lime.Dirty.CONTENT);
