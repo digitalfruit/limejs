@@ -901,7 +901,7 @@ lime.Node.prototype.getParent = function() {
 
 /**
  * Append element to the end of childrens array
- * @param {lime.Node|Element} child Child node.
+ * @param {lime.Node|Element|Node} child Child node.
  * @param {number=} opt_pos Position of new child.
  * @return {lime.Node} obejct itself.
  */

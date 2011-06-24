@@ -8,7 +8,7 @@ goog.require('lime');
 /**
  * Unified timer provider class
  * Don't create instances of this class. Used the shared instance.
- * @this lime.scheduleManager
+ * @this {lime.scheduleManager}
  * @constructor
  */
 lime.scheduleManager = new (function() {
@@ -53,7 +53,7 @@ lime.scheduleManager = new (function() {
 /**
  * Scheduled task
  * @param {number} maxdelta Timer wait value after iteration.
- * @param {number} opt_limit Number of calls.
+ * @param {number=} opt_limit Number of calls.
  * @constructor
  */
 lime.scheduleManager.Task = function(maxdelta, opt_limit) {
@@ -188,17 +188,17 @@ lime.scheduleManager.activate_ = function() {
         // mozilla
         if(goog.global['mozRequestAnimationFrame']){
             goog.global['mozRequestAnimationFrame']();
-            this.beforePaintHandlerBinded_ = goog.bind(this.beforePaintHandler_,this);
+            this.beforePaintHandlerBinded_ = goog.bind(lime.scheduleManager.beforePaintHandler_,this);
             goog.global.addEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
         }
         else { // webkit
-            this.animationFrameHandlerBinded_ = goog.bind(this.animationFrameHandler_,this);
+            this.animationFrameHandlerBinded_ = goog.bind(lime.scheduleManager.animationFrameHandler_,this);
             goog.global['webkitRequestAnimationFrame'](this.animationFrameHandlerBinded_);
         }
     }
     else {
-        this.intervalID_ = setInterval(goog.bind(this.stepTimer_, this),
-            this.getDisplayRate());
+        this.intervalID_ = setInterval(goog.bind(lime.scheduleManager.stepTimer_, this),
+            lime.scheduleManager.getDisplayRate());
     }
     this.active_ = true;
 };

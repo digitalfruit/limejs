@@ -29,7 +29,7 @@ lime.animation.Animation = function() {
 
     /**
      * Animation is playing?
-     * @type {Boolean}
+     * @type {boolean}
      * @private
      */
     this.isPlaying_ = false;

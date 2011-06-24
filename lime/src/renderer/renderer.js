@@ -23,7 +23,7 @@ lime.Renderer.prototype.getType = function() {
 
 /**
  * Make and return subrenderer object.
- * @param {Object} sub Cloned empty instance.
+ * @param {Object|lime.Renderer} sub Cloned empty instance.
  * @return {lime.Renderer} Subrenderer.
  */
 lime.Renderer.prototype.makeSubRenderer = function(sub) {
