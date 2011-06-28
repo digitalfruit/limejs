@@ -75,6 +75,7 @@ lime.Dirty = {
     ALPHA: 16,
     VISIBILITY: 32,
     LAYOUT: 64,
+    ROTATION: 128,
     ALL: 7 // POSITION | SCALE
 };
 
