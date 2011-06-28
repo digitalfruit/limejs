@@ -143,6 +143,7 @@ lime.Node.prototype.getDeepestParentWithDom = function() {
         if (this.parent_)
         return this.parent_.getDeepestParentWithDom();
     }
+    return null;
 };
 
 /**

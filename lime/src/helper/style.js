@@ -31,10 +31,12 @@ lime.style.tryProperty = function(name) {
  * @return {string} Actual valid property name.
  */
 lime.style.getCSSproperty = function(name) {
-    var name_lower = name.charAt(0).toLowerCase() + name.substr(1);
+    var name_lower = name.charAt(0).toLowerCase() + name.substr(1),
+        prefix_name = prefix + name;
     return lime.style.tryProperty(name) ?
         name : (lime.style.tryProperty(name_lower)  ?
-                name_lower : lime.style.tryProperty(prefix + name));
+                name_lower : lime.style.tryProperty(prefix_name) ?
+                prefix_name : undefined );
 };
 
 /**
