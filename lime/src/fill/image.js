@@ -193,7 +193,7 @@ lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape){
 
 /**
  * Common functionality so it could be reused on Frame
- * @private
+ * @protected
  */
 lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
     var so = this.getPixelSizeAndOffset(shape),size=so[0],offset=so[1],q = shape.getRelativeQuality();
