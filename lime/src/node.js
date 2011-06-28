@@ -36,7 +36,7 @@ lime.Node = function() {
     /**
      * Node has been added to DOM tree
      * @type {boolean}
-     * @private
+     * @protected
      */
     this.inTree_ = false;
 
