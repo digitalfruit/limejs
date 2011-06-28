@@ -45,7 +45,6 @@ goog.inherits(lime.animation.Animation, goog.events.EventTarget);
 
 /**
  * @type {string}
- * @const
  */
 lime.animation.Animation.prototype.scope = '';
 
