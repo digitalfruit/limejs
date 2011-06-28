@@ -34,7 +34,7 @@ lime.animation.MoveTo.prototype.scope = 'move';
  * based on the size of the delta. 1 unit means 100px/sec.
  * Calculation is based on first target node.
  * @param {number} speed Speed value.
- * @return {lime.animation.MoveBy} Object itself.
+ * @return {lime.animation.MoveTo} Object itself.
  */
 lime.animation.MoveTo.prototype.setSpeed = function(speed) {
     this.speed_ = speed;
