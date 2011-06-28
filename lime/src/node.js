@@ -46,7 +46,7 @@ lime.Node = function() {
 
     /**
      * Hash of active event handlers
-     * @type {object}
+     * @type {Object}
      * @private
      */
     this.eventHandlers_ = {};
@@ -812,7 +812,7 @@ lime.Node.prototype.update = function(opt_pass) {
         if(!only_predraw)
         for (i in this.transitionsAdd_) {
             value = this.transitionsAdd_[i];
-            property = lime.Node.getPropertyForTransition(i);
+            property = lime.Node.getPropertyForTransition(parseInt(i, 10));
             
             if(this.renderer.getType()==lime.Renderer.DOM || property!='opacity'){
             
