@@ -12,7 +12,8 @@ var dirtyObjectQueueNext = [[], []];
 /**
  * Add object to Dirty objects queue (waiting for redraw)
  * @param {lime.DirtyObject} obj Object that needs to be updated.
- * @param {number} opt_pass Pass number.
+ * @param {number=} opt_pass Pass number.
+ * @param {boolean=} opt_nextframe Register for next frame.
  */
 lime.setObjectDirty = function(obj, opt_pass, opt_nextframe) {
     var queue = opt_nextframe ? dirtyObjectQueueNext : dirtyObjectQueue;

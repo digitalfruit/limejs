@@ -166,7 +166,7 @@ lime.style.setTransform = (function() {
         }
         lime.transformSet_=1;
         
-    }
+    };
 })();
 
 })();
@@ -176,7 +176,7 @@ lime.style.setTransform = (function() {
  * @param {DomElement} el Element to change.
  * @param {number} ox X Offset.
  * @param {number} oy Y Offset.
- * @param {boolean} opt_isPerc If unit is percentage.
+ * @param {boolean=} opt_isPerc If unit is percentage.
  */
 lime.style.setTransformOrigin = (function() {
     var stylename = lime.style.getCSSproperty('TransformOrigin');
@@ -186,7 +186,7 @@ lime.style.setTransformOrigin = (function() {
         if (value != el.transform_origin_cache_) {
             el.style[stylename] = el.transform_origin_cache_ = value;
         }
-    }
+    };
 })();
 
 

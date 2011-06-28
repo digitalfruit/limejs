@@ -24,7 +24,7 @@ lime.Renderer.prototype.getType = function() {
 /**
  * Make and return subrenderer object.
  * @param {Object|lime.Renderer} sub Cloned empty instance.
- * @return {lime.Renderer} Subrenderer.
+ * @return {Object|lime.Renderer} Subrenderer.
  */
 lime.Renderer.prototype.makeSubRenderer = function(sub) {
     goog.object.extend(sub, this);
