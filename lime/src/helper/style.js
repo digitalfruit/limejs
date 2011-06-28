@@ -33,7 +33,9 @@ lime.style.tryProperty = function(name) {
 lime.style.getCSSproperty = function(name) {
     var name_lower = name.charAt(0).toLowerCase() + name.substr(1);
     return lime.style.tryProperty(name) ?
-        name : (lime.style.tryProperty(name_lower)  ? name_lower : lime.style.tryProperty(prefix + name));
+        name : (lime.style.tryProperty(name_lower)  ?
+                name_lower : lime.style.tryProperty(prefix + name) ?
+                prefix + name : undefined);
 };
 
 /**
