@@ -23,6 +23,8 @@ goog.require('lime.transitions.Transition');
 /**
  * Director object. Base object for every game.
  * @param {Element} parentElement Parent element for director.
+ * @param {number=} opt_width Optionaly define what height and width the director should have.
+ * @param {number=} opt_height Optionaly define what height and width the director should have.
  * @constructor
  * @extends lime.Node
  */

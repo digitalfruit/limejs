@@ -41,7 +41,7 @@ lime.style.getCSSproperty = function(name) {
  * @param {DomElement} el Element to change.
  * @param {Array.<number>} values Radius values.
  * @param {Array.<number>=} opt_vertical Vertical radius values.
- * @param {boolen=} opt_isPerc If values are given in percentages.
+ * @param {boolean=} opt_isPerc If values are given in percentages.
  */
 lime.style.setBorderRadius = (function() {
     var stylename = lime.style.getCSSproperty('BorderRadius');
