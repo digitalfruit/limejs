@@ -765,7 +765,7 @@ lime.Node.prototype.update = function(opt_pass) {
         for (var i in this.transitionsClear_) {
             delete this.transitionsActive_[i];
             delete this.transitionsActiveSet_[i];
-            property = lime.Node.getPropertyForTransition(i);
+            property = lime.Node.getPropertyForTransition(parseInt(i, 10));
             lime.style.clearTransition(this.domElement, property);
             if (this.domElement != this.containerElement) {
                 lime.style.clearTransition(this.continerElement, property);
