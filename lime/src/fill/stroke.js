@@ -51,7 +51,7 @@ lime.fill.Stroke.prototype.getWidth = function(){
 /**
  * Set new stroke width.
  * @param {number} width New value.
- * @return {number} Stroke object itself.
+ * @return {lime.fill.Stroke} Stroke object itself.
  */
 lime.fill.Stroke.prototype.setWidth = function(width){
     this.width_ = width;
