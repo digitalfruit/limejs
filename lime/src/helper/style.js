@@ -19,7 +19,7 @@ lime.style.transformProperty = '-' + prefix.toLowerCase() + '-transform';
 /**
  * Try if a CSS style property with given name exists
  * @param {string} name Property name.
- * @return {boolean} If property exists.
+ * @return {boolean|string} If property exists.
  */
 lime.style.tryProperty = function(name) {
     return testDivStyle[name] !== undefined ? name : false;
@@ -34,8 +34,7 @@ lime.style.getCSSproperty = function(name) {
     var name_lower = name.charAt(0).toLowerCase() + name.substr(1);
     return lime.style.tryProperty(name) ?
         name : (lime.style.tryProperty(name_lower)  ?
-                name_lower : lime.style.tryProperty(prefix + name) ?
-                prefix + name : undefined);
+                name_lower : lime.style.tryProperty(prefix + name));
 };
 
 /**
