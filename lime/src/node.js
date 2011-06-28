@@ -911,7 +911,7 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
         child.getParent().removeChild(child);
     }
     else if(child.parentNode){
-        goog.dom.removeNode(child);
+        goog.dom.removeNode(/** @type {Node} */ (child));
     }
     
     child.parent_ = this;
