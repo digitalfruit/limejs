@@ -63,7 +63,7 @@ lime.fill.LinearGradient.prototype.addColorStop = function(offset, color) {
 /**
  * Format color stop string for current browser
  * @private
- * @param {Array.<*>} clr Color in format [offset,color].
+ * @param {Array.<number|lime.fill.Fill>} clr Color in format [offset,color].
  * @return {string} Color stop CSS string.
  */
 lime.fill.LinearGradient.prototype.formatColorStop_ = function(clr) {
