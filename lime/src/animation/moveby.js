@@ -16,7 +16,7 @@ goog.require('lime.animation.Animation');
  * @param {number=} opt_y Optionaly use x,y
  * @extends lime.animation.Animation
  */
-lime.animation.MoveBy = function(delta) {
+lime.animation.MoveBy = function(delta, opt_y) {
     lime.animation.Animation.call(this);
 
     if (arguments.length == 2) {
