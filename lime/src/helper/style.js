@@ -19,7 +19,7 @@ lime.style.transformProperty = '-' + prefix.toLowerCase() + '-transform';
 /**
  * Try if a CSS style property with given name exists
  * @param {string} name Property name.
- * @return {boolen} If property exists.
+ * @return {boolean} If property exists.
  */
 lime.style.tryProperty = function(name) {
     return testDivStyle[name] !== undefined ? name : false;
@@ -72,7 +72,7 @@ lime.style.Transform = function(opt_precision) {
     this.values = [];
     this.precision = 1;
     if (this.opt_precision) {
-        this.setPrecision(opt_precision);
+        this.setPrecision(/** @type {number} */ (opt_precision));
     }
 };
 
