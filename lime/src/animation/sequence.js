@@ -63,7 +63,7 @@ lime.animation.Sequence.prototype.stop = function() {
  * @see lime.animation.Animation#updateAll
  */
 lime.animation.Sequence.prototype.updateAll = function(t,targets) {
-    if (this.status_ == 0) return;
+    if (this.status_ == 0) return t;
 
     var i = targets.length;
     while (--i >= 0) {
