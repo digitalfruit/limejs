@@ -71,7 +71,7 @@ lime.GlossyButton.prototype.setText = function(txt) {
 };
 
 /** @inheritDoc */
-lime.GlossyButton.prototype.setSize = function() {
+lime.GlossyButton.prototype.setSize = function(value, opt_height) {
     if (this.upstate) {
     this.upstate.setSize.apply(this.upstate, arguments);
     var size = this.upstate.getSize();
