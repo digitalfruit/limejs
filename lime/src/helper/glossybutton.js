@@ -13,11 +13,10 @@ goog.require('lime.fill.LinearGradient');
  * @extends lime.Button
  */
 lime.GlossyButton = function(txt) {
-    lime.Button.call(this, this.makeState_(), this.makeState_());
+    lime.Button.call(this, this.makeState_(txt), this.makeState_(txt));
 
     this.borderWidth = 2;
 
-    this.setText(txt);
     this.setColor('#62be00');
 
 };
@@ -26,12 +25,13 @@ goog.inherits(lime.GlossyButton, lime.Button);
 /**
  * Make state for a button.
  * @private
+ * @param {string} txt Text shown on the button.
  * @return {lime.RoundedRect} state.
  */
-lime.GlossyButton.prototype.makeState_ = function() {
+lime.GlossyButton.prototype.makeState_ = function(txt) {
     var state = new lime.RoundedRect();
     state.inner = new lime.RoundedRect();
-    state.label = new lime.Label().setAlign('center').
+    state.label = new lime.Label(txt).setAlign('center').
         setFontFamily('"Trebuchet MS"').setFontColor('#010101').setFontSize(17);
 
     state.appendChild(state.inner);
