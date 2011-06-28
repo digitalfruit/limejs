@@ -86,8 +86,8 @@ lime.fill.Stroke.prototype.setColor = function(color){
 };
 
 /**
- * Clone the color
- * @return {lime.fill.Color} New cloned color.
+ * Clone the stroke.
+ * @return {lime.fill.Stroke} New cloned stroke.
  */
 lime.fill.Stroke.prototype.clone = function() {
     var c = new lime.fill.Stroke();
