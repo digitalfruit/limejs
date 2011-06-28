@@ -323,7 +323,7 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
 /** @inheritDoc */
 lime.Director.prototype.updateLayout = function() {
    // debugger;
-    this.dirty &= ~lime.Dirty.LAYOUT;
+    this.dirty_ &= ~lime.Dirty.LAYOUT;
 };
 
 /**
