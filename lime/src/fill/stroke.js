@@ -4,21 +4,21 @@ goog.require('lime.fill.Fill');
 
 /**
 * Stroke 
-* @param {number|Array.<*>} width Stroke width.
-* @param {*=} color Stroke color.
+* @param {(number|Array.<*>)=} opt_width Stroke width.
+* @param {*=} opt_color Stroke color.
 * @constructor
 * @extends lime.fill.Fill
 */
-lime.fill.Stroke = function(width,color) {
+lime.fill.Stroke = function(opt_width, opt_color) {
     lime.fill.Fill.call(this);
 
-    var param = goog.isArray(width)?width:goog.array.toArray(arguments);
+    var param = goog.isArray(opt_width) ? opt_width : goog.array.toArray(arguments);
     
     this.width_ = param[0] || 1;
     
     param.shift();
     
-    this.setColor.apply(this,param);
+    this.setColor.apply(this, param);
     
 };
 goog.inherits(lime.fill.Stroke, lime.fill.Fill);
