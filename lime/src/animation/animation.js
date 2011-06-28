@@ -49,7 +49,7 @@ goog.inherits(lime.animation.Animation, goog.events.EventTarget);
  */
 lime.animation.Animation.prototype.scope = '';
 
-/** @typedef {Array.<string,number>} */
+/** @typedef {Array.<number|Function>} */
 lime.animation.EasingFunction;
 
 
