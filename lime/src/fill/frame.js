@@ -67,7 +67,6 @@ goog.inherits(lime.fill.Frame,lime.fill.Image);
 /**
  * Common name for Frame objects
  * @type {string}
- * @const
  */
 lime.fill.Frame.prototype.id = 'frame';
 

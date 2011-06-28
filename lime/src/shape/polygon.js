@@ -23,7 +23,6 @@ goog.inherits(lime.Polygon, lime.Sprite);
 /**
  * Common name for polygon objects
  * @type {string}
- * @const
  */
 lime.Polygon.prototype.id = 'polygon';
 

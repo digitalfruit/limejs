@@ -23,7 +23,6 @@ goog.inherits(lime.RoundedRect, lime.Sprite);
 /**
  * Common name for RoundedRect objects
  * @type {string}
- * @const
  */
 lime.RoundedRect.prototype.id = 'roundedrect';
 

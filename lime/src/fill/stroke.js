@@ -26,7 +26,6 @@ goog.inherits(lime.fill.Stroke, lime.fill.Fill);
 /**
  * Common name for stroke objects
  * @type {string}
- * @const
  */
 lime.fill.Stroke.prototype.id = 'stroke';
 

@@ -19,7 +19,6 @@ goog.inherits(lime.fill.LinearGradient, lime.fill.Fill);
 /**
  * Common name for Lineargradient objects
  * @type {string}
- * @const
  */
 lime.fill.LinearGradient.prototype.id = 'lineargradient';
 

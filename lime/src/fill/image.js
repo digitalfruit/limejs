@@ -67,7 +67,6 @@ lime.fill.Image.loadedImages_ = {};
 /**
  * Common name for Image objects
  * @type {string}
- * @const
  */
 lime.fill.Image.prototype.id = 'image';
 

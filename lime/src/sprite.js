@@ -38,7 +38,6 @@ goog.inherits(lime.Sprite, lime.Node);
 /**
  * Common name for sprite objects
  * @type {string}
- * @const
  */
 lime.Sprite.prototype.id = 'sprite';
 
