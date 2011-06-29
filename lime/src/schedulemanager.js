@@ -134,7 +134,7 @@ lime.scheduleManager.setDisplayRate = function(value) {
  * @this {lime.scheduleManager}
  * @param {function(number)} f Function to be called.
  * @param {Object} context The context used when calling function.
- * @param {lime.scheduleManager.Task} opt_task Task object.
+ * @param {lime.scheduleManager.Task=} opt_task Task object.
  */
 lime.scheduleManager.schedule = function(f, context, opt_task) {
     var task = goog.isDef(opt_task) ? opt_task : this.taskStack_[0];
