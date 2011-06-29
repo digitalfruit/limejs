@@ -21,8 +21,9 @@ lime.animation.MoveBy = function(delta, opt_y) {
 
     if (arguments.length == 2) {
         this.delta_ = new goog.math.Coordinate(arguments[0], arguments[1]);
+    } else {
+        this.delta_ = /** @type {goog.math.Coordinate} */ (delta);
     }
-    else this.delta_ = delta;
 
 
 };
