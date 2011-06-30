@@ -12,18 +12,20 @@ var dirtyObjectQueueNext = [[], []];
 /**
  * Add object to Dirty objects queue (waiting for redraw)
  * @param {lime.DirtyObject} obj Object that needs to be updated.
- * @param {number} opt_pass Pass number.
+ * @param {number=} opt_pass Pass number.
+ * @param {boolean=} opt_nextframe Register for next frame.
  */
 lime.setObjectDirty = function(obj, opt_pass, opt_nextframe) {
     var queue = opt_nextframe ? dirtyObjectQueueNext : dirtyObjectQueue;
     var pass = opt_pass || 0;
     goog.array.insert(queue[pass], obj);
-}
+};
 
 /**
  * Remove object from Dirty obejcts queue
  * @param {lime.DirtyObject} obj Object that needs to be updated.
- * @param {number} opt_pass Pass number.
+ * @param {number=} opt_pass Pass number.
+ * @param {boolean=} opt_nextframe Register for next frame.
  */
 lime.clearObjectDirty = function(obj, opt_pass, opt_nextframe) {
     /*
@@ -31,7 +33,7 @@ lime.clearObjectDirty = function(obj, opt_pass, opt_nextframe) {
     var queue = opt_nextframe ? dirtyObjectQueueNext : dirtyObjectQueue;
     var pass = opt_pass || 0;
     goog.array.remove(queue[pass], obj);*/
-}
+};
 
 /**
  * Call update on all elements waiting to be invalidated
@@ -58,7 +60,7 @@ lime.updateDirtyObjects = function() {
    }*/
     //dirtyObjectQueue=dirtyObjectQueueNext;
     dirtyObjectQueueNext = [[], []];
-}
+};
 
 })();
 
@@ -74,6 +76,7 @@ lime.Dirty = {
     ALPHA: 16,
     VISIBILITY: 32,
     LAYOUT: 64,
+    ROTATION: 128,
     ALL: 7 // POSITION | SCALE
 };
 

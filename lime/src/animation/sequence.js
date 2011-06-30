@@ -8,12 +8,12 @@ goog.require('lime.animation.Animation');
 /**
  * Sequence of animations that are run after each other.
  * Also accepts more than two animations
- * @param {lime.animation.Animation} one First animation.
- * @param {lime.animation.Animation} two Second animation.
+ * @param {Array.<lime.animation.Animation>|lime.animation.Animation} one First animation.
+ * @param {lime.animation.Animation=} opt_two Second animation.
  * @constructor
  * @extends lime.animation.Animation
  */
-lime.animation.Sequence = function(one, two) {
+lime.animation.Sequence = function(one, opt_two) {
 
     lime.animation.Animation.call(this);
 
@@ -63,7 +63,7 @@ lime.animation.Sequence.prototype.stop = function() {
  * @see lime.animation.Animation#updateAll
  */
 lime.animation.Sequence.prototype.updateAll = function(t,targets) {
-    if (this.status_ == 0) return;
+    if (this.status_ == 0) return t;
 
     var i = targets.length;
     while (--i >= 0) {

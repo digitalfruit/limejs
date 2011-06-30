@@ -210,7 +210,7 @@ lime.events.Drag.prototype.releaseHandler_ = function(e) {
         if (!ev.propagationStopped_) {
             var pos = ev.activeDropTarget.getParent().localToNode(
                 ev.activeDropTarget.getPosition(), this.target.getParent());
-            var move = new lime.animation.MoveTo(pos.x, pos.y)
+            var move = new lime.animation.MoveTo(pos)
                 .setDuration(.5).enableOptimizations();
             this.target.runAction(move);
             if (goog.isFunction(ev.moveEndedCallback)) {

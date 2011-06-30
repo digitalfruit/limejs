@@ -67,7 +67,6 @@ lime.fill.Image.loadedImages_ = {};
 /**
  * Common name for Image objects
  * @type {string}
- * @const
  */
 lime.fill.Image.prototype.id = 'image';
 
@@ -194,7 +193,7 @@ lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape){
 
 /**
  * Common functionality so it could be reused on Frame
- * @private
+ * @protected
  */
 lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
     var so = this.getPixelSizeAndOffset(shape),size=so[0],offset=so[1],q = shape.getRelativeQuality();

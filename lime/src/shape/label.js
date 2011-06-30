@@ -36,7 +36,6 @@ goog.inherits(lime.Label, lime.Sprite);
 /**
  * Common name for label objects
  * @type {string}
- * @const
  */
 lime.Label.prototype.id = 'label';
 

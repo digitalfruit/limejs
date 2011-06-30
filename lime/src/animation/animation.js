@@ -29,7 +29,7 @@ lime.animation.Animation = function() {
 
     /**
      * Animation is playing?
-     * @type {Boolean}
+     * @type {boolean}
      * @private
      */
     this.isPlaying_ = false;
@@ -45,11 +45,10 @@ goog.inherits(lime.animation.Animation, goog.events.EventTarget);
 
 /**
  * @type {string}
- * @const
  */
 lime.animation.Animation.prototype.scope = '';
 
-/** @typedef {Array.<string,number>} */
+/** @typedef {Array.<number|Function>} */
 lime.animation.EasingFunction;
 
 
