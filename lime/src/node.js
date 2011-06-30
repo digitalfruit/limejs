@@ -26,15 +26,17 @@ lime.Node = function() {
 
     this.parent_ = null;
 
+    /** type {Object.<number, number>} */
     this.transitionsAdd_ = {};
     this.transitionsActive_ = {};
     this.transitionsActiveSet_ = {};
+    /** type {Object.<number, number>} */
     this.transitionsClear_ = {};
 
     /**
      * Node has been added to DOM tree
      * @type {boolean}
-     * @private
+     * @protected
      */
     this.inTree_ = false;
 
@@ -44,7 +46,7 @@ lime.Node = function() {
 
     /**
      * Hash of active event handlers
-     * @type {object}
+     * @type {Object}
      * @private
      */
     this.eventHandlers_ = {};
@@ -141,6 +143,7 @@ lime.Node.prototype.getDeepestParentWithDom = function() {
         if (this.parent_)
         return this.parent_.getDeepestParentWithDom();
     }
+    return null;
 };
 
 /**
@@ -549,7 +552,7 @@ lime.Node.prototype.screenToLocal = function(coord) {
  * @return {goog.math.Coordinate} Local coordinate.
  */
 lime.Node.prototype.parentToLocal = function(coord) {
-    if (!this.getParent()) return;
+    if (!this.getParent()) return null;
 
     coord.x -= this.position_.x;
     coord.y -= this.position_.y;
@@ -742,7 +745,7 @@ lime.Node.prototype.updateLayout = function() {
 
 /**
  * Update modified dirty parameters to visible elements properties
- * @param {number} opt_pass Pass number.
+ * @param {number=} opt_pass Pass number.
  */
 lime.Node.prototype.update = function(opt_pass) {
  // if (!this.renderer) return;
@@ -763,7 +766,7 @@ lime.Node.prototype.update = function(opt_pass) {
         for (var i in this.transitionsClear_) {
             delete this.transitionsActive_[i];
             delete this.transitionsActiveSet_[i];
-            property = lime.Node.getPropertyForTransition(i);
+            property = lime.Node.getPropertyForTransition(parseInt(i, 10));
             lime.style.clearTransition(this.domElement, property);
             if (this.domElement != this.containerElement) {
                 lime.style.clearTransition(this.continerElement, property);
@@ -810,7 +813,7 @@ lime.Node.prototype.update = function(opt_pass) {
         if(!only_predraw)
         for (i in this.transitionsAdd_) {
             value = this.transitionsAdd_[i];
-            property = lime.Node.getPropertyForTransition(i);
+            property = lime.Node.getPropertyForTransition(parseInt(i, 10));
             
             if(this.renderer.getType()==lime.Renderer.DOM || property!='opacity'){
             
@@ -899,7 +902,7 @@ lime.Node.prototype.getParent = function() {
 
 /**
  * Append element to the end of childrens array
- * @param {lime.Node|Element} child Child node.
+ * @param {lime.Node|Element|Node} child Child node.
  * @param {number=} opt_pos Position of new child.
  * @return {lime.Node} obejct itself.
  */
@@ -909,7 +912,7 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
         child.getParent().removeChild(child);
     }
     else if(child.parentNode){
-        goog.dom.removeNode(child);
+        goog.dom.removeNode(/** @type {Node} */ (child));
     }
     
     child.parent_ = this;
@@ -942,16 +945,19 @@ lime.Node.prototype.getNumberOfChildren = function(){
 /**
  * Return the child at defined index.
  * @param {number} index Child index.
- * @return {lime.Node} Child element.
+ * @return {lime.Node|Element|null} Child element.
  */
 lime.Node.prototype.getChildAt = function(index){
-    if(index>=0 && this.getNumberOfChildren()>index)
+    if(index>=0 && this.getNumberOfChildren()>index) {
         return this.children_[index];
+    }else {
+        return null;
+    }
 };
 
 /**
  * Return the index position of a child.
- * @param {lime.Node} child Child to search.
+ * @param {lime.Node|Element} child Child to search.
  * @return {number} Index number.
  */
 lime.Node.prototype.getChildIndex = function(child){

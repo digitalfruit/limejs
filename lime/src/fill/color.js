@@ -24,7 +24,6 @@ goog.inherits(lime.fill.Color, lime.fill.Fill);
 /**
  * Common name for color objects
  * @type {string}
- * @const
  */
 lime.fill.Color.prototype.id = 'color';
 

@@ -23,6 +23,8 @@ goog.require('lime.transitions.Transition');
 /**
  * Director object. Base object for every game.
  * @param {Element} parentElement Parent element for director.
+ * @param {number=} opt_width Optionaly define what height and width the director should have.
+ * @param {number=} opt_height Optionaly define what height and width the director should have.
  * @constructor
  * @extends lime.Node
  */
@@ -182,7 +184,7 @@ lime.Director.prototype.isPaused = function() {
  */
 lime.Director.prototype.setPaused = function(value) {
     this.isPaused_ = value;
-    lime.scheduleManager.changeDirectorActivity(this, value ? 0 : 1);
+    lime.scheduleManager.changeDirectorActivity(this, !value);
     if (this.isPaused_) {
         this.pauseScene = new lime.helper.PauseScene();
         this.pushScene(this.pauseScene);
@@ -321,7 +323,7 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
 /** @inheritDoc */
 lime.Director.prototype.updateLayout = function() {
    // debugger;
-    this.dirty &= ~lime.Dirty.LAYOUT;
+    this.dirty_ &= ~lime.Dirty.LAYOUT;
 };
 
 /**

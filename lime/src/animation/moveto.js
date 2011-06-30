@@ -9,10 +9,11 @@ goog.require('lime.animation.Animation');
  * Move element to specific position
  * Also accepts two numbers (x and y)
  * @constructor
- * @param {goog.math.Coordinate} position New position value.
+ * @param {(goog.math.Coordinate|number)} position New position value.
+ * @param {number=} opt_y Optionaly use x,y
  * @extends lime.animation.Animation
  */
-lime.animation.MoveTo = function(position) {
+lime.animation.MoveTo = function(position, opt_y) {
     lime.animation.Animation.call(this);
 
     if (arguments.length == 2) {
@@ -33,7 +34,7 @@ lime.animation.MoveTo.prototype.scope = 'move';
  * based on the size of the delta. 1 unit means 100px/sec.
  * Calculation is based on first target node.
  * @param {number} speed Speed value.
- * @return {lime.animation.MoveBy} Object itself.
+ * @return {lime.animation.MoveTo} Object itself.
  */
 lime.animation.MoveTo.prototype.setSpeed = function(speed) {
     this.speed_ = speed;

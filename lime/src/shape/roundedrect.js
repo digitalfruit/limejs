@@ -23,7 +23,6 @@ goog.inherits(lime.RoundedRect, lime.Sprite);
 /**
  * Common name for RoundedRect objects
  * @type {string}
- * @const
  */
 lime.RoundedRect.prototype.id = 'roundedrect';
 
@@ -70,7 +69,7 @@ lime.Renderer.DOM.ROUNDEDRECT.draw = function(el) {
 
     lime.Renderer.DOM.SPRITE.draw.call(this, el);
 
-    lime.style.setBorderRadius(el, this.radius_*this.getQuality(), this.radius_*this.getQuality());
+    lime.style.setBorderRadius(el, [this.radius_*this.getQuality(), this.radius_*this.getQuality()]);
 
 };
 
@@ -81,10 +80,10 @@ lime.Renderer.DOM.ROUNDEDRECT.draw = function(el) {
 lime.Renderer.CANVAS.ROUNDEDRECT.draw = function(context) {
     //http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html
 
-    var size = this.getSize(), fill = this.fill_;
-    var frame = this.getFrame();
-
-    var radius = this.getRadius(),
+    var size = this.getSize(),
+        fill = this.getFill(),
+        frame = this.getFrame(),
+        radius = this.getRadius(),
         x = frame.left,
         y = frame.top,
         width = frame.right - frame.left,

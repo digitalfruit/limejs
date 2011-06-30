@@ -119,7 +119,7 @@ lime.Button.prototype.getState = function() {
  */
 lime.Button.prototype.setState = function(value) {
 
-    if (value == this.state_) return;
+    if (value == this.state_) return this;
 
     //event checking
     if (this.state_ == lime.Button.State.UP &&

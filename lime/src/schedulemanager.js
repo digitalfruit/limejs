@@ -8,7 +8,7 @@ goog.require('lime');
 /**
  * Unified timer provider class
  * Don't create instances of this class. Used the shared instance.
- * @this lime.scheduleManager
+ * @this {lime.scheduleManager}
  * @constructor
  */
 lime.scheduleManager = new (function() {
@@ -22,7 +22,7 @@ lime.scheduleManager = new (function() {
 
     /**
      * ScheduleManager is active
-     * @type {Boolean}
+     * @type {boolean}
      * @private
      */
     this.active_ = false;
@@ -53,7 +53,7 @@ lime.scheduleManager = new (function() {
 /**
  * Scheduled task
  * @param {number} maxdelta Timer wait value after iteration.
- * @param {number} opt_limit Number of calls.
+ * @param {number=} opt_limit Number of calls.
  * @constructor
  */
 lime.scheduleManager.Task = function(maxdelta, opt_limit) {
@@ -123,8 +123,8 @@ lime.scheduleManager.getDisplayRate = function() {
 lime.scheduleManager.setDisplayRate = function(value) {
      this.displayRate_ = value;
      if (this.active_) {
-         this.disable_();
-         this.activate_();
+         lime.scheduleManager.disable_();
+         lime.scheduleManager.activate_();
      }
 };
 
@@ -141,7 +141,7 @@ lime.scheduleManager.schedule = function(f, context, opt_task) {
     goog.array.insert(task.functionStack_, [1, f, context]);
     goog.array.insert(this.taskStack_, task);
     if (!this.active_) {
-        this.activate_();
+        lime.scheduleManager.activate_();
     }
 };
 
@@ -170,7 +170,7 @@ lime.scheduleManager.unschedule = function(f, context) {
     // if no more functions: stop timers
     if (this.taskStack_.length == 1 &&
             this.taskStack_[0].functionStack_.length == 0) {
-        this.disable_();
+        lime.scheduleManager.disable_();
     }
 };
 
@@ -188,17 +188,17 @@ lime.scheduleManager.activate_ = function() {
         // mozilla
         if(goog.global['mozRequestAnimationFrame']){
             goog.global['mozRequestAnimationFrame']();
-            this.beforePaintHandlerBinded_ = goog.bind(this.beforePaintHandler_,this);
+            this.beforePaintHandlerBinded_ = goog.bind(lime.scheduleManager.beforePaintHandler_,this);
             goog.global.addEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
         }
         else { // webkit
-            this.animationFrameHandlerBinded_ = goog.bind(this.animationFrameHandler_,this);
+            this.animationFrameHandlerBinded_ = goog.bind(lime.scheduleManager.animationFrameHandler_,this);
             goog.global['webkitRequestAnimationFrame'](this.animationFrameHandlerBinded_);
         }
     }
     else {
-        this.intervalID_ = setInterval(goog.bind(this.stepTimer_, this),
-            this.getDisplayRate());
+        this.intervalID_ = setInterval(goog.bind(lime.scheduleManager.stepTimer_, this),
+            lime.scheduleManager.getDisplayRate());
     }
     this.active_ = true;
 };
@@ -236,7 +236,7 @@ lime.scheduleManager.disable_ = function() {
 lime.scheduleManager.animationFrameHandler_ = function(time){
     if(!time) time=goog.now(); // no time parameter in Chrome10beta
     var delta = time - this.lastRunTime_;
-    this.dispatch_(delta);
+    lime.scheduleManager.dispatch_(delta);
     this.lastRunTime_ = time;
     goog.global['webkitRequestAnimationFrame'](this.animationFrameHandlerBinded_);
 }
@@ -248,7 +248,7 @@ lime.scheduleManager.animationFrameHandler_ = function(time){
  */
 lime.scheduleManager.beforePaintHandler_ = function(event){
     var delta = event.timeStamp - this.lastRunTime_;
-    this.dispatch_(delta);
+    lime.scheduleManager.dispatch_(delta);
     this.lastRunTime_ = event.timeStamp;
     goog.global['mozRequestAnimationFrame']();
 }
@@ -263,7 +263,7 @@ lime.scheduleManager.stepTimer_ = function() {
     var curTime = goog.now();
     var delta = curTime - this.lastRunTime_;
     if (delta < 0) delta = 1;
-    this.dispatch_(delta);
+    lime.scheduleManager.dispatch_(delta);
     this.lastRunTime_ = curTime;
 };
 
@@ -291,7 +291,7 @@ lime.scheduleManager.dispatch_ = function(delta){
     }
     lime.transformSet_=0;
     }
-}
+};
 
 /**
  * Change director's activity. Used for pausing updates when director is paused
@@ -340,5 +340,5 @@ lime.scheduleManager.callAfter = function(f, context, delay) {
 lime.scheduleManager.scheduleWithDelay = function(f, context,
         delay, opt_limit) {
     var task = new lime.scheduleManager.Task(delay, opt_limit);
-    this.schedule(f, context, task);
+    lime.scheduleManager.schedule(f, context, task);
 };

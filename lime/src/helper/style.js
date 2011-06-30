@@ -19,7 +19,7 @@ lime.style.transformProperty = '-' + prefix.toLowerCase() + '-transform';
 /**
  * Try if a CSS style property with given name exists
  * @param {string} name Property name.
- * @return {boolen} If property exists.
+ * @return {boolean|string} If property exists.
  */
 lime.style.tryProperty = function(name) {
     return testDivStyle[name] !== undefined ? name : false;
@@ -31,17 +31,20 @@ lime.style.tryProperty = function(name) {
  * @return {string} Actual valid property name.
  */
 lime.style.getCSSproperty = function(name) {
-    var name_lower = name.charAt(0).toLowerCase() + name.substr(1);
+    var name_lower = name.charAt(0).toLowerCase() + name.substr(1),
+        prefix_name = prefix + name;
     return lime.style.tryProperty(name) ?
-        name : (lime.style.tryProperty(name_lower)  ? name_lower : lime.style.tryProperty(prefix + name));
+        name : (lime.style.tryProperty(name_lower)  ?
+                name_lower : lime.style.tryProperty(prefix_name) ?
+                prefix_name : undefined );
 };
 
 /**
  * Set border radisu of a DOM element
- * @param {DomElement} el Element to change.
+ * @param {Element} el Element to change.
  * @param {Array.<number>} values Radius values.
  * @param {Array.<number>=} opt_vertical Vertical radius values.
- * @param {boolen=} opt_isPerc If values are given in percentages.
+ * @param {boolean=} opt_isPerc If values are given in percentages.
  */
 lime.style.setBorderRadius = (function() {
     var stylename = lime.style.getCSSproperty('BorderRadius');
@@ -72,7 +75,7 @@ lime.style.Transform = function(opt_precision) {
     this.values = [];
     this.precision = 1;
     if (this.opt_precision) {
-        this.setPrecision(opt_precision);
+        this.setPrecision(/** @type {number} */ (opt_precision));
     }
 };
 
@@ -153,7 +156,7 @@ lime.style.Transform.prototype.toString = function() {
 
 /**
  * Set transform to a DOM element.
- * @param {DomElement} el Element to change.
+ * @param {Element} el Element to change.
  * @param {lime.style.Transform} transform Transform.
  */
 lime.style.setTransform = (function() {
@@ -166,17 +169,17 @@ lime.style.setTransform = (function() {
         }
         lime.transformSet_=1;
         
-    }
+    };
 })();
 
 })();
 
 /**
  * Set transform origin point for a DOM element.
- * @param {DomElement} el Element to change.
+ * @param {Element} el Element to change.
  * @param {number} ox X Offset.
  * @param {number} oy Y Offset.
- * @param {boolean} opt_isPerc If unit is percentage.
+ * @param {boolean=} opt_isPerc If unit is percentage.
  */
 lime.style.setTransformOrigin = (function() {
     var stylename = lime.style.getCSSproperty('TransformOrigin');
@@ -186,7 +189,7 @@ lime.style.setTransformOrigin = (function() {
         if (value != el.transform_origin_cache_) {
             el.style[stylename] = el.transform_origin_cache_ = value;
         }
-    }
+    };
 })();
 
 
@@ -211,7 +214,7 @@ var clearProp = function(str, prop) {
 
 /**
  * Activate transition rule for a property
- * @param {DomElement} el Element to change.
+ * @param {Element} el Element to change.
  * @param {string} property Transition property name.
  * @param {number} time Transition duration.
  * @param {lime.animation.EasingFunction} ease Easing function.
@@ -229,8 +232,8 @@ lime.style.setTransition = function(el, property, time, ease) {
 
 /**
  * Clear previously set transition rule.
- * @param {DomElement} el Element to change.
- * @param {štring} property Transition property name.
+ * @param {Element} el Element to change.
+ * @param {string} property Transition property name.
  */
 lime.style.clearTransition = function(el, property) {
     if (!stylename || !el) return;
@@ -241,7 +244,7 @@ lime.style.clearTransition = function(el, property) {
 
 /**
  * Change size of a DOM element. Has cache built in for speed boost.
- * @param {DomElement} el Element to change.
+ * @param {Element} el Element to change.
  * @param {number} w New width.
  * @param {number} h New height.
  */

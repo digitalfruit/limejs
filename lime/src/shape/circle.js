@@ -23,7 +23,6 @@ goog.inherits(lime.Circle, lime.Sprite);
 /**
  * Common name for circle objects
  * @type {string}
- * @const
  */
 lime.Circle.prototype.id = 'circle';
 

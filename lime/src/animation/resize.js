@@ -8,10 +8,11 @@ goog.require('lime.animation.Animation');
 /**
  * Resize element
  * @constructor
- * @param {goog.math.Size} size New element size.
+ * @param {goog.math.Size|number} size New element size.
+ * @param {number=} opt_height Optionaly use width,height as parameter
  * @extends lime.animation.Animation
  */
-lime.animation.Resize = function(size) {
+lime.animation.Resize = function(size, opt_height) {
     lime.animation.Animation.call(this);
 
     if (arguments.length == 2) {
