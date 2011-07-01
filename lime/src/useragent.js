@@ -40,6 +40,13 @@ lime.userAgent.IPHONE4 = lime.userAgent.IOS &&
 
 
 /**
+ * Whether the user agent is running on Blackberry Playbook
+ * @type boolean
+ */
+lime.userAgent.PLAYBOOK = goog.userAgent.WEBKIT && (/playbook/i).test(ua);
+
+
+/**
  * Whether the user agent is running on touch based device
  * @type boolean
  */

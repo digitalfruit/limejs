@@ -17,6 +17,7 @@ lime.GlossyButton = function(txt) {
 
     this.borderWidth = 2;
 
+    this.setText(txt);
     this.setColor('#62be00');
 
 };
@@ -24,7 +25,7 @@ goog.inherits(lime.GlossyButton, lime.Button);
 
 /**
  * Make state for a button.
- * @private
+ * @protected
  * @param {string} txt Text shown on the button.
  * @return {lime.RoundedRect} state.
  */
