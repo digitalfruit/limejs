@@ -17,6 +17,7 @@ lime.GlossyButton = function(txt) {
 
     this.borderWidth = 2;
 
+    this.setText(txt);
     this.setColor('#62be00');
 
 };
