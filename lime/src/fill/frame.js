@@ -7,15 +7,20 @@ goog.require('goog.style');
 goog.require('goog.cssom');
 goog.require('goog.dom.classes');
 goog.require('goog.dom');
+goog.require('goog.math.Vec2');
+goog.require('goog.math.Size');
 
 /**
  * Image fill.
  * @param {string|Image|lime.Sprite} img Image.
  * @param {goog.math.Rect} rect Crop frame.
+ * @param {goog.math.Vec2=} opt_offset Frame offset.
+ * @param {goog.math.Size=} opt_size Frame size.
+ * @param {boolean=} opt_rotated Is frame rotated.
  * @constructor
  * @extends lime.fill.Image
  */
-lime.fill.Frame = function(img,rect,opt_offset,opt_size,opt_rotated) {
+lime.fill.Frame = function(img, rect, opt_offset, opt_size, opt_rotated) {
     lime.fill.Image.call(this,img);
     
     if(goog.isNumber(rect)){
