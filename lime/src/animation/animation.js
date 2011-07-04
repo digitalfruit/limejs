@@ -1,6 +1,7 @@
 goog.provide('lime.animation.Animation');
 goog.provide('lime.animation.Easing');
 goog.provide('lime.animation.actionManager');
+goog.provide('lime.animation.Event');
 
 
 goog.require('goog.array');
