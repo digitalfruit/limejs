@@ -264,7 +264,7 @@ lime.Node.prototype.setScale = function(value, opt_y) {
 
 /**
  * Returns element's position coordinate
- * @return {goog.math.Coordinate} Current position coordinate.
+ * @return {!goog.math.Coordinate} Current position coordinate.
  */
 lime.Node.prototype.getPosition = function() {
     return this.position_;
