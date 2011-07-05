@@ -117,7 +117,7 @@ lime.animation.KeyframeAnimation.prototype.setLooping = function(looping) {
 
 /**
  * Add frame to the current animation
- * @param {string} frame Path to frame image.
+ * @param {string|lime.fill.Fill} frame Path to frame image.
  * @return {lime.animation.KeyframeAnimation} object itself.
  */
 lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
