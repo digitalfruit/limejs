@@ -49,7 +49,7 @@ goog.inherits(lime.animation.Animation, goog.events.EventTarget);
  */
 lime.animation.Animation.prototype.scope = '';
 
-/** @typedef {Array.<number|Function>} */
+/** @typedef {Array.<number|function(number):number>} */
 lime.animation.EasingFunction;
 
 
@@ -227,7 +227,7 @@ lime.animation.Animation.prototype.step_ = function(dt) {
  * @return {number} New time position(eased value).
  */
 lime.animation.Animation.prototype.updateAll = function(t,targets){
-   t = this.getEasing()[0](t);
+    t = /** @type {function(number):number} */ (this.getEasing()[0])(t);
    if (isNaN(t)) {
         t = 1;
     }
