@@ -445,7 +445,7 @@ lime.Director.prototype.update = function() {
 
     var i = this.coverStack_.length;
     while (--i >= 0) {
-        this.coverStack_[i].update(true);
+        this.coverStack_[i].update();
     }
 };
 
