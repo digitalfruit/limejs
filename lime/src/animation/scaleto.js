@@ -8,11 +8,12 @@ goog.require('lime.animation.Animation');
 /**
  * Scale to a given factor
  * Also accepts one or two numbers
- * @param {goog.math.Vec2} scale Target value.
+ * @param {goog.math.Vec2|number} scale Target value.
+ * @param {number=} opt_height Alternatively use width,height as parameter.
  * @constructor
  * @extends lime.animation.Animation
  */
-lime.animation.ScaleTo = function(scale) {
+lime.animation.ScaleTo = function(scale, opt_height) {
     lime.animation.Animation.call(this);
 
     if (arguments.length == 1 && goog.isNumber(scale)) {
