@@ -201,21 +201,21 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
                  this.usesBackgroundCanvas_ = true;
 
                  }
-                 */
                 if (this.usesBackgroundCanvas_) {
                     this.bgSprite.setFill(nextImage);
-                    /* while (--i >= 0) {
+                     while (--i >= 0) {
                      this.targets[i].setRenderMode(
                      lime.RenderMode.BACKGROUND_CANVAS);
                      this.targets[i].setFill(this.bgSprite);
-                     }*/
+                     }
                 }
                 else {
+                    */
                     while (--i >= 0) {
                         this.targets[i].setFill(nextImage);
 
                     }
-                }
+                //}
             }
 
             this.currentFrame_ = nextFrame;
