@@ -24,21 +24,20 @@ lime.Renderer.CANVAS.updateLayout = function() {};
 */
 lime.Renderer.CANVAS.drawCanvas = function() {
     var quality = this.getQuality(),
-    bounds = this.measureContents(),
-    rquality = this.relativeQuality_ || 1,
-    ownquality = rquality / quality,
-    sizediff,
-    PADDING = 12;
+        bounds = this.measureContents(),
+        rquality = this.relativeQuality_ || 1,
+        ownquality = rquality / quality,
+        sizediff,
+        PADDING = 12;
 
 
     if (!this.domElement) return;
 
     if (this.boundsCache && this.boundsCache.contains(bounds) &&
-    (sizediff = this.boundsCache.size().area() / bounds.size().area()) &&
-    sizediff < 1.6 && sizediff > 0.5) {
+        (sizediff = this.boundsCache.size().area() / bounds.size().area()) &&
+        sizediff < 1.6 && sizediff > 0.5) {
         //use the cached canvas size
         bounds = this.boundsCache;
-
     }
     else {
         if (this.staticCanvas != 1 && this.children_.length != 0) {
