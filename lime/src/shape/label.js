@@ -285,7 +285,7 @@ lime.Label.prototype.getShadowOffsetX = function() {
 
 /**
  * Sets label shadow offset x in px.
- * @param {string} offset New shadow x offset in px.
+ * @param {number} offset New shadow x offset in px.
  * @return {lime.Label} object itself.
  */
 lime.Label.prototype.setShadowOffsetX = function(offset) {
@@ -304,7 +304,7 @@ lime.Label.prototype.getShadowOffsetY = function() {
 
 /**
  * Sets label shadow offset y in px.
- * @param {string} offset New shadow y offset in px.
+ * @param {number} offset New shadow y offset in px.
  * @return {lime.Label} object itself.
  */
 lime.Label.prototype.setShadowOffsetY = function(offset) {
