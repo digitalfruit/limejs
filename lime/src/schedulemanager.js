@@ -134,7 +134,7 @@ lime.scheduleManager.setDisplayRate = function(value) {
  * @this {lime.scheduleManager}
  * @param {function(number)} f Function to be called.
  * @param {Object} context The context used when calling function.
- * @param {lime.scheduleManager.Task} opt_task Task object.
+ * @param {lime.scheduleManager.Task=} opt_task Task object.
  */
 lime.scheduleManager.schedule = function(f, context, opt_task) {
     var task = goog.isDef(opt_task) ? opt_task : this.taskStack_[0];
@@ -279,17 +279,17 @@ lime.scheduleManager.dispatch_ = function(delta){
         this.taskStack_[i].step_(delta);
     }
     //hack to deal with FF4 CSS transformation issue https://bugzilla.mozilla.org/show_bug.cgi?id=637597
-    if(lime.transformSet_==1 && (/Firefox\/4./).test(goog.userAgent.getUserAgentString()) &&
-        !lime.FF4_USE_HW_ACCELERATION){
-    if(lime.scheduleManager.odd_){
-        document.body.style['MozTransform'] = '';
-        lime.scheduleManager.odd_=0;
-    }
-    else {
-        document.body.style['MozTransform'] = 'scale(1,1)';
-        lime.scheduleManager.odd_=1;
-    }
-    lime.transformSet_=0;
+    if(lime.transformSet_ == 1 && (/Firefox\/4./).test(goog.userAgent.getUserAgentString()) &&
+       !lime.FF4_USE_HW_ACCELERATION){
+        if(lime.scheduleManager.odd_){
+            document.body.style['MozTransform'] = '';
+            lime.scheduleManager.odd_=0;
+        }
+        else {
+            document.body.style['MozTransform'] = 'scale(1,1)';
+            lime.scheduleManager.odd_=1;
+        }
+        lime.transformSet_=0;
     }
 };
 

@@ -28,7 +28,7 @@ goog.require('lime.transitions.Transition');
  * @constructor
  * @extends lime.Node
  */
-lime.Director = function(parentElement) {
+lime.Director = function(parentElement, opt_width, opt_height) {
     lime.Node.call(this);
 
     // Unlike other nodes Director is always in the DOM as
@@ -445,7 +445,7 @@ lime.Director.prototype.update = function() {
 
     var i = this.coverStack_.length;
     while (--i >= 0) {
-        this.coverStack_[i].update(true);
+        this.coverStack_[i].update();
     }
 };
 

@@ -39,6 +39,8 @@ lime.style.getCSSproperty = function(name) {
                 prefix_name : undefined );
 };
 
+})();
+
 /**
  * Set border radisu of a DOM element
  * @param {Element} el Element to change.
@@ -63,8 +65,6 @@ lime.style.setBorderRadius = (function() {
 
 // There are classes like CSSMatrix in some browsers.
 // Maybe this would make more sense.
-
-(function(){
 
 /**
  * Object representing CSS Transform.
@@ -172,8 +172,6 @@ lime.style.setTransform = (function() {
     };
 })();
 
-})();
-
 /**
  * Set transform origin point for a DOM element.
  * @param {Element} el Element to change.
@@ -192,7 +190,7 @@ lime.style.setTransformOrigin = (function() {
     };
 })();
 
-
+(function(){
 var stylename = lime.style.getCSSproperty('Transition');
 lime.style.isTransitionsSupported = !!stylename && !goog.userAgent.OPERA;
 // Opera's CSS3 transitions seem to be unstable atm. No shorthand plus
@@ -254,6 +252,6 @@ lime.style.setSize = function(el, w, h) {
         el.height_cache_ = h;
         return goog.style.setSize(el, w, h);
     }
-}
-
+    return undefined;
+};
 })();

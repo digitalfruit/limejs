@@ -257,6 +257,83 @@ lime.Label.prototype.setAlign = function(value) {
 };
 
 /**
+ * Returns shadow color
+ * @return {string} shadow color.
+ */
+lime.Label.prototype.getShadowColor = function() {
+    return this.shadowColor_;
+};
+
+/**
+ * Sets label shadow color.
+ * @param {string} color New shadow color.
+ * @return {lime.Label} object itself.
+ */
+lime.Label.prototype.setShadowColor = function(color) {
+    this.shadowColor_ = color;
+    this.setDirty(lime.Dirty.FONT);
+    return this;
+};
+
+/**
+ * Returns shadow x offset in px.
+ * @return {number} shadow x offset in px.
+ */
+lime.Label.prototype.getShadowOffsetX = function() {
+    return this.shadowOffsetX_;
+};
+
+/**
+ * Sets label shadow offset x in px.
+ * @param {number} offset New shadow x offset in px.
+ * @return {lime.Label} object itself.
+ */
+lime.Label.prototype.setShadowOffsetX = function(offset) {
+    this.shadowOffsetX_ = offset;
+    this.setDirty(lime.Dirty.FONT);
+    return this;
+};
+
+/**
+ * Returns shadow y offset in px.
+ * @return {number} shadow y offset in px.
+ */
+lime.Label.prototype.getShadowOffsetY = function() {
+    return this.shadowOffsetY_;
+};
+
+/**
+ * Sets label shadow offset y in px.
+ * @param {number} offset New shadow y offset in px.
+ * @return {lime.Label} object itself.
+ */
+lime.Label.prototype.setShadowOffsetY = function(offset) {
+    this.shadowOffsetY_ = offset;
+    this.setDirty(lime.Dirty.FONT);
+    return this;
+};
+
+/**
+ * Returns shadow blur radius in px.
+ * @return {number} shadow blur radius in px.
+ */
+lime.Label.prototype.getShadowBlur = function() {
+    return this.shadowBlur_;
+};
+
+/**
+ * Sets shadow blur radius in px.
+ * @param {number} blurRadius New shadow blur radius in px.
+ * @return {lime.Label} object itself.
+ */
+lime.Label.prototype.setShadowBlur = function(blurRadius) {
+    this.shadowBlur_ = blurRadius;
+    this.setDirty(lime.Dirty.FONT);
+    return this;
+};
+
+/** 
+ * 
  * Break text into array of line breakable words
  * @return {Array.<string>} array of words.
  */
@@ -337,6 +414,7 @@ lime.Renderer.DOM.LABEL.draw = function(el) {
         style['fontSize'] = this.getFontSize()*this.getRelativeQuality() + 'px';
         style['fontWeight'] = this.getFontWeight();
         style['textAlign'] = this.getAlign();
+        style['textShadow'] = this.getShadowColor() + ' ' + this.getShadowOffsetX() + 'px ' + this.getShadowOffsetY() + 'px ' + this.getShadowBlur() + 'px';
     }
 };
 
@@ -383,6 +461,10 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
         'px/' + lh + ' ' + this.getFontFamily();
     context.textAlign = align;
     context.textBaseline = 'top';
+    context.shadowColor = this.getShadowColor();
+    context.shadowOffsetX = this.getShadowOffsetX();
+    context.shadowOffsetY = this.getShadowOffsetY();
+    context.shadowBlur = this.getShadowBlur();
     
     if(dowrap || width!=this.lastDrawnWidth_){
         this.lines_ = this.wrapText(context, width);

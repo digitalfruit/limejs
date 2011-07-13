@@ -41,6 +41,7 @@ goog.inherits(lime.Sprite, lime.Node);
  */
 lime.Sprite.prototype.id = 'sprite';
 
+
 /** @inheritDoc */
 lime.Sprite.prototype.supportedRenderers = [
     lime.Renderer.DOM.makeSubRenderer(lime.Renderer.DOM.SPRITE),

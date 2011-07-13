@@ -11,7 +11,6 @@ goog.require('lime.animation.MoveTo');
  * @param {boolean=} opt_snapToCenter If dragging relates to center position.
  * @param {goog.math.Box=} opt_bounds Drag area limit.
  * @param {lime.Node=} opt_targetObject Different target object.
- * @implements {goog.Disposable}
  * @extends goog.events.EventTarget
  */
 lime.events.Drag = function(event, opt_snapToCenter, opt_bounds,

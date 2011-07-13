@@ -7,28 +7,33 @@ goog.require('goog.style');
 goog.require('goog.cssom');
 goog.require('goog.dom.classes');
 goog.require('goog.dom');
+goog.require('goog.math.Vec2');
+goog.require('goog.math.Size');
 
 /**
  * Image fill.
  * @param {string|Image|lime.Sprite} img Image.
- * @param {goog.math.Rect} rect Crop frame.
+ * @param {goog.math.Rect|number} rect Crop frame.
+ * @param {goog.math.Vec2=} opt_offset Frame offset.
+ * @param {goog.math.Size=} opt_size Frame size.
+ * @param {boolean=} opt_rotated Is frame rotated.
  * @constructor
  * @extends lime.fill.Image
  */
-lime.fill.Frame = function(img,rect,opt_offset,opt_size,opt_rotated) {
+lime.fill.Frame = function(img, rect, opt_offset, opt_size, opt_rotated) {
     lime.fill.Image.call(this,img);
     
     if(goog.isNumber(rect)){
         rect = new goog.math.Rect(arguments[1],arguments[2],arguments[3],arguments[4]);
-        opt_offset = false;
-        opt_size = false;
+        opt_offset = new goog.math.Vec2(0,0);
+        opt_size = new goog.math.Size(this.rect_.width,this.rect_.height);
         opt_rotated = false;
     }
     
     this.rect_ = rect;
-    this.coffset_ = opt_offset || new goog.math.Vec2(0,0);
-    this.csize_ = opt_size || new goog.math.Size(this.rect_.width,this.rect_.height);
-    this.rotated_ = opt_rotated || false;
+    this.coffset_ = opt_offset;
+    this.csize_ = opt_size;
+    this.rotated_ = opt_rotated;
     
     var r = this.rect_,key = [this.url_,r.width,r.height,r.left,r.top,this.coffset_.x,this.coffset_.y].join('_');
     if(goog.isDef(this.dataCache_[key])){

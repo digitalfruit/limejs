@@ -95,8 +95,9 @@ lime.animation.MoveTo.prototype.update = function(t, target) {
 };
 
 /**
- * @inheritDoc
+ * Clear transistion when animation is stoped.
  * @see lime.animation.Animation#clearTransition
+ * @param {lime.Node} target The target to clear transistion for.
  */
 lime.animation.MoveTo.prototype.clearTransition = function(target) {
 
