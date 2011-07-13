@@ -257,22 +257,34 @@ lime.Label.prototype.setAlign = function(value) {
 };
 
 /**
+ * Sets label shadow.
+ * @param {string} color Shadow color.
+ * @param {number=} opt_offsetX X offset in px.
+ * @param {number=} opt_offsetY Y offset in px.
+ * @param {number=} opt_blurRadius Blur radius in px.
+ * @return {lime.Label} object itself.
+ */
+lime.Label.prototype.setShadow = function(color, opt_offsetX, opt_offsetY, opt_blurRadius) {
+    this.shadowColor_ = color;
+    this.shadowOffsetX_ = opt_offsetX;
+    this.shadowOffsetY_ = opt_offsetY;
+    this.shadowBlur_ = opt_blurRadius;
+    if(goog.isDef(opt_offsetY)) {
+        this.lineHeightAbsolute_ ? this.lineHeight_ += Math.abs(opt_offsetY): this.lineHeight_ += Math.abs(opt_offsetY) / this.getFontSize();
+    }
+    if(goog.isDef(opt_blurRadius)) {
+        this.lineHeightAbsolute_ ? this.lineHeight_ += Math.abs(opt_blurRadius * 2): this.lineHeight_ += Math.abs(opt_blurRadius * 2) / this.getFontSize();
+    }
+    this.setDirty(lime.Dirty.FONT);
+    return this;
+};
+
+/**
  * Returns shadow color
  * @return {string} shadow color.
  */
 lime.Label.prototype.getShadowColor = function() {
     return this.shadowColor_;
-};
-
-/**
- * Sets label shadow color.
- * @param {string} color New shadow color.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setShadowColor = function(color) {
-    this.shadowColor_ = color;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
 };
 
 /**
@@ -284,17 +296,6 @@ lime.Label.prototype.getShadowOffsetX = function() {
 };
 
 /**
- * Sets label shadow offset x in px.
- * @param {number} offset New shadow x offset in px.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setShadowOffsetX = function(offset) {
-    this.shadowOffsetX_ = offset;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
  * Returns shadow y offset in px.
  * @return {number} shadow y offset in px.
  */
@@ -303,35 +304,11 @@ lime.Label.prototype.getShadowOffsetY = function() {
 };
 
 /**
- * Sets label shadow offset y in px.
- * @param {number} offset New shadow y offset in px.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setShadowOffsetY = function(offset) {
-    this.shadowOffsetY_ = offset;
-    this.lineHeightAbsolute_ ? this.lineHeight_ += Math.abs(offset): this.lineHeight_ += Math.abs(offset) / this.getFontSize();
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
  * Returns shadow blur radius in px.
  * @return {number} shadow blur radius in px.
  */
 lime.Label.prototype.getShadowBlur = function() {
     return this.shadowBlur_;
-};
-
-/**
- * Sets shadow blur radius in px.
- * @param {number} blurRadius New shadow blur radius in px.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setShadowBlur = function(blurRadius) {
-    this.shadowBlur_ = blurRadius;
-    this.lineHeightAbsolute_ ? this.lineHeight_ += Math.abs(blurRadius * 2): this.lineHeight_ += Math.abs(blurRadius * 2) / this.getFontSize();
-    this.setDirty(lime.Dirty.FONT);
-    return this;
 };
 
 /** 
