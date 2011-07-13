@@ -65,14 +65,14 @@ lime.Label.prototype.measureText = function() {
         mContext = cvs.getContext('2d');
     }
 
-    var lh = this.getLineHeight();
+    var lh = this.lineHeightAbsolute_ ? this.getLineHeight() : this.getLineHeight() * this.getFontSize();
     mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
     var stroke = this.stroke_?this.stroke_.width_:0;
     return new goog.math.Size(
         this.padding_[1] + this.padding_[3] + w + stroke*2,
-        this.padding_[0] + this.padding_[2] + lh * this.getFontSize() + stroke*2
+        this.padding_[0] + this.padding_[2] + lh + stroke*2
     );
 }
 })();
