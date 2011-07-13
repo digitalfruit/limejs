@@ -43,7 +43,7 @@ test.makeLabel = function() {
     txt = 'Hello world!';
     var lbl = new lime.Label().setText(txt).setFontSize(24).setFontColor('#c00').setFill('#ccc').
         //setSize(180,120).
-        setAlign('right').setPadding(10, 20).setStroke(10,'#f90');
+        setAlign('right').setPadding(10, 20).setStroke(10,'#f90').setShadow('#000',2,1,1);
 
     return lbl;
 };

@@ -28,6 +28,8 @@ lime.Label = function(txt) {
 
     this.setLineHeight(1.15);
 
+    this.setShadow(null);
+
     this.setFill(255, 255, 255, 0);
 
 };
@@ -257,6 +259,38 @@ lime.Label.prototype.setAlign = function(value) {
 };
 
 /**
+ * Shorthand for adding shadow to a label. Calling setShadow(null) removes the shadow.
+ * @param {string} color Shadow color.
+ * @param {number} blur Shadow blur radius.
+ * @param {number} offsetX Shadow offset in X axis.
+ * @param {number} offsetY Shadow offset in Y axis.
+ * @return {lime.Label} object itself.
+ */
+lime.Label.prototype.setShadow = function(color, blur, offsetX, offsetY){
+    // provide method to reset the shadow
+    if(arguments.length==1 && goog.isNull(color)){
+        this.setShadowColor('#ccc'); //default color
+        this.setShadowBlur(0);
+        this.setShadowOffset(0,0);
+    }
+    else {
+        this.setShadowColor(color);
+        this.setShadowBlur(blur);
+        this.setShadowOffset(offsetX, offsetY);
+    }
+    this.setDirty(lime.Dirty.FONT);
+    return this;
+}
+
+/**
+ * Returns true if the label has a shadow.
+ * @private
+ */
+lime.Label.prototype.hasShadow_ = function(){
+    return this.shadowBlur_ || this.shadowOffset_.x || this.shadowOffset_.y;
+}
+
+/**
  * Returns shadow color
  * @return {string} shadow color.
  */
@@ -277,38 +311,25 @@ lime.Label.prototype.setShadowColor = function(color) {
 
 /**
  * Returns shadow x offset in px.
- * @return {number} shadow x offset in px.
+ * @return {goog.math.Vec2} shadow x offset in px.
  */
-lime.Label.prototype.getShadowOffsetX = function() {
-    return this.shadowOffsetX_;
+lime.Label.prototype.getShadowOffset = function() {
+    return this.shadowOffset_;
 };
 
 /**
- * Sets label shadow offset x in px.
- * @param {number} offset New shadow x offset in px.
+ * Sets label shadow offset in px.
+ * @param {(goog.math.Vec2|number)} offset Shadow offset.
+ * @param {number=} opt_offsetY Optionaly set offset using x,y.
  * @return {lime.Label} object itself.
  */
-lime.Label.prototype.setShadowOffsetX = function(offset) {
-    this.shadowOffsetX_ = offset;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
- * Returns shadow y offset in px.
- * @return {number} shadow y offset in px.
- */
-lime.Label.prototype.getShadowOffsetY = function() {
-    return this.shadowOffsetY_;
-};
-
-/**
- * Sets label shadow offset y in px.
- * @param {number} offset New shadow y offset in px.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setShadowOffsetY = function(offset) {
-    this.shadowOffsetY_ = offset;
+lime.Label.prototype.setShadowOffset = function(offset, opt_offsetY) {
+    if (arguments.length == 2) {
+        this.shadowOffset_ = new goog.math.Vec2(arguments[0], arguments[1]);
+    }
+    else {
+        this.shadowOffset_ = offset;
+    }
     this.setDirty(lime.Dirty.FONT);
     return this;
 };
@@ -414,7 +435,7 @@ lime.Renderer.DOM.LABEL.draw = function(el) {
         style['fontSize'] = this.getFontSize()*this.getRelativeQuality() + 'px';
         style['fontWeight'] = this.getFontWeight();
         style['textAlign'] = this.getAlign();
-        style['textShadow'] = this.getShadowColor() + ' ' + this.getShadowOffsetX() + 'px ' + this.getShadowOffsetY() + 'px ' + this.getShadowBlur() + 'px';
+        style['textShadow'] = this.hasShadow_() ? this.getShadowColor() + ' ' + this.getShadowOffset().x + 'px ' + this.getShadowOffset().y + 'px ' + this.getShadowBlur() + 'px' : '';
     }
 };
 
@@ -461,10 +482,13 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
         'px/' + lh + ' ' + this.getFontFamily();
     context.textAlign = align;
     context.textBaseline = 'top';
-    context.shadowColor = this.getShadowColor();
-    context.shadowOffsetX = this.getShadowOffsetX();
-    context.shadowOffsetY = this.getShadowOffsetY();
-    context.shadowBlur = this.getShadowBlur();
+    
+    if(this.hasShadow_()){
+        context.shadowColor = this.getShadowColor();
+        context.shadowOffsetX = this.getShadowOffset().x;
+        context.shadowOffsetY = this.getShadowOffset().y;
+        context.shadowBlur = this.getShadowBlur();
+    }
     
     if(dowrap || width!=this.lastDrawnWidth_){
         this.lines_ = this.wrapText(context, width);
