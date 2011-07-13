@@ -416,7 +416,12 @@ lime.Renderer.DOM.LABEL.draw = function(el) {
         style['fontSize'] = this.getFontSize()*this.getRelativeQuality() + 'px';
         style['fontWeight'] = this.getFontWeight();
         style['textAlign'] = this.getAlign();
-        style['textShadow'] = this.getShadowColor() + ' ' + this.getShadowOffsetX() + 'px ' + this.getShadowOffsetY() + 'px ' + this.getShadowBlur() + 'px';
+        if(goog.isDef(this.getShadowColor())) {
+            style['textShadow'] = this.getShadowColor() + ' ' +
+                                  (goog.isDef(this.getShadowOffsetX()) ? this.getShadowOffsetX() + 'px ' : '0px ') +
+                                  (goog.isDef(this.getShadowOffsetY()) ? this.getShadowOffsetY() + 'px ' : '0px ') +
+                                  (goog.isDef(this.getShadowBlur()) ? this.getShadowBlur() + 'px' : '');
+        }
     }
 };
 
@@ -473,7 +478,6 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
         this.lastDrawnWidth_ = width;
     }
     
-
     if (this.lines_) {
         var lhpx = lh * this.getFontSize(),
             x = goog.isDef(this.getShadowOffsetX()) ? Math.abs(this.getShadowOffsetX()) : 0;
@@ -482,7 +486,6 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
             context.fillText(this.lines_[i], x, lhpx * i);
         }
     }
-
 
     context.restore();
 };
