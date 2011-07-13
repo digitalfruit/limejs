@@ -273,6 +273,16 @@ lime.Label.prototype.setShadow = function(color, opt_blur, opt_offsetX, opt_offs
         this.setShadowBlur(0);
         this.setShadowOffset(0,0);
     }
+    else if(arguments.length == 2) {
+        this.setShadowColor(/** @type {!string}*/(color));
+        this.setShadowBlur(/** @type {!number} */(opt_blur));
+        this.setShadowOffset(new goog.math.Vec2(0,0));
+    }
+    else if(arguments.length == 3) {
+        this.setShadowColor(/** @type {!string}*/(color));
+        this.setShadowBlur(/** @type {!number} */(opt_blur));
+        this.setShadowOffset(/** @type {!goog.math.Vec2} */(opt_offsetX));
+    }
     else {
         this.setShadowColor(/** @type {!string}*/(color));
         this.setShadowBlur(/** @type {!number} */(opt_blur));
