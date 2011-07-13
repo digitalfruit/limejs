@@ -309,6 +309,7 @@ lime.Label.prototype.getShadowOffsetY = function() {
  */
 lime.Label.prototype.setShadowOffsetY = function(offset) {
     this.shadowOffsetY_ = offset;
+    this.lineHeightAbsolute_ ? this.lineHeight_ += Math.abs(offset): this.lineHeight_ += Math.abs(offset) / this.getFontSize();
     this.setDirty(lime.Dirty.FONT);
     return this;
 };
@@ -328,6 +329,7 @@ lime.Label.prototype.getShadowBlur = function() {
  */
 lime.Label.prototype.setShadowBlur = function(blurRadius) {
     this.shadowBlur_ = blurRadius;
+    this.lineHeightAbsolute_ ? this.lineHeight_ += Math.abs(blurRadius * 2): this.lineHeight_ += Math.abs(blurRadius * 2) / this.getFontSize();
     this.setDirty(lime.Dirty.FONT);
     return this;
 };
@@ -427,7 +429,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
 
     var frame = this.getFrame(),
-        width = -frame.left - this.padding_[3] + frame.right - this.padding_[1],
+        width = -frame.left - this.padding_[3] + frame.right - this.padding_[1] + Math.abs(this.getShadowOffsetX()) + Math.abs(this.getShadowBlur() * 2),
         dowrap = 0;
     
     if (!this.words_) {
@@ -473,10 +475,11 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     
 
     if (this.lines_) {
-        var lhpx = lh * this.getFontSize();
+        var lhpx = lh * this.getFontSize(),
+            x = goog.isDef(this.getShadowOffsetX()) ? Math.abs(this.getShadowOffsetX()) : 0;
         lhpx = goog.userAgent.WEBKIT ? Math.floor(lhpx) : Math.round(lhpx);
         for (var i = 0; i < this.lines_.length; i++) {
-            context.fillText(this.lines_[i], 0, lhpx * i);
+            context.fillText(this.lines_[i], x, lhpx * i);
         }
     }
 
