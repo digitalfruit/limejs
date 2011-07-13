@@ -67,7 +67,7 @@ lime.Label.prototype.measureText = function() {
         mContext = cvs.getContext('2d');
     }
 
-    var lh = this.lineHeightAbsolute_ ? this.getLineHeight() : this.getLineHeight() * this.getFontSize();
+    var lh = this.getLineHeight();
     mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
