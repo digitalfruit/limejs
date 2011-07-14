@@ -67,7 +67,7 @@ lime.Label.prototype.measureText = function() {
         mContext = cvs.getContext('2d');
     }
 
-    var lh = this.lineHeightAbsolute_ ? this.getLineHeight() : this.getLineHeight() * this.getFontSize();
+    var lh = this.getLineHeight() * this.getFontSize();
     mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
@@ -235,8 +235,9 @@ lime.Label.prototype.setLineHeight = function(value, opt_absolute) {
  * @return {number} Line height.
  */
 lime.Label.prototype.getLineHeight = function() {
+    var shadowExtra = Math.abs(this.getShadowOffset().x) + this.shadowBlur_ * 2;
     return this.lineHeightAbsolute_ ?
-        this.lineHeight_ / this.getFontSize() : this.lineHeight_;
+        (this.lineHeight_ + shadowExtra) / this.getFontSize() : this.lineHeight_ + shadowExtra / this.getFontSize();
 };
 
 /**
@@ -273,16 +274,20 @@ lime.Label.prototype.setShadow = function(color, opt_blur, opt_offsetX, opt_offs
         this.setShadowBlur(0);
         this.setShadowOffset(0,0);
     }
+    else if(arguments.length == 2) {
+        this.setShadowColor(/** @type {!string}*/(color));
+        this.setShadowBlur(/** @type {!number} */(opt_blur));
+        this.setShadowOffset(new goog.math.Vec2(0,0));
+    }
+    else if(arguments.length == 3) {
+        this.setShadowColor(/** @type {!string}*/(color));
+        this.setShadowBlur(/** @type {!number} */(opt_blur));
+        this.setShadowOffset(/** @type {!goog.math.Vec2} */(opt_offsetX));
+    }
     else {
         this.setShadowColor(/** @type {!string}*/(color));
         this.setShadowBlur(/** @type {!number} */(opt_blur));
         this.setShadowOffset(/** @type {!(number|goog.math.Vec2)} */(opt_offsetX), opt_offsetY);
-    }
-    if(goog.isDef(opt_offsetY)) {
-        this.lineHeightAbsolute_ ? this.lineHeight_ += Math.abs(opt_offsetY): this.lineHeight_ += Math.abs(opt_offsetY) / this.getFontSize();
-    }
-    if(goog.isDef(opt_blur)) {
-        this.lineHeightAbsolute_ ? this.lineHeight_ += Math.abs(opt_blur * 2): this.lineHeight_ += Math.abs(opt_blur * 2) / this.getFontSize();
     }
     this.setDirty(lime.Dirty.FONT);
     return this;
