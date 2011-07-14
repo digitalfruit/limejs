@@ -27,7 +27,7 @@ lime.Renderer.prototype.getType = function() {
  * @return {Object|lime.Renderer} Subrenderer.
  */
 lime.Renderer.prototype.makeSubRenderer = function(sub) {
-    goog.object.extend(sub, this);
+    goog.object.extend(/** @lends {this} */sub, this);
     sub.base = this.getType();
     return sub;
 };

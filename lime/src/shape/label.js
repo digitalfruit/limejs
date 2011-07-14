@@ -76,7 +76,7 @@ lime.Label.prototype.measureText = function() {
         this.padding_[1] + this.padding_[3] + w + stroke*2,
         this.padding_[0] + this.padding_[2] + lh + stroke*2
     );
-}
+};
 })();
 
 /** @inheritDoc */
@@ -413,7 +413,7 @@ lime.Label.prototype.update = function(){
         delete this.lastDrawnWidth_;
     
     lime.Node.prototype.update.apply(this,arguments);
-}
+};
 
 
 /**
