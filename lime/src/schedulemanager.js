@@ -334,7 +334,7 @@ lime.scheduleManager.callAfter = function(f, context, delay) {
  * @param {function(number)} f Function to be called.
  * @param {Object} context Context used when calling object.
  * @param {number} delay Delay before calling.
- * @param {number} opt_limit Number of times to call.
+ * @param {number=} opt_limit Number of times to call.
  * @this {lime.scheduleManager}
  */
 lime.scheduleManager.scheduleWithDelay = function(f, context,
