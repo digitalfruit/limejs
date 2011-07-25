@@ -119,7 +119,7 @@ lime.fill.Image.prototype.imageLoadedHandler_ = function(e) {
 
 /**
  * Return core DOM Image element for the fill.
- * @return {Element} Image element.
+ * @return {HTMLImageElement} Image element.
  */
 lime.fill.Image.prototype.getImageElement = function(){
     return this.image_;
