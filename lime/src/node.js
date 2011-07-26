@@ -36,7 +36,6 @@ lime.Node = function() {
     /**
      * Node has been added to DOM tree
      * @type {boolean}
-     * @protected
      */
     this.inTree_ = false;
 
@@ -72,7 +71,6 @@ lime.Node = function() {
     this.setRenderer(this.supportedRenderers[0].getType());
 
     this.setDirty(lime.Dirty.LAYOUT);
-
 };
 goog.inherits(lime.Node, goog.events.EventTarget);
 
