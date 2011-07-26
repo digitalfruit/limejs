@@ -53,7 +53,6 @@ lime.animation.FadeTo.prototype.update = function(t, target) {
 
 /**
  * Clear transistion when animation is stoped.
- * @see lime.animation.Animation#clearTransition
  * @param {lime.Node} target The target to clear transistion for.
  */
 lime.animation.FadeTo.prototype.clearTransition = function(target) {
