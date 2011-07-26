@@ -184,7 +184,9 @@ lime.Node.compareNode = function(n1, n2) {
 };
 
 /**
+ * @type {boolean}
  * @private
+ * @override
  */
 lime.Node.prototype.customEvent_ = false;
 
