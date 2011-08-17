@@ -26,7 +26,7 @@ lime.fill.Frame = function(img, rect, opt_offset, opt_size, opt_rotated) {
     if(goog.isNumber(rect)){
         rect = new goog.math.Rect(arguments[1],arguments[2],arguments[3],arguments[4]);
         opt_offset = new goog.math.Vec2(0,0);
-        opt_size = new goog.math.Size(this.rect_.width,this.rect_.height);
+        opt_size = new goog.math.Size(rect.width,rect.height);
         opt_rotated = false;
     }
     
