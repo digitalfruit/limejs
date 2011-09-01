@@ -154,7 +154,8 @@ lime.scheduleManager.schedule = function(f, context, opt_task) {
 lime.scheduleManager.unschedule = function(f, context) {
     var j = this.taskStack_.length;
     while (--j >= 0) {
-        var functionStack_ = this.taskStack_[j].functionStack_,
+        var task = this.taskStack_[j],
+            functionStack_ = task.functionStack_,
             fi, i = functionStack_.length;
         while (--i >= 0) {
             fi = functionStack_[i];
@@ -164,7 +165,7 @@ lime.scheduleManager.unschedule = function(f, context) {
             }
         }
         if (functionStack_.length == 0 && j != 0) {
-           goog.array.remove(this.taskStack_, functionStack_);
+           goog.array.remove(this.taskStack_, task);
         }
     }
     // if no more functions: stop timers
