@@ -6,6 +6,7 @@ goog.provide('lime.Renderer.DOM.LABEL');
 goog.require('lime.Renderer.CANVAS.SPRITE');
 goog.require('lime.Renderer.DOM.SPRITE');
 goog.require('lime.Sprite');
+goog.require('goog.style');
 
 /**
  * Display object for text
