@@ -236,7 +236,7 @@ lime.Label.prototype.setLineHeight = function(value, opt_absolute) {
  * @return {number} Line height.
  */
 lime.Label.prototype.getLineHeight = function() {
-    var shadowExtra = Math.abs(this.getShadowOffset().x) + this.shadowBlur_ * 2;
+    var shadowExtra = Math.abs(this.getShadowOffset().y) + this.shadowBlur_ * 2;
     return this.lineHeightAbsolute_ ?
         (this.lineHeight_ + shadowExtra) / this.getFontSize() : this.lineHeight_ + shadowExtra / this.getFontSize();
 };
@@ -503,11 +503,12 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     
     if (this.lines_) {
         var lhpx = lh * this.getFontSize(),
-            offset = this.getShadowOffset(),
-            x = goog.isDef(offset) ? Math.abs(offset.x) : 0;
+            offsetY = (goog.isDef(this.getShadowBlur()) ? Math.abs(this.getShadowBlur()) : 0) +
+                      (goog.isDef(this.getShadowOffset()) ? Math.abs(this.getShadowOffset().y) / 2 : 0),
+            offsetX = 0;
         lhpx = goog.userAgent.WEBKIT ? Math.floor(lhpx) : Math.round(lhpx);
         for (var i = 0; i < this.lines_.length; i++) {
-            context.fillText(this.lines_[i], x, lhpx * i);
+            context.fillText(this.lines_[i], offsetX, lhpx * i + offsetY - 0.5);
         }
     }
 
