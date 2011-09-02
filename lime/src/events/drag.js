@@ -20,6 +20,7 @@ lime.events.Drag = function(event, opt_snapToCenter, opt_bounds,
 
     this.target = opt_targetObject || event.targetObject;
 
+    /** @type {Array.<lime.Node>} */
     this.dropTargets_ = [];
     this.dropIndex_ = -1;
 
@@ -153,23 +154,22 @@ lime.events.Drag.prototype.moveHandler_ = function(e) {
             dropFrame.right, dropFrame.bottom), this.target);
         var droprect = goog.math.Rect.createFromBox(
             new goog.math.Box(Math.min(tl.y, br.y), Math.max(tl.x, br.x), Math.max(tl.y,br.y), Math.min(br.x,tl.x)));
-        var intersection;
+        var intersection = goog.math.Rect.intersection(currect, droprect);
 
-        if (intersection = goog.math.Rect.intersection(currect, droprect)) {
+        if (intersection) {
             results.push([intersection.width * intersection.height /
                 (droprect.width * droprect.height), i]);
         }
     }
 
     if (results.length) {
-        results = results.sort(function(a, b) {return b[0] - a[0]});
+        results = results.sort(function(a, b) {return b[0] - a[0];});
         sel = results[0][1];
    }
 
    if (sel != this.dropIndex_) {
         if (this.dropIndex_ != -1) {
-            if (goog.isFunction(
-                this.dropTargets_[this.dropIndex_].hideDropHightLight)) {
+            if (goog.isFunction(this.dropTargets_[this.dropIndex_].hideDropHightLight)) {
                 this.dropTargets_[this.dropIndex_].hideDropHightLight();
             }
         }

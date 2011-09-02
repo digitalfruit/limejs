@@ -7,8 +7,7 @@ goog.require('lime.animation.Sequence');
 /**
  * Animations that are run parallel with each other.
  * Also accepts more than two animations
- * @param {lime.animation.Animation} one First animation.
- * @param {lime.animation.Animation} two Second animation.
+ * @param {...(lime.animation.Animation|!Array.<lime.animation.Animation>)} one First animation.
  * @constructor
  * @extends lime.animation.Animation
  */
