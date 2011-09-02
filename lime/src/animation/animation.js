@@ -237,7 +237,7 @@ lime.animation.Animation.prototype.updateAll = function(t,targets){
         this.update(t, targets[i]);
     }
     return t;
-}
+};
 
 /**
  * Returns true if CSS transitions are used to make the animation.
@@ -277,7 +277,7 @@ lime.animation.Animation.prototype.update = goog.abstractMethod;
  */
 lime.animation.Animation.prototype.cloneParam = function(origin){
     return this.setDuration(origin.getDuration()).enableOptimizations(origin.optimizations_);
-}
+};
 
 /**
  * Return new animation with reveresed parameters from original

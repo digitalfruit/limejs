@@ -68,16 +68,16 @@ lime.Label.prototype.measureText = function() {
         mContext = cvs.getContext('2d');
     }
 
-    var lh = this.getLineHeight();
+    var lh = this.getLineHeight() * this.getFontSize();
     mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
     var stroke = this.stroke_?this.stroke_.width_:0;
     return new goog.math.Size(
         this.padding_[1] + this.padding_[3] + w + stroke*2,
-        this.padding_[0] + this.padding_[2] + lh * this.getFontSize() + stroke*2
+        this.padding_[0] + this.padding_[2] + lh + stroke*2
     );
-}
+};
 })();
 
 /** @inheritDoc */
@@ -236,8 +236,9 @@ lime.Label.prototype.setLineHeight = function(value, opt_absolute) {
  * @return {number} Line height.
  */
 lime.Label.prototype.getLineHeight = function() {
+    var shadowExtra = Math.abs(this.getShadowOffset().y) + this.shadowBlur_ * 2;
     return this.lineHeightAbsolute_ ?
-        this.lineHeight_ / this.getFontSize() : this.lineHeight_;
+        (this.lineHeight_ + shadowExtra) / this.getFontSize() : this.lineHeight_ + shadowExtra / this.getFontSize();
 };
 
 /**
@@ -261,27 +262,37 @@ lime.Label.prototype.setAlign = function(value) {
 
 /**
  * Shorthand for adding shadow to a label. Calling setShadow(null) removes the shadow.
- * @param {string} color Shadow color.
- * @param {number} blur Shadow blur radius.
- * @param {number} offsetX Shadow offset in X axis.
- * @param {number} offsetY Shadow offset in Y axis.
+ * @param {?string} color Shadow color.
+ * @param {number=} opt_blur Shadow blur radius.
+ * @param {(number|goog.math.Vec2)=} opt_offsetX Shadow offset in X axis, or offset Vec2.
+ * @param {number=} opt_offsetY Shadow offset in Y axis.
  * @return {lime.Label} object itself.
  */
-lime.Label.prototype.setShadow = function(color, blur, offsetX, offsetY){
+lime.Label.prototype.setShadow = function(color, opt_blur, opt_offsetX, opt_offsetY){
     // provide method to reset the shadow
-    if(arguments.length==1 && goog.isNull(color)){
+    if(arguments.length == 1 && goog.isNull(color)){
         this.setShadowColor('#ccc'); //default color
         this.setShadowBlur(0);
         this.setShadowOffset(0,0);
     }
+    else if(arguments.length == 2) {
+        this.setShadowColor(/** @type {!string}*/(color));
+        this.setShadowBlur(/** @type {!number} */(opt_blur));
+        this.setShadowOffset(new goog.math.Vec2(0,0));
+    }
+    else if(arguments.length == 3) {
+        this.setShadowColor(/** @type {!string}*/(color));
+        this.setShadowBlur(/** @type {!number} */(opt_blur));
+        this.setShadowOffset(/** @type {!goog.math.Vec2} */(opt_offsetX));
+    }
     else {
-        this.setShadowColor(color);
-        this.setShadowBlur(blur);
-        this.setShadowOffset(offsetX, offsetY);
+        this.setShadowColor(/** @type {!string}*/(color));
+        this.setShadowBlur(/** @type {!number} */(opt_blur));
+        this.setShadowOffset(/** @type {!(number|goog.math.Vec2)} */(opt_offsetX), opt_offsetY);
     }
     this.setDirty(lime.Dirty.FONT);
     return this;
-}
+};
 
 /**
  * Returns true if the label has a shadow.
@@ -289,7 +300,7 @@ lime.Label.prototype.setShadow = function(color, blur, offsetX, offsetY){
  */
 lime.Label.prototype.hasShadow_ = function(){
     return this.shadowBlur_ || this.shadowOffset_.x || this.shadowOffset_.y;
-}
+};
 
 /**
  * Returns shadow color
@@ -300,22 +311,27 @@ lime.Label.prototype.getShadowColor = function() {
 };
 
 /**
- * Sets label shadow color.
- * @param {string} color New shadow color.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setShadowColor = function(color) {
-    this.shadowColor_ = color;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
- * Returns shadow x offset in px.
- * @return {goog.math.Vec2} shadow x offset in px.
+ * Returns shadow offset in px.
+ * @return {goog.math.Vec2} shadow offset in px.
  */
 lime.Label.prototype.getShadowOffset = function() {
     return this.shadowOffset_;
+};
+    
+/**
+ * Set the shadow color.
+ * @param {string} color The shadow color.
+ */
+lime.Label.prototype.setShadowColor = function(color){
+    this.shadowColor_ = color;
+};
+
+/**
+ * Set the shadow blur radius.
+ * @param {number} radius The shadow blur radius.
+ */
+lime.Label.prototype.setShadowBlur = function(radius){
+    this.shadowBlur_ = radius;
 };
 
 /**
@@ -341,17 +357,6 @@ lime.Label.prototype.setShadowOffset = function(offset, opt_offsetY) {
  */
 lime.Label.prototype.getShadowBlur = function() {
     return this.shadowBlur_;
-};
-
-/**
- * Sets shadow blur radius in px.
- * @param {number} blurRadius New shadow blur radius in px.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setShadowBlur = function(blurRadius) {
-    this.shadowBlur_ = blurRadius;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
 };
 
 /** 
@@ -414,7 +419,7 @@ lime.Label.prototype.update = function(){
         delete this.lastDrawnWidth_;
     
     lime.Node.prototype.update.apply(this,arguments);
-}
+};
 
 
 /**
@@ -430,7 +435,7 @@ lime.Renderer.DOM.LABEL.draw = function(el) {
     }
     if (this.dirty_ & lime.Dirty.FONT) {
         style['lineHeight'] = this.getLineHeight();
-        style['padding'] = goog.array.map(this.padding_,function(p){return p*this.getRelativeQuality()},this).join('px ') + 'px';
+        style['padding'] = goog.array.map(this.padding_,function(p){return p * this.getRelativeQuality();},this).join('px ') + 'px';
         style['color'] = this.getFontColor();
         style['fontFamily'] = this.getFontFamily();
         style['fontSize'] = this.getFontSize()*this.getRelativeQuality() + 'px';
@@ -449,7 +454,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
 
     var frame = this.getFrame(),
-        width = -frame.left - this.padding_[3] + frame.right - this.padding_[1],
+        width = -frame.left - this.padding_[3] + frame.right - this.padding_[1] + Math.abs(this.getShadowOffset().x) + Math.abs(this.getShadowBlur() * 2),
         dowrap = 0;
     
     if (!this.words_) {
@@ -496,15 +501,16 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
         this.lastDrawnWidth_ = width;
     }
     
-
     if (this.lines_) {
-        var lhpx = lh * this.getFontSize();
+        var lhpx = lh * this.getFontSize(),
+            offsetY = (goog.isDef(this.getShadowBlur()) ? Math.abs(this.getShadowBlur()) : 0) +
+                      (goog.isDef(this.getShadowOffset()) ? Math.abs(this.getShadowOffset().y) / 2 : 0),
+            offsetX = 0;
         lhpx = goog.userAgent.WEBKIT ? Math.floor(lhpx) : Math.round(lhpx);
         for (var i = 0; i < this.lines_.length; i++) {
-            context.fillText(this.lines_[i], 0, lhpx * i);
+            context.fillText(this.lines_[i], offsetX, lhpx * i + offsetY - 0.5);
         }
     }
-
 
     context.restore();
 };
