@@ -20,7 +20,7 @@ zlizer.Bubble = function(value) {
 
     //this.setRenderer(lime.Renderer.CANVAS);
 
-    this.v = new goog.math.Vec2(0, this.GRAVITY);
+    this.v = new goog.math.Vec2(0, (this.GRAVITY/2));
 
 
 };
