@@ -25,7 +25,7 @@ pong.start = function() {
     });
     layer.appendChild(btn);
 
-    btn = new lime.GlossyButton('MULTI').setSize(100, 40).setPosition(150, 200);
+    btn = new lime.GlossyButton('VS').setSize(100, 40).setPosition(150, 200);
     goog.events.listen(btn, 'click', function() {
     	pong.newgame(2);
     });
