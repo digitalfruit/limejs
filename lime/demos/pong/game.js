@@ -8,6 +8,7 @@ goog.require('lime.animation.FadeTo');
 goog.require('lime.fill.LinearGradient');
 goog.require('pong.Notice');
 goog.require('pong.Player');
+goog.require('lime.audio.Audio');
 
 pong.Game = function(mode) {
     lime.Sprite.call(this);
@@ -47,6 +48,8 @@ pong.Game = function(mode) {
 
     this.notice = new pong.Notice().setPosition(160, 200).setHidden(true);
     this.appendChild(this.notice);
+		
+		this.endRoundSound = new lime.audio.Audio('assets/end_round.wav');
 };
 goog.inherits(pong.Game, lime.Sprite);
 
@@ -132,6 +135,9 @@ pong.Game.prototype.endRound = function(winner) {
     var show = new lime.animation.FadeTo(1);
     goog.events.listen(show, lime.animation.Event.STOP, function() {
         this.placeball();
+				this.endRoundSound.stop();
     },false, this);
     this.notice.runAction(show);
+		
+		this.endRoundSound.play();
 };
