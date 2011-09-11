@@ -13,14 +13,14 @@ zlizer.Bubble = function(value) {
     this.lbl = new lime.Label().setText(value).setFontSize(34).setFontColor('#fff').setFontWeight(700).setFontFamily('Impact');
     this.appendChild(this.lbl);
 
-    this.GRAVITY = 5;
+    this.GRAVITY = 2.5;
 
     this.setAnchorPoint(0, 0);
     this.setScale(1.2);
 
     //this.setRenderer(lime.Renderer.CANVAS);
 
-    this.v = new goog.math.Vec2(0, (this.GRAVITY/2));
+    this.v = new goog.math.Vec2(0, this.GRAVITY);
 
 
 };
