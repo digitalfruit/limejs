@@ -20,5 +20,8 @@ lime.SpriteSheet = function(image, metadata, p){
 
 lime.SpriteSheet.prototype.getFrame = function(name){
     var m = this.metadata_[name];
+    if(!m){
+        throw("Frame "+name+" not found in the spritesheet");
+    }
     return new lime.fill.Frame(this.image_.image_, m[0], m[1], m[2], m[3]);
 }
