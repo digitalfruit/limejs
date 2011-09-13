@@ -18,6 +18,7 @@ pong.Game = function(mode) {
     this.WIDTH = 300;
     this.HEIGHT = 360;
     this.mode = mode;
+    this.winning_score = 10;
 
     this.setAnchorPoint(0, 0);
     this.setSize(320, 460);
@@ -136,12 +137,26 @@ pong.Game.prototype.placeball = function() {
     this.p2.setPosition(this.WIDTH / 2, 0);
 };
 
+pong.Game.prototype.endGame = function() {
+    this.notice.title.setText(this.p1.score > this.p2.score ? 'You won!' : 'You lost.');
+    this.notice.score.setText(this.p1.score + ' : ' + this.p2.score);
+    this.notice.setOpacity(0).setHidden(false);
+    var show = new lime.animation.FadeTo(1);
+    this.notice.runAction(show);
+    goog.events.listenOnce(this.notice, ['touchstart', 'mousedown'], pong.newgame, false, this);
+}
+
 pong.Game.prototype.endRound = function(winner) {
     winner.score++;
 
     lime.scheduleManager.unschedule(this.step_, this);
 
-    this.notice.title.setText(winner == this.p1 ? 'You scored' : 'You lost');
+    if(winner.score >= this.winning_score) {
+        this.endGame();
+        return;
+    }
+    
+    this.notice.title.setText(winner == this.p1 ? 'You scored' : 'Opponent scored');
     this.notice.score.setText(this.p1.score + ' : ' + this.p2.score);
 
     this.notice.setOpacity(0).setHidden(false);
