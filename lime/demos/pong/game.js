@@ -48,8 +48,9 @@ pong.Game = function(mode) {
 
     this.notice = new pong.Notice().setPosition(160, 200).setHidden(true);
     this.appendChild(this.notice);
-		
-    this.endRoundSound = new lime.audio.Audio('assets/end_round.wav');
+
+    this.endRoundSound = new lime.audio.Audio('assets/applause.mp3');
+    this.bounceSound = new lime.audio.Audio('assets/bounce.mp3');
 };
 goog.inherits(pong.Game, lime.Sprite);
 
@@ -74,12 +75,18 @@ pong.Game.prototype.step_ = function(dt) {
     pos.y += this.v.y * dt * this.SPEED;
 
     if (pos.x < this.RADIUS) {
+        // bounce off left wall
         this.v.x *= -1;
         pos.x = this.RADIUS;
+        this.bounceSound.stop();
+        this.bounceSound.play();
     }
     else if (pos.x > size.width - this.RADIUS) {
+        // bounce off right wall
         this.v.x *= -1;
         pos.x = size.width - this.RADIUS;
+        this.bounceSound.stop();
+        this.bounceSound.play();
     }
 
     var pp, pwidth = this.p1.getSize().width / 2 + this.RADIUS;
@@ -87,12 +94,15 @@ pong.Game.prototype.step_ = function(dt) {
         pp = this.p2.getPosition();
         var diff = pos.x - pp.x;
         if (Math.abs(diff) < pwidth) {
+            // bounce off of top paddle
             this.v.x += diff / pwidth;
             this.v.y *= -1;
             if (this.v.x > 1) this.v.x = 1;
             if (this.v.x < -1) this.v.x = -1;
             this.v.normalize();
             pos.y = this.RADIUS;
+            this.bounceSound.stop();
+            this.bounceSound.play();
         }
         else this.endRound(this.p1);
     }
@@ -100,12 +110,15 @@ pong.Game.prototype.step_ = function(dt) {
         pp = this.p1.getPosition();
         var diff = pos.x - pp.x;
         if (Math.abs(diff) < pwidth) {
+            // bounce off of bottom paddle
             this.v.x += diff / pwidth;
             this.v.y *= -1;
             if (this.v.x > 1) this.v.x = 1;
             if (this.v.x < -1) this.v.x = -1;
             this.v.normalize();
             pos.y = size.height - this.RADIUS;
+            this.bounceSound.stop();
+            this.bounceSound.play();
         }
         else this.endRound(this.p2);
     }
@@ -135,9 +148,9 @@ pong.Game.prototype.endRound = function(winner) {
     var show = new lime.animation.FadeTo(1);
     goog.events.listen(show, lime.animation.Event.STOP, function() {
         this.placeball();
-        this.endRoundSound.stop();
     },false, this);
     this.notice.runAction(show);
-		
+
+    this.endRoundSound.stop();
     this.endRoundSound.play();
 };
