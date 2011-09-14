@@ -132,7 +132,7 @@ pong.Game.prototype.step_ = function(dt) {
 };
 pong.Game.prototype.placeball = function() {
     this.ball.setPosition(this.WIDTH / 2, this.HEIGHT - this.RADIUS);
-    goog.events.listenOnce(this.ball, ['touchstart', 'mousedown'], this.start, false, this);
+    goog.events.listenOnce(this.world, ['touchstart', 'mousedown'], this.start, false, this);
     this.p1.setPosition(this.WIDTH / 2, this.HEIGHT);
     this.p2.setPosition(this.WIDTH / 2, 0);
 };
