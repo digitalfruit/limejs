@@ -12,7 +12,12 @@ pong.Player = function(is_down) {
 
     this.setAnchorPoint(.5, 0);
 
-    this.inner = new lime.RoundedRect().setSize(80, 15).setFill(100, 100, 0).setAnchorPoint(.5, 0);
+    var front_color = '#000';
+    var back_color = '#DDD';
+    var grad = new lime.fill.LinearGradient().
+        addColorStop(0, is_down ? front_color : back_color).
+        addColorStop(1, is_down ? back_color : front_color);
+    this.inner = new lime.RoundedRect().setSize(80, 15).setFill(grad).setAnchorPoint(.5, 0);
     this.appendChild(this.inner);
 
 

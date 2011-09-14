@@ -8,6 +8,7 @@ goog.require('lime.animation.FadeTo');
 goog.require('lime.fill.LinearGradient');
 goog.require('pong.Notice');
 goog.require('pong.Player');
+goog.require('lime.audio.Audio');
 
 pong.Game = function(mode) {
     lime.Sprite.call(this);
@@ -17,6 +18,7 @@ pong.Game = function(mode) {
     this.WIDTH = 300;
     this.HEIGHT = 360;
     this.mode = mode;
+    this.winning_score = 10;
 
     this.setAnchorPoint(0, 0);
     this.setSize(320, 460);
@@ -47,6 +49,9 @@ pong.Game = function(mode) {
 
     this.notice = new pong.Notice().setPosition(160, 200).setHidden(true);
     this.appendChild(this.notice);
+
+    this.endRoundSound = new lime.audio.Audio('assets/applause.mp3');
+    this.bounceSound = new lime.audio.Audio('assets/bounce.mp3');
 };
 goog.inherits(pong.Game, lime.Sprite);
 
@@ -71,12 +76,18 @@ pong.Game.prototype.step_ = function(dt) {
     pos.y += this.v.y * dt * this.SPEED;
 
     if (pos.x < this.RADIUS) {
+        // bounce off left wall
         this.v.x *= -1;
         pos.x = this.RADIUS;
+        this.bounceSound.stop();
+        this.bounceSound.play();
     }
     else if (pos.x > size.width - this.RADIUS) {
+        // bounce off right wall
         this.v.x *= -1;
         pos.x = size.width - this.RADIUS;
+        this.bounceSound.stop();
+        this.bounceSound.play();
     }
 
     var pp, pwidth = this.p1.getSize().width / 2 + this.RADIUS;
@@ -84,12 +95,15 @@ pong.Game.prototype.step_ = function(dt) {
         pp = this.p2.getPosition();
         var diff = pos.x - pp.x;
         if (Math.abs(diff) < pwidth) {
+            // bounce off of top paddle
             this.v.x += diff / pwidth;
             this.v.y *= -1;
             if (this.v.x > 1) this.v.x = 1;
             if (this.v.x < -1) this.v.x = -1;
             this.v.normalize();
             pos.y = this.RADIUS;
+            this.bounceSound.stop();
+            this.bounceSound.play();
         }
         else this.endRound(this.p1);
     }
@@ -97,12 +111,15 @@ pong.Game.prototype.step_ = function(dt) {
         pp = this.p1.getPosition();
         var diff = pos.x - pp.x;
         if (Math.abs(diff) < pwidth) {
+            // bounce off of bottom paddle
             this.v.x += diff / pwidth;
             this.v.y *= -1;
             if (this.v.x > 1) this.v.x = 1;
             if (this.v.x < -1) this.v.x = -1;
             this.v.normalize();
             pos.y = size.height - this.RADIUS;
+            this.bounceSound.stop();
+            this.bounceSound.play();
         }
         else this.endRound(this.p2);
     }
@@ -115,17 +132,31 @@ pong.Game.prototype.step_ = function(dt) {
 };
 pong.Game.prototype.placeball = function() {
     this.ball.setPosition(this.WIDTH / 2, this.HEIGHT - this.RADIUS);
-    goog.events.listenOnce(this.ball, ['touchstart', 'mousedown'], this.start, false, this);
+    goog.events.listenOnce(this.world, ['touchstart', 'mousedown'], this.start, false, this);
     this.p1.setPosition(this.WIDTH / 2, this.HEIGHT);
     this.p2.setPosition(this.WIDTH / 2, 0);
 };
+
+pong.Game.prototype.endGame = function() {
+    this.notice.title.setText(this.p1.score > this.p2.score ? 'You won!' : 'You lost.');
+    this.notice.score.setText(this.p1.score + ' : ' + this.p2.score);
+    this.notice.setOpacity(0).setHidden(false);
+    var show = new lime.animation.FadeTo(1);
+    this.notice.runAction(show);
+    goog.events.listenOnce(this.notice, ['touchstart', 'mousedown'], pong.newgame, false, this);
+}
 
 pong.Game.prototype.endRound = function(winner) {
     winner.score++;
 
     lime.scheduleManager.unschedule(this.step_, this);
 
-    this.notice.title.setText(winner == this.p1 ? 'You scored' : 'You lost');
+    if(winner.score >= this.winning_score) {
+        this.endGame();
+        return;
+    }
+    
+    this.notice.title.setText(winner == this.p1 ? 'You scored' : 'Opponent scored');
     this.notice.score.setText(this.p1.score + ' : ' + this.p2.score);
 
     this.notice.setOpacity(0).setHidden(false);
@@ -134,4 +165,7 @@ pong.Game.prototype.endRound = function(winner) {
         this.placeball();
     },false, this);
     this.notice.runAction(show);
+
+    this.endRoundSound.stop();
+    this.endRoundSound.play();
 };
