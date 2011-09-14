@@ -47,7 +47,7 @@ pong.Game = function(mode) {
     this.world.appendChild(this.ball);
     this.placeball();
 
-    this.notice = new pong.Notice().setPosition(160, 200).setHidden(true);
+    this.notice = new pong.Notice().setPosition(160, 200).setHidden(false);
     this.appendChild(this.notice);
 
     this.endRoundSound = new lime.audio.Audio('assets/applause.mp3');
