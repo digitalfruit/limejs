@@ -50,8 +50,8 @@ pong.Game = function(mode) {
     this.notice = new pong.Notice().setPosition(160, 200).setHidden(false);
     this.appendChild(this.notice);
 
-    this.endRoundSound = new lime.audio.Audio('assets/applause.mp3');
-    this.bounceSound = new lime.audio.Audio('assets/bounce.mp3');
+    this.endRoundSound = new lime.audio.Audio('assets/applause.wav');
+    this.bounceSound = new lime.audio.Audio('assets/bounce.wav');
 };
 goog.inherits(pong.Game, lime.Sprite);
 
