@@ -124,17 +124,17 @@ def checkDependencies():
     
     
     #Closure Templates
-    if not os.path.exists(soy_path):
-        zip_path = os.path.join(extdir,'soy.zip')
-        print ('Downloading Closure Templates(Soy):')
-        urlretrieve("http://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip",
-            zip_path,rephook)
-        print ('\nUnzipping...')
-        zippedFile = zipfile.ZipFile(zip_path)
-        zippedFile.extract('SoyToJsSrcCompiler.jar',extdir)
-        zippedFile.close()
-        print ('Cleanup')
-        os.unlink(zip_path)
+    #if not os.path.exists(soy_path):
+    #    zip_path = os.path.join(extdir,'soy.zip')
+    #    print ('Downloading Closure Templates(Soy):')
+    #    urlretrieve("http://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip",
+    #        zip_path,rephook)
+    #    print ('\nUnzipping...')
+    #    zippedFile = zipfile.ZipFile(zip_path)
+    #    zippedFile.extract('SoyToJsSrcCompiler.jar',extdir)
+    #    zippedFile.close()
+    #    print ('Cleanup')
+    #    os.unlink(zip_path)
     
     if not os.path.exists(projects_path):
         open(projects_path,'w').close()
