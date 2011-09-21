@@ -16,12 +16,24 @@ lime.SpriteSheet = function(image, metadata, p){
     var parser = p || lime.parser.ZWOPTEX;
     
     this.metadata_ = parser(metadata.data());
-}
+};
 
+/**
+ * Return the frame fromt the sprite sheete that has the given name.
+ * @param {string} name The name of the frame.
+ */
 lime.SpriteSheet.prototype.getFrame = function(name){
     var m = this.metadata_[name];
     if(!m){
         throw("Frame "+name+" not found in the spritesheet");
     }
     return new lime.fill.Frame(this.image_.image_, m[0], m[1], m[2], m[3]);
-}
+};
+
+/**
+ * Returns true if the sprite sheete contains a frame with the given name.
+ * @param {string} name The name to check if the sprite sheete contains.
+ */
+lime.SpriteSheet.prototype.hasFrame = function(name){
+    return goog.isDef(this.metadata_[name]);
+};

@@ -50,8 +50,8 @@ lime.animation.RotateBy.prototype.update = function(t, target) {
 };
 
 /**
- * @inheritDoc
- * @see lime.animation.Animation#clearTransition
+ * Clear transistion when animation is stoped.
+ * @param {lime.Node} target The target to clear transistion for.
  */
 lime.animation.RotateBy.prototype.clearTransition = function(target) {
     if (this.useTransitions()) {
