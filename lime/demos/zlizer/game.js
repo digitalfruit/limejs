@@ -417,7 +417,7 @@ zlizer.Game.prototype.removeBubble = function(b) {
 zlizer.Game.prototype.checkDeletions = function() {
     var i = this.bubbles.length;
     while (--i >= 0) {
-     if (this.bubbles[i].getPosition().y > 840) {
+     if (this.bubbles[i].getPosition().y > 840 || this.bubbles[i].getPosition().x < 0 || this.bubbles[i].getPosition().x > 768) {
          this.removeBubble(this.bubbles[i]);
      }
     }
