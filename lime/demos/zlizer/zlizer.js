@@ -81,11 +81,12 @@ zlizer.loadMenuScene = function(opt_transition) {
 
     var btns_layer = new lime.Layer().setPosition(-250, 110);
     levels.appendChild(btns_layer);
-
-    for (var r = 0; r < 4; r++) {
+    
+    var r = 0;
+    for (r = 0; r < 4; r++) {
         for (var c = 0; c < 5; c++) {
             var num = (c + 1) + (r * 5);
-            var btn = new zlizer.Button('' + num).setSize(100, 100).setPosition(c * 125, r * 125);
+            var btn = new zlizer.Button('' + num).setSize(80, 80).setPosition(c * 125, r * 90);
             btns_layer.appendChild(btn);
             goog.events.listen(btn, lime.Button.Event.CLICK, function() {
               zlizer.loadGame(this);
@@ -93,6 +94,13 @@ zlizer.loadMenuScene = function(opt_transition) {
         }
     }
 
+    //Creates a button to go back to the main menu
+    var btn_main = new zlizer.Button('Back to Menu').setSize(400, 80).setPosition(250, r * 90); 
+    btns_layer.appendChild(btn_main);
+    goog.events.listen(btn_main, lime.Button.Event.CLICK, function() {
+      contents.runAction(new lime.animation.MoveTo(0, 280).enableOptimizations());
+    },false, num);
+    
 };
 
 

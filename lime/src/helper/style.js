@@ -42,7 +42,7 @@ lime.style.getCSSproperty = function(name) {
 })();
 
 /**
- * Set border radisu of a DOM element
+ * Set border radius of a DOM element
  * @param {Element} el Element to change.
  * @param {Array.<number>} values Radius values.
  * @param {Array.<number>=} opt_vertical Vertical radius values.
@@ -83,7 +83,7 @@ lime.style.Transform = function(opt_precision) {
  * Scale current transform object
  * @param {number} sx X-axis scale factor.
  * @param {number} sy y-axis scale factor.
- * @return {lime.style.Transform} obejct itself.
+ * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.scale = function(sx, sy) {
     //if(sx!=1 && sy!=1)
@@ -94,8 +94,8 @@ lime.style.Transform.prototype.scale = function(sx, sy) {
 /**
  * Rotate current transform object
  * @param {number} angle Angle to rotate.
- * @param {string=} opt_unit Units.
- * @return {lime.style.Transform} obejct itself.
+ * @param {string=} opt_unit Units. Defaults to degrees.
+ * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
     var rot_str = 'rotate(' + angle + (opt_unit ? opt_unit : 'deg') + ')';
@@ -110,7 +110,7 @@ lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
  * @param {number} tx Offset in x-axis.
  * @param {number} ty Offset in y-axis.
  * @param {number=} opt_tz Offset in z-axis.
- * @return {lime.style.Transform} obejct itself.
+ * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
 
@@ -126,9 +126,9 @@ lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
 
 /**
  * Set the current precision of transform. This is handled as a
- * state machine so its added when called not when done.
+ * state machine so it's added when called not when done.
  * @param {number} p Precision(Lowest value to make a difference).
- * @return {lime.style.Transform} obejct itself.
+ * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.setPrecision = function(p) {
     if (this.precision != 1) {
@@ -144,7 +144,7 @@ lime.style.Transform.prototype.setPrecision = function(p) {
 };
 
 /**
- * Return CSS transform string from the obejct
+ * Return CSS transform string from the object
  * @return {string} CSS value string.
  */
 lime.style.Transform.prototype.toString = function() {
