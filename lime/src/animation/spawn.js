@@ -11,7 +11,7 @@ goog.require('lime.animation.Sequence');
  * @constructor
  * @extends lime.animation.Animation
  */
-lime.animation.Spawn = function(one, two) {
+lime.animation.Spawn = function(one) {
 
     lime.animation.Animation.call(this);
 
@@ -62,7 +62,7 @@ lime.animation.Spawn.prototype.initTarget = function(target) {
  * @see lime.animation.Animation#updateAll
  */
 lime.animation.Spawn.prototype.updateAll = function(t, targets) {
-    if (this.status_ == 0) return;
+    if (this.status_ == 0) return undefined;
     var i = targets.length;
     while (--i >= 0) {
         this.getTargetProp(targets[i]);
