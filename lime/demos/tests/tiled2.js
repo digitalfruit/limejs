@@ -20,10 +20,8 @@ test.start = function(){
 
 	var gamescene = new lime.Scene;
 	
-
-	
 	var tmx = new lime.parser.TMX('assets/sewers.tmx');
-	layer = new lime.Layer().setSize(tmx.width * tmx.tilewidth, tmx.height * tmx.tileheight);
+	layer = new lime.Layer();
 	gamescene.appendChild(layer);
 	for(var j = 0; j < tmx.layers.length; j++)
 	{
