@@ -1,4 +1,4 @@
-goog.provide('test.tiled2');
+goog.provide('test.tiled3');
 
 
 goog.require('lime');
