@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Lime Unit Tests - lime.parser.TMX</title>
+<script src="../../closure/closure/goog/base.js"></script>
+<script>
+  goog.require('goog.testing.MockClock');
+  goog.require('goog.testing.jsunit');
+  goog.require('goog.testing.recordFunction');
+  goog.require('goog.testing.PropertyReplacer');
+  goog.require('lime.parser.TMX');
+</script>
+</head>
+<style>
+</style>
+<body>
+    
+<script>
+
+var stubs = new goog.testing.PropertyReplacer();
+
+function shouldRunTests() {
+  return true;
+}
+
+function setUpPage(){
+    mockClock = new goog.testing.MockClock(1);
+}
+
+function tearDownPage(){
+    mockClock.uninstall();
+}
+
+function tearDown() {
+    stubs.reset();
+}
+function setUp(){
+}
+
+
+function testHelloWorld() {
+	assertEquals('2 + 2 = 4',2 + 2,4);
+}
+
+function testLoadTMXMap() {
+	
+    var tmx = new lime.parser.TMX('assets/area02.tmx');
+	
+	assertNotNull('tmp object', tmx);
+	assertEquals('map orientation','orthogonal',tmx.orientation);
+	assertEquals('map orientation',1.0,tmx.version);
+	assertEquals('map orientation',40,tmx.width);
+	assertEquals('map orientation',15,tmx.height);
+	assertEquals('map orientation',32,tmx.tilewidth);
+	assertEquals('map orientation',32,tmx.tileheight);
+	assertEquals('map orientation',1,tmx.properties.length);
+}
+
+</script>
+</body>
+</html>
