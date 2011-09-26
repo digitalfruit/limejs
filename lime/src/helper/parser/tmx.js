@@ -161,10 +161,16 @@ lime.parser.TMX = function (file) {
 				inslayertile = new Object();
 				inslayertile.tile = this.getTile(gid);
 				inslayertile.x = parseInt(j % inslayer.width);
-				inslayertile.px = inslayertile.x * inslayertile.tile.width;
 				inslayertile.y = parseInt(j / inslayer.width);
-				inslayertile.py = inslayertile.y * inslayertile.tile.height;
 				
+				if (this.orientation === "isometric") {
+				    inslayertile.px = (inslayertile.x - inslayertile.y) * inslayertile.tile.width * .5;
+				    inslayertile.py = (inslayertile.y + inslayertile.x) * inslayertile.tile.height * .25;
+			    }
+			    else {
+			        inslayertile.px = inslayertile.x * inslayertile.tile.width;
+    		        inslayertile.py = inslayertile.y * inslayertile.tile.height;
+			    }
 				inslayer.tiles.push(inslayertile);
 			}
 		}
