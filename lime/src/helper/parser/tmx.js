@@ -4,6 +4,8 @@ goog.require('goog.dom.xml');
 goog.require('goog.style');
 goog.require('lime.userAgent');
 goog.require('lime.fill.Frame');
+goog.require('goog.crypt.base64');
+goog.require('goog.string');
 
 lime.parser.TMX = function (file) {
     function loadXMLDoc(dname) {
@@ -51,6 +53,72 @@ lime.parser.TMX = function (file) {
 		return true;
 	}
 
+	function decodeBase64AsArray(input, bytes) {
+		bytes = bytes || 1;
+		
+		input = goog.string.collapseWhitespace(input);
+		
+		var dec = goog.crypt.base64.decodeString(input), ar = [], i, j, len;
+
+		for (i = 0, len = dec.length / bytes; i < len; i++) {
+			ar[i] = 0;
+			for (j = bytes - 1; j >= 0; --j) {
+				ar[i] += dec.charCodeAt((i * bytes) + j) << (j << 3);
+			}
+		}
+		return ar;
+	};
+	
+	function _getLayerData(layer)
+	{
+		var encoding = null;
+		if (layer.getElementsByTagName('data')[0].attributes.getNamedItem("encoding")) {
+			var encoding = layer.getElementsByTagName('data')[0].attributes.getNamedItem("encoding").nodeValue;
+		}
+		var compression = null;
+		if (layer.getElementsByTagName('data')[0].attributes.getNamedItem("compression")) {
+			var compression = layer.getElementsByTagName('data')[0].attributes.getNamedItem("compression").nodeValue;
+		}
+		retdatas = new Array();
+		
+		switch (compression) {
+			case null: {
+				switch (encoding) {
+					case null: {
+						var datas = layer.getElementsByTagName('tile');
+						for (j = 0; j < datas.length; j++)
+						{
+							gid = parseInt(datas[j].attributes.getNamedItem("gid").nodeValue);
+							retdatas.push(gid);
+						}
+						return retdatas;
+						break;
+					}
+					
+					case 'base64': {
+						var content = '';
+						for ( var x = 0, len = layer.getElementsByTagName('data')[0].childNodes.length; x < len; x++) {
+							content += layer.getElementsByTagName('data')[0].childNodes[x].nodeValue;
+						}
+						retdatas = decodeBase64AsArray(content, 4);
+						return retdatas;
+						break;
+					}
+					
+					default:
+						throw "limejs: " + encoding + " encoded TMX Tile Map not supported!";
+						break;
+				}
+			}
+			
+			default:
+            throw "limejs: " + compression + " compressed TMX Tile Map not supported!";
+            break;
+		}
+		
+		return retdatas;
+	}
+	
 	this.getTile = function(gid)
 	{
 		ret = this.tiles[gid - 1];
@@ -69,7 +137,7 @@ lime.parser.TMX = function (file) {
 	this.height = parseInt(map.attributes.getNamedItem("height").nodeValue);
 	this.tilewidth = parseInt(map.attributes.getNamedItem("tilewidth").nodeValue);
 	this.tileheight = parseInt(map.attributes.getNamedItem("tileheight").nodeValue);
-	
+	this.properties = new Array();
 	if (map.getElementsByTagName('properties').length) {
 		mapproperties = map.getElementsByTagName('properties')[0].getElementsByTagName('property');
 		_parseProperties(this, mapproperties);
@@ -81,32 +149,34 @@ lime.parser.TMX = function (file) {
 	this.tiles = new Array();
 	for (i = 0; i < tilesets.length; i++)
 	{
-		ins = new Object();
-		ins.firstgid = parseInt(tilesets[i].attributes.getNamedItem("firstgid").nodeValue);
-		ins.name = tilesets[i].attributes.getNamedItem("name").nodeValue;
+		instileset = new Object();
+		instileset.firstgid = parseInt(tilesets[i].attributes.getNamedItem("firstgid").nodeValue);
+		instileset.name = tilesets[i].attributes.getNamedItem("name").nodeValue;
+		
 		if (tilesets[i].attributes.getNamedItem("spacing")) {
-			ins.spacing = parseInt(tilesets[i].attributes.getNamedItem("spacing").nodeValue);
+			instileset.spacing = parseInt(tilesets[i].attributes.getNamedItem("spacing").nodeValue);
 		} else {
-			ins.spacing = 0;
+			instileset.spacing = 0;
 		}
+		
 		if (tilesets[i].attributes.getNamedItem("margin")) {
-			ins.margin = parseInt(tilesets[i].attributes.getNamedItem("margin").nodeValue);
+			instileset.margin = parseInt(tilesets[i].attributes.getNamedItem("margin").nodeValue);
 		} else {
-			ins.margin = 0;
+			instileset.margin = 0;
 		}
 		
-		ins.tilewidth = parseInt(tilesets[i].attributes.getNamedItem("tilewidth").nodeValue);
-		ins.tileheight = parseInt(tilesets[i].attributes.getNamedItem("tileheight").nodeValue);
-		ins.image = new Object();
-		ins.image.source = mapdirectory + tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("source").nodeValue;
-		ins.image.width = parseInt(tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("width").nodeValue);
-		ins.image.height = parseInt(tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("height").nodeValue);
+		instileset.tilewidth = parseInt(tilesets[i].attributes.getNamedItem("tilewidth").nodeValue);
+		instileset.tileheight = parseInt(tilesets[i].attributes.getNamedItem("tileheight").nodeValue);
+		instileset.image = new Object();
+		instileset.image.source = mapdirectory + tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("source").nodeValue;
+		instileset.image.width = parseInt(tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("width").nodeValue);
+		instileset.image.height = parseInt(tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("height").nodeValue);
 		
-		//ins.image.transparencycolor = tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("trans").nodeValue;
-		//ins.image.image = new lime.fill.Image(ins.image.source);
+		//instileset.image.transparencycolor = tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("trans").nodeValue;
+		//instileset.image.image = new lime.fill.Image(instileset.image.source);
 		
-		tilewidthcount = parseInt(ins.image.width / ins.tilewidth);
-		tileheightcount = parseInt(ins.image.height / ins.tileheight);
+		tilewidthcount = parseInt(instileset.image.width / instileset.tilewidth);
+		tileheightcount = parseInt(instileset.image.height / instileset.tileheight);
 		
 		/* tiles */
 		for (y = 0; y < tileheightcount; y++)
@@ -114,16 +184,17 @@ lime.parser.TMX = function (file) {
 			for (x = 0; x < tilewidthcount; x++)
 			{
 				instile = new Object();
-				instile.tileset = ins;
-				instile.width = ins.tilewidth;
-				instile.height = ins.tileheight;
+				instile.properties = new Array();
+				instile.tileset = instileset;
+				instile.width = instileset.tilewidth;
+				instile.height = instileset.tileheight;
 				
 				instile.x = x;
 				instile.y = y;
-				instile.px = x * instile.width + ins.spacing + (x * ins.margin);
-				instile.py = y * instile.height + ins.spacing +(y * ins.margin);
-				instile.gid = parseInt(ins.firstgid + (x + (y * tilewidthcount)));
-				instile.frame = new lime.fill.Frame(ins.image.source, instile.px, instile.py, instile.width, instile.height);
+				instile.px = x * instile.width + instileset.spacing + (x * instileset.margin);
+				instile.py = y * instile.height + instileset.spacing +(y * instileset.margin);
+				instile.gid = parseInt(instileset.firstgid + (x + (y * tilewidthcount)));
+				instile.frame = new lime.fill.Frame(instileset.image.source, instile.px, instile.py, instile.width, instile.height);
 				this.tiles.push(instile);
 			}
 		}
@@ -135,9 +206,9 @@ lime.parser.TMX = function (file) {
 			tileid = parseInt(tiles[id].attributes.getNamedItem("id").nodeValue);
 			tileproperties = tiles[id].getElementsByTagName('property');
 			
-			_parseProperties(this.tiles[tileid - 1], tileproperties);
+			_parseProperties(this.tiles[instileset.firstgid + tileid - 1], tileproperties);
 		}
-		this.tilesets.push(ins);
+		this.tilesets.push(instileset);
 	}
 	
 	layers = map.getElementsByTagName('layer');
@@ -145,6 +216,7 @@ lime.parser.TMX = function (file) {
 	for (i = 0; i < layers.length; i++)
 	{
 		inslayer = new Object();
+		inslayer.properties = new Array();
 		inslayer.name = layers[i].attributes.getNamedItem("name").nodeValue;
 		inslayer.width = parseInt(layers[i].attributes.getNamedItem("width").nodeValue);
 		inslayer.height = parseInt(layers[i].attributes.getNamedItem("height").nodeValue);
@@ -152,25 +224,29 @@ lime.parser.TMX = function (file) {
 		layerproperties = layers[i].getElementsByTagName('property');
 		_parseProperties(inslayer, layerproperties);
 		inslayer.tiles = new Array();
-		datas = layers[i].getElementsByTagName('tile');
+		
+		datas = _getLayerData(layers[i]);
 		for (j = 0; j < datas.length; j++)
 		{
-			gid = parseInt(datas[j].attributes.getNamedItem("gid").nodeValue);
+			gid = parseInt(datas[j]);
 			if (gid != 0)
 			{
 				inslayertile = new Object();
 				inslayertile.tile = this.getTile(gid);
 				inslayertile.x = parseInt(j % inslayer.width);
+				
 				inslayertile.y = parseInt(j / inslayer.width);
 				
 				if (this.orientation === "isometric") {
 				    inslayertile.px = (inslayertile.x - inslayertile.y) * inslayertile.tile.width * .5;
 				    inslayertile.py = (inslayertile.y + inslayertile.x) * inslayertile.tile.height * .25;
-			    }
-			    else {
+			    } else if (this.orientation === "orthogonal") {
 			        inslayertile.px = inslayertile.x * inslayertile.tile.width;
     		        inslayertile.py = inslayertile.y * inslayertile.tile.height;
-			    }
+			    } else {
+					throw "limejs: " + this.orientation + " type TMX Tile Map not supported !";
+				}
+					
 				inslayer.tiles.push(inslayertile);
 			}
 		}
@@ -182,6 +258,7 @@ lime.parser.TMX = function (file) {
 	for (i = 0; i < objects.length; i++)
 	{
 		insobject = new Object();
+		insobject.properties = new Array();
 		insobject.name = objects[i].attributes.getNamedItem("name").nodeValue;
 		// if gid
 		if (objects[i].attributes.getNamedItem("gid"))
