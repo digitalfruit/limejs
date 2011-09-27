@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="40" height="15" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="not exists orientation" width="40" height="15" tilewidth="32" tileheight="32">
  <properties>
   <property name="background_color" value="#00C0FF"/>
  </properties>
