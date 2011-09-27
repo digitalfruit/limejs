@@ -21,7 +21,8 @@ test.start = function(){
 	var gamescene = new lime.Scene;
 	
 	var tmx = new lime.parser.TMX('assets/sewers.tmx');
-	layer = new lime.Layer();
+	//canvas renderer is recommended for tiled maps. much faster in most cases
+	layer = new lime.Layer().setRenderer(lime.Renderer.CANVAS);
 	gamescene.appendChild(layer);
 	for(var j = 0; j < tmx.layers.length; j++)
 	{
