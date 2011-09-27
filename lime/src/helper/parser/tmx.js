@@ -4,7 +4,8 @@ goog.require('goog.dom.xml');
 goog.require('goog.style');
 goog.require('lime.userAgent');
 goog.require('lime.fill.Frame');
-goog.require('lime.base64');
+goog.require('goog.crypt.base64');
+goog.require('goog.string');
 
 lime.parser.TMX = function (file) {
     function loadXMLDoc(dname) {
@@ -54,10 +55,10 @@ lime.parser.TMX = function (file) {
 
 	function decodeBase64AsArray(input, bytes) {
 		bytes = bytes || 1;
-
-		var base = new lime.base64();
 		
-		var dec = base.decode(input), ar = [], i, j, len;
+		input = goog.string.collapseWhitespace(input);
+		
+		var dec = goog.crypt.base64.decodeString(input), ar = [], i, j, len;
 
 		for (i = 0, len = dec.length / bytes; i < len; i++) {
 			ar[i] = 0;
