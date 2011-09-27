@@ -20,9 +20,9 @@ test.start = function(){
 
 	var gamescene = new lime.Scene;
 	
-	layer = new lime.Layer();
+	layer = new lime.Layer().setRenderer(lime.Renderer.CANVAS);
 	//canvas renderer is recommended for tiled maps. much faster in most cases
-	gamescene.appendChild(layer).setRenderer(lime.Renderer.CANVAS);
+	gamescene.appendChild(layer);
 	
 	var tmx = new lime.parser.TMX('assets/desert.tmx');
 	for(var j = 0; j < tmx.layers.length; j++)

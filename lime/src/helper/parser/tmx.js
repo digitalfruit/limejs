@@ -4,6 +4,7 @@ goog.require('goog.dom.xml');
 goog.require('goog.style');
 goog.require('lime.userAgent');
 goog.require('lime.fill.Frame');
+goog.require('lime.base64');
 
 lime.parser.TMX = function (file) {
     function loadXMLDoc(dname) {
@@ -51,6 +52,72 @@ lime.parser.TMX = function (file) {
 		return true;
 	}
 
+	function decodeBase64AsArray(input, bytes) {
+		bytes = bytes || 1;
+
+		var base = new lime.base64();
+		
+		var dec = base.decode(input), ar = [], i, j, len;
+
+		for (i = 0, len = dec.length / bytes; i < len; i++) {
+			ar[i] = 0;
+			for (j = bytes - 1; j >= 0; --j) {
+				ar[i] += dec.charCodeAt((i * bytes) + j) << (j << 3);
+			}
+		}
+		return ar;
+	};
+	
+	function _getLayerData(layer)
+	{
+		var encoding = null;
+		if (layer.getElementsByTagName('data')[0].attributes.getNamedItem("encoding")) {
+			var encoding = layer.getElementsByTagName('data')[0].attributes.getNamedItem("encoding").nodeValue;
+		}
+		var compression = null;
+		if (layer.getElementsByTagName('data')[0].attributes.getNamedItem("compression")) {
+			var compression = layer.getElementsByTagName('data')[0].attributes.getNamedItem("compression").nodeValue;
+		}
+		retdatas = new Array();
+		
+		switch (compression) {
+			case null: {
+				switch (encoding) {
+					case null: {
+						var datas = layer.getElementsByTagName('tile');
+						for (j = 0; j < datas.length; j++)
+						{
+							gid = parseInt(datas[j].attributes.getNamedItem("gid").nodeValue);
+							retdatas.push(gid);
+						}
+						return retdatas;
+						break;
+					}
+					
+					case 'base64': {
+						var content = '';
+						for ( var x = 0, len = layer.getElementsByTagName('data')[0].childNodes.length; x < len; x++) {
+							content += layer.getElementsByTagName('data')[0].childNodes[x].nodeValue;
+						}
+						retdatas = decodeBase64AsArray(content, 4);
+						return retdatas;
+						break;
+					}
+					
+					default:
+						throw "limejs: " + encoding + " encoded TMX Tile Map not supported!";
+						break;
+				}
+			}
+			
+			default:
+            throw "limejs: " + compression + " compressed TMX Tile Map not supported!";
+            break;
+		}
+		
+		return retdatas;
+	}
+	
 	this.getTile = function(gid)
 	{
 		ret = this.tiles[gid - 1];
@@ -157,15 +224,10 @@ lime.parser.TMX = function (file) {
 		_parseProperties(inslayer, layerproperties);
 		inslayer.tiles = new Array();
 		
-		// TODO 1 : Check data encoding (base64)
-		if (layers[i].getElementsByTagName('data')[0].attributes.getNamedItem("encoding") != undefined) {
-			throw "limejs: " + layers[i].getElementsByTagName('data')[0].attributes.getNamedItem("encoding").nodeValue + " encoding TMX Tile Map not supported !";
-		}
-		
-		datas = layers[i].getElementsByTagName('tile');
+		datas = _getLayerData(layers[i]);
 		for (j = 0; j < datas.length; j++)
 		{
-			gid = parseInt(datas[j].attributes.getNamedItem("gid").nodeValue);
+			gid = parseInt(datas[j]);
 			if (gid != 0)
 			{
 				inslayertile = new Object();
