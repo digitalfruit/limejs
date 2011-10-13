@@ -116,7 +116,10 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
         }
     }
     else {
-        ee.screenPosition = new goog.math.Coordinate(e.clientX, e.clientY);
+        ee.screenPosition = new goog.math.Coordinate(
+            e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft,
+            e.clientY + document.body.scrollTop + document.documentElement.scrollTop
+        );
         doBreak = 1;
     }
 
