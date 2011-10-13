@@ -19,7 +19,7 @@ lime.userAgent.IOS = goog.userAgent.WEBKIT && goog.userAgent.MOBILE &&
  * Whether the user agent is running iOS5
  * @type boolean
  */
-lime.userAgent.IOS5 = lime.userAgent.IOS && goog.isFunction(Object.freeze); // User-agent still shows 4.3 on beta
+lime.userAgent.IOS5 = lime.userAgent.IOS && goog.isFunction(Object['freeze']); // User-agent still shows 4.3 on beta
 
 
 /**
