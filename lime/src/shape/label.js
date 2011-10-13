@@ -72,6 +72,10 @@ lime.Label.prototype.measureText = function() {
     mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
+    
+    if (lime.userAgent.IOS5)
+        w += 1;
+    
     var stroke = this.stroke_?this.stroke_.width_:0;
     return new goog.math.Size(
         this.padding_[1] + this.padding_[3] + w + stroke*2,
