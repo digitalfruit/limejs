@@ -186,7 +186,8 @@ lime.Director.prototype.setPaused = function(value) {
     this.isPaused_ = value;
     lime.scheduleManager.changeDirectorActivity(this, !value);
     if (this.isPaused_) {
-        this.pauseScene = new lime.helper.PauseScene();
+        var pauseClass = this.pauseClassFactory || lime.helper.PauseScene;
+        this.pauseScene = new pauseClass();
         this.pushScene(this.pauseScene);
     }
     else if (this.pauseScene) {
