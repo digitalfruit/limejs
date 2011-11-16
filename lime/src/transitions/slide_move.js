@@ -116,8 +116,8 @@ lime.transitions.SlideInLeft = lime.transitions.SlideIn;
  * @constructor
  * @extends lime.transitions.SlideIn
  */
-lime.transitions.SlideInUp = function(outgoing, incoming) {
-    goog.base(this, outgoing, incoming);
+lime.transitions.SlideInUp = function(outgoing, incoming, opt_movein) {
+    goog.base(this, outgoing, incoming, opt_movein);
 
     this.setMode(lime.transitions.SlideIn.Mode.UP);
 };
@@ -128,8 +128,8 @@ goog.inherits(lime.transitions.SlideInUp, lime.transitions.SlideIn);
  * @constructor
  * @extends lime.transitions.SlideIn
  */
-lime.transitions.SlideInRight = function(outgoing, incoming) {
-    goog.base(this, outgoing, incoming);
+lime.transitions.SlideInRight = function(outgoing, incoming, opt_movein) {
+    goog.base(this, outgoing, incoming, opt_movein);
 
     this.setMode(lime.transitions.SlideIn.Mode.RIGHT);
 };
@@ -140,8 +140,8 @@ goog.inherits(lime.transitions.SlideInRight, lime.transitions.SlideIn);
  * @constructor
  * @extends lime.transitions.SlideIn
  */
-lime.transitions.SlideInDown = function(outgoing, incoming) {
-    goog.base(this, outgoing, incoming);
+lime.transitions.SlideInDown = function(outgoing, incoming, opt_movein) {
+    goog.base(this, outgoing, incoming, opt_movein);
 
     this.setMode(lime.transitions.SlideIn.Mode.DOWN);
 };
