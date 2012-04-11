@@ -1,4 +1,4 @@
-goog.provide('test.events5');
+goog.provide('test.drag1');
 
 
 goog.require('lime');
