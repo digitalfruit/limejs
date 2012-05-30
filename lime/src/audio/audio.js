@@ -90,9 +90,12 @@ lime.audio.Audio.prototype.isPlaying = function() {
  * Start playing the audio
  */
 lime.audio.Audio.prototype.play = function() {
-    if (this.isLoaded() && !this.isPlaying()) {
+    if (this.isLoaded() && !this.isPlaying() && !lime.audio.getMute()) {
         this.baseElement.play();
         this.playing_ = true;
+        if (lime.audio._playQueue.indexOf(this) == -1) {
+          lime.audio._playQueue.push(this);
+        }
     }
 };
 
@@ -106,4 +109,19 @@ lime.audio.Audio.prototype.stop = function() {
     }
 };
 
+lime.audio._isMute = false;
+lime.audio._playQueue = [];
 
+lime.audio.getMute = function() {
+  return lime.audio._isMute;
+};
+
+lime.audio.setMute = function(bool) {
+  if (bool && !lime.audio._isMute) {
+    for (var i = 0; i < lime.audio._playQueue.length; i++) {
+      lime.audio._playQueue[i].stop();
+    }
+    lime.audio._playQueue = [];
+  }
+  lime.audio._isMute = bool;
+};
