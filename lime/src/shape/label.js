@@ -233,6 +233,7 @@ lime.Label.prototype.setPadding = function(top, opt_right,
 lime.Label.prototype.setLineHeight = function(value, opt_absolute) {
     this.lineHeightAbsolute_ = opt_absolute || false;
     this.lineHeight_ = value;
+    return this;
 };
 
 /**
@@ -328,6 +329,7 @@ lime.Label.prototype.getShadowOffset = function() {
  */
 lime.Label.prototype.setShadowColor = function(color){
     this.shadowColor_ = color;
+    return this;
 };
 
 /**
@@ -336,6 +338,7 @@ lime.Label.prototype.setShadowColor = function(color){
  */
 lime.Label.prototype.setShadowBlur = function(radius){
     this.shadowBlur_ = radius;
+    return this;
 };
 
 /**
