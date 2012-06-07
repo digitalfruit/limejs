@@ -7,6 +7,8 @@ goog.require('lime.fill.Frame');
 goog.require('goog.crypt.base64');
 goog.require('goog.string');
 
+// Based on MelonJS implementation.
+
 lime.parser.TMX = function (file) {
     function loadXMLDoc(dname) {
         if (window.XMLHttpRequest) {
