@@ -8,6 +8,7 @@ goog.require('lime.userAgent');
 
 var dirtyObjectQueue = [[], []];
 var dirtyObjectQueueNext = [[], []];
+var retinaAssets = {};
 
 /**
  * Add object to Dirty objects queue (waiting for redraw)
@@ -60,6 +61,29 @@ lime.updateDirtyObjects = function() {
    }*/
     //dirtyObjectQueue=dirtyObjectQueueNext;
     dirtyObjectQueueNext = [[], []];
+};
+
+/**
+ * Provide paths to assets that have retina quality versions.
+ * @param {(array|string)} paths Array of paths or a first path.
+ * @param {...string=} opt_rest Rest of the paths. 
+ */
+lime.retinaAssets = function (paths) {
+   if (!goog.isArray(paths)) {
+       paths = goog.array.toArray(arguments);
+   }
+   for (var i = 0; i < paths.length; i++) {
+       retinaAssets[paths[i]] = true;
+   }
+};
+
+/**
+ * Returns true if a retina quality version exists for an asset
+ * @param {string} path Path to the image.
+ * @return {boolean} Whether retina quality version exists.
+ */
+lime.hasRetinaVersion = function (path) {
+    return !!retinaAssets[path];
 };
 
 })();
