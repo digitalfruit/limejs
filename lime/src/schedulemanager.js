@@ -246,8 +246,18 @@ lime.scheduleManager.disable_ = function() {
  * @private
  */
 lime.scheduleManager.animationFrameHandler_ = function(time){
-    if(!time) time=goog.now(); // no time parameter in Chrome10beta
+    var performance = goog.global['performance'],
+        now;
+    if (performance && (now = performance['now'] || performance['webkitNow'])) {
+        time = performance['timing']['navigationStart'] + now.call(performance);
+    }
+    else if (!time) {
+        time = goog.now();
+    }
     var delta = time - this.lastRunTime_;
+    if (delta < 0) { // i0S6 reports relative to the device restart time. So first is negative.
+        delta = 1;
+    }
     lime.scheduleManager.dispatch_(delta);
     this.lastRunTime_ = time;
     if(goog.global['webkitRequestAnimationFrame']){
