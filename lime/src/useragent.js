@@ -9,6 +9,13 @@ goog.require('goog.userAgent');
 var ua = goog.userAgent.getUserAgentString();
 
 /**
+ * Whether the user agent is running on device with Retina screen.
+ * @type boolean
+ */
+lime.userAgent.RETINA = goog.global['devicePixelRatio'] >= 2;
+
+
+/**
  * Whether the user agent is running on iOS device
  * @type boolean
  */
@@ -39,10 +46,10 @@ lime.userAgent.IPAD = lime.userAgent.IOS && (/(ipad)/i).test(ua);
 
 /**
  * Whether the user agent is running on iPhone 4
+ * @deprecated Use {lime.userAgent.RETINA} instead.
  * @type boolean
  */
-lime.userAgent.IPHONE4 = lime.userAgent.IOS &&
-    goog.global['devicePixelRatio'] >= 2;
+lime.userAgent.IPHONE4 = lime.userAgent.IOS && lime.userAgent.RETINA;
 
 
 /**
@@ -57,6 +64,5 @@ lime.userAgent.PLAYBOOK = goog.userAgent.WEBKIT && (/playbook/i).test(ua);
  * @type boolean
  */
 lime.userAgent.SUPPORTS_TOUCH = goog.isDef(document['ontouchmove']);
-
 
 })();

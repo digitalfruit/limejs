@@ -23,7 +23,14 @@ lime.fill.Image = function(img) {
         img = img.data();
     }
     
+    var matchRetina = /@2x(\.[\w\d]+)$/;
+    
     if (goog.isString(img)) {
+        if (matchRetina.test(img)) {
+            img = img.replace(matchRetina, "$1");
+            lime.retinaAssets(img);
+        }
+        
         this.url_ = img;
         if(this.url_.length>50)
             this.url_ = this.url_.substr(-50);
@@ -32,6 +39,10 @@ lime.fill.Image = function(img) {
         }
         else {
             this.image_ = new Image();
+            if (lime.userAgent.RETINA && lime.hasRetinaVersion(img)) {
+                this.image_.retina = 2;
+                img = img.replace(/(?=\.\w+$)/, "@2x");
+            }
             this.image_.src = img;
         }
     }
@@ -53,6 +64,10 @@ lime.fill.Image = function(img) {
     }
     
     lime.fill.Image.loadedImages_[this.url_] = this.image_;
+    
+    if (!this.image_.retina) {
+        this.image_.retina = 1;
+    }
     
 
 };
@@ -81,15 +96,13 @@ lime.fill.Image.prototype.initForSprite = function(sprite){
         goog.events.listen(this,goog.events.EventType.LOAD,function(){
             var size = this.getSize();
             if(!size.width && !size.height){
-                this.setSize(that.image_.width,that.image_.height);
+                this.setSize(that.image_.width / that.image_.retina, that.image_.height / that.image_.retina);
             }
         },false,sprite);
         
         }
         else {
-        
-        sprite.setSize(this.image_.width,this.image_.height);
-            
+            sprite.setSize(this.image_.width / this.image_.retina, this.image_.height / this.image_.retina);
         }
     }
     

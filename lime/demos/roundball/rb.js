@@ -25,6 +25,8 @@ rb.start = function() {
     var pseudoRandom = new goog.testing.PseudoRandom(109);
     pseudoRandom.install();
     */
+    
+    lime.retinaAssets('assets/main_title.png', 'assets/lime.png', 'assets/shadow.png', 'assets/selection.png', 'assets/ball_0.png', 'assets/ball_1.png', 'assets/ball_2.png', 'assets/ball_3.png', 'assets/ball_4.png', 'assets/ball_5.png', 'assets/helper1.jpg', 'assets/helper2.jpg');
 
 	rb.director = new lime.Director(document.body, rb.WIDTH, rb.HEIGHT);
 	rb.director.makeMobileWebAppCapable();

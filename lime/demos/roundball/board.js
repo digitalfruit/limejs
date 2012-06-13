@@ -247,7 +247,8 @@ rb.Board.prototype.pressHandler_ = function(e) {
     if (e.type == 'mousedown' || e.type == 'touchstart') {
         e.swallow(['mouseup', 'touchend'], rb.Board.prototype.pressHandler_);
     }
-
+    if (c >= this.gems.length) return;
+    
     var g = this.gems[c][r];
 
     // no-op if already selected
