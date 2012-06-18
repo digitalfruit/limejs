@@ -51,7 +51,7 @@ lime.animation.Sequence.prototype.initTarget = function(target) {
  * @see lime.animation.Animation#stop
  */
 lime.animation.Sequence.prototype.stop = function() {
-    if (this.last_ != -1) {
+    if (this.last_ && this.last_ != -1) {
         this.actions[this.last_].stop(this.targets);
     }
     lime.animation.Animation.prototype.stop.apply(this, arguments);
