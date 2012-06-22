@@ -119,9 +119,14 @@ lime.Renderer.DOM.SPRITE.draw = function(el) {
     }
     if (!goog.isNull(this.stroke_)) {
         this.stroke_.setDOMStyle(el, this);
-    } else {
+    } 
+    
+    /* 
+    Bug with Safari, setting el.style.border = 'none' appends border-color and border-width everytime,
+    I'm not even sure why this is here...this would imply that fills can set borders.
+    else {
         el.style.border='none';
-    }
+    }*/
 };
 
 /**
