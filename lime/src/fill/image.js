@@ -130,7 +130,7 @@ lime.fill.Image.prototype.getImageElement = function(){
  * @return {boolean} If image has been loaded.
  */
 lime.fill.Image.prototype.isLoaded = function(){
-    return this.image_ && this.image_.width && this.image_.height;
+    return !!(this.image_ && this.image_.width && this.image_.height);
 }
 
 /**
