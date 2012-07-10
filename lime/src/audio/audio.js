@@ -1,6 +1,8 @@
 goog.provide('lime.audio.Audio');
 
 goog.require('goog.events');
+goog.require('goog.events.EventTarget');
+
 
 // Notice. Real problems for audio in iOS. Works only for one sound
 // and needs to be initialized from user event. No solutions found.
@@ -11,7 +13,7 @@ goog.require('goog.events');
  * @param {string} filePath Path to audio file.
  */
 lime.audio.Audio = function(filePath) {
-
+    goog.base(this);
     
     if(filePath && goog.isFunction(filePath.data)){
         filePath = filePath.data();
@@ -48,15 +50,13 @@ lime.audio.Audio = function(filePath) {
 
         this.baseElement.src = filePath;
         this.baseElement.load();
-        var self = this;
-        this.baseElement.addEventListener('ended', function() {
-            self.playing_ = false;
-        });
+        this.baseElement.addEventListener('ended', goog.bind(this.onEnded_, this));
         this.loadInterval = setInterval(goog.bind(this.loadHandler_, this), 10);
 
         this.loaded_ = false;
     }
 };
+goog.inherits(lime.audio.Audio, goog.events.EventTarget);
 
 lime.audio.AudioContext = goog.global['AudioContext'] || goog.global['webkitAudioContext'];
 lime.audio._buffers = {};
@@ -103,8 +103,21 @@ lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
 lime.audio.Audio.prototype.bufferLoadedHandler_ = function (buffer, path) {
     this.buffer = buffer;
     this.loaded_ = true;
-    console.log(this.buffer.duration, lime.audio.context.currentTime);
 };
+
+lime.audio.Audio.prototype.onEnded_ = function (e) {
+    this.playing_ = false;
+    var ev = new goog.events.Event('ended');
+    ev.event = e;
+    this.dispatchEvent(ev);
+    this.playPosition_ = 0;
+    if (ev.returnValue_ !== false && this.loop_) {
+        if (lime.audio.AudioContext)
+            this.play(this.loop_, this.playTime_ + this.buffer.duration - this.playPositionCache);
+        else
+            this.play(this.loop_);
+    }
+}
 
 /**
  * Handle loading the audio file. Event handlers seem to fail
@@ -140,13 +153,14 @@ lime.audio.Audio.prototype.isLoaded = function() {
  * @return {boolean} Audio is playing.
  */
 lime.audio.Audio.prototype.isPlaying = function() {
-    return lime.audio.AudioContext && this.source ? this.source.playbackState == this.source.PLAYING_STATE : this.playing_;
+    return this.playing_;
 };
 
 /**
  * Start playing the audio
+ * @param {number=} opt_loop Loop the sound.
  */
-lime.audio.Audio.prototype.play = function() {
+lime.audio.Audio.prototype.play = function(opt_loop) {
     if (this.isLoaded() && !this.isPlaying() && !lime.audio.getMute()) {
         if (lime.audio.AudioContext) {
             if (this.source && this.source.playbackState == this.source.FINISHED_STATE) {
@@ -156,17 +170,23 @@ lime.audio.Audio.prototype.play = function() {
             this.source.buffer = this.buffer;
             this.source.connect(lime.audio.masterGain);
             this.playTime_ = lime.audio.context.currentTime;
+            var delay = arguments[1] || 0
+             
             if (this.playPosition_ > 0) {
-                this.source.noteGrainOn(0, this.playPosition_, this.buffer.duration - this.playPosition_);
+                this.source.noteGrainOn(delay, this.playPosition_, this.buffer.duration - this.playPosition_);
             }
             else {
-                this.source.noteOn(0);
+                this.source.noteOn(delay);
             }
+            this.playPositionCache = this.playPosition_;
+            this.endTimeout_ = setTimeout(goog.bind(this.onEnded_, this),
+                (this.buffer.duration - (this.playPosition_ || 0)) * 1000 - 50);
         }
         else {
             this.baseElement.play();
         }
         this.playing_ = true;
+        this.loop_ = !!opt_loop;
         if (lime.audio._playQueue.indexOf(this) == -1) {
           lime.audio._playQueue.push(this);
         }
@@ -179,6 +199,7 @@ lime.audio.Audio.prototype.play = function() {
 lime.audio.Audio.prototype.stop = function() {
     if (this.isPlaying()) {
         if (lime.audio.AudioContext) {
+            clearTimeout(this.endTimeout_);
             this.playPosition_ = lime.audio.context.currentTime - this.playTime_ + (this.playPosition_ || 0);
             if (this.playPosition_ > this.buffer.duration) {
                 this.playPosition_ = 0;
