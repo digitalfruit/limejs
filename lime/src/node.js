@@ -34,6 +34,12 @@ lime.Node = function() {
     this.transitionsClear_ = {};
 
     /**
+     * Allow translate3d and other css optimizations
+     * @type {boolean}
+     */
+    this.allow3DCSSTransform_ = true;
+    
+    /**
      * Node has been added to DOM tree
      * @type {boolean}
      */
@@ -532,6 +538,28 @@ lime.Node.prototype.setAutoResize = function(value) {
     return this.setDirty(lime.Dirty.ALL);
 };
 
+/**
+ * Sets css 3d transforms rule (for DOM renderer).
+ * XXX: This hack is required to fix a mobile Safari rendering bug.
+ * It should only be used on nodes that are affected by the bug!
+ * 3D acceleration in css transforms is enabled by default and applied
+ * for iOS and Playbook.
+ *
+ * @param {boolean} value allow(true) or disable(false).
+ * @return {lime.Node} object itself.
+ */
+lime.Node.prototype.setAllow3DCSSTransforms = function(value) {
+    this.allow3DCSSTransform_ = value;
+    return this;
+};
+
+/**
+ * Returns css 3d transforms flag
+ * @return {boolean}
+ */
+lime.Node.prototype.getCSS3DTransformsAllowed = function() {
+    return this.allow3DCSSTransform_;
+};
 
 /**
  * Convert screen coordinate to node coordinate space

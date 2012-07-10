@@ -49,7 +49,8 @@ lime.Renderer.DOM.drawSizePosition = function() {
     var size = this.getSize(),
        quality = this.getQuality(),
        position = this.getPosition(),
-       rquality = this.relativeQuality_ || 1;
+       rquality = this.relativeQuality_ || 1,
+       enable3d = this.getCSS3DTransformsAllowed();
 
     if (this.transitionsActive_[lime.Transition.POSITION]) {
         position = this.transitionsActive_[lime.Transition.POSITION];
@@ -88,7 +89,8 @@ lime.Renderer.DOM.drawSizePosition = function() {
     if (this.domElement != this.containerElement) {
         if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION])
         lime.style.setTransform(this.containerElement,
-                new lime.style.Transform().translate(ax-so, ay-so));
+                new lime.style.Transform().set3d(enable3d)
+                    .translate(ax-so, ay-so));
     }
 
     if (this.mask_ != this.activeMask_) {
@@ -101,13 +103,15 @@ lime.Renderer.DOM.drawSizePosition = function() {
         }
     }
 
-    var transform = new lime.style.Transform().setPrecision(.1);
+    var transform = new lime.style.Transform()
+        .setPrecision(0.1)
+        .set3d(enable3d);
 
     if (this.mask_) {
-      lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);
-       transform.setPrecision(.1).
-            translate(-this.mask_.mX - ax, -this.mask_.mY - ay).
-            rotate(this.mask_.mRot, 'rad').translate(ax, ay).setPrecision(1);
+        lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);
+        transform.setPrecision(0.1)
+            .translate(-this.mask_.mX - ax, -this.mask_.mY - ay)
+            .rotate(this.mask_.mRot, 'rad').translate(ax, ay).setPrecision(1);
     }
 
     var rotation = -this.getRotation();
@@ -200,8 +204,10 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
         //todo: can be optimized
         goog.style.setSize(el, this.mWidth, this.mHeight);
 
-        lime.style.setTransform(el, new lime.style.Transform().setPrecision(.1).
-            translate(tl.x, tl.y).rotate(-rot, 'rad'));
+        lime.style.setTransform(el, new lime.style.Transform()
+            .setPrecision(0.1)
+            .set3d(this.allow3dCSSTransform_ || true)
+            .translate(tl.x, tl.y).rotate(-rot, 'rad'));
     }
 
     if (this.renderer.getType() == lime.Renderer.DOM) {

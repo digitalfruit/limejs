@@ -72,11 +72,22 @@ lime.style.setBorderRadius = (function() {
  * @param {number=} opt_precision Default precision.
  */
 lime.style.Transform = function(opt_precision) {
-    this.values = [];
+    this.values    = [];
     this.precision = 1;
+    this.enable3d_ = true;
     if (this.opt_precision) {
         this.setPrecision(/** @type {number} */ (opt_precision));
     }
+};
+
+/**
+ * Sets 3d enabling flag for css hardware acceleration (on by default)
+ * @param {Boolean} onoff
+ * @return {lime.style.Transform} object itself.
+ */
+lime.style.Transform.prototype.set3d = function(onoff) {
+    this.enable3d_ = onoff;
+    return this;
 };
 
 /**
@@ -116,9 +127,16 @@ lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
 
     var p = 1 / this.precision;
     var val = 'translate';
-    if (lime.userAgent.IOS || lime.userAgent.PLAYBOOK) val += '3d';
+
+    // Disabling 3d for iOS until iOS Safari fixes the DOM layering alpha blending bug
+    // TODO: Enable disabling of 3d transforms per node
+    if (this.enable3d_ && (lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
+        val += '3d';
+    }
     val += '(' + (tx * p) + 'px,' + (ty * p) + 'px';
-    if (lime.userAgent.IOS || lime.userAgent.PLAYBOOK) val += ',' + ((opt_tz ? opt_tz : 0) * p) + 'px';
+    if (this.enable3d_ && (lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
+        val += ',' + ((opt_tz ? opt_tz : 0) * p) + 'px';
+    }
     this.values.push(val + ')');
     
     return this;
