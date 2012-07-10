@@ -50,7 +50,7 @@ lime.Renderer.DOM.drawSizePosition = function() {
        quality = this.getQuality(),
        position = this.getPosition(),
        rquality = this.relativeQuality_ || 1,
-       enable3d = this.getCSS3DTransformsAllowed();
+       enable3D = this.getCSS3DTransformsAllowed();
 
     if (this.transitionsActive_[lime.Transition.POSITION]) {
         position = this.transitionsActive_[lime.Transition.POSITION];
@@ -89,7 +89,8 @@ lime.Renderer.DOM.drawSizePosition = function() {
     if (this.domElement != this.containerElement) {
         if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION])
         lime.style.setTransform(this.containerElement,
-                new lime.style.Transform().set3d(enable3d)
+                new lime.style.Transform()
+                    .set3DAllowed(enable3D)
                     .translate(ax-so, ay-so));
     }
 
@@ -105,7 +106,7 @@ lime.Renderer.DOM.drawSizePosition = function() {
 
     var transform = new lime.style.Transform()
         .setPrecision(0.1)
-        .set3d(enable3d);
+        .set3DAllowed(enable3D);
 
     if (this.mask_) {
         lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);
@@ -206,7 +207,7 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
 
         lime.style.setTransform(el, new lime.style.Transform()
             .setPrecision(0.1)
-            .set3d(this.allow3dCSSTransform_ || true)
+            .set3DAllowed(this.getCSS3DTransformsAllowed())
             .translate(tl.x, tl.y).rotate(-rot, 'rad'));
     }
 
