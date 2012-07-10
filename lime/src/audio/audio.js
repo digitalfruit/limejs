@@ -36,6 +36,7 @@ lime.audio.Audio = function(filePath) {
     }
 
     if (lime.audio.AudioContext) {
+        this.volume_ = 1;
         this.prepareContext_();
         this.loadBuffer(filePath, goog.bind(this.bufferLoadedHandler_, this));
     }
@@ -168,7 +169,11 @@ lime.audio.Audio.prototype.play = function(opt_loop) {
             }
             this.source = lime.audio.context.createBufferSource();
             this.source.buffer = this.buffer;
-            this.source.connect(lime.audio.masterGain);
+            this.gain = lime.audio.context.createGainNode();
+            this.gain.connect(lime.audio.masterGain);
+            this.gain.gain.value = this.volume_;
+            this.source.connect(this.gain);
+
             this.playTime_ = lime.audio.context.currentTime;
             var delay = arguments[1] || 0
              
@@ -205,6 +210,7 @@ lime.audio.Audio.prototype.stop = function() {
                 this.playPosition_ = 0;
             }
             this.source.noteOff(0);
+            this.gain.disconnect(lime.audio.masterGain);
             this.source = null;
         }
         else {
@@ -231,3 +237,20 @@ lime.audio.setMute = function(bool) {
   lime.audio._isMute = bool;
 };
 
+lime.audio.Audio.prototype.setVolume = function(value) {
+    if (lime.audio.AudioContext) {
+        this.volume_ = value;
+        if (this.gain) this.gain.gain.value = value;
+    }
+    else {
+        this.baseElement.volume = value;
+    }
+};
+lime.audio.Audio.prototype.getVolume = function() {
+    if (lime.audio.AudioContext) {
+        return this.volume_;
+    }
+    else {
+        return this.baseElement.volume;
+    }
+};
