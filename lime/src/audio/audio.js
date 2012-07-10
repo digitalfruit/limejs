@@ -28,25 +28,82 @@ lime.audio.Audio = function(filePath) {
      * @private
      */
     this.playing_ = false;
-
-    /**
-     * Internal audio element
-     * @type {audio}
-     */
-    this.baseElement = document.createElement('audio');
-    this.baseElement.preload = true;
-    this.baseElement.loop = false;
-
+    
     if (goog.userAgent.GECKO && (/\.mp3$/).test(filePath)) {
         filePath = filePath.replace(/\.mp3$/, '.ogg');
     }
 
-    this.baseElement.src = filePath;
-    this.baseElement.load();
+    if (lime.audio.AudioContext) {
+        this.prepareContext_();
+        this.loadBuffer(filePath, goog.bind(this.bufferLoadedHandler_, this));
+    }
+    else {
+        /**
+         * Internal audio element
+         * @type {audio}
+         */
+        this.baseElement = document.createElement('audio');
+        this.baseElement.preload = true;
+        this.baseElement.loop = false;
 
-    this.loadInterval = setInterval(goog.bind(this.loadHandler_, this), 10);
+        this.baseElement.src = filePath;
+        this.baseElement.load();
+        var self = this;
+        this.baseElement.addEventListener('ended', function() {
+            self.playing_ = false;
+        });
+        this.loadInterval = setInterval(goog.bind(this.loadHandler_, this), 10);
 
-    this.loaded_ = false;
+        this.loaded_ = false;
+    }
+};
+
+lime.audio.AudioContext = goog.global['AudioContext'] || goog.global['webkitAudioContext'];
+lime.audio._buffers = {};
+
+lime.audio.Audio.prototype.prepareContext_ = function() {
+    if (lime.audio.context) return;
+    var context = lime.audio.context = new lime.audio.AudioContext();
+    var gain = lime.audio.masterGain = context.createGainNode();
+    gain.connect(context.destination);
+};
+
+lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
+    var buffers = lime.audio._buffers;
+    if (buffers[path] && buffers[path].buffer) {
+        cb(buffers[path].buffer, path);
+    }
+    else if (buffers[path]) {
+        buffers[path].push(cb);
+    }
+    else {
+        buffers[path] = [cb];
+        var req = new XMLHttpRequest();
+        req.open('GET', path, true);
+        req.responseType = 'arraybuffer';
+        req.onload = function() {
+            lime.audio.context.decodeAudioData(req.response, function(buffer) {
+               if (!buffer) {
+                   return console.error('Error decoding file:', path);
+               }
+               var cbArray = buffers[path];
+               buffers[path] = buffer;
+               for (var i=0; i < cbArray.length; i++) {
+                   cbArray[i](buffer, path);
+               }
+            });
+        };
+        req.onerror = function() {
+          console.error('XHR error loading file:', path);  
+        };
+        req.send();
+    }
+};
+
+lime.audio.Audio.prototype.bufferLoadedHandler_ = function (buffer, path) {
+    this.buffer = buffer;
+    this.loaded_ = true;
+    console.log(this.buffer.duration, lime.audio.context.currentTime);
 };
 
 /**
@@ -83,7 +140,7 @@ lime.audio.Audio.prototype.isLoaded = function() {
  * @return {boolean} Audio is playing.
  */
 lime.audio.Audio.prototype.isPlaying = function() {
-    return this.playing_;
+    return lime.audio.AudioContext && this.source ? this.source.playbackState == this.source.PLAYING_STATE : this.playing_;
 };
 
 /**
@@ -91,7 +148,24 @@ lime.audio.Audio.prototype.isPlaying = function() {
  */
 lime.audio.Audio.prototype.play = function() {
     if (this.isLoaded() && !this.isPlaying() && !lime.audio.getMute()) {
-        this.baseElement.play();
+        if (lime.audio.AudioContext) {
+            if (this.source && this.source.playbackState == this.source.FINISHED_STATE) {
+                this.playPosition_ = 0;
+            }
+            this.source = lime.audio.context.createBufferSource();
+            this.source.buffer = this.buffer;
+            this.source.connect(lime.audio.masterGain);
+            this.playTime_ = lime.audio.context.currentTime;
+            if (this.playPosition_ > 0) {
+                this.source.noteGrainOn(0, this.playPosition_, this.buffer.duration - this.playPosition_);
+            }
+            else {
+                this.source.noteOn(0);
+            }
+        }
+        else {
+            this.baseElement.play();
+        }
         this.playing_ = true;
         if (lime.audio._playQueue.indexOf(this) == -1) {
           lime.audio._playQueue.push(this);
@@ -104,7 +178,17 @@ lime.audio.Audio.prototype.play = function() {
  */
 lime.audio.Audio.prototype.stop = function() {
     if (this.isPlaying()) {
-        this.baseElement.pause();
+        if (lime.audio.AudioContext) {
+            this.playPosition_ = lime.audio.context.currentTime - this.playTime_ + (this.playPosition_ || 0);
+            if (this.playPosition_ > this.buffer.duration) {
+                this.playPosition_ = 0;
+            }
+            this.source.noteOff(0);
+            this.source = null;
+        }
+        else {
+            this.baseElement.pause();
+        }
         this.playing_ = false;
     }
 };
@@ -125,3 +209,4 @@ lime.audio.setMute = function(bool) {
   }
   lime.audio._isMute = bool;
 };
+
