@@ -21,7 +21,7 @@ lime.audio.AudioMap = function(config) {
     if (lime.audio.AudioContext) {
         var path;
         for (var i = 0; i < config['resources'].length; i++) {
-            if (/\.mp3/i.test(config['resources'][i])) {
+            if ((lime.userAgent.IOS?/\.caf/i:/\.mp3/i).test(config['resources'][i])) {
                 path = config['resources'][i];
                 continue;
             }
@@ -31,7 +31,6 @@ lime.audio.AudioMap = function(config) {
         var loadedSprites = 0;
         var self = this;
         var keys = Object.keys(config['spritemap']);
-        console.log(keys, config);
         for (i = 0; i < keys.length; i++) {
             this.numSprites++;
             var spritePath = path.replace(/(.*)\.(.*?$)/,'$1_' + goog.string.padNumber(this.numSprites, 3) + '.$2');
@@ -60,7 +59,6 @@ lime.audio.AudioMap.prototype.play = function(sprite, opt_loop) {
     if (lime.audio.AudioContext) {
         var spriteObj = this.sprites[sprite];
         if (spriteObj) {
-            console.log('play', sprite, spriteObj.path);
             var audio = new lime.audio.Audio(spriteObj.path);
             audio.play(opt_loop);
             var id = (Math.random() * 1e6) | 0;

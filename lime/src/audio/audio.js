@@ -92,7 +92,7 @@ lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
                for (var i=0; i < cbArray.length; i++) {
                    cbArray[i](buffer, path);
                }
-            });
+            }, function(e){console.error('Error decoding file',e);});
         };
         req.onerror = function() {
           console.error('XHR error loading file:', path);  
