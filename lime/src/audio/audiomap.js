@@ -59,6 +59,9 @@ lime.audio.AudioMap.prototype.play = function(sprite, opt_loop) {
     if (lime.audio.AudioContext) {
         var spriteObj = this.sprites[sprite];
         if (spriteObj) {
+            if (!goog.isDef(opt_loop) && this.config['spritemap'][sprite]['loop']) {
+                opt_loop = true;
+            }
             var audio = new lime.audio.Audio(spriteObj.path);
             audio.play(opt_loop);
             var id = (Math.random() * 1e6) | 0;
@@ -68,6 +71,7 @@ lime.audio.AudioMap.prototype.play = function(sprite, opt_loop) {
                     delete this.tracks[id];
                 };
             }, false, this);
+            return id;
         }
     }
     else if (this.player && this.config.spritemap[sprite] && !lime.audio.getMute()) {

@@ -2,7 +2,7 @@ goog.provide('lime.audio.Audio');
 
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
-
+goog.require('lime.userAgent');
 
 // Notice. Real problems for audio in iOS. Works only for one sound
 // and needs to be initialized from user event. No solutions found.
@@ -62,6 +62,8 @@ goog.inherits(lime.audio.Audio, goog.events.EventTarget);
 lime.audio.AudioContext = goog.global['AudioContext'] || goog.global['webkitAudioContext'];
 lime.audio._buffers = {};
 
+lime.audio.supportsMultiChannel = lime.audio.AudioContext || !(lime.userAgent.IOS || lime.userAgent.WINPHONE);
+
 lime.audio.Audio.prototype.prepareContext_ = function() {
     if (lime.audio.context) return;
     var context = lime.audio.context = new lime.audio.AudioContext();
@@ -114,7 +116,7 @@ lime.audio.Audio.prototype.onEnded_ = function (e) {
     this.playPosition_ = 0;
     if (ev.returnValue_ !== false && this.loop_) {
         if (lime.audio.AudioContext)
-            this.play(this.loop_, this.playTime_ + this.buffer.duration - this.playPositionCache);
+            this.play(this.loop_, this.playTime_ + this.buffer.duration - this.playPositionCache - 0.05);
         else
             this.play(this.loop_);
     }
@@ -185,7 +187,7 @@ lime.audio.Audio.prototype.play = function(opt_loop) {
             }
             this.playPositionCache = this.playPosition_;
             this.endTimeout_ = setTimeout(goog.bind(this.onEnded_, this),
-                (this.buffer.duration - (this.playPosition_ || 0)) * 1000 - 50);
+                (this.buffer.duration - (this.playPosition_ || 0)) * 1000 - 100);
         }
         else {
             this.baseElement.play();
