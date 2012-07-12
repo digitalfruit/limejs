@@ -106,6 +106,12 @@ lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
 lime.audio.Audio.prototype.bufferLoadedHandler_ = function (buffer, path) {
     this.buffer = buffer;
     this.loaded_ = true;
+    var ev = new goog.events.Event('loaded');
+    ev.event = null;
+    this.dispatchEvent(ev);
+    if (this.autoplay_) {
+        this.play.apply(this, this.autoplay_);
+    }
 };
 
 lime.audio.Audio.prototype.onEnded_ = function (e) {
@@ -129,7 +135,7 @@ lime.audio.Audio.prototype.onEnded_ = function (e) {
  */
 lime.audio.Audio.prototype.loadHandler_ = function() {
     if (this.baseElement.readyState > 2) {
-        this.loaded_ = true;
+        this.bufferLoadedHandler_();
         clearTimeout(this.loadInterval);
     }
     if (this.baseElement.error)clearTimeout(this.loadInterval);
@@ -137,7 +143,7 @@ lime.audio.Audio.prototype.loadHandler_ = function() {
     if (lime.userAgent.IOS && this.baseElement.readyState == 0) {
         //ios hack do not work any more after 4.2.1 updates
         // no good solutions that i know
-        this.loaded_ = true;
+        this.bufferLoadedHandler_();
         clearTimeout(this.loadInterval);
         // this means that ios audio anly works if called from user action
     }
@@ -164,6 +170,9 @@ lime.audio.Audio.prototype.isPlaying = function() {
  * @param {number=} opt_loop Loop the sound.
  */
 lime.audio.Audio.prototype.play = function(opt_loop) {
+    if (!this.isLoaded()) {
+        this.autoplay_ = goog.array.toArray(arguments);
+    }
     if (this.isLoaded() && !this.isPlaying() && !lime.audio.getMute()) {
         if (lime.audio.AudioContext) {
             if (this.source && this.source.playbackState == this.source.FINISHED_STATE) {
@@ -204,6 +213,9 @@ lime.audio.Audio.prototype.play = function(opt_loop) {
  * Stop playing the audio
  */
 lime.audio.Audio.prototype.stop = function() {
+    if (!this.isLoaded()) {
+        this.autoplay_ = null;
+    }
     if (this.isPlaying()) {
         if (lime.audio.AudioContext) {
             clearTimeout(this.endTimeout_);
