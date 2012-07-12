@@ -120,11 +120,14 @@ lime.audio.Audio.prototype.onEnded_ = function (e) {
     ev.event = e;
     this.dispatchEvent(ev);
     this.playPosition_ = 0;
-    if (ev.returnValue_ !== false && this.loop_) {
-        if (lime.audio.AudioContext)
-            this.play(this.loop_, this.playTime_ + this.buffer.duration - this.playPositionCache - 0.05);
-        else
-            this.play(this.loop_);
+    var delay = lime.audio.AudioContext ? this.playTime_ + this.buffer.duration - this.playPositionCache - 0.05 : 0;
+    if (this.next_) {
+        for (var i = 0; i < this.next_.length; i++) {
+            this.next_[i][0].play(this.next_[i][1], delay);
+        }
+    }
+    else if (ev.returnValue_ !== false && this.loop_) {
+        this.play(this.loop_, delay);
     }
 }
 
@@ -196,7 +199,7 @@ lime.audio.Audio.prototype.play = function(opt_loop) {
             }
             this.playPositionCache = this.playPosition_;
             this.endTimeout_ = setTimeout(goog.bind(this.onEnded_, this),
-                (this.buffer.duration - (this.playPosition_ || 0)) * 1000 - 100);
+                (this.buffer.duration - (this.playPosition_ || 0)) * 1000 - 150);
         }
         else {
             this.baseElement.play();

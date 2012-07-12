@@ -53,17 +53,27 @@ lime.audio.AudioMap.prototype._initPlayer = function() {
 /**
  * Start playing the audio
  * @param {string} sprite Sprite name to play. 
- * @param {number=} opt_loop Loop the sound.
+ * @param {boolean=} opt_loop Loop the sound.
+ * @param {number} opt_after Only start playing after this track has finished.
  */
-lime.audio.AudioMap.prototype.play = function(sprite, opt_loop) {
+lime.audio.AudioMap.prototype.play = function(sprite, opt_loop, opt_after) {
     if (lime.audio.AudioContext) {
         var spriteObj = this.sprites[sprite];
         if (spriteObj) {
             if (!goog.isDef(opt_loop) && this.config['spritemap'][sprite]['loop']) {
                 opt_loop = true;
             }
+            var delay = 0;
+            var after;
             var audio = new lime.audio.Audio(spriteObj.path);
-            audio.play(opt_loop);
+            
+            if (opt_after && (after = this.tracks[opt_after])) {
+                if (!after.next_) after.next_ = [];
+                after.next_.push([audio, opt_loop]);
+            }
+            else {
+                audio.play(opt_loop);
+            }
             var id = (Math.random() * 1e6) | 0;
             this.tracks[id] = audio;
             goog.events.listen(audio, 'ended', function(e) {
