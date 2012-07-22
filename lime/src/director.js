@@ -330,14 +330,33 @@ lime.Director.prototype.updateLayout = function() {
 /**
  * Push scene to the top of scene stack
  * @param {lime.Scene} scene New scene.
+ * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.
+ * @param {number=} opt_duration Duration of transition.
+ * @return Transition object if opt_transition is defined
  */
-lime.Director.prototype.pushScene = function(scene) {
-	scene.setSize(this.getSize().clone());
+lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration) {
+    var transition, outgoing;
+
+    scene.setSize(this.getSize().clone());
+
+    if (goog.isDef(opt_transition) && this.sceneStack_.length) {
+        outgoing = this.sceneStack_[this.sceneStack_.length - 1];
+        transition = new opt_transition(outgoing, scene);
+
+        if (goog.isDef(opt_duration)) {
+            transition.setDuration(opt_duration);
+        }
+        scene.domElement.style['display'] = 'none';
+    }
     this.sceneStack_.push(scene);
     this.domElement.appendChild(scene.domElement);
     scene.parent_ = this;
     scene.wasAddedToTree();
 
+    if (transition) {
+        transition.start();
+        return transition;
+    }
 };
 
 
