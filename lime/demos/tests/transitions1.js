@@ -17,7 +17,8 @@ test.start = function(){
 	test.director.makeMobileWebAppCapable();
 
 	var scene1 = test.createScene('#666');
-		scene2 = test.createScene('#c00');
+		scene2 = test.createScene('#c00')
+			.setOpacity(0);
 
 	scene1.appendChild(new lime.Label('pushScene with dissolve transition')
 		.setPosition(200, 100));
