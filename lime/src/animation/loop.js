@@ -88,6 +88,8 @@ lime.animation.Loop.prototype.handleActionEnd_ = function() {
     this.timesRun_++;
     if (this.playing_ && (!this.limit_ || this.timesRun_ < this.limit_)) {
         this.action_.play();
+    } else {
+        this.stop(); // Make sure event gets dispatched when finished
     }
 };
 
