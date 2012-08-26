@@ -305,11 +305,13 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
 
     var transition = new transitionclass(outgoing, scene);
         
-    goog.events.listen(transition,'end',function() {
+    goog.events.listenOnce(transition,'end',function() {
             var i = removelist.length;
             while (--i >= 0) {
                 goog.dom.removeNode(removelist[i]);
             }
+            removelist.length = 0;
+            
         },false,this);
 
     if (goog.isDef(opt_duration)) {
