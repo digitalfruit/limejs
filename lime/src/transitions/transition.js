@@ -67,8 +67,4 @@ lime.transitions.Transition.prototype.start = function() {
 lime.transitions.Transition.prototype.finish = function() {
     this.dispatchEvent(new goog.events.Event('end'));
     this.finished_ = true;
-    
-    this.outgoing_ = null;
-    this.incoming_ = null;
-    
 };
