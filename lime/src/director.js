@@ -362,15 +362,38 @@ lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration
 
 /**
  * Remove current scene from the stack
+ * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.
+ * @param {number=} opt_duration Duration of transition.
+ * @return Transition object if opt_transition is defined
  */
-lime.Director.prototype.popScene = function() {
-    if (!this.sceneStack_.length) return;
-    this.sceneStack_[this.sceneStack_.length - 1].wasRemovedFromTree();
-    this.sceneStack_[this.sceneStack_.length - 1].parent_ = null;
-    goog.dom.removeNode(
-        this.sceneStack_[this.sceneStack_.length - 1].domElement);
-    this.sceneStack_.pop();
-
+lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
+    var transition, 
+      outgoing = this.getCurrentScene();
+      
+    if (goog.isNull(outgoing)) return;
+    
+    var popOutgoing = function() {
+        outgoing.wasRemovedFromTree();
+        outgoing.parent_ = null;
+        goog.dom.removeNode(outgoing.domElement);
+        this.sceneStack_.pop();
+        outgoing = null; // GC
+    };
+    // Transitions require an existing incoming scene
+    if (goog.isDef(opt_transition) && (this.sceneStack_.length > 1)) {
+        transition = new opt_transition(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);
+      
+        if (goog.isDef(opt_duration)) {
+            transition.setDuration(opt_duration);
+        }
+        goog.events.listenOnce(transition, 'end', popOutgoing, false, this);
+    } else {
+        popOutgoing.call(this);
+    }
+    if (transition) {
+        transition.start();
+        return transition;
+    }
 };
 
 
