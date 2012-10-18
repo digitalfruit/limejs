@@ -77,6 +77,7 @@ lime.ui.Scroller.prototype.dispose = function() {
     }
     if (this.moving_) {
         goog.events.removeAll(this.moving_);
+        this.moving_.removeAllChildren();
         this.moving_ = null;
     }
     this.mask_ = null;
