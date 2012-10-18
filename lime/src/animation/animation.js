@@ -115,6 +115,7 @@ lime.animation.Animation.prototype.addTarget = function(target) {
  */
 lime.animation.Animation.prototype.removeTarget = function(target) {
     goog.array.remove(this.targets, target);
+    goog.array.remove(this.initTargets_, target);
     return this;
 };
 
