@@ -111,7 +111,7 @@ lime.style.Transform.prototype.scale = function(sx, sy) {
 lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
     var rot_str;
 
-    if (this.enable3D_) {
+    if (this.enable3D_ && (lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
         rot_str = 'rotate3d(0, 0, 1, ' + angle + (opt_unit ? opt_unit : 'deg') + ')';
     } else {
         rot_str = 'rotate(' + angle + (opt_unit ? opt_unit : 'deg') + ')';
