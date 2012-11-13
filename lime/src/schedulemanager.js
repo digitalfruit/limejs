@@ -314,6 +314,8 @@ lime.scheduleManager.dispatch_ = function(delta){
     {
         goog.array.remove(this.taskStack_, s);
     },this);
+
+    goog.array.clear(this.delTaskList_);
     
 
     var i = this.taskStack_.length;
