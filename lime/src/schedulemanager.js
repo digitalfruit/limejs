@@ -302,6 +302,7 @@ lime.scheduleManager.stepTimer_ = function() {
  */
 lime.scheduleManager.dispatch_ = function(delta){
 
+
     var stack = this.taskStack_.slice()
     var i = stack.length;
     while (--i >= 0) stack[i].step_(delta);
