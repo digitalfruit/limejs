@@ -88,6 +88,7 @@ def checkDependencies():
         
         if(retcode!=0):
             #try pure svn
+            print ('Installed Git does not support Subversion clones, trying to checkout with Subversion.')
             retcode = subprocess.Popen(subprocess.list2cmdline(["svn","checkout","http://closure-library.googlecode.com/svn/trunk/",closure_dir]),shell=True).wait()
             
             if(retcode!=0):

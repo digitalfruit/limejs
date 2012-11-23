@@ -301,10 +301,11 @@ lime.scheduleManager.stepTimer_ = function() {
  * @private
  */
 lime.scheduleManager.dispatch_ = function(delta){
-    var i = this.taskStack_.length;
-    while (--i >= 0) {
-        this.taskStack_[i].step_(delta);
-    }
+
+
+    var stack = this.taskStack_.slice()
+    var i = stack.length;
+    while (--i >= 0) stack[i].step_(delta);
     //hack to deal with FF4 CSS transformation issue https://bugzilla.mozilla.org/show_bug.cgi?id=637597
     if(lime.transformSet_ == 1 && (/Firefox\/4./).test(goog.userAgent.getUserAgentString()) &&
        !lime.FF4_USE_HW_ACCELERATION){
