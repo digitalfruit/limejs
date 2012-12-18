@@ -1,4 +1,5 @@
 goog.provide('lime.Label');
+
 goog.provide('lime.Renderer.CANVAS.LABEL');
 goog.provide('lime.Renderer.DOM.LABEL');
 
@@ -41,6 +42,12 @@ goog.inherits(lime.Label, lime.Sprite);
  * @type {string}
  */
 lime.Label.prototype.id = 'label';
+
+/**
+ * Multine flag
+ * @type {Boolean} default false
+ */
+lime.Label.prototype.multiline_ = false;
 
 /**
  * Default Font name for labels
@@ -107,9 +114,26 @@ lime.Label.prototype.getText = function() {
  * @return {lime.Label} object itself.
  */
 lime.Label.prototype.setText = function(txt) {
-    this.text_ = txt + '';
+    var startPos = 0;
+    var pos;
+
+    // Clear children if any
+    this.removeAllChildren();
+
+    txt = txt + '';
+
+    while (-1 != (pos = txt.indexOf('\n', startPos))) {
+        // Push the line
+        this.addLine_(txt.substr(startPos, pos - startPos));
+        startPos = pos + 1;
+    }
+    if (startPos < txt.length - 1) {
+        this.addLine_(txt.substr(startPos, txt.length - startPos));
+    }
+    this.text_ = txt;
     this.setDirty(lime.Dirty.CONTENT);
     delete this.words_;
+
     return this;
 };
 
@@ -366,6 +390,33 @@ lime.Label.prototype.getShadowBlur = function() {
     return this.shadowBlur_;
 };
 
+/**
+ * Sets multiline flag
+ * @param {Boolean} isMultiline
+ * @return {lime.Label} object itself.
+ */
+lime.Label.prototype.setMultiline = function(isMultiline) {
+    var ogMultiline = this.multiline_;
+
+    this.multiline_ = isMultiline;
+
+    // If switching to multiline, rebuild line objects
+    if (isMultiline && !ogMultiline) {
+        this.setText(this.text_);
+        // Clear current text
+        this.text_ = '';
+    }
+    return this;
+};
+
+/**
+ * Returns multiline flag
+ * @return {Boolean}
+ */
+lime.Label.prototype.isMultiline = function() {
+    return this.multiline_;
+};
+
 /** 
  * 
  * Break text into array of line breakable words
@@ -419,12 +470,121 @@ lime.Label.prototype.wrapText = function(context, width) {
     return lines;
 };
 
+/**
+ * Returns new instance of a label object
+ * In a function so that it can be overridden by subclasses 
+ * @param {String} txt label text
+ * @return {lime.Label}
+ */
+lime.Label.prototype.createLabel = function(txt) {
+    return new lime.Label(txt);
+};
+
+/**
+ * Adds line of text for multiline
+ * @param {string} txt New text line.
+ * @return {lime.Label} object itself.
+ */
+
+lime.Label.prototype.addLine_ = function(str) {
+    if (this.isMultiline()) {
+        var copy = this.createLabel(str)
+            .setMultiline(false);
+        this.appendChild(copy);
+    }
+};
+
+/**
+ * Sets this object's font properties on another label
+ * @param {lime.Label} label
+ */
+lime.Label.prototype.copyFontProperties_ = function(label) {
+    label.setFontFamily(this.getFontFamily())
+        .setFontSize(this.getFontSize())
+        .setFontColor(this.getFontColor())
+        .setAlign(this.getAlign())
+        .setFontWeight(this.getFontWeight())
+        .setLineHeight(this.getLineHeight());
+    
+    if (this.hasShadow_()) {
+        var shadowOffset = this.getShadowOffset();
+        label.setShadowColor(this.getShadowColor());
+        label.setShadowBlur(this.getShadowBlur());
+        label.setShadowOffset(shadowOffset.x, shadowOffset.y);
+    }
+};
+
+/**
+ * Recalculate lines properties for multiline support
+ */
+lime.Label.prototype.updateLines_ = function()
+{
+    if (this.getNumberOfChildren() === 0) {
+        return;
+    }
+    // Set label's font properties on all lines
+    var i, len = this.getNumberOfChildren();
+    for (i = 0; i < len; i++) {
+        this.copyFontProperties_(this.getChildAt(i));
+    }
+    // Top padding
+    this.getChildAt(0).setPadding(this.padding_[0], this.padding_[1], 0, this.padding_[3]);
+    
+    var currentHeight = this.getChildAt(0).getSize().height;
+    for (var i = 1; i < this.getNumberOfChildren(); i++)
+    {
+        this.getChildAt(i).setPosition(0, currentHeight);
+        currentHeight += this.getChildAt(i).getSize().height;
+        
+        // Left and right padding
+        this.getChildAt(i).setPadding(0, this.padding_[1], 0, this.padding_[3]);
+    }
+    // Bottom padding
+    this.getChildAt(this.getNumberOfChildren() - 1).setPadding(0, this.padding_[1], this.padding_[2], this.padding_[3]);
+    
+    
+    // Realign
+    if (this.align_ == 'center')
+    {
+        var pos = this.getSize().width / 2;
+        for (var i = 0; i < this.getNumberOfChildren(); i++)
+        {
+            var child = this.getChildAt(i);
+            child.setPosition(pos, child.getPosition().y);
+            child.setAnchorPoint(.5, 0);
+        }
+    }
+    else if (this.align_ == 'left')
+    {
+        for (var i = 0; i < this.getNumberOfChildren(); i++)
+        {
+            var child = this.getChildAt(i);
+            child.setPosition(0, child.getPosition().y);
+            child.setAnchorPoint(0, 0);
+        }
+    }
+    else if (this.align_ == 'right')
+    {
+        var pos = this.getSize().width;
+        for (var i = 0; i < this.getNumberOfChildren(); i++)
+        {
+            var child = this.getChildAt(i);
+            child.setPosition(pos, child.getPosition().y);
+            child.setAnchorPoint(1, 0);
+        }
+    }
+};
+
 /** @inheritDoc */
 lime.Label.prototype.update = function(){
     
-    if(this.getDirty() & lime.Dirty.CONTENT)
+    if (this.getDirty() & lime.Dirty.CONTENT)
         delete this.lastDrawnWidth_;
     
+    // Recalculate line positions when multiline is on
+    if (this.isMultiline() && (this.getDirty() & (lime.Dirty.CONTENT|lime.Dirty.FONT))) {
+        this.updateLines_();
+    }
     lime.Node.prototype.update.apply(this,arguments);
 };
 
@@ -436,8 +596,11 @@ lime.Label.prototype.update = function(){
 lime.Renderer.DOM.LABEL.draw = function(el) {
     lime.Renderer.DOM.SPRITE.draw.call(this, el);
 
+    if (this.isMultiline()) { // Only render children
+        return;
+    }
     var style = el.style;
-    if (this.dirty_ & lime.Dirty.CONTENT) {
+    if ((this.dirty_ & lime.Dirty.CONTENT)) {
         goog.dom.setTextContent(el, this.text_);
     }
     if (this.dirty_ & lime.Dirty.FONT) {
