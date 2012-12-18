@@ -72,7 +72,7 @@ lime.Button.State = {
 lime.Button.Event = {
     UP: 'up',
     DOWN: 'down',
-    CLICK: 'buttonClick' // Must not == 'click' - That is a DOM event that we don't want to override! (onClick)
+    CLICK: 'click' 
 };
 
 /**
