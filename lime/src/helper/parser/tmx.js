@@ -40,14 +40,10 @@ lime.parser.TMX = function (file) {
     }
 
     function _parseProperties(obj, xmlNode) {
-        if (obj.properties == undefined) {
-            obj.properties = new Array();
-        }
         for (var pi = 0; pi < xmlNode.length; pi++) {
-            var ins = new Object();
-            ins.name = xmlNode[pi].attributes.getNamedItem("name").nodeValue;
-            ins.value = xmlNode[pi].attributes.getNamedItem("value").nodeValue;
-            obj.properties.push(ins);
+            var name = xmlNode[pi].attributes.getNamedItem("name").nodeValue;
+            var value = xmlNode[pi].attributes.getNamedItem("value").nodeValue;
+            obj.properties[name] = value;
         }
         return true;
     }
