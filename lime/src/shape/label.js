@@ -70,6 +70,9 @@ lime.Label.prototype.measureText = function() {
     }
 
     var lh = this.getLineHeight() * this.getFontSize();
+    if (this.getMultiline()) {
+        lh *= goog.string.trim(this.text_).split('\n').length
+    }
     mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
