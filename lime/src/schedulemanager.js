@@ -307,7 +307,7 @@ lime.scheduleManager.dispatch_ = function(delta){
     var i = stack.length;
     while (--i >= 0) stack[i].step_(delta);
     //hack to deal with FF4 CSS transformation issue https://bugzilla.mozilla.org/show_bug.cgi?id=637597
-    if(lime.transformSet_ == 1 && (/Firefox\/4./).test(goog.userAgent.getUserAgentString()) &&
+    if(lime.transformSet_ == 1 && (/Firefox\/18./).test(goog.userAgent.getUserAgentString()) &&
        !lime.FF4_USE_HW_ACCELERATION){
         if(lime.scheduleManager.odd_){
             document.body.style['MozTransform'] = '';
