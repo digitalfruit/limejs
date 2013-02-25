@@ -4,7 +4,7 @@
 
 It all starts from the director. Director is a base object needed for every game and connects all LimeJS logic to a single place on the webpage. If you come from flash world you can think of it as a stage, Cocos2d users see familiarities with Cocos2d-s own Director. All other can think of it just as a front controller. 
 
-There is only one director instance for each game. It handles games global viewport and controls which scenes are visible. In the beginning of your came logic you have to create an instance of director. The parameters for the constructor method are container DOM element, stage width in pixels and height in pixels.
+There is only one director instance for each game. It handles games global viewport and controls which scenes are visible. In the beginning of your game logic you have to create an instance of director. The parameters for the constructor method are container DOM element, stage width in pixels and height in pixels.
 
     #!JavaScript
     var director = new dfkit.Director(document.body,320,460);
