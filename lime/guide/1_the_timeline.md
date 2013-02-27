@@ -11,7 +11,7 @@ There is only one director instance for each game. It handles games global viewp
 
 ## Scene
 
-Scene is a independent portion of visible elements that cover all the viewport. This means that only one scene can be active at a given time. For example, in common game logic you would have menu scene, play scene and game-over scene. To make a scene visible you call ’director.replaceScene(scene)’ or ’director.pushScene(scene)’. The difference is that *pushScene* does not remove the previous scene but keeps it in a hidden stack so it can be made visible again with ’director.popScene()’ call.
+Scene is a independent portion of visible elements that cover all the viewport. This means that only one scene can be active at a given time. For example, in common game logic you would have menu scene, play scene and game-over scene. To make a scene visible you call `director.replaceScene(scene)` or `director.pushScene(scene)`. The difference is that *pushScene* does not remove the previous scene but keeps it in a hidden stack so it can be made visible again with `director.popScene()` call.
 
     #!JavaScript
     var scene = new lime.Scene();
@@ -19,12 +19,12 @@ Scene is a independent portion of visible elements that cover all the viewport. 
 
 ## Transitions
 
-Using plain ’replaceScene()’ just makes a quick switch between the scenes that may not be visually appealing. To make it better you can set optional *transition* and *duration* property of your ’replaceScene()’ call. The transition defines the animation that happens when current scene is dismissed and new scene is activated. Currently various *Slide* and *Move* transitions are supported as well as *Dissolve* for fade-in effect.
+Using plain `replaceScene()` just makes a quick switch between the scenes that may not be visually appealing. To make it better you can set optional *transition* and *duration* property of your `replaceScene()` call. The transition defines the animation that happens when current scene is dismissed and new scene is activated. Currently various *Slide* and *Move* transitions are supported as well as *Dissolve* for fade-in effect.
 
     #!JavaScript
-    director.replaceScene(menuscene,lime.transition.SlideInRight);
+    director.replaceScene(menuscene,lime.transitions.SlideInRight);
 
-    director.replaceScene(gamescene,lime.transition.Dissolve,2);
+    director.replaceScene(gamescene,lime.transitions.Dissolve,2);
 
 ## ScheduleManager
 
@@ -32,10 +32,10 @@ Everything in Lime is drawn with repaint-dirty pattern. That means that every ti
 
 - schedule(callback, context) - Call a function in every frame. Context is object that represents *this*.
 - unschedule(callback, context) - Clear previously scheduled function.
-- scheduleWithDelay(callback, context, delay, opt_limit) - Same as *schedule* but function is only called if if more than *delay* seconds has passed from last execution.
+- scheduleWithDelay(callback, context, delay, opt_limit) - Same as *schedule* but function is only called if more than *delay* seconds has passed from last execution.
 - callAfter(callback, context, delay) - Only call function once after the delay.
 
-You should never use JavaScript built in methods ’setTimeout()’ and ’setInterval()’ directly in your game code. *lime.schduleManager* provides you with the same functionality with extra features. Your callback is called with a parameter that is the delay from the last execution of the same callback in milliseconds. This allows you to make smooth animations even if the CPU performance changes drastically.
+You should never use JavaScript built in methods `setTimeout()` and `setInterval()` directly in your game code. *lime.schduleManager* provides you with the same functionality with extra features. Your callback is called with a parameter that is the delay from the last execution of the same callback in milliseconds. This allows you to make smooth animations even if the CPU performance changes drastically.
 
     #!JavaScript
     var velocity = 2;
@@ -48,7 +48,7 @@ You should never use JavaScript built in methods ’setTimeout()’ and ’setIn
 
 ## Pausing
 
-Using scheduleManager instead of timer functions also gives you benefit of pausing support. When you wish to pause your gave you simply have to call the ’setPaused(true)’ on your Director object. This pauses all the scheduled functions and animations. Once you resume by calling ’setPaused(false)’ all your code is resumed as if nothing ever happened. While your game is in paused state instance of *lime.PauseScene* is placed as a active scene of the Director. If you wish to have some custom appearance on this state you can override this class functionality. 
+Using scheduleManager instead of timer functions also gives you benefit of pausing support. When you wish to pause your game you simply have to call the `setPaused(true)` on your Director object. This pauses all the scheduled functions and animations. Once you resume by calling `setPaused(false)` all your code is resumed as if nothing ever happened. While your game is in paused state instance of *lime.PauseScene* is placed as a active scene of the Director. If you wish to have some custom appearance on this state you can override this class functionality. 
 
 	#!JavaScript
 	mygame.director.setPaused(true);

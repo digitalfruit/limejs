@@ -2,7 +2,7 @@
 
 ## Installation
 
-*Windows users: please follow the installation guide in the README file*
+**Windows users:** please follow the installation guide in the README file
 
 The dependencies required to develop with LimeJS include [Python 2.6+](http://www.python.org/), [Git](http://git-scm.com/download) and [Subversion](http://subversion.apache.org/) or Git-SVN. If you wish to use Closure Compiler then [Java](http://www.java.com/en/) is also required. Once you have your built game there are no specific requirements for the distribution server.
 
