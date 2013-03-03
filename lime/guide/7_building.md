@@ -19,6 +19,13 @@ Though default build process strips out all whitespace, replaces local variable 
 
 To further optimize the compiled version it is encouraged that you compress it with `gzip`. [Read more](http://code.google.com/speed/page-speed/docs/payload.html#GzipCompression)
 
+### Declaring Externs
+
+To declare Externs to be used by the Advanced Compilation, use the `-e` option in the build command. This option can be passed multiple times, in case you have multiple externs files.
+
+    #!Bash
+    bin/lime.py build helloworld -o helloworld/compiled/hw_adv.js -e helloworld/externs/some_externs.js -e helloworld/externs/more_externs.js -a
+
 ## Exports
 
 As said before advanced optimizations mode replaces all variable names. This means there are no way to interact with you compiled code from some external code(for example onload handler in your HTML file). To deal with that you can define externs and exports from your code. Extern means that this variable/propery will not be renamed so you can fully interact with it from any external code. Export means variable will be renamed but a link to the new variable will be created with original name. In 99% of places you will only need export and save lot of space this way. 

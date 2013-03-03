@@ -284,6 +284,10 @@ def build(name,options):
     
     if options.advanced:
         call+=" -f --compilation_level=ADVANCED_OPTIMIZATIONS"
+
+    if options.externs_file:
+        for i, opt in enumerate(options.externs_file):
+            call+=" -f --externs="+opt
         
     if options.map_file:
         call+=" -f --formatting=PRETTY_PRINT -f --create_source_map="+options.map_file
@@ -348,6 +352,10 @@ Commands:
     
     parser.add_option("-a", "--advanced", dest="advanced", action="store_true",
                       help="Build uses ADVANCED_OPTIMIZATIONS mode (encouraged)")
+
+    parser.add_option('-e', '--externs', dest="externs_file", action='append',
+                      help="File with externs declarations.")
+
     parser.add_option("-o", "--output", dest="output", action="store", type="string",
                       help="Output file for build result")
     
