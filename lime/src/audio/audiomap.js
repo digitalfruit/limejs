@@ -32,6 +32,7 @@ lime.audio.AudioMap = function(config) {
         var self = this;
         var keys = Object.keys(config['spritemap']);
         for (i = 0; i < keys.length; i++) {
+            if (keys[i] === 'silence') continue;
             this.numSprites++;
             var spritePath = path.replace(/(.*)\.(.*?$)/,'$1_' + goog.string.padNumber(this.numSprites, 3) + '.$2');
             var audio = new lime.audio.Audio(spritePath);
