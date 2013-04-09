@@ -154,7 +154,7 @@ def update():
     
     paths = open(projects_path,'r').readlines()
     paths.append('lime\n')
-    paths.append('box2d\n')
+    paths.append('box2d/src\n')
     
     opt = ' '.join(map(lambda x: '--root_with_prefix="'+quoteSpace(os.path.join(basedir,x.rstrip()))+'/ ../../../'+x.rstrip()+'/"',paths))
 
@@ -271,7 +271,7 @@ def build(name,options):
     
     dir_list = open(projects_path,'r').readlines()
     dir_list.append('lime')
-    dir_list.append('box2d')
+    dir_list.append('box2d/src')
     dir_list.append('closure')
     
     #dir_list = filter(lambda x: os.path.isdir(os.path.join(basedir,x)) and ['.git','bin','docs'].count(x)==0 ,os.listdir(basedir))
