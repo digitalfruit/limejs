@@ -158,7 +158,7 @@ def update():
     
     opt = ' '.join(map(lambda x: '--root_with_prefix="'+quoteSpace(os.path.join(basedir,x.rstrip()))+'/ ../../../'+x.rstrip()+'/"',paths))
 
-    call = escapeSpace(os.path.join(closure_dir,'closure/bin/build/depswriter.py'))+' --root_with_prefix="'+\
+    call = 'python ' + escapeSpace(os.path.join(closure_dir,'closure/bin/build/depswriter.py'))+' --root_with_prefix="'+\
         quoteSpace(closure_dir)+'/ ../../" '+opt+' --output_file="'+closure_deps_file+'"'
         
     print (call)
@@ -278,7 +278,7 @@ def build(name,options):
 
     opt = ' '.join(map(lambda x: '--root="'+os.path.join(basedir,x.rstrip())+'/"',dir_list))
     
-    call = escapeSpace(os.path.join(closure_dir,'closure/bin/build/closurebuilder.py'))+' '+opt+' --namespace="'+name+'" '+\
+    call = 'python ' + escapeSpace(os.path.join(closure_dir,'closure/bin/build/closurebuilder.py'))+' '+opt+' --namespace="'+name+'" '+\
         '-o compiled -c '+compiler_path;
     
     
