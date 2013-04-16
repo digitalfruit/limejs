@@ -62,6 +62,31 @@ lime.ui.Scroller.Direction = {
 };
 
 /**
+ * Cleans up event listeners and references
+ */
+lime.ui.Scroller.prototype.dispose = function() {
+    if (this.event) {
+        this.event.disposeInternal();
+        this.event = null;
+    }
+    if (this.clipper) {
+        goog.events.removeAll(this.clipper);
+        this.clipper.maskTarget_ = null;
+        this.clipper.targetNode = null;
+        this.clipper = null;
+    }
+    if (this.moving_) {
+        goog.events.removeAll(this.moving_);
+        this.moving_.removeAllChildren();
+        this.moving_ = null;
+    }
+    this.mask_ = null;
+    this.activeMask_ = null;
+
+    goog.base(this, 'dispose');
+};
+
+/**
  * Returns the direction of the scroller (horizontal/vertical)
  * @return {lime.ui.Scroller.Direction} Scroll direction.
  */

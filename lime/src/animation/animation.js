@@ -115,6 +115,7 @@ lime.animation.Animation.prototype.addTarget = function(target) {
  */
 lime.animation.Animation.prototype.removeTarget = function(target) {
     goog.array.remove(this.targets, target);
+    goog.array.remove(this.initTargets_, target);
     return this;
 };
 
@@ -208,12 +209,12 @@ lime.animation.Animation.prototype.step_ = function(dt) {
         delete this.firstFrame_;
         dt = 1;
     }
-    
+
     this.playTime_ += dt;
     this.dt_ = dt;
     var t = this.playTime_ / (this.duration_ * 1000);
     if (isNaN(t) || t>=1) t = 1;
-    t = this.updateAll(t,this.targets); 
+    t = this.updateAll(t,this.targets);
 
     if (t == 1) {
         this.stop();
@@ -231,7 +232,7 @@ lime.animation.Animation.prototype.updateAll = function(t,targets){
    if (isNaN(t)) {
         t = 1;
     }
-    
+
     var i = targets.length;
     while (--i >= 0) {
         this.update(t, targets[i]);
@@ -245,11 +246,13 @@ lime.animation.Animation.prototype.updateAll = function(t,targets){
  * @return {boolean} Transitions are being used?
  */
 lime.animation.Animation.prototype.useTransitions = function() {
+    // Basically everything except Mobile/Desktop Safari seems broken.
     return this.duration_ > 0 && lime.style.isTransitionsSupported &&
-        this.optimizations_ &&
+        this.optimizations_ && lime.userAgent.IOS
+        /*
     //  goog.userAgent.MOBILE &&  // I see no boost on mac, only on iOS
         !lime.userAgent.ANDROID && // bug in 2.2 http://code.google.com/p/android/issues/detail?id=12451
-        !goog.userAgent.GECKO; // still many bugs on FF4Beta Mac when hardware acceleration in ON
+        !goog.userAgent.GECKO; // still many bugs on FF4Beta Mac when hardware acceleration in ON*/
 };
 
 /**
@@ -335,7 +338,7 @@ lime.animation.actionManager.stopAll = function(target) {
 
 
 (function(){
-    
+
     // www.netzgesta.de/dev/cubic-bezier-timing-function.html
     // currently used function to determine time
     // 1:1 conversion to js from webkit source files
@@ -350,7 +353,7 @@ lime.animation.actionManager.stopAll = function(target) {
 	function solveEpsilon(duration) {return 1.0/(200.0*duration);};
     function solve(x,epsilon) {return sampleCurveY(solveCurveX(x,epsilon));};
 	// Given an x value, find a parametric value it came from.
-	function fabs(n) {if(n>=0) {return n;}else {return 0-n;}}; 
+	function fabs(n) {if(n>=0) {return n;}else {return 0-n;}};
     function solveCurveX(x,epsilon) {var t0,t1,t2,x2,d2,i;
         // First try a few iterations of Newton's method -- normally very fast.
         for(t2=x, i=0; i<8; i++) {x2=sampleCurveX(t2)-x; if(fabs(x2)<epsilon) {return t2;} d2=sampleCurveDerivativeX(t2); if(fabs(d2)<1e-6) {break;} t2=t2-x2/d2;}
@@ -365,7 +368,7 @@ lime.animation.actionManager.stopAll = function(target) {
 		// Convert from input time to parametric value in curve, then from that to output time.
     	return solve(t, solveEpsilon(duration));
 	};
- 
+
 
 /**
  * Return easing function from Bezier curce points
@@ -384,8 +387,8 @@ lime.animation.getEasingFunction = function(p1x, p1y, p2x, p2y) {
 
 };
 
-    
-    
+
+
 })();
 
 

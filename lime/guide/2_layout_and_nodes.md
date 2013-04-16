@@ -46,7 +46,7 @@ Node class defines lot of common functionality for the display objects. Note tha
 
 ### Scale
 
-Scale makes object larges by a factor. Note that to position on the element isn't changed.
+Scale makes object larges by a factor. Note that the position of the element isn't changed.
 
 	#!JavaScript
 	var node = new lime.Node().setScale(1,2);

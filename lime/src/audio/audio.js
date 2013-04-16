@@ -14,7 +14,7 @@ goog.require('lime.userAgent');
  */
 lime.audio.Audio = function(filePath) {
     goog.base(this);
-    
+
     if(filePath && goog.isFunction(filePath.data)){
         filePath = filePath.data();
     }
@@ -30,7 +30,7 @@ lime.audio.Audio = function(filePath) {
      * @private
      */
     this.playing_ = false;
-    
+
     if (goog.userAgent.GECKO && (/\.mp3$/).test(filePath)) {
         filePath = filePath.replace(/\.mp3$/, '.ogg');
     }
@@ -97,7 +97,7 @@ lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
             }, function(e){console.error('Error decoding file',e);});
         };
         req.onerror = function() {
-          console.error('XHR error loading file:', path);  
+          console.error('XHR error loading file:', path);
         };
         req.send();
     }
@@ -190,7 +190,7 @@ lime.audio.Audio.prototype.play = function(opt_loop) {
 
             this.playTime_ = lime.audio.context.currentTime;
             var delay = arguments[1] || 0
-             
+
             if (this.playPosition_ > 0) {
                 this.source.noteGrainOn(delay, this.playPosition_, this.buffer.duration - this.playPosition_);
             }

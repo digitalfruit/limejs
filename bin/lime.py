@@ -88,6 +88,7 @@ def checkDependencies():
         
         if(retcode!=0):
             #try pure svn
+            print ('Installed Git does not support Subversion clones, trying to checkout with Subversion.')
             retcode = subprocess.Popen(subprocess.list2cmdline(["svn","checkout","http://closure-library.googlecode.com/svn/trunk/",closure_dir]),shell=True).wait()
             
             if(retcode!=0):
@@ -153,11 +154,11 @@ def update():
     
     paths = open(projects_path,'r').readlines()
     paths.append('lime\n')
-    paths.append('box2d\n')
+    paths.append('box2d/src\n')
     
     opt = ' '.join(map(lambda x: '--root_with_prefix="'+quoteSpace(os.path.join(basedir,x.rstrip()))+'/ ../../../'+x.rstrip()+'/"',paths))
 
-    call = escapeSpace(os.path.join(closure_dir,'closure/bin/build/depswriter.py'))+' --root_with_prefix="'+\
+    call = 'python ' + escapeSpace(os.path.join(closure_dir,'closure/bin/build/depswriter.py'))+' --root_with_prefix="'+\
         quoteSpace(closure_dir)+'/ ../../" '+opt+' --output_file="'+closure_deps_file+'"'
         
     print (call)
@@ -270,19 +271,23 @@ def build(name,options):
     
     dir_list = open(projects_path,'r').readlines()
     dir_list.append('lime')
-    dir_list.append('box2d')
+    dir_list.append('box2d/src')
     dir_list.append('closure')
     
     #dir_list = filter(lambda x: os.path.isdir(os.path.join(basedir,x)) and ['.git','bin','docs'].count(x)==0 ,os.listdir(basedir))
 
     opt = ' '.join(map(lambda x: '--root="'+os.path.join(basedir,x.rstrip())+'/"',dir_list))
     
-    call = escapeSpace(os.path.join(closure_dir,'closure/bin/build/closurebuilder.py'))+' '+opt+' --namespace="'+name+'" '+\
+    call = 'python ' + escapeSpace(os.path.join(closure_dir,'closure/bin/build/closurebuilder.py'))+' '+opt+' --namespace="'+name+'" '+\
         '-o compiled -c '+compiler_path;
     
     
     if options.advanced:
         call+=" -f --compilation_level=ADVANCED_OPTIMIZATIONS"
+
+    if options.externs_file:
+        for i, opt in enumerate(options.externs_file):
+            call+=" -f --externs="+opt
         
     if options.map_file:
         call+=" -f --formatting=PRETTY_PRINT -f --create_source_map="+options.map_file
@@ -347,6 +352,10 @@ Commands:
     
     parser.add_option("-a", "--advanced", dest="advanced", action="store_true",
                       help="Build uses ADVANCED_OPTIMIZATIONS mode (encouraged)")
+
+    parser.add_option('-e', '--externs', dest="externs_file", action='append',
+                      help="File with externs declarations.")
+
     parser.add_option("-o", "--output", dest="output", action="store", type="string",
                       help="Output file for build result")
     

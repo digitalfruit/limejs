@@ -17,6 +17,7 @@ goog.require('goog.style');
 lime.Label = function(txt) {
     lime.Sprite.call(this);
 
+    this.setMultiline(false);
     this.setText(txt);
 
     this.setFontFamily(lime.Label.defaultFont);
@@ -69,13 +70,16 @@ lime.Label.prototype.measureText = function() {
     }
 
     var lh = this.getLineHeight() * this.getFontSize();
+    if (this.getMultiline()) {
+        lh *= goog.string.trim(this.text_).split('\n').length
+    }
     mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
-    
+
     if (lime.userAgent.IOS5)
         w += 1;
-    
+
     var stroke = this.stroke_?this.stroke_.width_:0;
     return new goog.math.Size(
         this.padding_[1] + this.padding_[3] + w + stroke*2,
@@ -265,6 +269,16 @@ lime.Label.prototype.setAlign = function(value) {
     return this;
 };
 
+lime.Label.prototype.getMultiline = function() {
+    return this.multiline_;
+}
+
+lime.Label.prototype.setMultiline = function(bool) {
+    this.multiline_ = bool;
+    this.setDirty(lime.Dirty.CONTENT);
+    return this;
+};
+
 /**
  * Shorthand for adding shadow to a label. Calling setShadow(null) removes the shadow.
  * @param {?string} color Shadow color.
@@ -322,7 +336,7 @@ lime.Label.prototype.getShadowColor = function() {
 lime.Label.prototype.getShadowOffset = function() {
     return this.shadowOffset_;
 };
-    
+
 /**
  * Set the shadow color.
  * @param {string} color The shadow color.
@@ -366,8 +380,8 @@ lime.Label.prototype.getShadowBlur = function() {
     return this.shadowBlur_;
 };
 
-/** 
- * 
+/**
+ *
  * Break text into array of line breakable words
  * @return {Array.<string>} array of words.
  */
@@ -401,6 +415,13 @@ lime.Label.prototype.calcWordsArray = function() {
 lime.Label.prototype.wrapText = function(context, width) {
     var lines = [], line = '', words = this.words_, metrics;
     for (var i = 0; i < words.length; i++) {
+        var breaks = 0;
+        if (this.multiline_) {
+            var matches = words[i].match(/\n/g)
+            if (matches) {
+                breaks = matches.length
+            }
+        }
         if (line == '') {
             line = words[i];
         }
@@ -408,11 +429,16 @@ lime.Label.prototype.wrapText = function(context, width) {
             metrics = context.measureText(goog.string.trim(line + words[i]));
             if (metrics.width > width) {
                 lines.push(goog.string.trim(line));
+                breaks--
                 line = words[i];
             }
             else {
                 line += words[i];
             }
+        }
+        for (var j = 0; j < breaks; j++) {
+            lines.push(goog.string.trim(line));
+            line = ''
         }
     }
     lines.push(line);
@@ -421,10 +447,10 @@ lime.Label.prototype.wrapText = function(context, width) {
 
 /** @inheritDoc */
 lime.Label.prototype.update = function(){
-    
+
     if(this.getDirty() & lime.Dirty.CONTENT)
         delete this.lastDrawnWidth_;
-    
+
     lime.Node.prototype.update.apply(this,arguments);
 };
 
@@ -438,7 +464,10 @@ lime.Renderer.DOM.LABEL.draw = function(el) {
 
     var style = el.style;
     if (this.dirty_ & lime.Dirty.CONTENT) {
-        goog.dom.setTextContent(el, this.text_);
+        if (this.getMultiline()) {
+            el.innerHTML = goog.string.htmlEscape(this.text_).replace(/\n/g, '<br/>')
+        }
+        else goog.dom.setTextContent(el, this.text_);
     }
     if (this.dirty_ & lime.Dirty.FONT) {
         style['lineHeight'] = this.getLineHeight();
@@ -463,12 +492,12 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     var frame = this.getFrame(),
         width = -frame.left - this.padding_[3] + frame.right - this.padding_[1] + Math.abs(this.getShadowOffset().x) + Math.abs(this.getShadowBlur() * 2),
         dowrap = 0;
-    
+
     if (!this.words_) {
         this.words_ = this.calcWordsArray();
         dowrap = 1;
     }
-    
+
     var stroke = this.stroke_?this.stroke_.width_:0;
 
     context.save();
@@ -495,19 +524,19 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
         'px/' + lh + ' ' + this.getFontFamily();
     context.textAlign = align;
     context.textBaseline = 'top';
-    
+
     if(this.hasShadow_()){
         context.shadowColor = this.getShadowColor();
         context.shadowOffsetX = this.getShadowOffset().x;
         context.shadowOffsetY = this.getShadowOffset().y;
         context.shadowBlur = this.getShadowBlur();
     }
-    
+
     if(dowrap || width!=this.lastDrawnWidth_){
         this.lines_ = this.wrapText(context, width);
         this.lastDrawnWidth_ = width;
     }
-    
+
     if (this.lines_) {
         var lhpx = lh * this.getFontSize(),
             offsetY = (goog.isDef(this.getShadowBlur()) ? Math.abs(this.getShadowBlur()) : 0) +
