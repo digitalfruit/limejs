@@ -4,9 +4,6 @@ goog.require('goog.math.Rect');
 goog.require('goog.math.Vec2');
 goog.require('goog.math.Size');
 
-(function(){
-
-
 lime.parser.JSON = function(data){
     var dict = {};
 
@@ -30,5 +27,3 @@ lime.parser.JSON = function(data){
 
     return dict;
 };
-
-})();
