@@ -12,7 +12,7 @@ goog.require('goog.events');
  */
 lime.audio.Audio = function(filePath) {
 
-    
+
     if(filePath && goog.isFunction(filePath.data)){
         filePath = filePath.data();
     }

@@ -38,7 +38,7 @@ lime.Node = function() {
      * @type {boolean}
      */
     this.allow3DCSSTransform_ = true;
-    
+
     /**
      * Node has been added to DOM tree
      * @type {boolean}
@@ -235,7 +235,7 @@ lime.Node.prototype.setDirty = function(value, opt_pass, opt_nextframe) {
         this.mSet = false;
         this.maskTarget_.setDirty(~0);
     }
-    
+
     return this;
 };
 
@@ -314,7 +314,7 @@ lime.Node.prototype.setMask = function(value) {
     }
 
     this.mask_ = value;
-    
+
     if(this.mask_){
         this.mask_.setupDependencies();
         this.mask_.maskTarget_ = this;
@@ -496,7 +496,7 @@ lime.Node.prototype.setQuality = function(value) {
 lime.Node.prototype.getRelativeQuality = function(){
     if(!this.relativeQuality_)
         this.calcRelativeQuality();
-        
+
     return this.relativeQuality_;
 }
 
@@ -785,11 +785,11 @@ lime.Node.prototype.update = function(opt_pass) {
    if (this.dirty_ & lime.Dirty.LAYOUT) {
        this.updateLayout();
    }
-    
+
    var do_draw = this.renderer.getType() == lime.Renderer.DOM || pass;
 
     if (do_draw) {
-        
+
         //clear transitions in the queue
         for (var i in this.transitionsClear_) {
             delete this.transitionsActive_[i];
@@ -800,17 +800,17 @@ lime.Node.prototype.update = function(opt_pass) {
                 lime.style.clearTransition(this.continerElement, property);
             }
         }
-        
+
         // predraw is a check that elements are correctly drawn before the
         // transition. if not then transition is started in the next frame not now.
         var only_predraw = 0;
         for (i in this.transitionsAdd_) {
             value = this.transitionsAdd_[i];
-            
+
             // 3rd is an "already_activated" flag
             if (!value[3]) {
                 value[3] = 1;
-                
+
             if (i == lime.Transition.POSITION &&
                 this.positionDrawn_ != this.position_) {
                  this.setDirty(lime.Dirty.POSITION, 0, true);
@@ -836,19 +836,19 @@ lime.Node.prototype.update = function(opt_pass) {
 
             }
         }
-        
+
         // activate the transitions
         if(!only_predraw)
         for (i in this.transitionsAdd_) {
             value = this.transitionsAdd_[i];
             property = lime.Node.getPropertyForTransition(parseInt(i, 10));
-            
+
             if(this.renderer.getType()==lime.Renderer.DOM || property!='opacity'){
-            
+
             this.transitionsActive_[i] = value[0];
             lime.style.setTransition(this.domElement,
                 property, value[1], value[2]);
-                
+
             if (this.domElement != this.containerElement &&
                 property == lime.style.transformProperty) {
 
@@ -884,12 +884,12 @@ lime.Node.prototype.update = function(opt_pass) {
             }
             lime.setObjectDirty(this.getDeepestParentWithDom(), 1);
         }
-        
+
         // dom draw happens here
         this.renderer.update.call(this);
 
     }
-    
+
     // set flags that transitions have been draw.
     if(do_draw)
     for (i in this.transitionsActive_) {
@@ -897,7 +897,7 @@ lime.Node.prototype.update = function(opt_pass) {
             this.transitionsActiveSet_[i] = true;
         }
     }
-    
+
     if(this.dependencies_){
         for(var i=0;i<this.dependencies_.length;i++){
             this.dependencies_[i].setDirty(lime.Dirty.ALL);
@@ -935,16 +935,16 @@ lime.Node.prototype.getParent = function() {
  * @return {lime.Node} obejct itself.
  */
 lime.Node.prototype.appendChild = function(child, opt_pos) {
-    
+
     if (child instanceof lime.Node && child.getParent()) {
         child.getParent().removeChild(child);
     }
     else if(child.parentNode){
         goog.dom.removeNode(/** @type {Node} */ (child));
     }
-    
+
     child.parent_ = this;
-    
+
     if (opt_pos == undefined) {
         this.children_.push(child);
     }
@@ -1018,9 +1018,9 @@ lime.Node.prototype.removeChildAt = function(index){
             child.removeDomElement();
             child.parent_ = null;
         }
-        else 
+        else
             goog.dom.removeNode(child);
-        
+
         this.children_.splice(index, 1);
         return this.setDirty(lime.Dirty.LAYOUT);
     }
@@ -1059,7 +1059,7 @@ lime.Node.prototype.setChildIndex = function(child,index){
 /**
  * @inheritDoc
  */
-lime.Node.prototype.addEventListener = function(type, handler, 
+lime.Node.prototype.addEventListener = function(type, handler,
         opt_capture, opt_handlerScope) {
 
     // Bypass all mouse events on touchscreen devices
@@ -1126,7 +1126,7 @@ lime.Node.prototype.getScene = function() {
  */
 lime.Node.prototype.wasRemovedFromTree = function() {
     var child;
-    
+
     if(!this.dependencySet_){
         this.removeDependency(this.getParent());
     }
@@ -1144,13 +1144,13 @@ lime.Node.prototype.wasRemovedFromTree = function() {
        if (!this.getDirector()) debugger;
         this.getDirector().eventDispatcher.release(this, type);
     }
-    
+
     this.getDirector().eventDispatcher.updateDispatchOrder(this);
 
     this.inTree_ = false;
     this.director_ = null;
     this.scene_ = null;
-    
+
 };
 
 /**
@@ -1172,7 +1172,7 @@ lime.Node.prototype.wasAddedToTree = function() {
         this.eventHandlers_[type][0] = 1;
         this.getDirector().eventDispatcher.register(this, type);
     }
-    
+
     if(this.dependencySet_){
         this.setupDependencies();
     }
@@ -1188,12 +1188,12 @@ lime.Node.prototype.setupDependencies = function(){
 
 lime.Node.prototype.addDependency = function(other){
     if(!other.dependencies_) other.dependencies_ = [];
-    
+
     goog.array.insert(other.dependencies_,this);
     if(!other && !(other.getParent() instanceof lime.Scene)){
         this.addDependency(other.getParent());
     }
-    
+
 }
 
 lime.Node.prototype.removeDependency = function(other){

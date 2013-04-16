@@ -10,7 +10,7 @@ goog.require('lime.fill.Fill');
  */
 lime.fill.Image = function(img) {
     lime.fill.Fill.call(this);
-    
+
     /*if ((img instanceof lime.Sprite)) {
         sprite.setRenderMode( lime.RenderMode.BACKGROUND_CANVAS );
         this.image_ = img;
@@ -18,11 +18,11 @@ lime.fill.Image = function(img) {
             this.updateHandler_, false, this);
     }
     else */
-    
+
     if(img && goog.isFunction(img.data)){
         img = img.data();
     }
-    
+
     if (goog.isString(img)) {
         this.url_ = img;
         if(this.url_.length>50)
@@ -45,15 +45,15 @@ lime.fill.Image = function(img) {
         else {
             this.image_ = img;
         }
-        
+
     }
-    
+
     if (!this.isLoaded()){
         this.addLoadHandler_();
     }
-    
+
     lime.fill.Image.loadedImages_[this.url_] = this.image_;
-    
+
 
 };
 goog.inherits(lime.fill.Image, lime.fill.Fill);
@@ -77,22 +77,22 @@ lime.fill.Image.prototype.initForSprite = function(sprite){
     var size = sprite.getSize(),that = this;
     if(!size.width && !size.height){
         if(!this.isLoaded()){
-        
+
         goog.events.listen(this,goog.events.EventType.LOAD,function(){
             var size = this.getSize();
             if(!size.width && !size.height){
                 this.setSize(that.image_.width,that.image_.height);
             }
         },false,sprite);
-        
+
         }
         else {
-        
+
         sprite.setSize(this.image_.width,this.image_.height);
-            
+
         }
     }
-    
+
     if(!this.isLoaded()){
         goog.events.listen(this,goog.events.EventType.LOAD,function(){
             sprite.setDirty(lime.Dirty.CONTENT);
@@ -134,7 +134,7 @@ lime.fill.Image.prototype.isLoaded = function(){
 }
 
 /**
- * Set the drawing size for the fill. Size can also be passed in 
+ * Set the drawing size for the fill. Size can also be passed in
  * with two numbers.
  * @param {(goog.math.Size|number)} size Image fill size.
  * @param {(boolean|number)=} opt_perc If size is relative factor from original.
@@ -220,7 +220,7 @@ lime.fill.Image.prototype.setCanvasStyle = function(context,shape) {
         /* todo: No idea if drawimage() with loops is faster or if the
            pattern object needs to be cached. Needs to be tested! */
         var ptrn = context.createPattern(img,'repeat');
-        var aspx = s.width/img.width, aspy =s.height/img.height; 
+        var aspx = s.width/img.width, aspy =s.height/img.height;
         context.save();
         context.translate(frame.left+offset.x,frame.top+offset.y);
         context.scale(aspx,aspy);
