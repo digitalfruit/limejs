@@ -28,7 +28,7 @@ lime/demos/zlizer/compiled/zlizer.js: $(DEMO_GAMES_DEPS)
 	$(LIMEPY) build zlizer -a -o $@
 
 lime/demos/pong/compiled/pong.js: $(DEMO_GAMES_DEPS)
-	$(LIMEPY) build rb -o $@
+	$(LIMEPY) build pong -o $@
 
 %.manifest: .FORCE
 	sed -i "" -e "s/\(# Updated on: \).*/\1$$(date '+%Y-%m-%d %H:%M:%S')/" $@
