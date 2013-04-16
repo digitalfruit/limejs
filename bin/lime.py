@@ -290,7 +290,7 @@ def build(name,options):
             call+=" -f --externs="+opt
         
     if options.map_file:
-        call+=" -f --formatting=PRETTY_PRINT -f --create_source_map="+options.map_file
+        call+=" -f --formatting=PRETTY_PRINT -f --create_source_map='"+options.map_file+"'"
     else:
         call+=" -f --define='goog.DEBUG=false'"
         
