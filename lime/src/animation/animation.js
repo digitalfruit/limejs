@@ -246,11 +246,13 @@ lime.animation.Animation.prototype.updateAll = function(t,targets){
  * @return {boolean} Transitions are being used?
  */
 lime.animation.Animation.prototype.useTransitions = function() {
+    // Basically everything except Mobile/Desktop Safari seems broken.
     return this.duration_ > 0 && lime.style.isTransitionsSupported &&
-        this.optimizations_ &&
+        this.optimizations_ && lime.userAgent.IOS
+        /*
     //  goog.userAgent.MOBILE &&  // I see no boost on mac, only on iOS
         !lime.userAgent.ANDROID && // bug in 2.2 http://code.google.com/p/android/issues/detail?id=12451
-        !goog.userAgent.GECKO; // still many bugs on FF4Beta Mac when hardware acceleration in ON
+        !goog.userAgent.GECKO; // still many bugs on FF4Beta Mac when hardware acceleration in ON*/
 };
 
 /**
