@@ -31,6 +31,13 @@ lime.userAgent.ANDROID = goog.userAgent.WEBKIT && goog.userAgent.MOBILE &&
 
 
 /**
+ * Whether the user agent is running on Windows Phone device
+ * @type boolean
+ */
+lime.userAgent.WINPHONE = goog.userAgent.MOBILE && (/(iemobile)/i).test(ua);
+
+
+/**
  * Whether the user agent is running on iPad
  * @type boolean
  */
