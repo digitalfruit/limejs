@@ -1,5 +1,4 @@
 goog.provide('lime');
-goog.provide('lime.config');
 
 goog.require('goog.style');
 goog.require('lime.css');
