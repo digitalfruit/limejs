@@ -297,7 +297,6 @@ def build(name,options):
     if options.define:
         for i, opt in enumerate(options.define):
             call+=" -f --define='lime.config."+opt+"'"
-        #call+=" -f --define='lime.config.foo="+options.define+"'"
         
     outname = options.output    
         
