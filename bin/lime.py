@@ -306,9 +306,14 @@ def build(name,options):
         call+=' --output_file="'+outname+'.js"'
         if not exists(os.path.dirname(outname)):
             os.makedirs(os.path.dirname(outname))
-        
-    
-    subprocess.call(call,shell=True);
+
+    errhandle = 0
+    try:
+        subprocess.check_call(call, shell=True);
+    except subprocess.CalledProcessError:
+        # handle error later
+        errhandle = 1
+        pass
     
     if options.output and options.preload:
         name = os.path.basename(outname)
@@ -339,7 +344,8 @@ def build(name,options):
                             line = re.sub(r'# Updated on:.*','# Updated on: '+datetime.now().strftime("%Y-%m-%d %H:%M:%S"),line)
                         print(line.rstrip())
         
-    
+    if errhandle == 1:
+        exit(1)
 
 def main():
     """The entrypoint for this script."""
