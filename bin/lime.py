@@ -230,7 +230,7 @@ def genSoy(path):
             infile= open(path,'r')
             outfile = open(path+'.js','w')
             outfile.write('goog.provide(\'lime.ASSETS.'+fname+'\');\ngoog.require(\'soy\');\n\n'+ \
-                'lime.ASSETS.'+fname+'.data = function(opt_data) { \nreturn '+infile.read()+';\n}')
+                'lime.ASSETS.'+fname+'.data = function(opt_data) { \nreturn JSON.parse("'+ json.dumps(json.loads(infile.read()), separators=(',',':')).replace("\"", "\\\"")+'");\n}')
             infile.close()
             outfile.close()
 
