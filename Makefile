@@ -23,13 +23,13 @@ zlizer: lime/demos/zlizer/compiled/zlizer.js lime/demos/zlizer/compiled/zlizer.m
 pong: lime/demos/pong/compiled/pong.js lime/demos/pong/compiled/pong.manifest
 
 
-lime/demos/roundball/compiled/roundball.js: $(DEMO_GAMES_DEPS)
+lime/demos/roundball/compiled/roundball.js: $(DEMO_GAMES_DEPS) lime/demos/roundball/*.js
 	$(LIMEPY) build rb -a -o $@
 
-lime/demos/zlizer/compiled/zlizer.js: $(DEMO_GAMES_DEPS)
+lime/demos/zlizer/compiled/zlizer.js: $(DEMO_GAMES_DEPS) lime/demos/zlizer/*.js
 	$(LIMEPY) build zlizer -a -o $@
 
-lime/demos/pong/compiled/pong.js: $(DEMO_GAMES_DEPS)
+lime/demos/pong/compiled/pong.js: $(DEMO_GAMES_DEPS) lime/demos/pong/*.js
 	$(LIMEPY) build pong -o $@
 
 %.manifest: .FORCE
