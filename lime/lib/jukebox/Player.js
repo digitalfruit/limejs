@@ -12,13 +12,14 @@
 
 goog.provide('jukebox.Player');
 
-/*
+/**
  * The first parameter @settings {Map} defines the settings of
  * the created instance which overwrites the {#defaults}.
  *
  * The second optional parameter @origin {Number} is a unique id of
  * another {jukebox.Player} instance, but it is only used internally
  * by the {jukebox.Manager} for creating and managing clones.
+ * @constructor
  */
 jukebox.Player = function(settings, origin) {
 
@@ -44,8 +45,8 @@ jukebox.Player = function(settings, origin) {
 	 */
 
 	// Pseudo-Singleton to prevent double-initializaion
-	if (Object.prototype.toString.call(jukebox.Manager) === '[object Function]') {
-		jukebox.Manager = new jukebox.Manager();
+	if (!jukebox.manager) {
+		jukebox.manager = new jukebox.Manager();
 	}
 
 
@@ -54,10 +55,10 @@ jukebox.Player = function(settings, origin) {
 
 
 	// Get playable resources via Feature / Codec Detection
-	if (Object.prototype.toString.call(jukebox.Manager) === '[object Object]') {
-		this.resource = jukebox.Manager.getPlayableResource(this.settings.resources);
+	if (Object.prototype.toString.call(jukebox.manager) === '[object Object]') {
+		this.resource = jukebox.manager.getPlayableResource(this.settings['resources']);
 	} else {
-		this.resource = this.settings.resources[0] || null;
+		this.resource = this.settings['resources'][0] || null;
 	}
 
 
@@ -71,6 +72,12 @@ jukebox.Player = function(settings, origin) {
 	return this;
 
 };
+
+
+/**
+ * @type {jukebox.Manager}
+ */
+jukebox.manager = null;
 
 jukebox.__jukeboxId = 0;
 
@@ -106,7 +113,7 @@ jukebox.Player.prototype = {
 	__addToManager: function(event) {
 
 		if (this.__wasAddedToManager !== true) {
-			jukebox.Manager.add(this);
+			jukebox.manager.add(this);
 			this.__wasAddedToManager = true;
 		}
 
@@ -152,8 +159,9 @@ jukebox.Player.prototype = {
 			features = {},
 			api;
 
-		if (jukebox.Manager && jukebox.Manager.features !== undefined) {
-			features = jukebox.Manager.features;
+
+		if (jukebox.manager && jukebox.manager.features !== undefined) {
+			features = jukebox.manager.features;
 		}
 
 		// HTML5 Audio
@@ -198,19 +206,19 @@ jukebox.Player.prototype = {
 
 			if (features.channels > 1) {
 
-				if (settings.autoplay === true) {
+				if (settings['autoplay'] === true) {
 					this.context.autoplay = true;
-				} else if (settings.spritemap[settings.autoplay] !== undefined) {
-					this.play(settings.autoplay);
+				} else if (settings['spritemap'][settings['autoplay']] !== undefined) {
+					this.play(settings['autoplay']);
 				}
 
-			} else if (features.channels === 1 && settings.spritemap[settings.autoplay] !== undefined) {
+			} else if (features.channels === 1 && settings['spritemap'][settings['autoplay']] !== undefined) {
 
-				this.backgroundMusic = settings.spritemap[settings.autoplay];
+				this.backgroundMusic = settings['spritemap'][settings['autoplay']];
 				this.backgroundMusic.started = Date.now ? Date.now() : +new Date();
 
 				// Initial playback will do the trick for iOS' security model
-				this.play(settings.autoplay);
+				this.play(settings['autoplay']);
 
 			}
 
@@ -244,17 +252,17 @@ jukebox.Player.prototype = {
 
 			var flashVars = [
 				'id=jukebox-flashstream-' + this.id,
-				'autoplay=' + settings.autoplay,
-				'file=' + window.encodeURIComponent(this.resource)
+				'autoplay=' + settings['autoplay'],
+				'file=' + goog.global['encodeURIComponent'](this.resource)
 			];
 
 			// Too much crappy code, have this in a crappy function instead.
 			this.__initFlashContext(flashVars);
 
-			if (settings.autoplay === true) {
+			if (settings['autoplay'] === true) {
 				this.play(0);
-			} else if (settings.spritemap[settings.autoplay]) {
-				this.play(settings.autoplay);
+			} else if (settings['spritemap'][settings['autoplay']]) {
+				this.play(settings['autoplay']);
 			}
 
 		} else {
@@ -369,11 +377,11 @@ jukebox.Player.prototype = {
 		if (this.backgroundMusic.started === undefined) {
 
 			this.backgroundMusic.started = now;
-			this.setCurrentTime(this.backgroundMusic.start);
+			this.setCurrentTime(this.backgroundMusic['start']);
 
 		} else {
 
-			this.backgroundMusic.lastPointer = (( now - this.backgroundMusic.started) / 1000) % (this.backgroundMusic.end - this.backgroundMusic.start) + this.backgroundMusic.start;
+			this.backgroundMusic.lastPointer = (( now - this.backgroundMusic.started) / 1000) % (this.backgroundMusic['end'] - this.backgroundMusic['start']) + this.backgroundMusic['start'];
 			this.play(this.backgroundMusic.lastPointer);
 
 		}
@@ -398,21 +406,20 @@ jukebox.Player.prototype = {
 
 		if (this.isPlaying !== null && enforce !== true) {
 
-			if (jukebox.Manager !== undefined) {
-				jukebox.Manager.addToQueue(pointer, this.id);
+			if (jukebox.manager !== undefined) {
+				jukebox.manager.addToQueue(pointer, this.id);
 			}
 
 			return;
 
 		}
 
-		var spritemap = this.settings.spritemap,
+		var spritemap = this.settings['spritemap'],
 			newPosition;
-
 		// Spritemap Entry Playback
 		if (spritemap[pointer] !== undefined) {
 
-			newPosition = spritemap[pointer].start;
+			newPosition = spritemap[pointer]['start'];
 
 		// Seconds-Position Playback (find out matching spritemap entry)
 		} else if (typeof pointer === 'number') {
@@ -421,7 +428,7 @@ jukebox.Player.prototype = {
 
 			for (var s in spritemap) {
 
-				if (newPosition >= spritemap[s].start && newPosition <= spritemap[s].end) {
+				if (newPosition >= spritemap[s]['start'] && newPosition <= spritemap[s]['end']) {
 					pointer = s;
 					break;
 				}
@@ -432,7 +439,7 @@ jukebox.Player.prototype = {
 
 		if (newPosition !== undefined && Object.prototype.toString.call(spritemap[pointer]) === '[object Object]') {
 
-			this.isPlaying = this.settings.spritemap[pointer];
+			this.isPlaying = this.settings['spritemap'][pointer];
 
 			// Start Playback, stream position will be corrected by jukebox.Manager
 			if (this.context.play) {

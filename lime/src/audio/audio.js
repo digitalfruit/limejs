@@ -4,16 +4,13 @@ goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('lime.userAgent');
 
-// Notice. Real problems for audio in iOS. Works only for one sound
-// and needs to be initialized from user event. No solutions found.
-
 /**
  * Audio stream object
  * @constructor
  * @param {string} filePath Path to audio file.
  */
 lime.audio.Audio = function(filePath) {
-    goog.base(this);
+    goog.events.EventTarget.call(this);
 
     if(filePath && goog.isFunction(filePath.data)){
         filePath = filePath.data();
@@ -46,9 +43,8 @@ lime.audio.Audio = function(filePath) {
          * @type {audio}
          */
         this.baseElement = document.createElement('audio');
-        this.baseElement.preload = true;
-        this.baseElement.loop = false;
-
+        this.baseElement['preload'] = true;
+        this.baseElement['loop'] = false;
         this.baseElement.src = filePath;
         this.baseElement.load();
         this.baseElement.addEventListener('ended', goog.bind(this.onEnded_, this));
@@ -67,8 +63,8 @@ lime.audio.supportsMultiChannel = lime.audio.AudioContext || !(lime.userAgent.IO
 lime.audio.Audio.prototype.prepareContext_ = function() {
     if (lime.audio.context) return;
     var context = lime.audio.context = new lime.audio.AudioContext();
-    var gain = lime.audio.masterGain = context.createGainNode();
-    gain.connect(context.destination);
+    var gain = lime.audio.masterGain = context['createGainNode']();
+    gain['connect'](context['destination']);
 };
 
 lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
@@ -85,7 +81,7 @@ lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
         req.open('GET', path, true);
         req.responseType = 'arraybuffer';
         req.onload = function() {
-            lime.audio.context.decodeAudioData(req.response, function(buffer) {
+            lime.audio.context['decodeAudioData'](req.response, function(buffer) {
                if (!buffer) {
                    return console.error('Error decoding file:', path);
                }
@@ -137,13 +133,13 @@ lime.audio.Audio.prototype.onEnded_ = function (e) {
  * @private
  */
 lime.audio.Audio.prototype.loadHandler_ = function() {
-    if (this.baseElement.readyState > 2) {
+    if (this.baseElement['readyState'] > 2) {
         this.bufferLoadedHandler_();
         clearTimeout(this.loadInterval);
     }
-    if (this.baseElement.error)clearTimeout(this.loadInterval);
+    if (this.baseElement['error'])clearTimeout(this.loadInterval);
 
-    if (lime.userAgent.IOS && this.baseElement.readyState == 0) {
+    if (lime.userAgent.IOS && this.baseElement['readyState'] == 0) {
         //ios hack do not work any more after 4.2.1 updates
         // no good solutions that i know
         this.bufferLoadedHandler_();
@@ -178,24 +174,24 @@ lime.audio.Audio.prototype.play = function(opt_loop) {
     }
     if (this.isLoaded() && !this.isPlaying() && !lime.audio.getMute()) {
         if (lime.audio.AudioContext) {
-            if (this.source && this.source.playbackState == this.source.FINISHED_STATE) {
+            if (this.source && this.source['playbackState'] == this.source['FINISHED_STATE']) {
                 this.playPosition_ = 0;
             }
-            this.source = lime.audio.context.createBufferSource();
+            this.source = lime.audio.context['createBufferSource']();
             this.source.buffer = this.buffer;
-            this.gain = lime.audio.context.createGainNode();
-            this.gain.connect(lime.audio.masterGain);
-            this.gain.gain.value = this.volume_;
-            this.source.connect(this.gain);
+            this.gain = lime.audio.context['createGainNode']();
+            this.gain['connect'](lime.audio.masterGain);
+            this.gain['gain']['value'] = this.volume_;
+            this.source['connect'](this.gain);
 
-            this.playTime_ = lime.audio.context.currentTime;
+            this.playTime_ = lime.audio.context['currentTime'];
             var delay = arguments[1] || 0
 
             if (this.playPosition_ > 0) {
-                this.source.noteGrainOn(delay, this.playPosition_, this.buffer.duration - this.playPosition_);
+                this.source['noteGrainOn'](delay, this.playPosition_, this.buffer.duration - this.playPosition_);
             }
             else {
-                this.source.noteOn(delay);
+                this.source['noteOn'](delay);
             }
             this.playPositionCache = this.playPosition_;
             this.endTimeout_ = setTimeout(goog.bind(this.onEnded_, this),
@@ -226,8 +222,8 @@ lime.audio.Audio.prototype.stop = function() {
             if (this.playPosition_ > this.buffer.duration) {
                 this.playPosition_ = 0;
             }
-            this.source.noteOff(0);
-            this.gain.disconnect(lime.audio.masterGain);
+            this.source['noteOff'](0);
+            this.gain['disconnect'](lime.audio.masterGain);
             this.source = null;
         }
         else {
@@ -257,7 +253,7 @@ lime.audio.setMute = function(bool) {
 lime.audio.Audio.prototype.setVolume = function(value) {
     if (lime.audio.AudioContext) {
         this.volume_ = value;
-        if (this.gain) this.gain.gain.value = value;
+        if (this.gain) this.gain['gain']['value'] = value;
     }
     else {
         this.baseElement.volume = value;

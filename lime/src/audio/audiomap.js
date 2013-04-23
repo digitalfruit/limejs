@@ -17,7 +17,7 @@ lime.audio.AudioMap = function(config) {
     }
     this.config = config;
     this.tracks = {};
-    
+
     if (lime.audio.AudioContext) {
         var path;
         for (var i = 0; i < config['resources'].length; i++) {
@@ -44,7 +44,7 @@ lime.audio.AudioMap = function(config) {
     }
     else {
         this._initPlayer();
-    }        
+    }
 };
 
 lime.audio.AudioMap.prototype._initPlayer = function() {
@@ -53,7 +53,7 @@ lime.audio.AudioMap.prototype._initPlayer = function() {
 
 /**
  * Start playing the audio
- * @param {string} sprite Sprite name to play. 
+ * @param {string} sprite Sprite name to play.
  * @param {boolean=} opt_loop Loop the sound.
  * @param {number} opt_after Only start playing after this track has finished.
  */
@@ -67,7 +67,7 @@ lime.audio.AudioMap.prototype.play = function(sprite, opt_loop, opt_after) {
             var delay = 0;
             var after;
             var audio = new lime.audio.Audio(spriteObj.path);
-            
+
             if (opt_after && (after = this.tracks[opt_after])) {
                 if (!after.next_) after.next_ = [];
                 after.next_.push([audio, opt_loop]);
@@ -85,7 +85,7 @@ lime.audio.AudioMap.prototype.play = function(sprite, opt_loop, opt_after) {
             return id;
         }
     }
-    else if (this.player && this.config.spritemap[sprite] && !lime.audio.getMute()) {
+    else if (this.player && this.config['spritemap'][sprite] && !lime.audio.getMute()) {
         this.player.play(sprite, true);
         var ctx = (this.player.context);
         if (!ctx.duration || ctx.buffered.end(0) | 0 < ctx.duration | 0) return;

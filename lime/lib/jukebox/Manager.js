@@ -13,12 +13,13 @@
 goog.provide('jukebox.Manager');
 goog.require('jukebox.Player');
 
-/*
+/**
  * This is the transparent jukebox.Manager that runs in the background.
  * You shouldn't have to call this constructor, only if you want to overwrite the
  * defaults for having an own gameloop.
  *
  * The first parameter @settings {Map} overwrites the {#defaults}.
+ * @constructor
  */
 jukebox.Manager = function(settings) {
 
@@ -54,7 +55,7 @@ jukebox.Manager = function(settings) {
 	if (this.settings.useGameLoop === false) {
 
 		jukebox.Manager.__initialized = window.setInterval(function() {
-			jukebox.Manager.loop();
+			jukebox.manager.loop();
 		}, 20);
 
 	} else {
@@ -79,16 +80,13 @@ jukebox.Manager.prototype = {
 		useFlash: false,
 		useGameLoop: false
 	},
-
 	__detectFeatures: function() {
 
 		/*
 		 * HTML5 Audio Support
 		 */
-		var audio = window.Audio && new Audio();
-
-		if (audio && audio.canPlayType && this.settings.useFlash === false) {
-
+		var audio = goog.global['Audio'] && new goog.global['Audio']();
+		if (audio && audio['canPlayType'] && this.settings.useFlash === false) {
 			// Codec Detection MIME List
 			var mimeList = [
 				// e = extension, m = mime type
@@ -119,7 +117,7 @@ jukebox.Manager.prototype = {
 						mime = mimeList[m].m[mm];
 
 						// Supported Codec was found for Extension, so skip redundant checks
-						if (audio.canPlayType(mime) !== "") {
+						if (audio['canPlayType'](mime) !== "") {
 							this.codecs[extension] = mime;
 							break;
 
@@ -139,7 +137,7 @@ jukebox.Manager.prototype = {
 			}
 
 			// Browser supports HTML5 Audio API theoretically, but support depends on Codec Implementations
-			this.features.html5audio = !!(this.codecs.mp3 || this.codecs.ogg || this.codecs.webm || this.codecs.wav);
+			this.features.html5audio = !!(this.codecs['mp3'] || this.codecs['ogg'] || this.codecs['webm'] || this.codecs['wav']);
 
 			// Default Channel Amount is 8, known to work with all Browsers
 			this.features.channels = 8;
@@ -189,15 +187,15 @@ jukebox.Manager.prototype = {
 			if (!this.features.html5audio) {
 
 				// Known to work with every Flash Implementation
-				this.codecs.mp3 = 'audio/mp3';
-				this.codecs.mpga = 'audio/mpeg';
-				this.codecs.mp4 = 'audio/mp4';
-				this.codecs.m4a = 'audio/mp4';
+				this.codecs['mp3'] = 'audio/mp3';
+				this.codecs['mpga'] = 'audio/mpeg';
+				this.codecs['mp4'] = 'audio/mp4';
+				this.codecs['m4a'] = 'audio/mp4';
 
 
 				// Flash Runtime on Android also supports GSM codecs, but impossible to detect
 				this.codecs['3gp'] = 'audio/3gpp';
-				this.codecs.amr = 'audio/amr';
+				this.codecs['amr'] = 'audio/amr';
 
 
 				// TODO: Multi-Channel support on ActionScript-side
@@ -350,15 +348,15 @@ jukebox.Manager.prototype = {
 			// Correction
 			if (player.isPlaying && player.wasReady === false) {
 
-				player.wasReady = player.setCurrentTime(player.isPlaying.start);
+				player.wasReady = player.setCurrentTime(player.isPlaying['start']);
 
 			// Reset / Stop
 			} else if (player.isPlaying && player.wasReady === true){
 
-				if (playerPosition > player.isPlaying.end) {
+				if (playerPosition > player.isPlaying['end']) {
 
-					if (player.isPlaying.loop === true) {
-						player.play(player.isPlaying.start, true);
+					if (player.isPlaying['loop'] === true) {
+						player.play(player.isPlaying['start'], true);
 					} else {
 						player.stop();
 					}
@@ -376,7 +374,7 @@ jukebox.Manager.prototype = {
 			// Background Music for Single-Mode (iOS)
 			} else if (player.backgroundMusic !== undefined && player.isPlaying === null) {
 
-				if (playerPosition > player.backgroundMusic.end) {
+				if (playerPosition > player.backgroundMusic['end']) {
 					player.backgroundHackForiOS();
 				}
 
