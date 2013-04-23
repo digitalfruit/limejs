@@ -4,6 +4,10 @@ CLOSURE=$(shell find closure -name "*.js")
 LIME=$(shell find lime/src)
 DEMO_GAMES_DEPS=$(CLOSURE) $(LIME) lime/css/lime.css.soy.js
 
+ifeq ($(debug), true)
+	BUILD_FLAGS=-m
+endif
+
 soy: css demos
 
 css: lime/css/lime.css.soy.js
@@ -24,13 +28,13 @@ pong: lime/demos/pong/compiled/pong.js lime/demos/pong/compiled/pong.manifest
 
 
 lime/demos/roundball/compiled/roundball.js: $(DEMO_GAMES_DEPS) lime/demos/roundball/*.js
-	$(LIMEPY) build rb -a -o $@
+	$(LIMEPY) build rb -a -o $@ $(BUILD_FLAGS)
 
 lime/demos/zlizer/compiled/zlizer.js: $(DEMO_GAMES_DEPS) lime/demos/zlizer/*.js
-	$(LIMEPY) build zlizer -a -o $@
+	$(LIMEPY) build zlizer -a -o $@ $(BUILD_FLAGS)
 
 lime/demos/pong/compiled/pong.js: $(DEMO_GAMES_DEPS) lime/demos/pong/*.js
-	$(LIMEPY) build pong -o $@
+	$(LIMEPY) build pong -o $@ $(BUILD_FLAGS)
 
 %.manifest: .FORCE
 	sed -i "" -e "s/\(# Updated on: \).*/\1$$(date '+%Y-%m-%d %H:%M:%S')/" $@
