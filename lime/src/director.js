@@ -16,6 +16,7 @@ goog.require('lime');
 goog.require('lime.Node');
 goog.require('lime.events.EventDispatcher');
 goog.require('lime.helper.PauseScene');
+goog.require('lime.Renderer.CANVAS');
 goog.require('lime.scheduleManager');
 goog.require('lime.transitions.Transition');
 
@@ -30,6 +31,8 @@ goog.require('lime.transitions.Transition');
  */
 lime.Director = function(parentElement, opt_width, opt_height) {
     lime.Node.call(this);
+
+    this.container = parentElement;
 
     // Unlike other nodes Director is always in the DOM as
     // it requires parentNode in the constructor
@@ -54,10 +57,17 @@ lime.Director = function(parentElement, opt_width, opt_height) {
     this.coverStack_ = [];
 
     this.domClassName = goog.getCssName('lime-director');
-    this.createDomElement();
-    parentElement.appendChild(this.domElement);
 
+    if (parentElement.tagName === 'CANVAS') {
+        this.setRenderer(lime.Renderer.CANVAS);
+        this.domElement = this.container;
+    }
 
+    this.updateDomElement();
+
+    if (this.domElement && this.domElement !== this.container) {
+        parentElement.appendChild(this.domElement);
+    }
 
     if (goog.userAgent.WEBKIT && goog.userAgent.MOBILE) {
     //todo: Not pretty solution. Cover layers may not be needed at all.
@@ -90,8 +100,8 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
         meta.content = content;
         document.getElementsByTagName('head').item(0).appendChild(meta);
-        
-        
+
+
         //todo: look for a less hacky solution
         if(goog.userAgent.MOBILE && !goog.global['navigator'].standalone){
             var that = this;
@@ -111,7 +121,6 @@ lime.Director = function(parentElement, opt_width, opt_height) {
     // --define goog.debug=false
     this.setDisplayFPS(goog.DEBUG);
     this.setPaused(false);
-
 
     var vsm = new goog.dom.ViewportSizeMonitor();
     goog.events.listen(vsm, goog.events.EventType.RESIZE,
@@ -135,7 +144,7 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
 
     this.invalidateSize_();
-    
+
     if(goog.DEBUG){
         goog.events.listen(goog.global,'keyup',this.keyUpHandler_,false,this);
     }
@@ -143,6 +152,11 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 };
 goog.inherits(lime.Director, lime.Node);
 
+/*
+lime.Director.prototype.needsDomElement = function() {
+    return this.container.tagName !== 'CANVAS'
+};
+*/
 
 /**
  * Milliseconds between recalculating FPS value
@@ -220,6 +234,8 @@ lime.Director.prototype.setDisplayFPS = function(value) {
     else if (!this.displayFPS_ && value) {
         this.frames_ = 0;
         this.accumDt_ = 0;
+
+        if (!this.domElement) return;
 
         this.fpsElement_ = goog.dom.createDom('div');
         goog.dom.classes.add(this.fpsElement_, goog.getCssName('lime-fps'));
@@ -300,20 +316,24 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
     this.sceneStack_.length = 0;
 
     this.sceneStack_.push(scene);
-    scene.domElement.style['display']='none';
-    this.domElement.appendChild(scene.domElement);
+    if (scene.domElement) {
+        scene.domElement.style['display']='none';
+    //    this.domElement.appendChild(scene.domElement);
+    }
+        this.appendChild(scene);
+
     scene.parent_ = this;
     scene.wasAddedToTree();
 
     var transition = new transitionclass(outgoing, scene);
-        
+
     goog.events.listenOnce(transition,'end',function() {
             var i = removelist.length;
             while (--i >= 0) {
                 goog.dom.removeNode(removelist[i]);
             }
             removelist.length = 0;
-            
+
         },false,this);
 
     if (goog.isDef(opt_duration)) {
@@ -326,11 +346,11 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
 };
 
 /** @inheritDoc */
-lime.Director.prototype.updateLayout = function() {
+/*lime.Director.prototype.updateLayout = function() {
    // debugger;
     this.dirty_ &= ~lime.Dirty.LAYOUT;
 };
-
+*/
 /**
  * Push scene to the top of scene stack
  * @param {lime.Scene} scene New scene.
@@ -371,11 +391,11 @@ lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration
  * @return Transition object if opt_transition is defined
  */
 lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
-    var transition, 
+    var transition,
       outgoing = this.getCurrentScene();
-      
+
     if (goog.isNull(outgoing)) return;
-    
+
     var popOutgoing = function() {
         outgoing.wasRemovedFromTree();
         outgoing.parent_ = null;
@@ -386,7 +406,7 @@ lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
     // Transitions require an existing incoming scene
     if (goog.isDef(opt_transition) && (this.sceneStack_.length > 1)) {
         transition = new opt_transition(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);
-      
+
         if (goog.isDef(opt_duration)) {
             transition.setDuration(opt_duration);
         }
@@ -488,7 +508,7 @@ lime.Director.prototype.localToScreen = function(c) {
  * @inheritDoc
  */
 lime.Director.prototype.update = function() {
-    lime.Node.prototype.update.call(this);
+    lime.Node.prototype.update.apply(this, arguments);
 
     var i = this.coverStack_.length;
     while (--i >= 0) {
@@ -503,9 +523,9 @@ lime.Director.prototype.update = function() {
  */
 lime.Director.prototype.invalidateSize_ = function() {
 
-    var stageSize = goog.style.getSize(this.domElement.parentNode);
+    var stageSize = goog.style.getSize(this.container);
 
-    if (this.domElement.parentNode == document.body) {
+    if (this.container == document.body) {
         window.scrollTo(0, 0);
         if (goog.isNumber(window.innerHeight)) {
             stageSize.height = window.innerHeight;
@@ -525,7 +545,7 @@ lime.Director.prototype.invalidateSize_ = function() {
     }
 
     this.updateDomOffset_();
-    
+
     // overflow hidden is for hiding away unused edges of document
     // height addition is because scroll(0,0) doesn't work any more if the
     // document has no edge @tonis todo:look for less hacky solution(iframe?).
@@ -574,7 +594,7 @@ lime.Director.prototype.makeMobileWebAppCapable = function() {
  * @private
  */
 lime.Director.prototype.updateDomOffset_ = function() {
-    this.domOffset = goog.style.getPageOffset(this.domElement.parentNode);
+    this.domOffset = goog.style.getPageOffset(this.container);
 };
 
 /**
