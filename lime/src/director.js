@@ -82,7 +82,7 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
         var meta = document.createElement('meta');
         meta.name = 'viewport';
-        var content = 'width=device-width,initial-scale=1.0,minimum-scale=1,' +
+        var content = 'initial-scale=1.0,minimum-scale=1,' +
             'maximum-scale=1.0,user-scalable=no';
         if ((/android/i).test(navigator.userAgent)) {
             content += ',target-densityDpi=device-dpi';
