@@ -78,7 +78,6 @@ lime.fill.Image.prototype.initForSprite = function(sprite){
     var size = sprite.getSize(),that = this;
     if(!size.width && !size.height){
         if(!this.isLoaded()){
-
         goog.events.listen(this,goog.events.EventType.LOAD,function(){
             var size = this.getSize();
             if(!size.width && !size.height){
@@ -112,7 +111,7 @@ lime.fill.Image.prototype.addLoadHandler_ = function(){
  * @private
  */
 lime.fill.Image.prototype.imageLoadedHandler_ = function(e) {
-    this.dispatchEvent(e);
+    this.dispatchEvent({type:'load'});
 };
 
 /**
