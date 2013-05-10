@@ -139,6 +139,15 @@ lime.Renderer.CANVAS.drawCanvas = function() {
             if (this.domElement === this.container) {
                 context.translate(pos.x, pos.y);
                 context.scale(realScale.x, realScale.y);
+                context.save();
+                context.beginPath();
+                context.moveTo(0, 0);
+                context.lineTo(pxsize.width, 0);
+                context.lineTo(pxsize.width, pxsize.height);
+                context.lineTo(0, pxsize.height);
+                context.closePath();
+                context.restore();
+                context.clip();
             }
             context.translate(this.ax, this.ay);
 
