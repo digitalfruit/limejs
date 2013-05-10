@@ -2,7 +2,7 @@ goog.provide('lime.Label');
 goog.provide('lime.Renderer.CANVAS.LABEL');
 goog.provide('lime.Renderer.DOM.LABEL');
 
-
+goog.require('lime.dom');
 goog.require('lime.Renderer.CANVAS.SPRITE');
 goog.require('lime.Renderer.DOM.SPRITE');
 goog.require('lime.Sprite');
@@ -587,6 +587,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
  * @param {string=} opt_format Font format.
  */
 lime.Label.installFont = function(name, fileurl, opt_format) {
+    if (!lime.dom.isDOMSupported()) return;
     var format = opt_format || 'truetype';
     goog.style.installStyles('@font-face{font-family: "' + name +
         '";src: url(' + fileurl + ') format("' + format + '");})');
