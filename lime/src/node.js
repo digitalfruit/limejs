@@ -714,10 +714,14 @@ lime.Node.prototype.updateLayout = function() {
  * @param {number=} opt_pass Pass number.
  */
 lime.Node.prototype.update = function(opt_pass) {
- // if (!this.renderer) return;
-    var property,
+   // if (!this.renderer) return;
+   var property,
         value;
    var pass = opt_pass || 0;
+
+   if (!this.inTree_) {
+       return this.setDirty(0, pass);
+   }
 
    var uid = goog.getUid(this);
    if (this.dirty_ & lime.Dirty.LAYOUT) {
