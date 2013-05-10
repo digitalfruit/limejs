@@ -14,6 +14,7 @@ goog.require('goog.math.Vec2');
 goog.require('goog.style');
 goog.require('lime');
 goog.require('lime.Node');
+goog.require('lime.dom');
 goog.require('lime.events.EventDispatcher');
 goog.require('lime.helper.PauseScene');
 goog.require('lime.Renderer.CANVAS');
@@ -58,7 +59,8 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
     this.domClassName = goog.getCssName('lime-director');
 
-    if (parentElement.tagName === 'CANVAS') {
+    if (parentElement.getContext) {
+        this.container.tagName = 'CANVAS'; // Ejecta hack.
         this.setRenderer(lime.Renderer.CANVAS);
         this.domElement = this.container;
     }
@@ -243,7 +245,7 @@ lime.Director.prototype.setDisplayFPS = function(value) {
         this.frames_ = 0;
         this.accumDt_ = 0;
 
-        if (!this.domElement) return;
+        if (!lime.dom.isDOMSupported()) return;
 
         this.fpsElement_ = goog.dom.createDom('div');
         goog.dom.classes.add(this.fpsElement_, goog.getCssName('lime-fps'));
@@ -324,10 +326,10 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
     this.sceneStack_.length = 0;
 
     this.sceneStack_.push(scene);
-    if (scene.domElement) {
+    /*if (scene.domElement) {
     //    scene.domElement.style['display']='none';
     //    this.domElement.appendChild(scene.domElement);
-    }
+    }*/
     this.appendChild(scene);
 
     //scene.parent_ = this;
@@ -577,6 +579,7 @@ lime.Director.prototype.invalidateSize_ = function() {
  * web application on iOS devices
  */
 lime.Director.prototype.makeMobileWebAppCapable = function() {
+    if (!lime.dom.isDOMSupported()) return;
 
     var meta = document.createElement('meta');
     meta.name = 'apple-mobile-web-app-capable';
