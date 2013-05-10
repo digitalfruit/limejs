@@ -128,8 +128,16 @@ lime.Director = function(parentElement, opt_width, opt_height) {
     goog.events.listen(goog.global, 'orientationchange',
         this.invalidateSize_, false, this);
 
-
     lime.scheduleManager.schedule(this.step_, this);
+
+    if (this.container === this.domElement)
+    lime.scheduleManager.schedule(function() {
+        var size = goog.style.getSize(parentElement);
+        if (size.width !== parentSize.width || size.height !== parentSize.height) {
+            this.invalidateSize_();
+            parentSize = size;
+        }
+    }, this);
 
 
     this.eventDispatcher = new lime.events.EventDispatcher(this);
@@ -505,6 +513,11 @@ lime.Director.prototype.localToScreen = function(c) {
     return coord;
 };
 
+lime.Director.prototype.measureContents = function() {
+
+    return this.getFrame();
+
+};
 
 /**
  * @inheritDoc
