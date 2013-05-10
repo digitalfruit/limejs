@@ -9,7 +9,6 @@ goog.require('rb.Progress');
  */
 rb.Game = function(size) {
     lime.Scene.call(this);
-
     this.points = 0;
 
     //empty layer for contents
@@ -18,7 +17,7 @@ rb.Game = function(size) {
 
     //make board
     this.board = new rb.Board(size, size, this).setPosition(25, 174);
-    
+
     if(rb.isBrokenChrome()) this.board.setRenderer(lime.Renderer.CANVAS);
 
     // static background bubbles for baord. try dfkit.Renderer.CANVAS for this one as it is quite static

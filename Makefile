@@ -41,4 +41,19 @@ lime/demos/pong/compiled/pong.js: $(DEMO_GAMES_DEPS) lime/demos/pong/*.js
 	
 .FORCE:
 
+ejecta-roundball: $(EJECTA_ROUNDBALL)/App/index.js
+
+$(EJECTA_ROUNDBALL)/App/index.js: $(DEMO_GAMES_DEPS) lime/demos/roundball/*.js
+	$(LIMEPY) build rb -m -o $@
+	echo "\nrb.start(document.getElementById('canvas'));" >> $@
+	cd $(EJECTA_ROUNDBALL); \
+	xcodebuild  VALID_ARCHS=i386 -configuration Debug clean  build  -sdk iphonesimulator -scheme Ejecta
+
+ejecta-zlizer: $(EJECTA_ZLIZER)/App/index.js
+
+$(EJECTA_ZLIZER)/App/index.js: $(DEMO_GAMES_DEPS) lime/demos/zlizer/*.js
+	$(LIMEPY) build zlizer -m -o $@
+	echo "\nzlizer.start(document.getElementById('canvas'));" >> $@
+	cd $(EJECTA_ZLIZER); \
+	xcodebuild  VALID_ARCHS=i386 -configuration Debug clean  build  -sdk iphonesimulator -scheme Ejecta
 
