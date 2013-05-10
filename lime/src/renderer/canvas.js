@@ -18,6 +18,8 @@ lime.Renderer.CANVAS = new lime.Renderer();
 */
 lime.Renderer.CANVAS.updateLayout = function() {};
 
+lime.Renderer.CANVAS.CLEAR_COLOR = null;
+
 /**
 * Initalize canvas element and start the drawing process
 * @this {lime.Node}
@@ -133,8 +135,14 @@ lime.Renderer.CANVAS.drawCanvas = function() {
 
         if (this.redraw_) {
             var context = this.domElement.getContext('2d');
+            if (lime.Renderer.CANVAS.CLEAR_COLOR) {
+                context.fillStyle = lime.Renderer.CANVAS.CLEAR_COLOR;
+                context.fillRect(0, 0, this.domElement.width, this.domElement.height);
+            }
+            else {
+                context.clearRect(0, 0, this.domElement.width, this.domElement.height);
+            }
 
-            context.clearRect(0, 0, this.domElement.width, this.domElement.height);
             context.save();
             if (this.domElement === this.container) {
                 context.translate(pos.x, pos.y);
