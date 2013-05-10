@@ -13,13 +13,13 @@ goog.require('lime.parser.TMX');
 test.WIDTH = 800;
 test.HEIGHT = 600;
 
-test.start = function(){
+test.start = function(parent){
 
-	test.director = new lime.Director(document.body, test.WIDTH, test.HEIGHT);
+	test.director = new lime.Director(parent || document.body, test.WIDTH, test.HEIGHT);
 	test.director.makeMobileWebAppCapable();
 
 	var gamescene = new lime.Scene;
-	
+
 	var tmx = new lime.parser.TMX('assets/sewers.tmx');
 	//canvas renderer is recommended for tiled maps. much faster in most cases
 	layer = new lime.Layer().setRenderer(lime.Renderer.CANVAS);
@@ -34,12 +34,12 @@ test.start = function(){
 			layer.appendChild(sprite);
 		}
 	}
-	
+
 	    goog.events.listen(layer, ['mousedown', 'touchstart'], function(e) {
 	        e.startDrag();
 	    });
-	
+
     // set active scene
     test.director.replaceScene(gamescene);
-	
+
 }
