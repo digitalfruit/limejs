@@ -309,28 +309,28 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
     var removelist = [];
     var i = this.sceneStack_.length;
     while (--i >= 0) {
-        this.sceneStack_[i].wasRemovedFromTree();
-        removelist.push(this.sceneStack_[i].domElement);
-        this.sceneStack_[i].parent_ = null;
+        //this.sceneStack_[i].wasRemovedFromTree();
+        removelist.push(this.sceneStack_[i]);
+        //this.sceneStack_[i].parent_ = null;
     }
     this.sceneStack_.length = 0;
 
     this.sceneStack_.push(scene);
     if (scene.domElement) {
-        scene.domElement.style['display']='none';
+    //    scene.domElement.style['display']='none';
     //    this.domElement.appendChild(scene.domElement);
     }
-        this.appendChild(scene);
+    this.appendChild(scene);
 
-    scene.parent_ = this;
-    scene.wasAddedToTree();
+    //scene.parent_ = this;
+    //scene.wasAddedToTree();
 
     var transition = new transitionclass(outgoing, scene);
 
     goog.events.listenOnce(transition,'end',function() {
             var i = removelist.length;
             while (--i >= 0) {
-                goog.dom.removeNode(removelist[i]);
+                this.removeChild(removelist[i]);
             }
             removelist.length = 0;
 
@@ -373,9 +373,10 @@ lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration
         scene.domElement.style['display'] = 'none';
     }
     this.sceneStack_.push(scene);
-    this.domElement.appendChild(scene.domElement);
-    scene.parent_ = this;
-    scene.wasAddedToTree();
+    this.appendChild(scene);
+    //this.domElement.appendChild(scene.domElement);
+    //scene.parent_ = this;
+    //scene.wasAddedToTree();
 
     if (transition) {
         transition.start();
@@ -397,9 +398,10 @@ lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
     if (goog.isNull(outgoing)) return;
 
     var popOutgoing = function() {
-        outgoing.wasRemovedFromTree();
-        outgoing.parent_ = null;
-        goog.dom.removeNode(outgoing.domElement);
+        //outgoing.wasRemovedFromTree();
+        //outgoing.parent_ = null;
+        this.removeChild(outgoing);
+        //goog.dom.removeNode(outgoing.domElement);
         this.sceneStack_.pop();
         outgoing = null; // GC
     };
