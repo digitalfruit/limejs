@@ -2,6 +2,7 @@ goog.provide('lime.dom');
 goog.require('goog.dom');
 
 lime.dom.isDOMSupported = function() {
+    if (goog.global['CocoonJS_ENV'] === true) return false;
     // This works for Ejecta. Probably not for others. Pull request!
     return !!document.head.parentNode;
 }
