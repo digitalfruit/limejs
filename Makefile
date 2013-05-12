@@ -41,6 +41,9 @@ lime/demos/pong/compiled/pong.js: $(DEMO_GAMES_DEPS) lime/demos/pong/*.js
 	
 .FORCE:
 	
+ROUNDBALL_ASSETS = $(shell find lime/demos/roundball/assets -type f)
+ZLIZER_ASSETS = $(shell find lime/demos/zlizer/assets -type f)
+	
 ifdef EJECTA_ROUNDBALL
 
 ejecta-roundball: $(EJECTA_ROUNDBALL)/App/index.js | ejecta-roundball-assets
@@ -51,7 +54,7 @@ $(EJECTA_ROUNDBALL)/App/index.js: $(DEMO_GAMES_DEPS) lime/demos/roundball/*.js
 	cd $(EJECTA_ROUNDBALL); \
 	xcodebuild  VALID_ARCHS=i386 -configuration Debug clean  build  -sdk iphonesimulator -scheme Ejecta
 
-ejecta-roundball-assets: $(patsubst lime/demos/roundball/%, $(EJECTA_ROUNDBALL)/App/%, $(shell find lime/demos/roundball/assets -type f))
+ejecta-roundball-assets: $(patsubst lime/demos/roundball/%, $(EJECTA_ROUNDBALL)/App/%, $(ROUNDBALL_ASSETS))
 
 $(EJECTA_ROUNDBALL)/App/assets/%: lime/demos/roundball/assets/%
 	mkdir -p $(EJECTA_ROUNDBALL)/App/assets
@@ -69,10 +72,46 @@ $(EJECTA_ZLIZER)/App/index.js: $(DEMO_GAMES_DEPS) lime/demos/zlizer/*.js
 	cd $(EJECTA_ZLIZER); \
 	xcodebuild  VALID_ARCHS=i386 -configuration Debug clean  build  -sdk iphonesimulator -scheme Ejecta
 
-ejecta-zlizer-assets: $(patsubst lime/demos/zlizer/%, $(EJECTA_ZLIZER)/App/%, $(shell find lime/demos/zlizer/assets -type f))
+ejecta-zlizer-assets: $(patsubst lime/demos/zlizer/%, $(EJECTA_ZLIZER)/App/%, $(ZLIZER_ASSETRS))
 
 $(EJECTA_ZLIZER)/App/assets/%: lime/demos/zlizer/assets/%
 	mkdir -p $(EJECTA_ZLIZER)/App/assets
 	cp $< $@
+
+endif
+
+ifdef COCOON_ROUNDBALL
+
+TEMPDIR:=$(shell mktemp -u -d -t roundball-cocoonjs)
+
+cocoon-roundball: $(COCOON_ROUNDBALL)
+
+$(COCOON_ROUNDBALL):  $(DEMO_GAMES_DEPS) lime/demos/roundball/*.js $(ROUNDBALL_ASSSETS) lime/templates/cocoonjs/index.html
+	mkdir  $(TEMPDIR)
+	$(LIMEPY) build rb -m -o $(TEMPDIR)/index.js
+	cp lime/templates/cocoonjs/index.html $(TEMPDIR)
+	sed -i "" -e "s/{init}/rb.start(canvas);/" $(TEMPDIR)/index.html
+	cp -rf lime/demos/roundball/assets $(TEMPDIR)
+	cd $(TEMPDIR); zip -r roundball.zip . -x ".*"
+	cp -rf $(TEMPDIR)/roundball.zip $(COCOON_ROUNDBALL)
+	rm -r $(TEMPDIR)
+
+endif
+
+ifdef COCOON_ZLIZER
+
+TEMPDIR:=$(shell mktemp -u -d -t zlizer-cocoonjs)
+
+cocoon-zlizer: $(COCOON_ZLIZER)
+
+$(COCOON_ZLIZER):  $(DEMO_GAMES_DEPS) lime/demos/zlizer/*.js $(ZLIZER_ASSSETS) lime/templates/cocoonjs/index.html
+	mkdir  $(TEMPDIR)
+	$(LIMEPY) build zlizer -m -o $(TEMPDIR)/index.js
+	cp lime/templates/cocoonjs/index.html $(TEMPDIR)
+	sed -i "" -e "s/{init}/zlizer.start(canvas);/" $(TEMPDIR)/index.html
+	cp -rf lime/demos/zlizer/assets $(TEMPDIR)
+	cd $(TEMPDIR); zip -r zlizer.zip . -x ".*"
+	cp -rf $(TEMPDIR)/zlizer.zip $(COCOON_ZLIZER)
+	rm -r $(TEMPDIR)
 
 endif
