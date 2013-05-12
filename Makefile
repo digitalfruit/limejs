@@ -40,8 +40,10 @@ lime/demos/pong/compiled/pong.js: $(DEMO_GAMES_DEPS) lime/demos/pong/*.js
 	sed -i "" -e "s/\(# Updated on: \).*/\1$$(date '+%Y-%m-%d %H:%M:%S')/" $@
 	
 .FORCE:
+	
+ifdef EJECTA_ROUNDBALL
 
-ejecta-roundball: $(EJECTA_ROUNDBALL)/App/index.js
+ejecta-roundball: $(EJECTA_ROUNDBALL)/App/index.js | ejecta-roundball-assets
 
 $(EJECTA_ROUNDBALL)/App/index.js: $(DEMO_GAMES_DEPS) lime/demos/roundball/*.js
 	$(LIMEPY) build rb -m -o $@
@@ -49,7 +51,17 @@ $(EJECTA_ROUNDBALL)/App/index.js: $(DEMO_GAMES_DEPS) lime/demos/roundball/*.js
 	cd $(EJECTA_ROUNDBALL); \
 	xcodebuild  VALID_ARCHS=i386 -configuration Debug clean  build  -sdk iphonesimulator -scheme Ejecta
 
-ejecta-zlizer: $(EJECTA_ZLIZER)/App/index.js
+ejecta-roundball-assets: $(patsubst lime/demos/roundball/%, $(EJECTA_ROUNDBALL)/App/%, $(shell find lime/demos/roundball/assets -type f))
+
+$(EJECTA_ROUNDBALL)/App/assets/%: lime/demos/roundball/assets/%
+	mkdir -p $(EJECTA_ROUNDBALL)/App/assets
+	cp $< $@
+
+endif
+
+ifdef EJECTA_ZLIZER
+
+ejecta-zlizer: $(EJECTA_ZLIZER)/App/index.js | ejecta-zlizer-assets
 
 $(EJECTA_ZLIZER)/App/index.js: $(DEMO_GAMES_DEPS) lime/demos/zlizer/*.js
 	$(LIMEPY) build zlizer -m -o $@
@@ -57,3 +69,10 @@ $(EJECTA_ZLIZER)/App/index.js: $(DEMO_GAMES_DEPS) lime/demos/zlizer/*.js
 	cd $(EJECTA_ZLIZER); \
 	xcodebuild  VALID_ARCHS=i386 -configuration Debug clean  build  -sdk iphonesimulator -scheme Ejecta
 
+ejecta-zlizer-assets: $(patsubst lime/demos/zlizer/%, $(EJECTA_ZLIZER)/App/%, $(shell find lime/demos/zlizer/assets -type f))
+
+$(EJECTA_ZLIZER)/App/assets/%: lime/demos/zlizer/assets/%
+	mkdir -p $(EJECTA_ZLIZER)/App/assets
+	cp $< $@
+
+endif
