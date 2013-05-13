@@ -60,7 +60,9 @@ lime.Director = function(parentElement, opt_width, opt_height) {
     this.domClassName = goog.getCssName('lime-director');
 
     if (parentElement.getContext) {
-        this.container.tagName = 'CANVAS'; // Ejecta hack.
+        if (!this.container.tagName) {
+            this.container.tagName = 'CANVAS'; // Ejecta hack.
+        }
         this.setRenderer(lime.Renderer.CANVAS);
         this.domElement = this.container;
     }
