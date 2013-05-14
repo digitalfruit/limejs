@@ -233,15 +233,15 @@ lime.fill.Image.prototype.setCanvasStyle = function(context,shape) {
         var so = this.getPixelSizeAndOffset(shape),s=so[0],offset=so[1];
         /* todo: No idea if drawimage() with loops is faster or if the
            pattern object needs to be cached. Needs to be tested! */
-        if (!this._pattern && img.complete) {
+        if (!img._pattern && img.complete) {
             // todo: different context? memory leak?
-            this._pattern = context.createPattern(img,'repeat');
+            img._pattern = context.createPattern(img,'repeat');
         }
         var aspx = s.width/img.width, aspy =s.height/img.height;
         context.save();
         context.translate(frame.left+offset.x,frame.top+offset.y);
         context.scale(aspx,aspy);
-        context.fillStyle = this._pattern;
+        context.fillStyle = img._pattern;
         context.fillRect(-offset.x/aspx,-offset.y/aspy,size.width/aspx, size.height/aspy);
         context.restore();
     }catch(e){}
