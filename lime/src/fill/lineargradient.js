@@ -139,15 +139,19 @@ lime.fill.LinearGradient.prototype.setCanvasStyle = function(context, shape) {
         width = frame.right - frame.left,
         height = frame.bottom - frame.top;
 
-    var grad = context.createLinearGradient(
-            frame.left + width * p[0],
-            frame.top + height * p[1],
-            frame.left + width * p[2],
-            frame.top + height * p[3]
-        );
+    if (!this._grad) {
+        // todo: this does not work when gradient changes. need to also store the frame.
+        var grad = context.createLinearGradient(
+                frame.left + width * p[0],
+                frame.top + height * p[1],
+                frame.left + width * p[2],
+                frame.top + height * p[3]
+            );
 
-    for (var i = 0; i < this.colors_.length; i++) {
-        grad.addColorStop(this.colors_[i][0], this.colors_[i][1].str);
+        for (var i = 0; i < this.colors_.length; i++) {
+            grad.addColorStop(this.colors_[i][0], this.colors_[i][1].str);
+        }
+        this._grad = grad;
     }
-    context.fillStyle = grad;
+    context.fillStyle = this._grad;
 };
