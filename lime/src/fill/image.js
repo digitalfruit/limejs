@@ -225,29 +225,53 @@ lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
 
 lime.fill.Image.prototype.setCanvasStyle = function(context,shape) {
     var size = shape.getSize(),frame = shape.getFrame();
-    if (!size.width || !size.height) {
-        return;
+
+    if (!size.width || !size.height) return;
+
+    var so = this.getPixelSizeAndOffset(shape),s=so[0],offset=so[1];
+    var pat = offset.x < 0 || offset.y < 0 || size.width > s.width - offset.x || size.height > s.height - offset.y;
+    if (pat || !this.writeToCanvas || this.rotated_) {
+        var img = this.getImageElement();
+
+        if (!img._pattern && img.complete) {
+            // todo: different context? memory leak?
+            img._pattern = context.createPattern(img,'repeat');
+        }
+        var aspx = s.width/img.width, aspy =s.height/img.height;
+        context.save();
+        context.translate(frame.left+offset.x,frame.top+offset.y);
+        context.scale(aspx,aspy);
+        context.fillStyle = img._pattern || 'none';
+        context.fillRect(-offset.x/aspx,-offset.y/aspy,size.width/aspx, size.height/aspy);
+        context.restore();
     }
-    try {
-        var so = this.getPixelSizeAndOffset(shape),s=so[0],offset=so[1];
-        // var pat = offset.x < 0 || offset.y < 0 || size.width > s.width - offset.x || size.height > s.height - offset.y;
-        // if (pat) {
-            var img = this.getImageElement();
+    else {
+        img = this.image_;
+        if (!img._pattern && img.complete) {
+            // todo: different context? memory leak?
+            img._pattern = context.createPattern(img,'repeat');
+        }
+        aspx = s.width/this.csize_.width, aspy =s.height/this.csize_.height;
+        context.save();
+        context.translate(frame.left+offset.x,frame.top+offset.y);
+        context.scale(aspx,aspy);
 
-            /* todo: No idea if drawimage() with loops is faster or if the
-               pattern object needs to be cached. Needs to be tested! */
-            if (!img._pattern && img.complete) {
-                // todo: different context? memory leak?
-                img._pattern = context.createPattern(img,'repeat');
-            }
-            var aspx = s.width/img.width, aspy =s.height/img.height;
-            context.save();
-            context.translate(frame.left+offset.x,frame.top+offset.y);
-            context.scale(aspx,aspy);
-            context.fillStyle = img._pattern || 'none';
-            context.fillRect(-offset.x/aspx,-offset.y/aspy,size.width/aspx, size.height/aspy);
-            context.restore();
-        // }
+        context.fillStyle = img._pattern || 'none';
+        // todo: negative offsets?
+        var l = this.rect_.left;
+        var t = this.rect_.top;
 
-    }catch(e){}
+        context.translate(this.coffset_.x - l, this.coffset_.y - t);
+        var rr = goog.math.Rect.intersection(this.rect_,
+            new goog.math.Rect(
+                l - offset.x/aspx - this.coffset_.x,
+                t - offset.y/aspy - this.coffset_.y,
+                size.width/aspx,
+                size.height/aspy
+            )
+        )
+        context.fillRect(rr.left, rr.top, rr.width, rr.height);
+        context.restore();
+    }
+
 };
