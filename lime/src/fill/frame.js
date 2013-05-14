@@ -57,9 +57,8 @@ lime.fill.Frame = function(img, rect, opt_offset, opt_size, opt_rotated) {
         }
         else {
             //todo: FF4 has support for element backgrounds. probably faster than this png url.
-            this.ctx = this.makeCanvas();
+            //this.ctx = this.makeCanvas();
         }
-
         if(this.isLoaded()){
             this.makeFrameData_();
         }
@@ -127,8 +126,9 @@ lime.fill.Frame.prototype.getNextCssClass_ = function(){
  * @private
  */
 lime.fill.Frame.prototype.makeFrameData_ = function(){
-    this.writeToCanvas(this.ctx);
-
+    if (this.ctx) {
+        this.writeToCanvas(this.ctx);
+    }
     if(!this.USE_CSS_CANVAS && lime.dom.isDOMSupported()){
 
         var contents = this.cvs.toDataURL("image/png"),
@@ -148,7 +148,6 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
         this.data_.img.src = contents;
 
     }
-
     this.data_.processed = true;
     this.dispatchEvent(new goog.events.Event('processed'));
     this.getImageElement().complete = true;
@@ -169,6 +168,8 @@ lime.fill.Frame.prototype.getImageElement = function(){
         if(!this.cvs){
             var ctx = this.makeCanvas();
             this.writeToCanvas(ctx);
+            this.ctx = ctx;
+            this.cvs._pattern = false;
         }
         this.frameImgCache_ = this.cvs;
         }
