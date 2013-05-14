@@ -39,7 +39,7 @@
 
       var webappCache = window.applicationCache;
 
-      if(webappCache && window.navigator.userAgent.indexOf('WebKit') != -1){
+      if(webappCache){
 
         var WIDTH = 200, HEIGHT = 100;
 
@@ -98,7 +98,9 @@
 
         webappCache.addEventListener('progress', function(e){
           lastProgress = new Date
-          el.innerHTML = 'Loading... ' + Math.round(e.loaded / e.total * 100) + '%';
+          if(window.navigator.userAgent.indexOf('WebKit') == -1)
+            el.innerHTML = 'Loading...';
+          else el.innerHTML = 'Loading... ' + Math.round(e.loaded / e.total * 100) + '%';
         },false);
 
         webappCache.addEventListener('obsolete', function(){
