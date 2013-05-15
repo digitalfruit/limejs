@@ -12,17 +12,15 @@ goog.require('rb.Board');
 goog.require('rb.Button');
 goog.require('rb.Game');
 goog.require('rb.Help');
-goog.require('lime.dom')
+goog.require('lime.dom');
+goog.require('lime.SpriteSheet');
+goog.require('lime.ASSETS.roundball.json');
+goog.require('lime.parser.JSON');
 
 //constant iPad size
 rb.WIDTH = 720;
 rb.HEIGHT = 1004;
 
-// Ejecta has some issues on adding new textures on the fly.
-var img = new Image();
-img.src = 'assets/selection.png';
-img = new Image();
-img.src = 'assets/shadow.png';
 
 
 // entrypoint
@@ -37,6 +35,9 @@ rb.start = function(parent) {
     */
 	rb.director = new lime.Director(parent || document.body, rb.WIDTH, rb.HEIGHT);
 	rb.director.makeMobileWebAppCapable();
+
+    rb.ss = new lime.SpriteSheet('assets/roundball.png',lime.ASSETS.roundball.json, lime.parser.JSON);
+
 
     rb.loadMenu();
 

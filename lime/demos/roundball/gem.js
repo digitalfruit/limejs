@@ -35,7 +35,7 @@ rb.Gem.random = function() {
     //var color = rb.Gem.colors[id];
     var gem = new rb.Gem();
     gem.index = id;
-    gem.circle.setFill('assets/ball_' + id + '.png');
+    gem.circle.setFill(rb.ss.getFrame('ball_' + id + '.png'));
     return gem;
 };
 
@@ -45,7 +45,7 @@ rb.Gem.random = function() {
 rb.Gem.prototype.select = function() {
     if (this.selected_) return;
     var size = this.getSize().clone();
-    this.highlight = new lime.Sprite().setSize(size).setFill('assets/selection.png');
+    this.highlight = new lime.Sprite().setSize(size).setFill(rb.ss.getFrame('selection.png'));
     this.appendChild(this.highlight, 0);
 
     this.selected_ = true;

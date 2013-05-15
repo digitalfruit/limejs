@@ -24,7 +24,7 @@ rb.Game = function(size) {
     var back = new lime.RoundedRect().setSize(690, 690).setAnchorPoint(0, 0).setPosition(17, 166).setRadius(30);
     for (var c = 0; c < this.board.cols; c++) {
         for (var r = 0; r < this.board.rows; r++) {
-            var b = new lime.Sprite().setFill('assets/shadow.png').setAnchorPoint(0, 0).
+            var b = new lime.Sprite().setFill(rb.ss.getFrame('shadow.png')).setAnchorPoint(0, 0).
                 setSize(this.board.GAP * .94, this.board.GAP * .94).
                 setPosition(11 + c * this.board.GAP, 11 + r * this.board.GAP);
             b.qualityRenderer = true; // no jagged edges on moz for this one
