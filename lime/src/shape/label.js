@@ -34,6 +34,8 @@ lime.Label = function(txt) {
 
     this.setFill(255, 255, 255, 0);
 
+    this.setStyle("normal");
+
 };
 goog.inherits(lime.Label, lime.Sprite);
 
@@ -116,6 +118,17 @@ lime.Label.prototype.setText = function(txt) {
     delete this.words_;
     return this;
 };
+
+lime.Label.prototype.setStyle = function(style) {
+    this.style_ = style;
+    this.setDirty(lime.Dirty.FONT);
+    return this;
+};
+
+lime.Label.prototype.getStyle = function() {
+    return this.style_;
+};
+
 
 /**
  * Returns font used to draw the label
@@ -477,6 +490,7 @@ lime.Renderer.DOM.LABEL.draw = function(el) {
         style['fontSize'] = this.getFontSize()*this.getRelativeQuality() + 'px';
         style['fontWeight'] = this.getFontWeight();
         style['textAlign'] = this.getAlign();
+        style['font-style'] = this.getStyle();
         style['textShadow'] = this.hasShadow_() ? this.getShadowColor() + ' ' + this.getShadowOffset().x + 'px ' + this.getShadowOffset().y + 'px ' + this.getShadowBlur() + 'px' : '';
     }
 };
@@ -520,7 +534,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     var lh = this.getLineHeight();
 
     context.fillStyle = this.getFontColor();
-    context.font = this.getFontWeight() + ' ' + this.getFontSize() +
+    context.font = this.getStyle() + ' '+ this.getFontWeight() + ' ' + this.getFontSize() +
         'px/' + lh + ' ' + this.getFontFamily();
     context.textAlign = align;
     context.textBaseline = 'top';
