@@ -27,7 +27,7 @@ test.start = function() {
 	gamescene.appendChild(layer);
 
   var lbl1 = test.makeLabel().setPosition(20, 10).setRenderer(lime.Renderer.CANVAS)
-      .setMultiline(true)
+      .setMultiline(true).setFontWeight(700).setStyle('italic')
       .setText('One line\nsetting multiline = true\n\nthen double newline');
   layer.appendChild(lbl1);
 
@@ -38,7 +38,7 @@ test.start = function() {
 
 
   var lbl1 = test.makeLabel().setPosition(320, 10)
-      .setMultiline(true)
+      .setMultiline(true).setOpacity(.4).setFontWeight(700).setStyle('italic')
       .setText('One line\nsetting multiline = true\n\nthen double newline');
   layer.appendChild(lbl1);
 
