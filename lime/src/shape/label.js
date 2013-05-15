@@ -34,6 +34,8 @@ lime.Label = function(txt) {
 
     this.setFill(255, 255, 255, 0);
 
+    this.setStyle("normal");
+
 };
 goog.inherits(lime.Label, lime.Sprite);
 
@@ -73,7 +75,8 @@ lime.Label.prototype.measureText = function() {
     if (this.getMultiline()) {
         lh *= goog.string.trim(this.text_).split('\n').length
     }
-    mContext.font = this.getFontSize() + 'px ' + this.getFontFamily();
+    mContext.font = this.getStyle() + ' ' + this.getFontWeight() + ' ' + this.getFontSize() + 'px ' + this.getFontFamily();
+
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
 
@@ -116,6 +119,27 @@ lime.Label.prototype.setText = function(txt) {
     delete this.words_;
     return this;
 };
+
+/**
+ * Set label text
+ * @param {string} txt New style contents.
+ * @return {lime.Label} object itself.
+ */
+lime.Label.prototype.setStyle = function(style) {
+    this.style_ = style;
+    this.setDirty(lime.Dirty.FONT);
+    return this;
+};
+
+
+/**
+ * Returns the current font style
+ * @return {string} Style name string.
+ */
+lime.Label.prototype.getStyle = function() {
+    return this.style_;
+};
+
 
 /**
  * Returns font used to draw the label
@@ -429,7 +453,7 @@ lime.Label.prototype.wrapText = function(context, width) {
             metrics = context.measureText(goog.string.trim(line + words[i]));
             if (metrics.width > width) {
                 lines.push(goog.string.trim(line));
-                breaks--
+                //breaks--
                 line = words[i];
             }
             else {
@@ -477,6 +501,7 @@ lime.Renderer.DOM.LABEL.draw = function(el) {
         style['fontSize'] = this.getFontSize()*this.getRelativeQuality() + 'px';
         style['fontWeight'] = this.getFontWeight();
         style['textAlign'] = this.getAlign();
+        style['font-style'] = this.getStyle();
         style['textShadow'] = this.hasShadow_() ? this.getShadowColor() + ' ' + this.getShadowOffset().x + 'px ' + this.getShadowOffset().y + 'px ' + this.getShadowBlur() + 'px' : '';
     }
 };
@@ -520,7 +545,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     var lh = this.getLineHeight();
 
     context.fillStyle = this.getFontColor();
-    context.font = this.getFontWeight() + ' ' + this.getFontSize() +
+    context.font = this.getStyle() + ' '+ this.getFontWeight() + ' ' + this.getFontSize() +
         'px/' + lh + ' ' + this.getFontFamily();
     context.textAlign = align;
     context.textBaseline = 'top';
@@ -533,7 +558,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     }
 
     if(dowrap || width!=this.lastDrawnWidth_){
-        this.lines_ = this.wrapText(context, width);
+        this.lines_ = this.wrapText(context, width - 2 * stroke);
         this.lastDrawnWidth_ = width;
     }
 
