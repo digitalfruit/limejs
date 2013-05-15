@@ -119,12 +119,22 @@ lime.Label.prototype.setText = function(txt) {
     return this;
 };
 
+/**
+ * Set label text
+ * @param {string} txt New style contents.
+ * @return {lime.Label} object itself.
+ */
 lime.Label.prototype.setStyle = function(style) {
     this.style_ = style;
     this.setDirty(lime.Dirty.FONT);
     return this;
 };
 
+
+/**
+ * Returns the current font style
+ * @return {string} Style name string.
+ */
 lime.Label.prototype.getStyle = function() {
     return this.style_;
 };
