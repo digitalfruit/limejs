@@ -75,6 +75,22 @@ lime.Node = function() {
     this.setRenderer(this.supportedRenderers[0].getType());
 
     this.setDirty(lime.Dirty.LAYOUT);
+
+    this.activeMask_ = null;
+    this.isMask = null;
+    this.targetNode = null;
+    this.mWidth = null;
+    this.mHeight = null;
+    this.mPos = null;
+    this.mSet = null;
+    this.mX = null;
+    this.mY = null;
+    this.mRot = null;
+    this.relativeQuality_ = null;
+    this.hidden_ = null;
+    this.autoHide_ = null;
+    this.dependencySet_ = null;
+    this.maskTarget_ = null;
 };
 goog.inherits(lime.Node, goog.events.EventTarget);
 

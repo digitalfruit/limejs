@@ -36,6 +36,11 @@ lime.Label = function(txt) {
 
     this.setStyle("normal");
 
+    this.lastDrawnWidth_ = null;
+    this.sizeCache_ = null;
+    this.words_ = null;
+    this.lines_ = null;
+
 };
 goog.inherits(lime.Label, lime.Sprite);
 
@@ -85,7 +90,7 @@ lime.Label.prototype.measureText = function() {
         w += 1;
 
     var stroke = this.stroke_?this.stroke_.width_:0;
-    return new goog.math.Size(
+    return this.sizeCache_ = new goog.math.Size(
         this.padding_[1] + this.padding_[3] + w + stroke*2,
         this.padding_[0] + this.padding_[2] + lh + stroke*2
     );
@@ -96,7 +101,7 @@ lime.Label.prototype.measureText = function() {
 lime.Label.prototype.getSize = function() {
     var size = lime.Node.prototype.getSize.call(this);
     if (!size || (!size.width && !size.height)) {
-        return this.measureText();
+        return this.sizeCache_ || this.measureText();
     }
     return size;
 };
@@ -117,7 +122,7 @@ lime.Label.prototype.getText = function() {
 lime.Label.prototype.setText = function(txt) {
     this.text_ = txt + '';
     this.setDirty(lime.Dirty.CONTENT);
-    delete this.words_;
+    this.words_ = null;
     return this;
 };
 
@@ -473,8 +478,12 @@ lime.Label.prototype.wrapText = function(context, width) {
 /** @inheritDoc */
 lime.Label.prototype.update = function(){
 
-    if(this.getDirty() & lime.Dirty.CONTENT)
-        delete this.lastDrawnWidth_;
+    var dirty = this.getDirty();
+
+    if (dirty & lime.Dirty.CONTENT) this.lastDrawnWidth_ = null;
+    if (dirty) {
+        this.sizeCache_ = null;
+    }
 
     lime.Node.prototype.update.apply(this,arguments);
 };

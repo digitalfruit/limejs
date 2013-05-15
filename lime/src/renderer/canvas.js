@@ -236,7 +236,7 @@ lime.Renderer.CANVAS.drawCanvasObject = function(context) {
 
     var zero = new goog.math.Coordinate(0, 0);
     for (var i = 0, child; child = this.children_[i]; i++) {
-        var pos = child.localToParent(zero).clone(), rot = child.getRotation(), scale = child.getScale();
+        var pos = child.localToParent(zero), rot = child.getRotation(), scale = child.getScale();
         context.save();
         context.translate(pos.x, pos.y);
         context.scale(scale.x,scale.y);
