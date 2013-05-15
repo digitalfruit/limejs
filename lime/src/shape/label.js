@@ -453,7 +453,7 @@ lime.Label.prototype.wrapText = function(context, width) {
             metrics = context.measureText(goog.string.trim(line + words[i]));
             if (metrics.width > width) {
                 lines.push(goog.string.trim(line));
-                breaks--
+                //breaks--
                 line = words[i];
             }
             else {
@@ -558,7 +558,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     }
 
     if(dowrap || width!=this.lastDrawnWidth_){
-        this.lines_ = this.wrapText(context, width);
+        this.lines_ = this.wrapText(context, width - 2 * stroke);
         this.lastDrawnWidth_ = width;
     }
 
