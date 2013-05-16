@@ -182,7 +182,7 @@ rb.Board.prototype.checkSolutions = function() {
  * @return {Array.<lime.Gem>} Array of solutions.
  */
 rb.Board.prototype.getSolutions = function() {
-    var r, c, g, group, res = [];
+    var r, c, g, group, res = [], i;
 
     //todo: this can be done with one loop
 
