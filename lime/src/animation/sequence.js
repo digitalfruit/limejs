@@ -31,6 +31,9 @@ lime.animation.Sequence = function(one) {
 
     this.setDuration(this.actions[0].duration_ + this.actions[1].duration_);
 
+    this.split_ = null;
+    this.last_ = 0;
+
 };
 goog.inherits(lime.animation.Sequence, lime.animation.Animation);
 

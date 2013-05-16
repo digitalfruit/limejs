@@ -883,7 +883,7 @@ lime.Node.getPropertyForTransition = function(transition) {
  * @return {lime.Node} Parent node.
  */
 lime.Node.prototype.getParent = function() {
-    return this.parent_ ? this.parent_ : null;
+    return this.parent_ || null;
 };
 
 /**

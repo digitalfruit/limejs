@@ -41,6 +41,16 @@ lime.animation.Animation = function() {
 
     this.status_ = 0;
 
+    this.optimizations_ = null;
+
+    this.playTime_ = 0;
+
+    this.firstFrame_ = 1;
+
+    this.dt_ = 0;
+
+    goog.getUid(this);
+
 };
 goog.inherits(lime.animation.Animation, goog.events.EventTarget);
 
