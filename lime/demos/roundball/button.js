@@ -12,6 +12,9 @@ goog.require('lime.GlossyButton');
 rb.Button = function(txt) {
     lime.GlossyButton.call(this, txt);
 
+    this.updateState(this.upstate_);
+    this.updateState(this.downstate_);
+
     this.borderWidth = 4;
     this.setColor('#000');
 };
@@ -20,15 +23,11 @@ goog.inherits(rb.Button, lime.GlossyButton);
 /**
  * @inheritDoc
  */
-rb.Button.prototype.makeState_ = function() {
-    var state = new lime.RoundedRect().setFill('#fff').setRadius(10);
-    state.inner = new lime.RoundedRect().setRadius(10);
-    state.label = new lime.Label().setAlign('center').
+rb.Button.prototype.updateState = function(s) {
+    s.rect.setFill('#fff').setRadius(10);
+    s.inner.setRadius(10);
+    s.label.setAlign('center').
         setFontFamily('"Trebuchet MS"').setFontColor('#eef').setFontSize(28);
-
-    state.appendChild(state.inner);
-    state.inner.appendChild(state.label);
-    return state;
 };
 
 /**
@@ -36,8 +35,8 @@ rb.Button.prototype.makeState_ = function() {
  */
 rb.Button.prototype.setColor = function(clr) {
     clr = lime.fill.parse(clr);
-    goog.array.forEach([this.upstate, this.downstate], function(s) {
-        var c = s == this.downstate ? clr.clone().addBrightness(.1) : clr;
+    goog.array.forEach([this.upstate_, this.downstate_], function(s) {
+        var c = s == this.downstate_ ? clr.clone().addBrightness(.1) : clr;
         //s.setFill(c);
         var c2 = c.clone().addBrightness(.3);
         var grad = new lime.fill.LinearGradient().setDirection(0, 0, 0, 1);
