@@ -60,6 +60,13 @@ lime.userAgent.PLAYBOOK = goog.userAgent.WEBKIT && (/playbook/i).test(ua);
 
 
 /**
+ * Whether the user agent is running on Google Chrome/Chromium
+ * @type boolean
+ */
+lime.userAgent.CHROME = goog.userAgent.WEBKIT && (/Chrome\//i).test(ua);
+
+
+/**
  * Whether the user agent is running on touch based device
  * @type boolean
  */

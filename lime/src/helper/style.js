@@ -134,15 +134,15 @@ lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
     var p = 1 / this.precision;
     var val = 'translate';
 
-    if (this.enable3D_ && (lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
+    if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
         val += '3d';
     }
     val += '(' + (tx * p) + 'px,' + (ty * p) + 'px';
-    if (this.enable3D_ && (lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
+    if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
         val += ',' + ((opt_tz ? opt_tz : 0) * p) + 'px';
     }
     this.values.push(val + ')');
-    
+
     return this;
 };
 
@@ -185,12 +185,12 @@ lime.style.setTransform = (function() {
     var stylename = lime.style.getCSSproperty('Transform');
     return function(el, transform) {
         var value = transform.toString();
-        
+
         if (value != el.transform_cache_) {
             el.style[stylename] = el.transform_cache_ = value;
         }
         lime.transformSet_=1;
-        
+
     };
 })();
 
