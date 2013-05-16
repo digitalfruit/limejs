@@ -22,6 +22,7 @@ lime.events.EventDispatcher = function(director) {
 lime.events.EventDispatcher.prototype.register = function(node, eventType) {
     if (!goog.isDef(this.handlers[eventType])) {
         this.handlers[eventType] = [node];
+        this.handlers[eventType].sorted = true;
         //base element switch here because safari fires touchend on
         //dom tree changes otherwise
         goog.events.listen(eventType.substring(0, 5) == 'touch' && node!=this.director ?
@@ -32,7 +33,7 @@ lime.events.EventDispatcher.prototype.register = function(node, eventType) {
     else {
         if (!goog.array.contains(this.handlers[eventType], node)) {
             this.handlers[eventType].push(node);
-            this.handlers[eventType].sort(lime.Node.compareNode);
+            this.handlers[eventType].sorted = false;
         }
     }
 };
@@ -61,7 +62,7 @@ lime.events.EventDispatcher.prototype.updateDispatchOrder = function(node){
     for(var eventType in this.handlers){
         var handlers = this.handlers[eventType];
         if(goog.array.contains(handlers,node)){
-            handlers.sort(lime.Node.compareNode);
+            handlers.sorted = false;
         }
     }
 }
@@ -94,6 +95,11 @@ lime.events.EventDispatcher.prototype.swallow = function(e, type, handler) {
 lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
     if (!goog.isDef(this.handlers[e.type])) return;
+
+    if (!this.handlers[e.type].sorted) {
+        this.handlers[e.type].sort(lime.Node.compareNode);
+        this.handlers[e.type].sorted = true;
+    }
 
     var handlers = this.handlers[e.type].slice(), didhandle = false;
 
