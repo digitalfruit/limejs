@@ -88,7 +88,7 @@ lime.audio.AudioMap.prototype.play = function(sprite, opt_loop, opt_after) {
     else if (this.player && this.config['spritemap'][sprite] && !lime.audio.getMute()) {
         this.player.play(sprite, true);
         var ctx = (this.player.context);
-        if (!ctx.duration || ctx.buffered.end(0) | 0 < ctx.duration | 0) return;
+        if (!ctx.duration || (ctx.buffered && (ctx.buffered.end(0) | 0 < ctx.duration | 0))) return;
         if (lime.audio._playQueue.indexOf(this) == -1) {
           lime.audio._playQueue.push(this);
         }
