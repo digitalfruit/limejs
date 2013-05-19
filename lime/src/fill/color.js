@@ -144,3 +144,13 @@ lime.fill.Color.prototype.clone = function() {
     c.str = this.str;
     return c;
 };
+
+/**
+ * Compares a {lime.fill.Color} to this for equality of RGB values.
+ * @param {lime.fill.Color} a A Color.
+ * @return {boolean} True iff the RGBa values are equal
+ */
+lime.fill.Color.prototype.equals = function(a) {
+    if (!a) return false;
+    return a.r == this.r && a.g == this.g && a.b == this.b && a.a == this.a;
+};
