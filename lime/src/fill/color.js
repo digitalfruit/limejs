@@ -144,3 +144,18 @@ lime.fill.Color.prototype.clone = function() {
     c.str = this.str;
     return c;
 };
+
+/**
+ * Compares a {lime.fill.Color} to the calling {lime.fill.Color}
+ * instance for equality of RGBa values.
+ * @param {lime.fill.Color} a A Color instance.
+ * @return {boolean} True if the RGBa or hex str values are equal
+ */
+lime.fill.Color.prototype.equals = function(a) {
+    if (!a || !(a instanceof lime.fill.Color)) return false;
+
+    // maybe just test only one of the RGBa values
+    if (!a.r || !a.g || !a.b || !a.a) return this.str == a.str;
+
+    return a.r === this.r && a.g === this.g && a.b === this.b && a.a === this.a;
+};
