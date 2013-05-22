@@ -28,9 +28,15 @@ lime.animation.ColorTo.prototype.scope = 'color';
 
 /** @inheritDoc */
 lime.animation.ColorTo.prototype.makeTargetProp = function(target) {
-    var fill = target.getFill(),
-        oldrgb = fill instanceof lime.fill.Color ? target.getFill().getRgba() : [255,255,255,0];
-        
+    var fill, oldrgb;
+
+    if (target instanceof lime.Label) {
+        oldrgb = goog.color.hexToRgb(target.getFontColor());
+    } else {
+        fill = target.getFill(),
+        oldrgb = fill instanceof lime.fill.Color ? fill.getRgba() : [255, 255, 255, 0];
+    }
+
     return {start: oldrgb,
          delta: [this.rgba_[0] - oldrgb[0], this.rgba_[1] - oldrgb[1],
             this.rgba_[2] - oldrgb[2], this.rgba_[3] - oldrgb[3]]};
@@ -40,13 +46,18 @@ lime.animation.ColorTo.prototype.makeTargetProp = function(target) {
 lime.animation.ColorTo.prototype.update = function(t, target) {
     if (this.status_ == 0) return;
 
-    var prop = this.getTargetProp(target);
+    var prop = this.getTargetProp(target),
+        red = Math.round(prop.start[0] + prop.delta[0] * t),
+        green = Math.round(prop.start[1] + prop.delta[1] * t),
+        blue = Math.round(prop.start[2] + prop.delta[2] * t),
+        alpha;
+
     if ('start' in prop) {
-        target.setFill(
-            Math.round(prop.start[0] + prop.delta[0] * t),
-            Math.round(prop.start[1] + prop.delta[1] * t),
-            Math.round(prop.start[2] + prop.delta[2] * t),
-            prop.start[3] + prop.delta[3] * t
-        );
+        if (target instanceof lime.Label) {
+            target.setFontColor(goog.color.rgbToHex(red, green, blue));
+        } else {
+            alpha = prop.start[3] + prop.delta[3] * t;
+            target.setFill(red, green, blue, alpha);
+        }
     }
 };
