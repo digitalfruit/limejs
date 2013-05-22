@@ -15,7 +15,7 @@ lime.animation.ColorTo = function(args) {
 
     this.rgb_ = null;
 
-    this.target_ = lime.animation.ColorTo.FILL;
+    this.target_ = lime.animation.ColorTo.Target.FILL;
 
     var color = lime.fill.parse(goog.array.toArray(arguments));
 
