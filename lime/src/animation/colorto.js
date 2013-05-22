@@ -15,6 +15,8 @@ lime.animation.ColorTo = function(args) {
 
     this.rgb_ = null;
 
+    this.target_ = lime.animation.ColorTo.FILL;
+
     var color = lime.fill.parse(goog.array.toArray(arguments));
 
     if (color instanceof lime.fill.Color) {
@@ -26,15 +28,50 @@ goog.inherits(lime.animation.ColorTo, lime.animation.Animation);
 /** @inheritDoc */
 lime.animation.ColorTo.prototype.scope = 'color';
 
+/**
+ * Element component to apply the animation
+ * @enum {string}
+ */
+lime.animation.ColorTo.Target = {
+    FILL: 'fill',
+    STROKE: 'stroke',
+    FONT: 'font'
+};
+
+/**
+ * Set the component to apply the animation
+ * @param {lime.animation.ColorTo.Target} component type.
+ * @return {lime.animation.ColorTo} object itself.
+ */
+lime.animation.ColorTo.prototype.setTargetComponent = function(target) {
+    this.target_ = target;
+    return this;
+};
+
+/**
+ * Return the animation target component
+ * @return {lime.animation.ColorTo.Target} component type.
+ */
+lime.animation.ColorTo.prototype.getTargetComponent = function() {
+    return this.target_;
+};
+
 /** @inheritDoc */
 lime.animation.ColorTo.prototype.makeTargetProp = function(target) {
     var fill, oldrgb;
 
-    if (target instanceof lime.Label) {
-        oldrgb = goog.color.hexToRgb(target.getFontColor());
-    } else {
-        fill = target.getFill(),
-        oldrgb = fill instanceof lime.fill.Color ? fill.getRgba() : [255, 255, 255, 0];
+    switch (this.target_) {
+        case lime.animation.ColorTo.Target.FILL:
+            fill = target.getFill(),
+            oldrgb = fill instanceof lime.fill.Color ? fill.getRgba() : [255, 255, 255, 0];
+            break;
+        case lime.animation.ColorTo.Target.STROKE:
+            fill = target.getStroke().getColor();
+            oldrgb = fill instanceof lime.fill.Color ? fill.getRgba() : [255, 255, 255, 0];
+            break;
+        case lime.animation.ColorTo.Target.FONT:
+            oldrgb = goog.color.hexToRgb(target.getFontColor());
+            break;
     }
 
     return {start: oldrgb,
@@ -53,11 +90,18 @@ lime.animation.ColorTo.prototype.update = function(t, target) {
         alpha;
 
     if ('start' in prop) {
-        if (target instanceof lime.Label) {
-            target.setFontColor(goog.color.rgbToHex(red, green, blue));
-        } else {
-            alpha = prop.start[3] + prop.delta[3] * t;
-            target.setFill(red, green, blue, alpha);
+        switch (this.target_) {
+            case lime.animation.ColorTo.Target.FILL:
+                alpha = prop.start[3] + prop.delta[3] * t;
+                target.setFill(red, green, blue, alpha);
+                break;
+            case lime.animation.ColorTo.Target.STROKE:
+                alpha = prop.start[3] + prop.delta[3] * t;
+                target.setStroke(target.getStroke().setColor(red, green, blue, alpha));
+                break;
+            case lime.animation.ColorTo.Target.FONT:
+                target.setFontColor(goog.color.rgbToHex(red, green, blue));
+                break;
         }
     }
 };
