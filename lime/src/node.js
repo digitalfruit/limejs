@@ -1209,7 +1209,7 @@ lime.Node.prototype.releaseDependencies = function(){
 }
 
 /**
- * Returns bounding box for element is elements own coordinate space
+ * Returns a bounding box for the element in its own coordinate space
  * @return {goog.math.Box} Contents frame in node space.
  */
 lime.Node.prototype.getFrame = function() {
