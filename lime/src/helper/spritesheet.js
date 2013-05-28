@@ -22,7 +22,7 @@ lime.SpriteSheet = function(image, metadata, parser){
     }
     
     var p = parser || lime.parser.ZWOPTEX,
-		data = metadata.data ? metadata.data() : metadata;
+        data = metadata.data ? metadata.data() : metadata;
     
     this.metadata_ = p(data);
 };
