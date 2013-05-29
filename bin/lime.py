@@ -299,6 +299,9 @@ def build(name,options):
     else:
         call+=" -f --define='goog.DEBUG=false'"
         
+    if options.use_strict:
+        call+=" -f --language_in=ECMASCRIPT5_STRICT"
+        
     if options.define:
         for i, opt in enumerate(options.define):
             call+=" -f --define='"+opt+"'"
@@ -389,6 +392,9 @@ Commands:
     
     parser.add_option("-m", "--map", dest="map_file", action="store_true",
                       help="Build result sourcemap for debugging. Also turns on pretty print.")
+
+    parser.add_option("-s", "--use-strict", dest="use_strict", action="store_true",
+                    help="Use EcmaScript5 strict mode.")
                       
     parser.add_option("-p", "--preload", dest="preload", action="store", type="string",
                         help="Generate preloader code with given callback as start point.")
