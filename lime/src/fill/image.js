@@ -1,6 +1,7 @@
 goog.provide('lime.fill.Image');
 
 goog.require('lime.fill.Fill');
+goog.require('lime.userAgent');
 
 /**
  * Image fill.
@@ -205,9 +206,23 @@ lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
     domEl.style['imageRendering'] = 'optimizeQuality';
 }
 
+lime.fill.Image.prototype.IS_IOS_CHROME = lime.userAgent.IOS &&
+  (lime.userAgent.CHROME || /CriOS/.test(goog.global.navigator.userAgent));
+
 /** @inheritDoc */
 lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
-    domEl.style['background'] = 'url(' + this.image_.src + ')';
+    var value = 'url(' + this.image_.src + ')';
+    // See https://github.com/digitalfruit/limejs/issues/87
+    if (this.IS_IOS_CHROME) {
+        var current = domEl.style['background'];
+        if (!current || current.indexOF(value) === -1) {
+            domEl.style['background'] = value;
+        }
+    }
+    else {
+        domEl.style['background'] = value;
+    }
+
     this.setDOMBackgroundProp_(domEl,shape);
 };
 
