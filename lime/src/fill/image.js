@@ -215,7 +215,7 @@ lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
     // See https://github.com/digitalfruit/limejs/issues/87
     if (this.IS_IOS_CHROME) {
         var current = domEl.style['background'];
-        if (!current || current.indexOF(value) === -1) {
+        if (!current || current.indexOf(value) === -1) {
             domEl.style['background'] = value;
         }
     }
