@@ -333,6 +333,7 @@ lime.animation.actionManager.stopAll = function(target) {
             this.actions[id][i].stop();
             delete this.actions[id][i];
         }
+        delete this.actions[id];
     }
 };
 
