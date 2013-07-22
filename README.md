@@ -41,7 +41,7 @@ If you consider yourself advanced user and know how to use Git/Python you are pr
 
     To add python to your global path run:
     
-    `echo "export PATH=$PATH:/c/Python27/" > ~/.bashrc`
+    `echo "export PATH=$PATH:/c/Python27/" >> ~/.bashrc`
     
     This is the longer version if you use Command Prompt instead of Git bash:
     
