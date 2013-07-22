@@ -189,12 +189,6 @@ lime.Node.compareNode = function(n1, n2) {
     }
 };
 
-/**
- * @type {boolean}
- * @private
- * @override
- */
-lime.Node.prototype.customEvent_ = false;
 
 /**
  * Return a bitmask of dirty values that need to be updated before next drawing
@@ -1059,8 +1053,10 @@ lime.Node.prototype.setChildIndex = function(child,index){
 /**
  * @inheritDoc
  */
-lime.Node.prototype.addEventListener = function(type, handler,
+lime.Node.prototype.listen = function(type, handler,
         opt_capture, opt_handlerScope) {
+
+    goog.events.EventTarget.prototype.listen.apply(this, arguments);
 
     // Bypass all mouse events on touchscreen devices
     if (lime.userAgent.SUPPORTS_TOUCH &&
@@ -1071,7 +1067,6 @@ lime.Node.prototype.addEventListener = function(type, handler,
     if (!goog.isDef(this.eventHandlers_[type])) {
         this.eventHandlers_[type] = [0, 0];
     }
-
     if (this.inTree_ && this.eventHandlers_[type][0] == 0) {
         this.eventHandlers_[type][0] = 1;
         this.getDirector().eventDispatcher.register(this, type);
@@ -1083,8 +1078,11 @@ lime.Node.prototype.addEventListener = function(type, handler,
 /**
  * @inheritDoc
  */
-lime.Node.prototype.removeEventListener = function(
+lime.Node.prototype.unlisten = function(
     type, handler, opt_capture, opt_handlerScope) {
+
+
+    goog.events.EventTarget.prototype.unlisten.apply(this, arguments);
 
     // Bypass all mouse events on touchscreen devices
     if (lime.userAgent.SUPPORTS_TOUCH &&
