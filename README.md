@@ -29,17 +29,21 @@
 
 If you consider yourself advanced user and know how to use Git/Python you are probably better off reading through Mac/Linux guide and choosing your best alternative tools/methods yourself. If not then follow this step-by-step route.
 
-1.  Download and install Git client from <http://code.google.com/p/msysgit/downloads/list> (if not already installed). While installing select "Run Git from the Windows Command Prompt".
-2.  Clone lime git repo or download zip package from <https://github.com/digitalfruit/limejs/zipball/master>
+1.  Download and install Git bash from <http://git-scm.com/download/win> (if not already installed). While installing select "Use Git Bash only" and Unix style line endings.
+2.  Clone lime git repo or download zip package from <https://github.com/digitalfruit/limejs/archive/master.zip>
 3.  Extract the contents to suitable place on your hard drive. Next examples will use c:\ as the base path.
-4.  If you don't have python download and install it from <http://www.python.org/download/>
-5.  Launch Command Prompt (or PowerShell)
+4.  If you don't have python download and install it from <http://www.python.org/download/>. Python3 should work fine but 2.7.x is recommended.
+5.  Launch Git Bash
 6.  Check if you have python installed on your global path by running:
      python --version
     
     If this returned error you have to add it to your global path or use full path to binaries in next steps.
 
-    To add python to your global path:
+    To add python to your global path run:
+    
+    `echo "export PATH=$PATH:/c/Python27/" > ~/.bashrc`
+    
+    This is the longer version if you use Command Prompt instead of Git bash:
     
     1. Open Control Panel -> System and Security -> System -> Advanced system settings
     2. Under Advanced tab select Environment Variables...
@@ -70,17 +74,17 @@ If you consider yourself advanced user and know how to use Git/Python you are pr
 
 ##Links:
 
-Closure Library: <http://closure-library.googlecode.com/svn/docs/index.html>
+Closure Library: <https://developers.google.com/closure/library/>
 
-Closure Compiler: <http://code.google.com/closure/compiler/docs/overview.html>
+Closure Compiler: <https://developers.google.com/closure/compiler/>
 
-Closure Templates: <http://code.google.com/closure/templates/docs/helloworld_js.html>
+Closure Templates: <https://developers.google.com/closure/templates/>
 
 Box2D: <http://www.box2dflash.org/docs/2.0.2/reference/>
 
 Canvas 2D API spec: <http://dev.w3.org/html5/2dcontext/>
 
-WebGL spec: <https://cvs.khronos.org/svn/repos/registry/trunk/public/webgl/doc/spec/WebGL-spec.html>
+WebGL spec: <http://www.khronos.org/registry/webgl/specs/latest/>
 
 Closure book: <http://www.amazon.com/Closure-Definitive-Guide-Michael-Bolin/dp/1449381871/>
 <http://books.google.com/books?id=p7uyWPcVGZsC&&pg=PP1>
