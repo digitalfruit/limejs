@@ -85,16 +85,11 @@ def checkDependencies():
         print ('Closure Library not found. Downloading to %s' % closure_dir)
         print ('Please wait...')
         
-        retcode = subprocess.Popen(subprocess.list2cmdline(["git","svn","clone","-r","HEAD","http://closure-library.googlecode.com/svn/trunk/",closure_dir]),shell=True).wait()
+        retcode = subprocess.Popen(subprocess.list2cmdline(["git","clone","https://code.google.com/p/closure-library/",closure_dir]),shell=True).wait()
         
         if(retcode!=0):
-            #try pure svn
-            print ('Installed Git does not support Subversion clones, trying to checkout with Subversion.')
-            retcode = subprocess.Popen(subprocess.list2cmdline(["svn","checkout","http://closure-library.googlecode.com/svn/trunk/",closure_dir]),shell=True).wait()
-            
-            if(retcode!=0):
-                logging.error('Error while downloading Closure Library. Discontinuing.')
-                sys.exit(1)
+            print ('Failed to clone Closure Library via Git. Discontinuing.')
+            sys.exit(1)
     
     
     #Box2D

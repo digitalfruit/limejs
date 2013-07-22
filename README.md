@@ -4,7 +4,7 @@
 
 ###Mac OS X and Linux users:
 
-- Requirements: Python 2.6+, Git, SVN
+- Requirements: Python 2.6+, Git
 - Clone the git repo (you have probably already done that):
     git clone git://github.com/digitalfruit/limejs.git
 - bin/lime.py --help
