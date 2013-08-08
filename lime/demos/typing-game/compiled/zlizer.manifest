@@ -1,0 +1,24 @@
+CACHE MANIFEST
+
+# If you use more files you need to manually list them here.
+# Don't remove next line
+# Updated on: 2013-04-16 12:54:49
+
+zlizer.js
+assets/startup.jpg
+assets/startup_ipad.jpg
+assets/icon.png
+
+assets/back.png
+assets/bubble_back.png
+assets/dialog_keyz.jpg
+assets/dialog_number.jpg
+assets/dialog_tutorial1.jpg
+assets/dialog_tutorial2.jpg
+assets/impact.ttf
+assets/main_title.png
+assets/lime.png
+
+
+NETWORK:
+*
