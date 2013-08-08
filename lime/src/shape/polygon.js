@@ -11,7 +11,7 @@ goog.require('lime.Sprite');
  * Polygon shaped textured object
  * @param {Array.<goog.math.Coordinate>} points Polygon points.
  * @constructor
- * @extends lime.Sprite
+ * @extends {lime.Sprite}
  */
 lime.Polygon = function(points) {
     goog.base(this);

@@ -38,9 +38,13 @@ ydn.game.isBrokenChrome = function(){
 };
 
 
+/**
+ *
+ * @param {lime.transitions.Transition=}  opt_transition
+ */
 ydn.game.loadMenuScene = function(opt_transition) {
     var scene = new lime.Scene();
-    ydn.game.director.replaceScene(scene, opt_transition ? lime.transitions.MoveInDown : undefined);
+    ydn.game.director.replaceScene(scene, opt_transition || new lime.transitions.MoveInDown());
 
     var layer = new lime.Layer().setPosition(ydn.game.WIDTH * .5, 0);
     scene.appendChild(layer);
@@ -89,8 +93,8 @@ ydn.game.loadMenuScene = function(opt_transition) {
             var btn = new ydn.game.Button('' + num).setSize(80, 80).setPosition(c * 125, r * 90);
             btns_layer.appendChild(btn);
             goog.events.listen(btn, lime.Button.Event.CLICK, function() {
-              ydn.game.loadGame(this);
-            },false, num);
+              ydn.game.loadGame(this.level);
+            }, false, {level: num});
         }
     }
 
@@ -99,14 +103,14 @@ ydn.game.loadMenuScene = function(opt_transition) {
     btns_layer.appendChild(btn_main);
     goog.events.listen(btn_main, lime.Button.Event.CLICK, function() {
       contents.runAction(new lime.animation.MoveTo(0, 280).enableOptimizations());
-    },false, num);
+    }, false);
     
 };
 
 
 ydn.game.loadGame = function(level) {
     ydn.game.activeGame = new ydn.game.Game(level);
-    ydn.game.director.replaceScene(ydn.game.activeGame, lime.transitions.MoveInUp);
+    ydn.game.director.replaceScene(ydn.game.activeGame, new lime.transitions.MoveInUp());
 };
 
 // add lime credintials to a scene

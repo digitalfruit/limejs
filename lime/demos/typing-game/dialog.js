@@ -67,6 +67,10 @@ ydn.game.dialogs.box3 = function(game) {
     return b;
 };
 
+/**
+ * @param b
+ * @param {Function=} callback
+ */
 ydn.game.dialogs.appear = function(b,callback) {
     var appear = new lime.animation.FadeTo(1).setDuration(.3);
     b.runAction(appear);

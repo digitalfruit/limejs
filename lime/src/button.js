@@ -4,8 +4,8 @@ goog.require('lime.Layer');
 
 /**
  * Simple button element
- * @param {lime.Sprite} opt_upstate Object shown on normal state.
- * @param {lime.Sprite} opt_downstate Object show when button is pressed.
+ * @param {lime.Sprite=} opt_upstate Object shown on normal state.
+ * @param {lime.Sprite=} opt_downstate Object show when button is pressed.
  * @constructor
  * @extends lime.Layer
  */

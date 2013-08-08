@@ -8,12 +8,13 @@ goog.require('lime.animation.Animation');
 /**
  * Scale by a factor
  * Also accepts one or two numbers
- * @param {goog.math.Vec2} factor Factor to scale.
+ * @param {goog.math.Vec2|number} factor Factor to scale.
+ * @param {number=} y
  * @constructor
- * @extends lime.animation.Animation
+ * @extends {lime.animation.Animation}
  */
-lime.animation.ScaleBy = function(factor) {
-    lime.animation.Animation.call(this);
+lime.animation.ScaleBy = function(factor, y) {
+    goog.base(this);
 
     if (arguments.length == 1 && goog.isNumber(factor)) {
         this.factor_ = new goog.math.Vec2(factor, factor);
@@ -22,7 +23,6 @@ lime.animation.ScaleBy = function(factor) {
         this.factor_ = new goog.math.Vec2(arguments[0], arguments[1]);
     }
     else this.factor_ = factor;
-
 
 };
 goog.inherits(lime.animation.ScaleBy, lime.animation.Animation);
@@ -67,7 +67,7 @@ lime.animation.ScaleBy.prototype.update = function(t, target) {
 };
 
 /**
- * @inheritDoc
+ * @param {lime.Node} target
  * @see lime.animation.Animation#clearTransition
  */
 lime.animation.ScaleBy.prototype.clearTransition = function(target) {

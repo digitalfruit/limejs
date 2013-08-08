@@ -11,10 +11,10 @@ goog.require('lime.Polygon');
 /**
  * Custom Canvas context
  * @constructor
- * @extends lime.Sprite
+ * @extends {lime.Sprite}
  */
 lime.CanvasContext = function() {
-    lime.Sprite.call(this);
+    goog.base(this);
 
 };
 goog.inherits(lime.CanvasContext, lime.Sprite);

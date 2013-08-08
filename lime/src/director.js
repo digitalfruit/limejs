@@ -93,7 +93,7 @@ lime.Director = function(parentElement, opt_width, opt_height) {
         
         
         //todo: look for a less hacky solution
-        if(goog.userAgent.MOBILE && !goog.global['navigator'].standalone){
+        if(goog.userAgent.MOBILE && !goog.global['navigator']['standalone']){
             var that = this;
             setTimeout(
                 function(){window.scrollTo(0, 0);that.invalidateSize_()}
@@ -186,8 +186,8 @@ lime.Director.prototype.setPaused = function(value) {
     this.isPaused_ = value;
     lime.scheduleManager.changeDirectorActivity(this, !value);
     if (this.isPaused_) {
-        var pauseClass = this.pauseClassFactory || lime.helper.PauseScene;
-        this.pauseScene = new pauseClass();
+      /*var pauseClass = this.pauseClassFactory ||lime.helper.PauseScene; */
+      this.pauseScene = new lime.helper.PauseScene();
         this.pushScene(this.pauseScene);
     }
     else if (this.pauseScene) {
@@ -272,7 +272,7 @@ lime.Director.prototype.step_ = function(delta) {
 /**
  * Replace current scene with new scene
  * @param {lime.Scene} scene New scene.
- * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.
+ * @param {lime.transitions.Transition=} opt_transition Transition played.
  * @param {number=} opt_duration Duration of transition.
  */
 lime.Director.prototype.replaceScene = function(scene, opt_transition,
@@ -280,13 +280,11 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
 
     scene.setSize(this.getSize().clone());
 
-    var transitionclass = opt_transition || lime.transitions.Transition;
+    var transitionclass = opt_transition || new lime.transitions.Transition();
 
     var outgoing = null;
     if (this.sceneStack_.length)
         outgoing = this.sceneStack_[this.sceneStack_.length - 1];
-
-
 
     var removelist = [];
     var i = this.sceneStack_.length;
@@ -303,7 +301,7 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
     scene.parent_ = this;
     scene.wasAddedToTree();
 
-    var transition = new transitionclass(outgoing, scene);
+    var transition = transitionclass.init(outgoing, scene);
         
     goog.events.listenOnce(transition,'end',function() {
             var i = removelist.length;
@@ -332,7 +330,7 @@ lime.Director.prototype.updateLayout = function() {
 /**
  * Push scene to the top of scene stack
  * @param {lime.Scene} scene New scene.
- * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.
+ * @param {lime.transitions.Transition=} opt_transition Transition played.
  * @param {number=} opt_duration Duration of transition.
  * @return Transition object if opt_transition is defined
  */
@@ -343,7 +341,9 @@ lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration
 
     if (goog.isDef(opt_transition) && this.sceneStack_.length) {
         outgoing = this.sceneStack_[this.sceneStack_.length - 1];
-        transition = new opt_transition(outgoing, scene);
+
+        transition = opt_transition ? opt_transition.init(outgoing, scene) :
+            new lime.transitions.Transition(outgoing, scene);
 
         if (goog.isDef(opt_duration)) {
             transition.setDuration(opt_duration);
@@ -364,7 +364,7 @@ lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration
 
 /**
  * Remove current scene from the stack
- * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.
+ * @param {lime.transitions.Transition=} opt_transition Transition played.
  * @param {number=} opt_duration Duration of transition.
  * @return Transition object if opt_transition is defined
  */
@@ -383,7 +383,7 @@ lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
     };
     // Transitions require an existing incoming scene
     if (goog.isDef(opt_transition) && (this.sceneStack_.length > 1)) {
-        transition = new opt_transition(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);
+        transition = opt_transition.init(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);
       
         if (goog.isDef(opt_duration)) {
             transition.setDuration(opt_duration);
@@ -555,10 +555,10 @@ lime.Director.prototype.makeMobileWebAppCapable = function() {
     visited = goog.global.localStorage.getItem('_lime_visited');
 
     var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
-    if (ios && !window.navigator.standalone && COMPILED && !visited && this.domElement.parentNode==document.body) {
+    if (ios && !window.navigator['standalone'] && COMPILED && !visited && this.domElement.parentNode==document.body) {
         alert('Please install this page as a web app by ' +
             'clicking Share + Add to home screen.');
-        goog.global.localStorage.setItem('_lime_visited', true);
+        goog.global.localStorage.setItem('_lime_visited', 'true');
     }
 
 };

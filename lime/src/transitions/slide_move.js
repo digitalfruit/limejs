@@ -5,7 +5,6 @@ goog.provide('lime.transitions.MoveInRight');
 goog.provide('lime.transitions.MoveInUp');
 goog.provide('lime.transitions.SlideIn');
 
-
 goog.provide('lime.transitions.SlideInDown');
 goog.provide('lime.transitions.SlideInLeft');
 goog.provide('lime.transitions.SlideInRight');
@@ -17,8 +16,8 @@ goog.require('lime.transitions.Transition');
 
 /**
  * Slide-In transition.
- * @param {lime.Scene} outgoing Outgoing scene.
- * @param {lime.Scene} incoming Incoming scene.
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
  * @param {boolean=} opt_movein Use Move-In transition.
  * @constructor
  * @extends lime.transitions.Transition
@@ -115,6 +114,9 @@ lime.transitions.SlideInLeft = function() {
 goog.inherits(lime.transitions.SlideInLeft, lime.transitions.SlideIn);
 
 /**
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
+ * @param {boolean=} opt_movein
  * @inheritDoc
  * @constructor
  * @extends {lime.transitions.SlideIn}
@@ -127,6 +129,9 @@ lime.transitions.SlideInUp = function(outgoing, incoming, opt_movein) {
 goog.inherits(lime.transitions.SlideInUp, lime.transitions.SlideIn);
 
 /**
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
+ * @param {boolean=} opt_movein
  * @inheritDoc
  * @constructor
  * @extends {lime.transitions.SlideIn}
@@ -139,6 +144,9 @@ lime.transitions.SlideInRight = function(outgoing, incoming, opt_movein) {
 goog.inherits(lime.transitions.SlideInRight, lime.transitions.SlideIn);
 
 /**
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
+ * @param {boolean=} opt_movein
  * @inheritDoc
  * @constructor
  * @extends {lime.transitions.SlideIn}
@@ -156,6 +164,8 @@ goog.inherits(lime.transitions.SlideInDown, lime.transitions.SlideIn);
 /**
  * Move-In transition. Difference form slide-in is that outgoing scene
  * does not move.
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
  * @inheritDoc
  * @constructor
  * @extends {lime.transitions.SlideInLeft}
@@ -166,6 +176,8 @@ lime.transitions.MoveInLeft = function(outgoing, incoming) {
 goog.inherits(lime.transitions.MoveInLeft, lime.transitions.SlideInLeft);
 
 /**
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
  * @inheritDoc
  * @constructor
  * @extends {lime.transitions.SlideInUp}
@@ -176,6 +188,8 @@ lime.transitions.MoveInUp = function(outgoing, incoming) {
 goog.inherits(lime.transitions.MoveInUp, lime.transitions.SlideInUp);
 
 /**
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
  * @inheritDoc
  * @constructor
  * @extends {lime.transitions.SlideInRight}
@@ -186,6 +200,8 @@ lime.transitions.MoveInRight = function(outgoing, incoming) {
 goog.inherits(lime.transitions.MoveInRight, lime.transitions.SlideInRight);
 
 /**
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
  * @inheritDoc
  * @constructor
  * @extends {lime.transitions.SlideInDown}
@@ -194,6 +210,8 @@ lime.transitions.MoveInDown = function(outgoing, incoming) {
     goog.base(this, outgoing, incoming, true);
 };
 goog.inherits(lime.transitions.MoveInDown, lime.transitions.SlideInDown);
+
+
 
 
 

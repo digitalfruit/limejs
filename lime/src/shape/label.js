@@ -588,3 +588,25 @@ lime.Label.installFont = function(name, fileurl, opt_format) {
     goog.style.installStyles('@font-face{font-family: "' + name +
         '";src: url(' + fileurl + ') format("' + format + '");})');
 };
+
+
+/**
+ *
+ * @param {string} txt
+ * @constructor
+ * @extends {lime.Label}
+ */
+lime.DroppableLabel = function(txt) {
+  goog.base(this, txt);
+  this.setSize(150, 150).setFill('#00f');
+};
+goog.inherits(lime.DroppableLabel, lime.Label);
+
+
+lime.DroppableLabel.prototype.showDropHighlight = function(){
+  this.runAction(new lime.animation.FadeTo(.6).setDuration(.3));
+};
+
+lime.DroppableLabel.prototype.hideDropHighlight = function(){
+  this.runAction(new lime.animation.FadeTo(1).setDuration(.1));
+};

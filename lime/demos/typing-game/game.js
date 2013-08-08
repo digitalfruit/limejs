@@ -67,7 +67,9 @@ ydn.game.Game = function(level) {
 
     var btn = new ydn.game.Button('Back to menu').setSize(270, 70).setPosition(150, 945);
     this.appendChild(btn);
-    goog.events.listen(btn, 'click', function() {ydn.game.loadMenuScene(lime.transitions.MoveInUp);});
+    goog.events.listen(btn, 'click', function() {
+      ydn.game.loadMenuScene(new lime.transitions.MoveInUp());
+    });
 
     this.startup();
     
@@ -184,10 +186,11 @@ ydn.game.Game.prototype.upHandler_ = function(touch,e) {
     if (e.type == 'keyup' && e.event.keyCode != 90) {
         return;
     }
-    var ctx = this.ctx,
-        particles = touch.particles,
-        b = this.bubbles,
-        dx, dy, lensq, loop, i, j, p, found = [];
+    var ctx = this.ctx;
+    var particles = touch.particles;
+    var b = this.bubbles;
+    var b_value;
+    var dx, dy, lensq, loop, i, j, p, found = [];
 
     this.isdown = false;
     touch.remove = 1;
@@ -210,7 +213,7 @@ ydn.game.Game.prototype.upHandler_ = function(touch,e) {
             for (i = 0; i < particles.length; i++) {
                 j = b.length;
                 while (--j >= 0) {
-                    if (b.value == 1) continue;
+                    if (b_value == 1) continue;
                     p = b[j].getPosition();
                     dx = p.x - particles[i].p1[0];
                     dy = p.y - particles[i].p1[1];
@@ -238,7 +241,7 @@ ydn.game.Game.prototype.upHandler_ = function(touch,e) {
     else if (!touch.moved) {
         j = b.length;
         while (--j >= 0) {
-            if (b.value == 1) continue;
+            if (b_value == 1) continue;
             p = b[j].getPosition();
             dx = p.x - e.position.x;
             dy = p.y - e.position.y;
@@ -294,7 +297,7 @@ ydn.game.Game.prototype.showEndDialog = function() {
     lime.scheduleManager.unschedule(this.reload, this);
     lime.scheduleManager.unschedule(this.checkDeletions, this);
 
-   for (var i = 0; i < this.bubbles; i++) {
+   for (var i = 0; i < this.bubbles.length; i++) {
        lime.animation.actionManager.stopAll(this.bubbles[i]);
    }
 
@@ -302,7 +305,7 @@ ydn.game.Game.prototype.showEndDialog = function() {
    this.appendChild(dialog);
    var title = new lime.Label().setText('Level complete!').setFontColor('#fff').setFontSize(46).setPosition(0, 70);
    dialog.appendChild(title);
-   var btn = new ydn.game.Button().setText('NEXT LEVEL').setSize(300, 90).setPosition(0, 200);
+   var btn = new ydn.game.Button('NEXT LEVEL').setSize(300, 90).setPosition(0, 200);
    dialog.appendChild(btn);
 
    if (this.points <= 0) {
@@ -317,11 +320,11 @@ ydn.game.Game.prototype.showEndDialog = function() {
 
 
 
-   var btn2 = new ydn.game.Button().setText('MAIN SCREEN').setSize(300, 90).setPosition(0, 320);
+   var btn2 = new ydn.game.Button('MAIN SCREEN').setSize(300, 90).setPosition(0, 320);
    dialog.appendChild(btn2);
 
    goog.events.listen(btn2, lime.Button.Event.CLICK, function() {
-         ydn.game.loadMenuScene(true);
+         ydn.game.loadMenuScene();
      });
 
      goog.events.unlisten(this, ['mousedown', 'touchstart', 'keydown'],

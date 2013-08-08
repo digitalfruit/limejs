@@ -111,6 +111,7 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
     ee.type = e.type;
     ee.event = e;
 
+    /*
     if (e.type.substring(0, 5) == 'touch') {
         var touch = e.getBrowserEvent().changedTouches[touchIndex];
         ee.screenPosition = new goog.math.Coordinate(touch.pageX, touch.pageY);
@@ -121,13 +122,12 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
             doBreak = 1;
         }
     }
-    else {
+    else { */
         ee.screenPosition = new goog.math.Coordinate(
             e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft,
             e.clientY + document.body.scrollTop + document.documentElement.scrollTop
         );
         doBreak = 1;
-    }
 
     if (goog.isDef(this.swallows[ee.identifier])) {
         var s = this.swallows[ee.identifier];

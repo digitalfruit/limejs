@@ -3,8 +3,8 @@ goog.require('goog.debug.Logger');
 
 /**
  * Animation for switching active scenes
- * @param {lime.Scene} outgoing Outgoing scene.
- * @param {lime.Scene} incoming Incoming scene.
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
  * @constructor
  * @extends goog.events.EventTarget
  */
@@ -26,6 +26,20 @@ goog.inherits(lime.transitions.Transition,goog.events.EventTarget);
  */
 lime.transitions.Transition.prototype.logger =
     goog.debug.Logger.getLogger('lime.transitions.Transition');
+
+
+/**
+ *
+ * @param {lime.Scene} outgoing
+ * @param {lime.Scene} incoming
+ * @param {boolean=} opt_a
+ * @returns {lime.transitions.Transition}
+ */
+lime.transitions.Transition.prototype.init = function(outgoing, incoming, opt_a) {
+  this.outgoing_ = outgoing;
+  this.incoming_ = incoming;
+};
+
 
 /**
  * Returns the animation duration in seconds.

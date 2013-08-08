@@ -16,8 +16,8 @@ goog.require('lime.Renderer.DOM');
 /**
 * Node. Abstract drawable object in lime.
 * @constructor
-* @implements lime.DirtyObject
-* @extends goog.events.EventTarget
+* @implements {lime.DirtyObject}
+* @extends {goog.events.EventTarget}
 */
 lime.Node = function() {
     goog.events.EventTarget.call(this);
@@ -791,7 +791,7 @@ lime.Node.prototype.update = function(opt_pass) {
             property = lime.Node.getPropertyForTransition(parseInt(i, 10));
             lime.style.clearTransition(this.domElement, property);
             if (this.domElement != this.containerElement) {
-                lime.style.clearTransition(this.continerElement, property);
+                lime.style.clearTransition(this.containerElement, property);
             }
         }
 
@@ -1060,7 +1060,7 @@ lime.Node.prototype.listen = function(type, handler,
 
     // Bypass all mouse events on touchscreen devices
     if (lime.userAgent.SUPPORTS_TOUCH &&
-        type.substring(0, 5) == 'mouse') return;
+        type.substring(0, 5) == 'mouse') return null;
 
     // First element defines if events are registered with DOM 1=yes/0=no
     // Second element defines how many listeners have been set
@@ -1086,7 +1086,7 @@ lime.Node.prototype.unlisten = function(
 
     // Bypass all mouse events on touchscreen devices
     if (lime.userAgent.SUPPORTS_TOUCH &&
-        type.substring(0, 5) == 'mouse') return;
+        type.substring(0, 5) == 'mouse') return false;
 
     if (this.inTree_ && this.eventHandlers_[type][1] == 1) {
         this.eventHandlers_[type][0] = 0;
@@ -1314,3 +1314,5 @@ lime.Node.prototype.runAction = function(action) {
     action.addTarget(this);
     action.play();
 };
+
+

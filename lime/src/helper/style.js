@@ -28,12 +28,13 @@ lime.style.tryProperty = function(name) {
 /**
  * Get the name of actual CSS property from general(unprefixed) name
  * @param {string} name Unprefixed name.
- * @return {string} Actual valid property name.
+ * @return {string|undefined} Actual valid property name.
  */
 lime.style.getCSSproperty = function(name) {
     var name_lower = name.charAt(0).toLowerCase() + name.substr(1),
         prefix_name = prefix + name;
-    return lime.style.tryProperty(name) ?
+  var ok = lime.style.tryProperty(name);
+    return ok ?
         name : (lime.style.tryProperty(name_lower)  ?
                 name_lower : lime.style.tryProperty(prefix_name) ?
                 prefix_name : undefined );
@@ -82,7 +83,7 @@ lime.style.Transform = function(opt_precision) {
 
 /**
  * Sets 3D enabling flag for css hardware acceleration (on by default)
- * @param {Boolean} value
+ * @param {boolean} value
  * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.set3DAllowed = function(value) {
