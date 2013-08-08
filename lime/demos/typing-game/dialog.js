@@ -9,10 +9,10 @@ ydn.game.dialogs.blank = function() {
 ydn.game.dialogs.box1 = function() {
     var b = ydn.game.dialogs.blank();
 
-    var txt = new lime.Label().setText('Tutorial').setFontSize(40).setPosition(0, 70);
+    var txt = new lime.Label('Tutorial').setFontSize(40).setPosition(0, 70);
     b.appendChild(txt);
 
-    var descr = new lime.Label().setText('Divide and add bubbles with different numeric values to get them to equal magical value before they fall to the ground.').setSize(450, 50).setPosition(0, 130).setFontSize(24).setFontColor('#333');
+    var descr = new lime.Label('Divide and add bubbles with different numeric values to get them to equal magical value before they fall to the ground.').setSize(450, 50).setPosition(0, 130).setFontSize(24).setFontColor('#333');
     b.appendChild(descr);
 
     var tutorial1 = new lime.Sprite().setFill('assets/dialog_tutorial1.jpg').setPosition(-150, 400).setScale(.9);
@@ -25,7 +25,8 @@ ydn.game.dialogs.box1 = function() {
     var hint1 = new lime.Label().setFontSize(22).setFontColor('#80c010').setText('Draw line around bubbles to add their values together').setSize(250, 50).setPosition(-150, 250);
     b.appendChild(hint1);
 
-    var hint1 = new lime.Label().setFontSize(22).setFontColor('#80c010').setText('Draw line through a bubble to split it into two.').setSize(250, 50).setPosition(150, 250);
+    hint1 = new lime.Label().setFontSize(22).setFontColor('#80c010').setText(
+        'Draw line through a bubble to split it into two.').setSize(250, 50).setPosition(150, 250);
     b.appendChild(hint1);
 
 

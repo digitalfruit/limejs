@@ -2,15 +2,20 @@ goog.provide('ydn.game.Bubble');
 
 goog.require('lime.Sprite');
 
+/**
+ * @param value
+ * @constructor
+ * @extends {lime.Sprite}
+ */
 ydn.game.Bubble = function(value) {
-    lime.Sprite.call(this);
+    goog.base(this);
 
     this.value = value;
 
     this.circle = new lime.Sprite().setFill('assets/bubble_back.png').setSize(70, 70);
     this.appendChild(this.circle);
 
-    this.lbl = new lime.Label().setText(value).setFontSize(34).setFontColor('#fff').setFontWeight(700).setFontFamily('Impact');
+    this.lbl = new lime.Label('' + value).setFontSize(34).setFontColor('#fff').setFontWeight('700').setFontFamily('Impact');
     this.appendChild(this.lbl);
 
     this.GRAVITY = 2.5;

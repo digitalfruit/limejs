@@ -5,8 +5,13 @@ goog.require('lime.animation.ColorTo');
 goog.require('lime.animation.Resize');
 goog.require('lime.fill.LinearGradient');
 
+
+/**
+ * @constructor
+ * @extends {lime.RoundedRect}
+ */
 ydn.game.Progress = function() {
-    lime.RoundedRect.call(this);
+    goog.base(this);
 
     var WIDTH = 320,
         HEIGHT = 40,
@@ -34,15 +39,15 @@ ydn.game.Progress = function() {
     this.inner = inner;
 
 
-    var inner = new lime.RoundedRect().setRadius(RADIUS).setSize(50, HEIGHT).setFill('#Ff9900').
+    var inner2 = new lime.RoundedRect().setRadius(RADIUS).setSize(50, HEIGHT).setFill('#Ff9900').
         setAnchorPoint(0, .5).setPosition(8, 0);
-    this.movable.appendChild(inner);
+    this.movable.appendChild(inner2);
 
-    inner.setFill(new lime.fill.LinearGradient().addColorStop(0, 255, 255, 255, 0.4).addColorStop(.49, 255, 255, 255, 0).
+    inner2.setFill(new lime.fill.LinearGradient().addColorStop(0, 255, 255, 255, 0.4).addColorStop(.49, 255, 255, 255, 0).
         addColorStop(.5, 0, 0, 0, 0.1).addColorStop(1, 255, 255, 255, 0.3));
 
     this.width = WIDTH;
-    this.inner2 = inner;
+    this.inner2 = inner2;
 
 };
 goog.inherits(ydn.game.Progress, lime.RoundedRect);

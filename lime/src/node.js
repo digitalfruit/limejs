@@ -1139,8 +1139,10 @@ lime.Node.prototype.wasRemovedFromTree = function() {
     for (var type in this.eventHandlers_) {
         this.eventHandlers_[type][0] = 0;
 
-       if (!this.getDirector()) debugger;
-        this.getDirector().eventDispatcher.release(this, type);
+       if (!this.getDirector()) {
+         throw new Error('no director');
+       }
+       this.getDirector().eventDispatcher.release(this, type);
     }
 
     this.getDirector().eventDispatcher.updateDispatchOrder(this);

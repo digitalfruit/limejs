@@ -122,6 +122,13 @@ ydn.game.builtWithLime = function(scene) {
 };
 
 
+/**
+ * @param x0
+ * @param y0
+ * @param x1
+ * @param y1
+ * @constructor
+ */
 function Particle(x0, y0, x1, y1) {
     this.p0 = [x0, y0];
     this.p1 = [x1, y1];

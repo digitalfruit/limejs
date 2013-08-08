@@ -6,6 +6,7 @@ goog.require('goog.array');
 goog.require('goog.math.Coordinate');
 goog.require('lime.Renderer.CANVAS.SPRITE');
 goog.require('lime.Sprite');
+goog.require('lime.Polygon');
 
 /**
  * Custom Canvas context

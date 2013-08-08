@@ -74,7 +74,7 @@ lime.GlossyButton.prototype.setText = function(txt) {
 
 /**
  * Set button text font size.
- * @param {number} txt Number.
+ * @param {number} size Number.
  * @return {lime.GlossyButton} object itself.
  */
 lime.GlossyButton.prototype.setFontSize = function(size) {

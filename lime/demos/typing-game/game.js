@@ -81,6 +81,10 @@ ydn.game.Game = function(level) {
 goog.inherits(ydn.game.Game, lime.Scene);
 
 
+/**
+ * @param {number} count
+ * @param {number=} opt_offset
+ */
 ydn.game.Game.prototype.addBubbles = function(count,opt_offset) {
     var offset = opt_offset || 0;
     for (var i = 0; i < count; i++) {
@@ -155,13 +159,20 @@ ydn.game.Game.prototype.moveHandler_ = function(touch,e) {
        var limit = goog.userAgent.MOBILE ? 300 : 0;
     if (lensq > limit) {
 
-       if (dx > 0)
-           if (dy > 0) touch.quaters[0] = 1;
-           else touch.quaters[1] = 1;
-       else;
-           if (dy > 0) touch.quaters[2] = 1;
-           else touch.quaters[3] = 1;
-
+       if (dx > 0) {
+           if (dy > 0) {
+             touch.quaters[0] = 1;}
+           else {
+             touch.quaters[1] = 1;
+           }
+       } else {
+           if (dy > 0) {
+             touch.quaters[2] = 1;
+           }
+           else {
+             touch.quaters[3] = 1;
+           }
+       }
 
        touch.particles.push(new Particle(touch.pos.x, touch.pos.y, e.position.x, e.position.y));
       // console.log(this.pos.x+' '+this.pos.y+' '+e.position.x+' '+e.position.y);
@@ -306,10 +317,10 @@ ydn.game.Game.prototype.showEndDialog = function() {
 
 
 
-   var btn = new ydn.game.Button().setText('MAIN SCREEN').setSize(300, 90).setPosition(0, 320);
-   dialog.appendChild(btn);
+   var btn2 = new ydn.game.Button().setText('MAIN SCREEN').setSize(300, 90).setPosition(0, 320);
+   dialog.appendChild(btn2);
 
-   goog.events.listen(btn, lime.Button.Event.CLICK, function() {
+   goog.events.listen(btn2, lime.Button.Event.CLICK, function() {
          ydn.game.loadMenuScene(true);
      });
 

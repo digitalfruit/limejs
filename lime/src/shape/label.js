@@ -10,7 +10,7 @@ goog.require('goog.style');
 
 /**
  * Display object for text
- * @param {string} txt Text contents of the label.
+ * @param {string=} txt Text contents of the label.
  * @constructor
  * @extends lime.Sprite
  */
@@ -18,7 +18,7 @@ lime.Label = function(txt) {
     lime.Sprite.call(this);
 
     this.setMultiline(false);
-    this.setText(txt);
+    this.setText(txt + '');
 
     this.setFontFamily(lime.Label.defaultFont);
     this.setFontSize(14);
@@ -122,7 +122,7 @@ lime.Label.prototype.setText = function(txt) {
 
 /**
  * Set label text
- * @param {string} txt New style contents.
+ * @param {string} style New style contents.
  * @return {lime.Label} object itself.
  */
 lime.Label.prototype.setStyle = function(style) {

@@ -7,10 +7,10 @@ goog.require('lime.GlossyButton');
  * Use lime.Button for lower level control.
  * @param {string} txt Text shown on the button.
  * @constructor
- * @extends lime.Button
+ * @extends {lime.GlossyButton}
  */
 ydn.game.Button = function(txt) {
-    lime.GlossyButton.call(this, txt);
+    goog.base(this, txt);
 
     this.borderWidth = 4;
     this.setColor('#000');
@@ -25,7 +25,7 @@ goog.inherits(ydn.game.Button, lime.GlossyButton);
 ydn.game.Button.prototype.makeState_ = function() {
     var state = new lime.RoundedRect().setFill('#fff').setRadius(15);
     state.inner = new lime.RoundedRect().setRadius(15);
-    state.label = new lime.Label().setAlign('center').setFontColor('#eef').setFontSize(35).setSize(250, 35);
+    state.label = new lime.Label('').setAlign('center').setFontColor('#eef').setFontSize(35).setSize(250, 35);
 
     state.appendChild(state.inner);
     state.inner.appendChild(state.label);
@@ -33,12 +33,10 @@ ydn.game.Button.prototype.makeState_ = function() {
 };
 
 /**
- * Set button base color
- * @param {mixed} clr New base color.
- * @return {lime.GlossyButton} object itself.
+ * @inheritDoc
  */
-ydn.game.Button.prototype.setColor = function(clr) {
-    clr = lime.fill.parse(clr);
+ydn.game.Button.prototype.setColor = function(color) {
+    var clr = lime.fill.parse(color);
     goog.array.forEach([this.upstate, this.downstate], function(s) {
         var c = s == this.downstate ? clr.clone().addBrightness(.1) : clr;
         //s.setFill(c);
