@@ -20,7 +20,7 @@ goog.require('lime.Renderer.DOM');
 * @extends {goog.events.EventTarget}
 */
 lime.Node = function() {
-    goog.events.EventTarget.call(this);
+    goog.base(this);
 
     this.children_ = [];
 
@@ -1056,7 +1056,8 @@ lime.Node.prototype.setChildIndex = function(child,index){
 lime.Node.prototype.listen = function(type, handler,
         opt_capture, opt_handlerScope) {
 
-    goog.events.EventTarget.prototype.listen.apply(this, arguments);
+    var key = goog.base(this, 'listen', type, handler,
+        opt_capture, opt_handlerScope);
 
     // Bypass all mouse events on touchscreen devices
     if (lime.userAgent.SUPPORTS_TOUCH &&
@@ -1072,7 +1073,7 @@ lime.Node.prototype.listen = function(type, handler,
         this.getDirector().eventDispatcher.register(this, type);
     }
     this.eventHandlers_[type][1]++;
-
+    return key;
 };
 
 /**
@@ -1082,7 +1083,7 @@ lime.Node.prototype.unlisten = function(
     type, handler, opt_capture, opt_handlerScope) {
 
 
-    goog.events.EventTarget.prototype.unlisten.apply(this, arguments);
+    var key = goog.base(this, 'unlisten', type, handler, opt_capture, opt_handlerScope);
 
     // Bypass all mouse events on touchscreen devices
     if (lime.userAgent.SUPPORTS_TOUCH &&
@@ -1094,7 +1095,7 @@ lime.Node.prototype.unlisten = function(
     }
     this.eventHandlers_[type][1]--;
     if (!this.eventHandlers_[type][1]) delete this.eventHandlers_[type];
-
+    return key;
 };
 
 /**

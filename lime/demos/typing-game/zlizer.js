@@ -3,7 +3,6 @@ goog.provide('ydn.game');
 
 
 //get requirements
-goog.require('lime.Circle');
 goog.require('lime.Director');
 goog.require('lime.Label');
 goog.require('lime.Layer');
@@ -17,13 +16,22 @@ goog.require('lime.animation.Spawn');
 goog.require('lime.transitions.MoveInUp');
 goog.require('ydn.game.Button');
 goog.require('ydn.game.Game');
+goog.require('goog.debug.Logger');
+goog.require('ydn.debug');
 
 ydn.game.WIDTH = 768;
 ydn.game.HEIGHT = 1004;
 
+/**
+ * @protected
+ * @type {goog.debug.Logger} logger.
+ */
+ydn.game.logger =
+    goog.debug.Logger.getLogger('ydn.game');
+
 // entrypoint
 ydn.game.start = function() {
-
+  ydn.game.logger.finest('starting');
     ydn.game.director = new lime.Director(document.body, ydn.game.WIDTH, ydn.game.HEIGHT);
     ydn.game.director.makeMobileWebAppCapable();
 
@@ -63,16 +71,16 @@ ydn.game.loadMenuScene = function(opt_transition) {
     contents.setMask(mask);
 
     var btn_play = new ydn.game.Button('PLAY NOW').setPosition(0, 330).setSize(250, 100);
-    contents.appendChild(btn_play);
-    goog.events.listen(btn_play, lime.Button.Event.CLICK, function() {
+    btn_play.addEventListener(lime.Button.Event.CLICK, function() {
       ydn.game.loadGame(1);
-    });
+    }, false);
+    contents.appendChild(btn_play);
 
     var btn_levels = new ydn.game.Button('PICK LEVEL').setPosition(0, 480).setSize(250, 100);
     contents.appendChild(btn_levels);
-    goog.events.listen(btn_levels, lime.Button.Event.CLICK, function() {
+    btn_levels.addEventListener(goog.events.EventType.CLICK, function() {
        contents.runAction(new lime.animation.MoveTo(0, -255).enableOptimizations());
-    });
+    }, false);
 
     var levels = new lime.Layer().setPosition(0, 690);
     contents.appendChild(levels);
@@ -93,7 +101,7 @@ ydn.game.loadMenuScene = function(opt_transition) {
             var num = (c + 1) + (r * 5);
             var btn = new ydn.game.Button('' + num).setSize(80, 80).setPosition(c * 125, r * 90);
             btns_layer.appendChild(btn);
-            goog.events.listen(btn, lime.Button.Event.CLICK, function() {
+            goog.events.listen(btn, goog.events.EventType.CLICK, function() {
               ydn.game.loadGame(this.level);
             }, false, {level: num});
         }
@@ -102,7 +110,7 @@ ydn.game.loadMenuScene = function(opt_transition) {
     //Creates a button to go back to the main menu
     var btn_main = new ydn.game.Button('Back to Menu').setSize(400, 80).setPosition(250, r * 90);
     btns_layer.appendChild(btn_main);
-    goog.events.listen(btn_main, lime.Button.Event.CLICK, function() {
+    goog.events.listen(btn_main, goog.events.EventType.CLICK, function() {
       contents.runAction(new lime.animation.MoveTo(0, 280).enableOptimizations());
     }, false);
     
@@ -110,6 +118,7 @@ ydn.game.loadMenuScene = function(opt_transition) {
 
 
 ydn.game.loadGame = function(level) {
+  ydn.game.logger.finest('loading level ' + level);
     ydn.game.activeGame = new ydn.game.Game(level);
     ydn.game.director.replaceScene(ydn.game.activeGame, new lime.transitions.MoveInUp());
 };
@@ -143,3 +152,4 @@ function Particle(x0, y0, x1, y1) {
 
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode
 goog.exportSymbol('ydn.game.start', ydn.game.start);
+goog.exportSymbol('ydn.debug.log', ydn.debug.log);

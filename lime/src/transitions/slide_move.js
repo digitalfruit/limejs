@@ -105,11 +105,14 @@ lime.transitions.SlideIn.prototype.setMode = function(value) {
 
 
 /**
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
+ * @param {boolean=} opt_movein Use Move-In transition.
  * @constructor
  * @extends {lime.transitions.SlideIn}
  */
-lime.transitions.SlideInLeft = function() {
-  goog.base(this);
+lime.transitions.SlideInLeft = function(outgoing, incoming, opt_movein) {
+  goog.base(this, outgoing, incoming, opt_movein);
 };
 goog.inherits(lime.transitions.SlideInLeft, lime.transitions.SlideIn);
 

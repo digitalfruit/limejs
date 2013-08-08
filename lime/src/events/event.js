@@ -13,6 +13,18 @@ lime.events.Event = function(dispatcher) {
     this.identifier = 0;
 };
 
+
+/**
+ * @type {goog.math.Coordinate}
+ */
+lime.events.Event.prototype.position;
+
+
+/**
+ * @type {goog.math.Coordinate}
+ */
+lime.events.Event.prototype.screenPosition;
+
 /**
  * Swallow an event. This means that next event from the same
  * interaction will be sent directly to handler without any search

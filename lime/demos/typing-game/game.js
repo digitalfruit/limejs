@@ -31,7 +31,11 @@ ydn.game.Game = function(level) {
     ydn.game.BUBBLE_SPEED = 75 + this.level * 1.4;
 
 
-    this.mask = new lime.Sprite().setFill(new lime.fill.LinearGradient().addColorStop(0, 0, 0, 0, 0).addColorStop(.95, 0, 0, 0, .1).addColorStop(1, 0, 0, 0, .0)).setSize(768, 760).setAnchorPoint(0, 0).setPosition(0, 130);
+    this.mask = new lime.Sprite().setFill(new lime.fill.LinearGradient()
+        .addColorStop(0, 0, 0, 0, 0)
+        .addColorStop(.95, 0, 0, 0, .1)
+        .addColorStop(1, 0, 0, 0, .0))
+        .setSize(768, 760).setAnchorPoint(0, 0).setPosition(0, 130);
     this.appendChild(this.mask);
 
     this.mask = new lime.Sprite().setSize(768, 760).setAnchorPoint(0, 0).setPosition(0, 130);
@@ -51,7 +55,6 @@ ydn.game.Game = function(level) {
 
     lime.scheduleManager.scheduleWithDelay(this.reload, this, ydn.game.RELOAD_TIME);
     lime.scheduleManager.scheduleWithDelay(this.checkDeletions, this, 200);
-
 
     this.points = this.RANGE;
 
@@ -126,7 +129,8 @@ ydn.game.Game.prototype.start = function() {
 
     this.layer.runAction(new lime.animation.FadeTo(1));
     
-    this.graphics = new lime.CanvasContext().setSize(ydn.game.director.getSize().clone()).setAnchorPoint(0,0).setQuality(.5);
+    this.graphics = new lime.CanvasContext().setSize(
+        ydn.game.director.getSize().clone()).setAnchorPoint(0,0).setQuality(.5);
     this.appendChild(this.graphics);
 
    
@@ -141,8 +145,14 @@ ydn.game.Game.prototype.start = function() {
 };
 
 
+/**
+ *
+ * @param {goog.events.Event} e
+ * @private
+ */
 ydn.game.Game.prototype.downHandler_ = function(e) {
-  var key = event.keyCode || event.which;
+  var event = /** @type {goog.events.BrowserEvent} */ (e['event']);
+  var key = event.keyCode;
   var value = String.fromCharCode(key);
   for (var i = 0; i < this.bubbles.length; ++i) {
     if (this.bubbles[i].getValue() == value) {
@@ -227,29 +237,7 @@ ydn.game.Game.prototype.checkDeletions = function() {
      }
     }
 };
-ydn.game.Game.prototype.returnPoints = function(b) {
-    var hide = new lime.animation.Spawn(
-         new lime.animation.ScaleBy(2),
-         new lime.animation.FadeTo(0)
-      );
-      goog.events.listen(hide, lime.animation.Event.STOP, function() {
-          this.layer.removeChild(b);
-      },false, this);
-      b.runAction(hide);
-      this.addPoints(b.value);
-      var lbl = new lime.Label().setText('+' + b.value).setFontColor('#060').setFontSize(40)
-          .setOpacity(0.5).setPosition(b.getPosition().clone()).setFontWeight(700);
-      this.appendChild(lbl);
-      var show = new lime.animation.Spawn(
-        new lime.animation.MoveBy(0, -60),
-        new lime.animation.FadeTo(0),
-        new lime.animation.ScaleBy(2)
-      );
-      lbl.runAction(show);
-      goog.events.listen(show, lime.animation.Event.STOP, function() {
-          this.removeChild(lbl);
-      },false, this);
-};
+
 
 ydn.game.Game.prototype.updateFloaters = function(dt) {
     for (var i = 0; i < this.bubbles.length; i++) {

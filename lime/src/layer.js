@@ -9,10 +9,10 @@ goog.require('lime.Node');
  * acts as a container for other objects. Setting position/scale etc
  * changes position/scale of all of its children
  * @constructor
- * @extends lime.Node
+ * @extends {lime.Node}
  */
 lime.Layer = function() {
-    lime.Node.call(this);
+  goog.base(this);
 
     this.domClassName = goog.getCssName('lime-layer');
 };

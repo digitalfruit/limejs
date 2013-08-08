@@ -42,19 +42,25 @@ goog.inherits(lime.Sprite, lime.Node);
 lime.Sprite.prototype.id = 'sprite';
 
 
-/** @inheritDoc */
-lime.Sprite.prototype.supportedRenderers = [
-    lime.Renderer.DOM.makeSubRenderer(lime.Renderer.DOM.SPRITE),
-    lime.Renderer.CANVAS.makeSubRenderer(lime.Renderer.CANVAS.SPRITE)
-];
-
 /**
- * Gets fill parameters
- * @return {lime.fill.Fill} Fill object.
+ * @return {lime.fill.Fill}
  */
 lime.Sprite.prototype.getFill = function() {
-    return this.fill_;
+  return this.fill_;
 };
+
+
+lime.Renderer.DOM.SPRITE = lime.Renderer.DOM.makeSubRenderer({});
+lime.Renderer.CANVAS.SPRITE = lime.Renderer.CANVAS.makeSubRenderer({});
+
+
+/** @inheritDoc */
+lime.Sprite.prototype.supportedRenderers = [
+    lime.Renderer.DOM.SPRITE,
+    lime.Renderer.CANVAS.SPRITE
+];
+
+
 
 /**
  * Sets fill parameters
@@ -132,23 +138,23 @@ lime.Renderer.CANVAS.SPRITE.draw = function(context) {
     var size = this.getSize(), fill = this.fill_, stroke = this.stroke_;
 
     if (!fill && !stroke) return;
-    
+
     var frame = this.getFrame();
-    
-    
+
+
     if(fill){
         fill.setCanvasStyle(context, this);
-    
+
         if(fill.id != 'image' && fill.id!='frame'){
             context.fillRect(frame.left,frame.top,
                 size.width, size.height);
         }
     }
-    
-    
+
+
     if(stroke){
         stroke.setCanvasStyle(context,this);
-        
+
         if(this.id=='sprite' || this.id=='label'){
         var lw = stroke.width_/2;
         context.strokeRect(frame.left+lw,frame.top+lw,

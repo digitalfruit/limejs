@@ -130,8 +130,8 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
     // todo: check if all those are really neccessary as Event code
     // is much more mature now
-    goog.events.listen(this, ['mouseup', 'touchend', 'mouseout', 'touchcancel'],
-        function() {},false);
+    //goog.events.listen(this, ['mouseup', 'touchend', 'mouseout', 'touchcancel'],
+    //    function() {},false);
 
 
     this.invalidateSize_();
@@ -369,8 +369,8 @@ lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration
  * @return Transition object if opt_transition is defined
  */
 lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
-    var transition, 
-      outgoing = this.getCurrentScene();
+
+    var  outgoing = this.getCurrentScene();
       
     if (goog.isNull(outgoing)) return;
     
@@ -382,8 +382,10 @@ lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
         outgoing = null; // GC
     };
     // Transitions require an existing incoming scene
+  var transition;
     if (goog.isDef(opt_transition) && (this.sceneStack_.length > 1)) {
-        transition = opt_transition.init(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);
+        transition = opt_transition;
+      transition.init(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);
       
         if (goog.isDef(opt_duration)) {
             transition.setDuration(opt_duration);

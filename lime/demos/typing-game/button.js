@@ -19,7 +19,6 @@ goog.inherits(ydn.game.Button, lime.GlossyButton);
 
 /**
  * Make state for a button.
- * @private
  * @return {lime.RoundedRect} state.
  */
 ydn.game.Button.prototype.makeState_ = function() {

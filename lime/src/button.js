@@ -7,10 +7,10 @@ goog.require('lime.Layer');
  * @param {lime.Sprite=} opt_upstate Object shown on normal state.
  * @param {lime.Sprite=} opt_downstate Object show when button is pressed.
  * @constructor
- * @extends lime.Layer
+ * @extends {lime.Layer}
  */
 lime.Button = function(opt_upstate, opt_downstate) {
-    lime.Layer.call(this);
+  goog.base(this);
 
     this.domClassName = goog.getCssName('lime-button');
 
@@ -26,8 +26,10 @@ lime.Button = function(opt_upstate, opt_downstate) {
 
 
     var t = this;
-    goog.events.listen(this, ['mousedown', 'touchstart', 'touchmove'],
-        function(e) {
+    goog.events.listen(this, [goog.events.EventType.MOUSEDOWN, 'touchstart', 'touchmove'],
+        function(ev) {
+          var e = /** @type {lime.events.Event} */ (ev);
+          window.console.log(e);
             t.setState(lime.Button.State.DOWN);
             e.swallow('mousemove', function(e) {
                 if (t.hitTest(e)) {
@@ -44,7 +46,9 @@ lime.Button = function(opt_upstate, opt_downstate) {
                 }
             });
             e.swallow(['mouseup', 'touchend'], function(e) {
+              window.console.log('hint click')
                 if (t.hitTest(e)) {
+                  window.console.log('click')
                     t.dispatchEvent({type: lime.Button.Event.CLICK});
                }
                this.setState(lime.Button.State.UP);
@@ -55,6 +59,8 @@ lime.Button = function(opt_upstate, opt_downstate) {
 
 };
 goog.inherits(lime.Button, lime.Layer);
+
+
 
 /**
  * Button states

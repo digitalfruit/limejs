@@ -41,7 +41,7 @@ lime.CanvasContext.prototype.draw = goog.nullFunction;
 lime.Renderer.CANVAS.CANVASCONTEXT.draw = function(context) {
 
     lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
-    
+
     this.draw(context);
 
 };

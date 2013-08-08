@@ -5,10 +5,12 @@
 	<title>ydn.game</title>
 	<meta name="format-detection" content="telephone=no">
 	<script type="text/javascript" src="../../../../closure-library/closure/goog/base.js"></script>
+	<script type="text/javascript" src="../../../../ydn-base/js/deps.js"></script>
 	<script type="text/javascript" src="../../src/deps.js"></script>
 	<script type="text/javascript" src="deps.js"></script>
     <script type="text/javascript" src="../../css/lime.css.soy.js"></script>
     <script type="text/javascript">
+        goog.require('ydn.debug');
         goog.require('ydn.game');
     </script>
 	<style>
@@ -21,6 +23,10 @@
 	</style>
 </head>
 
-<body onload="ydn.game.start()"></body>
+<body onload="ydn.game.start()">
+<script type="text/javascript">
+    ydn.debug.log('ydn.game', 'finest');
+</script>
+</body>
 
 </html>

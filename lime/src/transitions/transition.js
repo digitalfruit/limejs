@@ -33,7 +33,6 @@ lime.transitions.Transition.prototype.logger =
  * @param {lime.Scene} outgoing
  * @param {lime.Scene} incoming
  * @param {boolean=} opt_a
- * @returns {lime.transitions.Transition}
  */
 lime.transitions.Transition.prototype.init = function(outgoing, incoming, opt_a) {
   this.outgoing_ = outgoing;
