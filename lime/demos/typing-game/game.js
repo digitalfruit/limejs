@@ -255,7 +255,7 @@ ydn.game.Game.prototype.upHandler_ = function(touch,e) {
 };
 
 ydn.game.Game.prototype.startup = function() {
-    var title = new lime.Label().setText('Your game is about to start').setFontSize(52).setPosition(0, 0);
+    var title = new lime.Label().setText('Are you ready?').setFontSize(52).setPosition(0, 0);
     this.cover.appendChild(title);
     var show = new lime.animation.MoveBy(0, 200).setDuration(1.5);
     title.runAction(show);

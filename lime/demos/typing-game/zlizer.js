@@ -44,7 +44,8 @@ ydn.game.isBrokenChrome = function(){
  */
 ydn.game.loadMenuScene = function(opt_transition) {
     var scene = new lime.Scene();
-    ydn.game.director.replaceScene(scene, opt_transition || new lime.transitions.MoveInDown());
+    var tr = opt_transition || new lime.transitions.MoveInDown();
+    ydn.game.director.replaceScene(scene, tr);
 
     var layer = new lime.Layer().setPosition(ydn.game.WIDTH * .5, 0);
     scene.appendChild(layer);

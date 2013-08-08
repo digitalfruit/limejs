@@ -280,7 +280,7 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
 
     scene.setSize(this.getSize().clone());
 
-    var transitionclass = opt_transition || new lime.transitions.Transition();
+    var transition = opt_transition || new lime.transitions.Transition();
 
     var outgoing = null;
     if (this.sceneStack_.length)
@@ -301,7 +301,7 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
     scene.parent_ = this;
     scene.wasAddedToTree();
 
-    var transition = transitionclass.init(outgoing, scene);
+    transition.init(outgoing, scene);
         
     goog.events.listenOnce(transition,'end',function() {
             var i = removelist.length;
