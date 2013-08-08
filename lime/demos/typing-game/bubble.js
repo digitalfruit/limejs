@@ -15,7 +15,7 @@ ydn.game.Bubble = function(value) {
     this.circle = new lime.Sprite().setFill('assets/bubble_back.png').setSize(70, 70);
     this.appendChild(this.circle);
 
-    this.lbl = new lime.Label('' + value).setFontSize(34).setFontColor('#fff').setFontWeight('700').setFontFamily('Impact');
+    this.lbl = new lime.Label('' + value).setFontSize(34).setFontColor('#fff').setFontWeight('700').setFontFamily('Arial');
     this.appendChild(this.lbl);
 
     this.GRAVITY = 2.5;
@@ -31,9 +31,21 @@ ydn.game.Bubble = function(value) {
 };
 goog.inherits(ydn.game.Bubble, lime.Sprite);
 
-ydn.game.Bubble.random = function(max) {
-    var value = Math.ceil(Math.random() * max);
-    return new ydn.game.Bubble(value);
+/**
+ * @return {!ydn.game.Bubble}
+ */
+ydn.game.Bubble.random = function() {
+    var value = Math.floor(Math.random() * 26);
+  var alpha = String.fromCharCode(65 + value)
+    return new ydn.game.Bubble(alpha);
+};
+
+
+/**
+ * @return {string}
+ */
+ydn.game.Bubble.prototype.getValue = function() {
+  return this.value;
 };
 
 
