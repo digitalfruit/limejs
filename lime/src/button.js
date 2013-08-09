@@ -29,7 +29,6 @@ lime.Button = function(opt_upstate, opt_downstate) {
     goog.events.listen(this, [goog.events.EventType.MOUSEDOWN, 'touchstart', 'touchmove'],
         function(ev) {
           var e = /** @type {lime.events.Event} */ (ev);
-          window.console.log(e);
             t.setState(lime.Button.State.DOWN);
             e.swallow('mousemove', function(e) {
                 if (t.hitTest(e)) {
@@ -46,9 +45,8 @@ lime.Button = function(opt_upstate, opt_downstate) {
                 }
             });
             e.swallow(['mouseup', 'touchend'], function(e) {
-              window.console.log('hint click')
+
                 if (t.hitTest(e)) {
-                  window.console.log('click')
                     t.dispatchEvent({type: lime.Button.Event.CLICK});
                }
                this.setState(lime.Button.State.UP);

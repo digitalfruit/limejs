@@ -4,14 +4,18 @@ goog.require('lime.events.Drag');
 
 /**
  * Dfkit Event object
+ * @param {string} type Event Type.
  * @param {lime.events.EventDispatcher} dispatcher Dispatcher.
  * @constructor
+ * @extends {goog.events.Event}
  */
-lime.events.Event = function(dispatcher) {
+lime.events.Event = function(type, dispatcher) {
+  goog.base(this, type, dispatcher);
     this.dispatcher_ = dispatcher;
 
     this.identifier = 0;
 };
+goog.inherits(lime.events.Event, goog.events.Event);
 
 
 /**
@@ -87,7 +91,7 @@ lime.events.Event.prototype.startDrag = function(snapToCenter, box,
  * @return {lime.events.Event} event.
  */
 lime.events.Event.prototype.clone = function() {
-    var e = new lime.events.Event(this.dispatcher_);
+    var e = new lime.events.Event(this.type, this.dispatcher_);
     goog.object.extend(e, this);
     return e;
 };
