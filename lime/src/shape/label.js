@@ -116,7 +116,7 @@ lime.Label.prototype.getText = function() {
 lime.Label.prototype.setText = function(txt) {
     this.text_ = txt + '';
     this.setDirty(lime.Dirty.CONTENT);
-    delete this.words_;
+    this.words_ = null;
     return this;
 };
 
