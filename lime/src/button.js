@@ -24,7 +24,6 @@ lime.Button = function(opt_upstate, opt_downstate) {
         this.setDownState(opt_downstate);
     }
 
-
     var t = this;
     goog.events.listen(this, [goog.events.EventType.MOUSEDOWN, 'touchstart', 'touchmove'],
         function(ev) {
@@ -53,7 +52,6 @@ lime.Button = function(opt_upstate, opt_downstate) {
            });
         }
     );
-
 
 };
 goog.inherits(lime.Button, lime.Layer);

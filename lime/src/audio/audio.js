@@ -8,16 +8,17 @@ goog.require('lime.userAgent');
  * Audio stream object
  * @constructor
  * @param {string} filePath Path to audio file.
+ * @extends {goog.events.EventTarget}
  */
 lime.audio.Audio = function(filePath) {
-    goog.events.EventTarget.call(this);
+    goog.base(this);
 
     if(filePath && goog.isFunction(filePath.data)){
         filePath = filePath.data();
     }
 
     /**
-     * @type bBoolean}
+     * @type {boolean}
      * @private
      */
     this.loaded_ = false;
@@ -40,14 +41,14 @@ lime.audio.Audio = function(filePath) {
     else {
         /**
          * Internal audio element
-         * @type {audio}
+         * @type {HTMLAudioElement}
          */
-        this.baseElement = document.createElement('audio');
+        this.baseElement = /** @type {HTMLAudioElement} */ (document.createElement('audio'));
         this.baseElement['preload'] = true;
         this.baseElement['loop'] = false;
         this.baseElement.src = filePath;
         this.baseElement.load();
-        this.baseElement.addEventListener('ended', goog.bind(this.onEnded_, this));
+        goog.events.listen(this.baseElement, 'ended', this.onEnded_, false, this);
         this.loadInterval = setInterval(goog.bind(this.loadHandler_, this), 10);
 
         this.loaded_ = false;
@@ -83,22 +84,30 @@ lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
         req.onload = function() {
             lime.audio.context['decodeAudioData'](req.response, function(buffer) {
                if (!buffer) {
-                   return console.error('Error decoding file:', path);
+                   return new Error('Error decoding file:' + path);
                }
                var cbArray = buffers[path];
                buffers[path] = {buffer: buffer};
                for (var i=0; i < cbArray.length; i++) {
                    cbArray[i](buffer, path);
                }
-            }, function(e){console.error('Error decoding file',e);});
+            }, function(e){
+              throw new Error ('Error decoding file' + e);
+            });
         };
         req.onerror = function() {
-          console.error('XHR error loading file:', path);
+          throw new Error('XHR error loading file: ' + path);
         };
         req.send();
     }
 };
 
+
+/**
+ * @param {*=} buffer
+ * @param {string=} path
+ * @private
+ */
 lime.audio.Audio.prototype.bufferLoadedHandler_ = function (buffer, path) {
     this.buffer = buffer;
     this.loaded_ = true;
@@ -167,8 +176,9 @@ lime.audio.Audio.prototype.isPlaying = function() {
 /**
  * Start playing the audio
  * @param {number=} opt_loop Loop the sound.
+ * @param {number=} opt_delay delay.
  */
-lime.audio.Audio.prototype.play = function(opt_loop) {
+lime.audio.Audio.prototype.play = function(opt_loop, opt_delay) {
     if (!this.isLoaded()) {
         this.autoplay_ = goog.array.toArray(arguments);
     }
