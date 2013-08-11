@@ -7,7 +7,7 @@ goog.require('lime.Node');
 /**
  * Scene object
  * @constructor
- * @extends lime.Node
+ * @extends {lime.Node}
  */
 lime.Scene = function() {
     lime.Node.call(this);
