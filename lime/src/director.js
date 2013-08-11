@@ -109,7 +109,7 @@ lime.Director = function(parentElement, opt_width, opt_height) {
     ));
 
     // --define goog.debug=false
-    this.setDisplayFPS(goog.DEBUG);
+    // this.setDisplayFPS(goog.DEBUG);
     this.setPaused(false);
 
 
