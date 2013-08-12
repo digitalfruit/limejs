@@ -1,56 +1,65 @@
-goog.provide('lime.scheduleManager');
 goog.provide('lime.ScheduleManager');
+goog.provide('lime.ScheduleManager.Task');
 
 goog.require('goog.array');
 goog.require('goog.userAgent');
 goog.require('lime');
 
 
+
 /**
  * Unified timer provider class
  * Don't create instances of this class. Used the shared instance.
  * @constructor
+ * @strict
  */
-lime.ScheduleManager = function() {
+lime.ScheduleManager = function () {
 
-    /**
-     * Array of registered functions
-     * @type {Array.<lime.scheduleManager.Task>}
-     * @private
-     */
-    this.taskStack_ = [];
+  /**
+   * Array of registered functions
+   * @type {Array.<lime.ScheduleManager.Task>}
+   * @private
+   */
+  this.taskStack_ = [];
 
-    /**
-     * ScheduleManager is active
-     * @type {boolean}
-     * @private
-     */
-    this.active_ = false;
+  /**
+   * ScheduleManager is active
+   * @type {boolean}
+   * @private
+   */
+  this.active_ = false;
 
-    /**
-     * Internal setInterval id
-     * @type {number}
-     * @private
-     */
-    this.intervalID_ = 0;
+  /**
+   * Internal setInterval id
+   * @type {number}
+   * @private
+   */
+  this.intervalID_ = 0;
 
-    /**
-     * Maximum update rate in ms.
-     * @type {number}
-     * @private
-     */
-    this.displayRate_ = 1000 / 30;
+  /**
+   * Maximum update rate in ms.
+   * @type {number}
+   * @private
+   */
+  this.displayRate_ = 1000 / 30;
 
-    /**
-     * Timer last fire timestamp
-     * @type {number}
-     * @private
-     */
-    this.lastRunTime_ = 0;
+  /**
+   * Timer last fire timestamp
+   * @type {number}
+   * @private
+   */
+  this.lastRunTime_ = 0;
 
 };
 
+
+/**
+ * @final
+ * @type {!lime.ScheduleManager}
+ */
 lime.scheduleManager = new lime.ScheduleManager();
+
+
 
 /**
  * Scheduled task
@@ -58,51 +67,53 @@ lime.scheduleManager = new lime.ScheduleManager();
  * @param {number=} opt_limit Number of calls.
  * @constructor
  */
-lime.scheduleManager.Task = function(maxdelta, opt_limit) {
-    this.delta = this.maxdelta = maxdelta;
-    this.limit = goog.isDef(opt_limit) ? opt_limit : -1;
-    this.functionStack_ = [];
+lime.ScheduleManager.Task = function (maxdelta, opt_limit) {
+  this.delta = this.maxdelta = maxdelta;
+  this.limit = goog.isDef(opt_limit) ? opt_limit : -1;
+  this.functionStack_ = [];
 };
+
 
 /**
  * Handle iteration
  * @param {number} dt Delta time since last iteration.
  * @private
  */
-lime.scheduleManager.Task.prototype.step_ = function(dt) {
-    if (!this.functionStack_.length) return;
-    if (this.delta > dt) {
-        this.delta -= dt;
+lime.ScheduleManager.Task.prototype.step_ = function (dt) {
+  if (!this.functionStack_.length) return;
+  if (this.delta > dt) {
+    this.delta -= dt;
+  }
+  else {
+    var delta = this.maxdelta + dt - this.delta;
+    this.delta = this.maxdelta - (dt - this.delta);
+    if (this.delta < 0) this.delta = 0;
+    var f;
+    var i = this.functionStack_.length;
+    while (--i >= 0) {
+      f = this.functionStack_[i];
+      if (f && f[0] && goog.isFunction(f[1]))
+        (f[1]).call(f[2], delta);
     }
-    else {
-        var delta = this.maxdelta + dt - this.delta;
-        this.delta = this.maxdelta - (dt - this.delta);
-        if (this.delta < 0) this.delta = 0;
-        var f;
-        var i = this.functionStack_.length;
-        while (--i >= 0) {
-            f = this.functionStack_[i];
-            if (f && f[0] && goog.isFunction(f[1]))
-            (f[1]).call(f[2], delta);
-        }
-        if (this.limit != -1) {
-            this.limit--;
-            if (this.limit == 0) {
-                lime.scheduleManager.unschedule(f[1], f[2]);
-            }
-        }
+    if (this.limit != -1) {
+      this.limit--;
+      if (this.limit == 0) {
+        lime.scheduleManager.unschedule(f[1], f[2]);
+      }
     }
+  }
 };
 
-lime.scheduleManager.taskStack_.push(new lime.scheduleManager.Task(0));
 
-(function() {
-    var vendors = ['webkit', 'moz'];
-    for(var x = 0; x < vendors.length && !goog.global.requestAnimationFrame; ++x) {
-        goog.global.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-        goog.global.cancelAnimationFrame =
-          goog.global[vendors[x]+'CancelAnimationFrame'] || goog.global[vendors[x]+'CancelRequestAnimationFrame'];
-    }
+lime.ScheduleManager.TaskStack_.push(new lime.ScheduleManager.Task(0));
+
+(function () {
+  var vendors = ['webkit', 'moz'];
+  for (var x = 0; x < vendors.length && !goog.global.requestAnimationFrame; ++x) {
+    goog.global.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+    goog.global.cancelAnimationFrame =
+        goog.global[vendors[x] + 'CancelAnimationFrame'] || goog.global[vendors[x] + 'CancelRequestAnimationFrame'];
+  }
 }());
 
 
@@ -117,9 +128,9 @@ lime.scheduleManager.USE_ANIMATION_FRAME = !!goog.global.requestAnimationFrame;
  * Returns maximum fire rate in ms. If you need FPS then use 1000/x
  * @return {number} Display rate.
  */
-lime.ScheduleManager.prototype.getDisplayRate = function() {
-    //todo: bad name
-    return this.displayRate_;
+lime.ScheduleManager.prototype.getDisplayRate = function () {
+  //todo: bad name
+  return this.displayRate_;
 };
 
 /**
@@ -129,12 +140,12 @@ lime.ScheduleManager.prototype.getDisplayRate = function() {
  * max display rate and this value has no effect.
  * @param {number} value New display rate.
  */
-lime.ScheduleManager.prototype.setDisplayRate = function(value) {
-     this.displayRate_ = value;
-     if (this.active_) {
-         lime.scheduleManager.disable_();
-         lime.scheduleManager.activate_();
-     }
+lime.ScheduleManager.prototype.setDisplayRate = function (value) {
+  this.displayRate_ = value;
+  if (this.active_) {
+    lime.scheduleManager.disable_();
+    lime.scheduleManager.activate_();
+  }
 };
 
 /**
@@ -142,15 +153,15 @@ lime.ScheduleManager.prototype.setDisplayRate = function(value) {
  * with delta time from last run time
  * @param {function(number)} f Function to be called.
  * @param {Object} context The context used when calling function.
- * @param {lime.scheduleManager.Task=} opt_task Task object.
+ * @param {lime.ScheduleManager.Task=} opt_task Task object.
  */
-lime.ScheduleManager.prototype.schedule = function(f, context, opt_task) {
-    var task = goog.isDef(opt_task) ? opt_task : this.taskStack_[0];
-    goog.array.insert(task.functionStack_, [1, f, context]);
-    goog.array.insert(this.taskStack_, task);
-    if (!this.active_) {
-        lime.scheduleManager.activate_();
-    }
+lime.ScheduleManager.prototype.schedule = function (f, context, opt_task) {
+  var task = goog.isDef(opt_task) ? opt_task : this.taskStack_[0];
+  goog.array.insert(task.functionStack_, [1, f, context]);
+  goog.array.insert(this.taskStack_, task);
+  if (!this.active_) {
+    lime.scheduleManager.activate_();
+  }
 };
 
 /**
@@ -158,126 +169,125 @@ lime.ScheduleManager.prototype.schedule = function(f, context, opt_task) {
  * @param {function(number)} f Function to be unscheduled.
  * @param {Object} context Context used when scheduling.
  */
-lime.ScheduleManager.prototype.unschedule = function(f, context) {
-    var j = this.taskStack_.length;
-    while (--j >= 0) {
-        var task = this.taskStack_[j],
-            functionStack_ = task.functionStack_,
-            fi, i = functionStack_.length;
-        while (--i >= 0) {
-            fi = functionStack_[i];
-            if (fi[1] == f && fi[2] == context) {
-                goog.array.remove(functionStack_, fi);
+lime.ScheduleManager.prototype.unschedule = function (f, context) {
+  var j = this.taskStack_.length;
+  while (--j >= 0) {
+    var task = this.taskStack_[j],
+        functionStack_ = task.functionStack_,
+        fi, i = functionStack_.length;
+    while (--i >= 0) {
+      fi = functionStack_[i];
+      if (fi[1] == f && fi[2] == context) {
+        goog.array.remove(functionStack_, fi);
 
-            }
-        }
-        if (functionStack_.length == 0 && j != 0) {
-           goog.array.remove(this.taskStack_, task);
-        }
+      }
     }
-    // if no more functions: stop timers
-    if (this.taskStack_.length == 1 &&
-            this.taskStack_[0].functionStack_.length == 0) {
-        lime.scheduleManager.disable_();
+    if (functionStack_.length == 0 && j != 0) {
+      goog.array.remove(this.taskStack_, task);
     }
+  }
+  // if no more functions: stop timers
+  if (this.taskStack_.length == 1 &&
+      this.taskStack_[0].functionStack_.length == 0) {
+    lime.scheduleManager.disable_();
+  }
 };
 
 /**
  * Start the internal timer functions
  * @private
  */
-lime.ScheduleManager.prototype.activate_ = function() {
-    if (this.active_) return;
+lime.ScheduleManager.prototype.activate_ = function () {
+  if (this.active_) return;
 
-    this.lastRunTime_ = goog.now();
+  this.lastRunTime_ = goog.now();
 
-    if(lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
-        // old mozilla
-        if(goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION < 11) {
-            goog.global['mozRequestAnimationFrame']();
-            this.beforePaintHandlerBinded_ = goog.bind(lime.scheduleManager.beforePaintHandler_,this);
-            goog.global.addEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
-        }
-        else {
-            this.animationFrameHandlerBinded_ = goog.bind(lime.scheduleManager.animationFrameHandler_,this);
-            goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
-        }
+  if (lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
+    // old mozilla
+    if (goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION < 11) {
+      goog.global['mozRequestAnimationFrame']();
+      this.beforePaintHandlerBinded_ = goog.bind(lime.scheduleManager.beforePaintHandler_, this);
+      goog.global.addEventListener('MozBeforePaint', this.beforePaintHandlerBinded_, false);
     }
     else {
-        this.intervalID_ = setInterval(goog.bind(lime.scheduleManager.stepTimer_, this),
-            lime.scheduleManager.getDisplayRate());
+      this.animationFrameHandlerBinded_ = goog.bind(lime.scheduleManager.animationFrameHandler_, this);
+      goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
     }
-    this.active_ = true;
+  }
+  else {
+    this.intervalID_ = setInterval(goog.bind(lime.scheduleManager.stepTimer_, this),
+        lime.scheduleManager.getDisplayRate());
+  }
+  this.active_ = true;
 };
-
 
 
 /**
  * Stop interval timer functions
  * @private
  */
-lime.ScheduleManager.prototype.disable_ = function() {
-    if (!this.active_) return;
+lime.ScheduleManager.prototype.disable_ = function () {
+  if (!this.active_) return;
 
-    if(lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
-        // old mozilla
-        if(goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION < 11) {
-            goog.global.removeEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
-        }
-        else {
-            goog.global.cancelAnimationFrame(this.animationFrameHandlerBinded_);
-        }
+  if (lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
+    // old mozilla
+    if (goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION < 11) {
+      goog.global.removeEventListener('MozBeforePaint', this.beforePaintHandlerBinded_, false);
     }
     else {
-        clearInterval(this.intervalID_);
+      goog.global.cancelAnimationFrame(this.animationFrameHandlerBinded_);
     }
-    this.active_ = false;
+  }
+  else {
+    clearInterval(this.intervalID_);
+  }
+  this.active_ = false;
 };
 
 /**
  * Webkit implemtation of requestAnimationFrame handler.
  * @private
  */
-lime.ScheduleManager.prototype.animationFrameHandler_ = function(time){
-    var performance = goog.global['performance'],
-        now;
-    if (performance && (now = performance['now'] || performance['webkitNow'])) {
-        time = performance['timing']['navigationStart'] + now.call(performance);
-    }
-    else if (!time) {
-        time = goog.now();
-    }
-    var delta = time - this.lastRunTime_;
-    if (delta < 0) { // i0S6 reports relative to the device restart time. So first is negative.
-        delta = 1;
-    }
-    lime.scheduleManager.dispatch_(delta);
-    this.lastRunTime_ = time;
-    goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
+lime.ScheduleManager.prototype.animationFrameHandler_ = function (time) {
+  var performance = goog.global['performance'],
+      now;
+  if (performance && (now = performance['now'] || performance['webkitNow'])) {
+    time = performance['timing']['navigationStart'] + now.call(performance);
+  }
+  else if (!time) {
+    time = goog.now();
+  }
+  var delta = time - this.lastRunTime_;
+  if (delta < 0) { // i0S6 reports relative to the device restart time. So first is negative.
+    delta = 1;
+  }
+  lime.scheduleManager.dispatch_(delta);
+  this.lastRunTime_ = time;
+  goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
 }
 
 /**
  * Mozilla < 11 implementation of requestAnimationFrame handler.
  * @private
  */
-lime.ScheduleManager.prototype.beforePaintHandler_ = function(event){
-    var delta = event.timeStamp - this.lastRunTime_;
-    lime.scheduleManager.dispatch_(delta);
-    this.lastRunTime_ = event.timeStamp;
-    goog.global['mozRequestAnimationFrame']();
+lime.ScheduleManager.prototype.beforePaintHandler_ = function (event) {
+  var delta = event.timeStamp - this.lastRunTime_;
+  lime.scheduleManager.dispatch_(delta);
+  this.lastRunTime_ = event.timeStamp;
+  goog.global['mozRequestAnimationFrame']();
 }
 
 /**
  * Timer events step function that delegates to other objects waiting
  * @private
  */
-lime.ScheduleManager.prototype.stepTimer_ = function() {
-    var t;
-    var curTime = goog.now();
-    var delta = curTime - this.lastRunTime_;
-    if (delta < 0) delta = 1;
-    lime.scheduleManager.dispatch_(delta);
-    this.lastRunTime_ = curTime;
+lime.ScheduleManager.prototype.stepTimer_ = function () {
+  var t;
+  var curTime = goog.now();
+  var delta = curTime - this.lastRunTime_;
+  if (delta < 0) delta = 1;
+  lime.scheduleManager.dispatch_(delta);
+  this.lastRunTime_ = curTime;
 };
 
 /**
@@ -285,12 +295,12 @@ lime.ScheduleManager.prototype.stepTimer_ = function() {
  * @param {number} delta Milliseconds since last run.
  * @private
  */
-lime.ScheduleManager.prototype.dispatch_ = function(delta){
+lime.ScheduleManager.prototype.dispatch_ = function (delta) {
 
 
-    var stack = this.taskStack_.slice()
-    var i = stack.length;
-    while (--i >= 0) stack[i].step_(delta);
+  var stack = this.taskStack_.slice()
+  var i = stack.length;
+  while (--i >= 0) stack[i].step_(delta);
 
 };
 
@@ -299,24 +309,24 @@ lime.ScheduleManager.prototype.dispatch_ = function(delta){
  * @param {lime.Director} director Director.
  * @param {boolean} value Active or inactive?
  */
-lime.ScheduleManager.prototype.changeDirectorActivity = function(director, value) {
-    var t, context, f, d, i,
-    j = this.taskStack_.length;
-    while (--j >= 0) {
+lime.ScheduleManager.prototype.changeDirectorActivity = function (director, value) {
+  var t, context, f, d, i,
+      j = this.taskStack_.length;
+  while (--j >= 0) {
 
-        t = this.taskStack_[j];
-        i = t.functionStack_.length;
-        while (--i >= 0) {
-            f = t.functionStack_[i];
-            context = f[2];
-            if (goog.isFunction(context.getDirector)) {
-                d = context.getDirector();
-                if (d == director) {
-                    f[0] = value;
-                }
-            }
+    t = this.taskStack_[j];
+    i = t.functionStack_.length;
+    while (--i >= 0) {
+      f = t.functionStack_[i];
+      context = f[2];
+      if (goog.isFunction(context.getDirector)) {
+        d = context.getDirector();
+        if (d == director) {
+          f[0] = value;
         }
+      }
     }
+  }
 };
 
 /**
@@ -325,8 +335,8 @@ lime.ScheduleManager.prototype.changeDirectorActivity = function(director, value
  * @param {Object} context Context used when calling object.
  * @param {number} delay Delay before calling.
  */
-lime.scheduleManager.callAfter = function(f, context, delay) {
-    lime.scheduleManager.scheduleWithDelay(f, context, delay, 1);
+lime.scheduleManager.callAfter = function (f, context, delay) {
+  lime.scheduleManager.scheduleWithDelay(f, context, delay, 1);
 };
 
 /**
@@ -336,8 +346,7 @@ lime.scheduleManager.callAfter = function(f, context, delay) {
  * @param {number} delay Delay before calling.
  * @param {number=} opt_limit Number of times to call.
  */
-lime.ScheduleManager.prototype.scheduleWithDelay = function(f, context,
-        delay, opt_limit) {
-    var task = new lime.scheduleManager.Task(delay, opt_limit);
-    lime.scheduleManager.schedule(f, context, task);
+lime.ScheduleManager.prototype.scheduleWithDelay = function (f, context, delay, opt_limit) {
+  var task = new lime.ScheduleManager.Task(delay, opt_limit);
+  lime.scheduleManager.schedule(f, context, task);
 };
