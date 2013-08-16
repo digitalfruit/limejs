@@ -16,7 +16,7 @@ goog.require('lime');
 goog.require('lime.Node');
 goog.require('lime.events.EventDispatcher');
 goog.require('lime.helper.PauseScene');
-goog.require('lime.scheduleManager');
+goog.require('lime.ScheduleManager');
 goog.require('lime.transitions.Transition');
 
 
@@ -118,7 +118,6 @@ lime.Director = function(parentElement, opt_width, opt_height) {
         this.invalidateSize_, false, this);
     goog.events.listen(goog.global, 'orientationchange',
         this.invalidateSize_, false, this);
-
 
     lime.scheduleManager.schedule(this.step_, this);
 

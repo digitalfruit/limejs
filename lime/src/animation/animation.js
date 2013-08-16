@@ -7,7 +7,7 @@ goog.provide('lime.animation.Event');
 goog.require('goog.array');
 goog.require('goog.events.EventTarget');
 goog.require('goog.fx.easing');
-goog.require('lime.scheduleManager');
+goog.require('lime.ScheduleManager');
 
 
 /**
