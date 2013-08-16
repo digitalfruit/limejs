@@ -199,6 +199,7 @@ lime.ScheduleManager.prototype.animationFrameHandler_ = function (time) {
   }
   lime.scheduleManager.dispatch_(delta);
   this.lastRunTime_ = time;
+  this.animationDelay_.start();
 };
 
 
@@ -234,10 +235,9 @@ lime.ScheduleManager.prototype.stepTimer_ = function () {
  */
 lime.ScheduleManager.prototype.dispatch_ = function (delta) {
 
-  // todo: use simple for loop, here creating new array unnecessarily
-  var stack = this.taskStack_.slice();
-  var i = stack.length;
-  while (--i >= 0) stack[i].step_(delta);
+  for (var i = 0; i < this.taskStack_.length; ++i) {
+    this.taskStack_[i].step_(delta);
+  }
 
 };
 
