@@ -2,6 +2,8 @@ goog.provide('lime.Button');
 
 goog.require('lime.Layer');
 
+
+
 /**
  * Simple button element
  * @param {lime.Sprite=} opt_upstate Object shown on normal state.
@@ -12,50 +14,49 @@ goog.require('lime.Layer');
 lime.Button = function(opt_upstate, opt_downstate) {
   goog.base(this);
 
-    this.domClassName = goog.getCssName('lime-button');
+  this.domClassName = goog.getCssName('lime-button');
 
-    //set up state
-    if (goog.isDef(opt_upstate)) {
-        this.setUpState(opt_upstate);
-    }
+  //set up state
+  if (goog.isDef(opt_upstate)) {
+    this.setUpState(opt_upstate);
+  }
 
-    //set down state
-    if (goog.isDef(opt_downstate)) {
-        this.setDownState(opt_downstate);
-    }
+  //set down state
+  if (goog.isDef(opt_downstate)) {
+    this.setDownState(opt_downstate);
+  }
 
-    var t = this;
-    goog.events.listen(this, [goog.events.EventType.MOUSEDOWN, 'touchstart', 'touchmove'],
-        function(ev) {
-          var e = /** @type {lime.events.Event} */ (ev);
-            t.setState(lime.Button.State.DOWN);
-            e.swallow('mousemove', function(e) {
-                if (t.hitTest(e)) {
-                    t.setState(lime.Button.State.DOWN);
-                }
-                else {
-                    t.setState(lime.Button.State.UP);
-                }
-            });
-            e.swallow('touchmove', function(e) {
-                if (!t.hitTest(e)) {
-                    t.setState(lime.Button.State.UP);
-                    e.release();
-                }
-            });
-            e.swallow(['mouseup', 'touchend'], function(e) {
+  var t = this;
+  goog.events.listen(this, [goog.events.EventType.MOUSEDOWN,
+    goog.events.EventType.TOUCHSTART, goog.events.EventType.TOUCHMOVE],
+  function(ev) {
+    var e = /** @type {lime.events.Event} */ (ev);
+    t.setState(lime.Button.State.DOWN);
+    e.swallow('mousemove', function(e) {
+      if (t.hitTest(e)) {
+        t.setState(lime.Button.State.DOWN);
+      }
+      else {
+        t.setState(lime.Button.State.UP);
+      }
+    });
+    e.swallow('touchmove', function(e) {
+      if (!t.hitTest(e)) {
+        t.setState(lime.Button.State.UP);
+        e.release();
+      }
+    });
+    e.swallow(['mouseup', 'touchend'], function(e) {
 
-                if (t.hitTest(e)) {
-                    t.dispatchEvent({type: lime.Button.Event.CLICK});
-               }
-               this.setState(lime.Button.State.UP);
-           });
-        }
-    );
+      if (t.hitTest(e)) {
+        t.dispatchEvent({type: lime.Button.Event.CLICK});
+      }
+      this.setState(lime.Button.State.UP);
+    });
+  }, false, this);
 
 };
 goog.inherits(lime.Button, lime.Layer);
-
 
 
 /**
@@ -63,19 +64,21 @@ goog.inherits(lime.Button, lime.Layer);
  * @enum {number}
  */
 lime.Button.State = {
-    UP: 0,
-    DOWN: 1
+  UP: 0,
+  DOWN: 1
 };
+
 
 /**
  * Button event names
  * @enum {string}
  */
 lime.Button.Event = {
-    UP: 'up',
-    DOWN: 'down',
-    CLICK: 'click' // touchUpInside?
+  UP: 'up',
+  DOWN: 'down',
+  CLICK: 'click' // touchUpInside?
 };
+
 
 /**
  * Sets the sprite used as button up state
@@ -83,12 +86,13 @@ lime.Button.Event = {
  * @return {lime.Button} object itself.
  */
 lime.Button.prototype.setUpState = function(upstate) {
-    this.upstate = upstate;
-    this.appendChild(this.upstate);
+  this.upstate = upstate;
+  this.appendChild(this.upstate);
 
-    this.state_ = -1;
-    return this.setState(lime.Button.State.UP);
+  this.state_ = -1;
+  return this.setState(lime.Button.State.UP);
 };
+
 
 /**
  * Sets the sprite used as button down state. Down state is hown if
@@ -97,11 +101,11 @@ lime.Button.prototype.setUpState = function(upstate) {
  * @return {lime.Button} object itself.
  */
 lime.Button.prototype.setDownState = function(downstate) {
-    this.downstate = downstate;
-    this.appendChild(downstate);
+  this.downstate = downstate;
+  this.appendChild(downstate);
 
-    this.state_ = -1;
-    return this.setState(lime.Button.State.UP);
+  this.state_ = -1;
+  return this.setState(lime.Button.State.UP);
 };
 
 
@@ -110,7 +114,7 @@ lime.Button.prototype.setDownState = function(downstate) {
  * @return {lime.Button.State} current state.
  */
 lime.Button.prototype.getState = function() {
-    return this.state_;
+  return this.state_;
 };
 
 
@@ -121,32 +125,32 @@ lime.Button.prototype.getState = function() {
  */
 lime.Button.prototype.setState = function(value) {
 
-    if (value == this.state_) return this;
+  if (value == this.state_) return this;
 
-    //event checking
-    if (this.state_ == lime.Button.State.UP &&
-            value == lime.Button.State.DOWN)
-        this.dispatchEvent({type: lime.Button.Event.DOWN});
+  //event checking
+  if (this.state_ == lime.Button.State.UP &&
+      value == lime.Button.State.DOWN)
+    this.dispatchEvent({type: lime.Button.Event.DOWN});
 
-    if (this.state_ == lime.Button.State.DOWN &&
-            value == lime.Button.State.UP)
-        this.dispatchEvent({type: lime.Button.Event.UP});
+  if (this.state_ == lime.Button.State.DOWN &&
+      value == lime.Button.State.UP)
+    this.dispatchEvent({type: lime.Button.Event.UP});
 
 
-    var state = this.upstate;
+  var state = this.upstate;
 
-    if (goog.isDef(this.downstate)) {
-        if (lime.Button.State.DOWN == value)
-            state = this.downstate;
-        else
-            this.downstate.setHidden(true);
-    }
+  if (goog.isDef(this.downstate)) {
+    if (lime.Button.State.DOWN == value)
+      state = this.downstate;
+    else
+      this.downstate.setHidden(true);
+  }
 
-    if (state != this.upstate) {
-        this.upstate.setHidden(true);
-    }
+  if (state != this.upstate) {
+    this.upstate.setHidden(true);
+  }
 
-    state.setHidden(false);
-    this.state_ = value;
-    return this;
+  state.setHidden(false);
+  this.state_ = value;
+  return this;
 };

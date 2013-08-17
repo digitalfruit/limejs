@@ -1,14 +1,16 @@
 goog.provide('lime.events.EventDispatcher');
 
-goog.require('lime.events.Event');
 goog.require('goog.debug.Logger');
+goog.require('lime.events.Event');
+
+
 
 /**
  * EventDispatcher object. Deals with event handlers
  * @param {lime.Director} director Director object.
  * @constructor
  */
-lime.events.EventDispatcher = function (director) {
+lime.events.EventDispatcher = function(director) {
   /**
    * @type {lime.Director}
    */
@@ -21,25 +23,20 @@ lime.events.EventDispatcher = function (director) {
 
 };
 
-/**
- * @protected
- * @type {goog.debug.Logger} logger.
- */
-lime.events.EventDispatcher.prototype.logger =
-    goog.debug.Logger.getLogger('lime.events.EventDispatcher');
 
 /**
  * Register the event listener for node
  * @param {lime.Node} node Node that responds to events.
  * @param {string} eventType type of event to listen.
  */
-lime.events.EventDispatcher.prototype.register = function (node, eventType) {
+lime.events.EventDispatcher.prototype.register = function(node, eventType) {
   if (!goog.isDef(this.handlers[eventType])) {
     this.handlers[eventType] = [node];
     this.handlers[eventType].sorted = true;
     //base element switch here because safari fires touchend on
     //dom tree changes otherwise
-    goog.events.listen(eventType.substring(0, 5) == 'touch' && node != this.director ?
+    goog.events.listen(eventType.substring(0, 5) == 'touch' &&
+        node != this.director ?
         document : (eventType.substring(0, 3) == 'key' ?
         window : this.director.domElement.parentNode), eventType,
         this, false, this);
@@ -51,12 +48,13 @@ lime.events.EventDispatcher.prototype.register = function (node, eventType) {
   }
 };
 
+
 /**
  * Release the event listener for node
  * @param {lime.Node} node Node that responds to events.
  * @param {string} eventType type of event to release.
  */
-lime.events.EventDispatcher.prototype.release = function (node, eventType) {
+lime.events.EventDispatcher.prototype.release = function(node, eventType) {
   if (goog.isDef(this.handlers[eventType])) {
     goog.array.remove(this.handlers[eventType], node);
     if (!this.handlers[eventType].length) {
@@ -67,18 +65,20 @@ lime.events.EventDispatcher.prototype.release = function (node, eventType) {
   }
 };
 
+
 /**
  * Update order of handler nodes. Called on tree changes.
  * @param {lime.Node} node Node that has changed.
  */
-lime.events.EventDispatcher.prototype.updateDispatchOrder = function (node) {
+lime.events.EventDispatcher.prototype.updateDispatchOrder = function(node) {
   for (var eventType in this.handlers) {
     var handlers = this.handlers[eventType];
     if (goog.array.contains(handlers, node)) {
       handlers.sorted = false;
     }
   }
-}
+};
+
 
 /**
  * Setup swallow rule for an event. Swallow means that next events from
@@ -87,7 +87,7 @@ lime.events.EventDispatcher.prototype.updateDispatchOrder = function (node) {
  * @param {string} type Event type.
  * @param {function(lime.events.Event)} handler Function to call.
  */
-lime.events.EventDispatcher.prototype.swallow = function (e, type, handler) {
+lime.events.EventDispatcher.prototype.swallow = function(e, type, handler) {
   /*
    // don't remember why this check was needed
    if (e.type != 'mousedown' && e.type != 'touchstart' &&
@@ -101,11 +101,12 @@ lime.events.EventDispatcher.prototype.swallow = function (e, type, handler) {
   goog.events.listen(e.targetObject, type, goog.nullFunction);
 };
 
+
 /**
  * Handle DOM event
  * @param {Event} e Event.
  */
-lime.events.EventDispatcher.prototype.handleEvent = function (e) {
+lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
   if (!goog.isDef(this.handlers[e.type])) return;
 
@@ -136,7 +137,8 @@ lime.events.EventDispatcher.prototype.handleEvent = function (e) {
      }
      else { */
     ee.screenPosition = new goog.math.Coordinate(
-        e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft,
+        e.clientX + document.body.scrollLeft +
+            document.documentElement.scrollLeft,
         e.clientY + document.body.scrollTop + document.documentElement.scrollTop
     );
     doBreak = 1;
@@ -164,28 +166,19 @@ lime.events.EventDispatcher.prototype.handleEvent = function (e) {
       }
     } else {
       for (var i = 0; i < handlers.length; i++) {
-
         var handler = handlers[i];
-
         if (this.director.getCurrentScene() != handler.getScene() &&
             handler != this.director) continue;
-
         if (handler.getHidden() || !handler.inTree_) continue;
-
         ee.targetObject = handler;
-
         if (e.type.substring(0, 3) == 'key' || handler.hitTest(ee)) {
           ee.targetObject = handler;
           handler.dispatchEvent(ee);
           didhandle = true;
-
           if (ee.event.propagationStopped_) break;
         }
-
       }
-
     }
-
   }
 
   if (didhandle) {

@@ -8,9 +8,11 @@ goog.require('goog.math.Size');
 goog.require('lime');
 goog.require('lime.Node');
 goog.require('lime.fill.Color');
-goog.require('lime.fill.Stroke');
 goog.require('lime.fill.Fill');
 goog.require('lime.fill.Image');
+goog.require('lime.fill.Stroke');
+
+
 
 /**
  * Rectangural textured object
@@ -19,21 +21,22 @@ goog.require('lime.fill.Image');
  */
 lime.Sprite = function() {
 
-    lime.Node.call(this);
+  lime.Node.call(this);
 
-    /**
-     * Fill object used while drawing
-     * @type {lime.fill.Fill}
-     * @private
-     */
-    this.fill_ = null;
+  /**
+   * Fill object used while drawing
+   * @type {lime.fill.Fill}
+   * @private
+   */
+  this.fill_ = null;
 
 
-    this.stroke_ = null;
+  this.stroke_ = null;
 
 
 };
 goog.inherits(lime.Sprite, lime.Node);
+
 
 /**
  * Common name for sprite objects
@@ -43,7 +46,7 @@ lime.Sprite.prototype.id = 'sprite';
 
 
 /**
- * @return {lime.fill.Fill}
+ * @return {lime.fill.Fill} fill.
  */
 lime.Sprite.prototype.getFill = function() {
   return this.fill_;
@@ -51,15 +54,15 @@ lime.Sprite.prototype.getFill = function() {
 
 
 lime.Renderer.DOM.SPRITE = lime.Renderer.DOM.makeSubRenderer({});
+
 lime.Renderer.CANVAS.SPRITE = lime.Renderer.CANVAS.makeSubRenderer({});
 
 
 /** @inheritDoc */
 lime.Sprite.prototype.supportedRenderers = [
-    lime.Renderer.DOM.SPRITE,
-    lime.Renderer.CANVAS.SPRITE
+  lime.Renderer.DOM.SPRITE,
+  lime.Renderer.CANVAS.SPRITE
 ];
-
 
 
 /**
@@ -71,18 +74,18 @@ lime.Sprite.prototype.supportedRenderers = [
  * @return {lime.Sprite} object itself.
  */
 lime.Sprite.prototype.setFill = function(fill, opt_g, opt_b, opt_a) {
-    this.fill_ = lime.fill.parse(goog.array.toArray(arguments));
-    this.fill_.initForSprite(this);
-    this.setDirty(lime.Dirty.CONTENT);
-    return this;
+  this.fill_ = lime.fill.parse(goog.array.toArray(arguments));
+  this.fill_.initForSprite(this);
+  this.setDirty(lime.Dirty.CONTENT);
+  return this;
 };
 
 /**
  * Return Stroke object if one is set
  * @return {lime.fill.Stroke} Stroke object.
  */
-lime.Sprite.prototype.getStroke = function(){
-    return this.stroke_;
+lime.Sprite.prototype.getStroke = function() {
+  return this.stroke_;
 };
 
 /**
@@ -90,13 +93,13 @@ lime.Sprite.prototype.getStroke = function(){
  * @param {*} stroke Stroke object or width and (mixed type) Color.
  * @return {lime.Sprite} object itself.
  */
-lime.Sprite.prototype.setStroke = function(stroke){
-    if(stroke && !(stroke instanceof lime.fill.Stroke)){
-        stroke = new lime.fill.Stroke(goog.array.toArray(arguments));
-    }
-    this.stroke_ = stroke;
-    this.setDirty(lime.Dirty.CONTENT);
-    return this;
+lime.Sprite.prototype.setStroke = function(stroke) {
+  if (stroke && !(stroke instanceof lime.fill.Stroke)) {
+    stroke = new lime.fill.Stroke(goog.array.toArray(arguments));
+  }
+  this.stroke_ = stroke;
+  this.setDirty(lime.Dirty.CONTENT);
+  return this;
 };
 
 /**
@@ -104,14 +107,14 @@ lime.Sprite.prototype.setStroke = function(stroke){
  */
 // todo: move this function to canvas background rendermode
 lime.Sprite.prototype.getCanvasContextName_ = (function() {
-    var contextID_ = 0;
-    return function() {
+  var contextID_ = 0;
+  return function() {
 
-        if (!goog.isDef(this.canvasContextName_)) {
-            this.canvasContextName_ = 'limedc' + (contextID_++);
-        }
-        return this.canvasContextName_;
-    };
+    if (!goog.isDef(this.canvasContextName_)) {
+      this.canvasContextName_ = 'limedc' + (contextID_++);
+    }
+    return this.canvasContextName_;
+  };
 })();
 
 
@@ -120,14 +123,14 @@ lime.Sprite.prototype.getCanvasContextName_ = (function() {
  * @this {lime.Sprite}
  */
 lime.Renderer.DOM.SPRITE.draw = function(el) {
-    if (!goog.isNull(this.fill_)) {
-        this.fill_.setDOMStyle(el, this);
-    }
-    if (!goog.isNull(this.stroke_)) {
-        this.stroke_.setDOMStyle(el, this);
-    } else {
-        goog.style.setStyle(el, 'border-width', 0);
-    }
+  if (!goog.isNull(this.fill_)) {
+    this.fill_.setDOMStyle(el, this);
+  }
+  if (!goog.isNull(this.stroke_)) {
+    this.stroke_.setDOMStyle(el, this);
+  } else {
+    goog.style.setStyle(el, 'border-width', 0);
+  }
 };
 
 /**
@@ -135,32 +138,32 @@ lime.Renderer.DOM.SPRITE.draw = function(el) {
  * @this {lime.Sprite}
  */
 lime.Renderer.CANVAS.SPRITE.draw = function(context) {
-    var size = this.getSize(), fill = this.fill_, stroke = this.stroke_;
+  var size = this.getSize(), fill = this.fill_, stroke = this.stroke_;
 
-    if (!fill && !stroke) return;
+  if (!fill && !stroke) return;
 
-    var frame = this.getFrame();
+  var frame = this.getFrame();
 
 
-    if(fill){
-        fill.setCanvasStyle(context, this);
+  if (fill) {
+    fill.setCanvasStyle(context, this);
 
-        if(fill.id != 'image' && fill.id!='frame'){
-            context.fillRect(frame.left,frame.top,
-                size.width, size.height);
-        }
+    if (fill.id != 'image' && fill.id != 'frame') {
+      context.fillRect(frame.left, frame.top,
+          size.width, size.height);
     }
+  }
 
 
-    if(stroke){
-        stroke.setCanvasStyle(context,this);
+  if (stroke) {
+    stroke.setCanvasStyle(context, this);
 
-        if(this.id=='sprite' || this.id=='label'){
-        var lw = stroke.width_/2;
-        context.strokeRect(frame.left+lw,frame.top+lw,
-            size.width-2*lw, size.height-2*lw);
-        }
+    if (this.id == 'sprite' || this.id == 'label') {
+      var lw = stroke.width_ / 2;
+      context.strokeRect(frame.left + lw, frame.top + lw,
+          size.width - 2 * lw, size.height - 2 * lw);
     }
+  }
 
 };
 

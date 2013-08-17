@@ -1,6 +1,7 @@
 goog.provide('lime.Renderer');
 
 
+
 /**
  * Renderer logic object. This object defines lower level
  * technologies that are used to draw Node instaces on screen.
@@ -8,18 +9,22 @@ goog.provide('lime.Renderer');
  */
 lime.Renderer = function() {};
 
+
 /**
  * Draw the object using the renderer
  */
 lime.Renderer.prototype.draw = goog.nullFunction;
+// should be goog.abstractMethod, but directory rely on being null function.
+
 
 /**
  * Return base object of the subrenderer
  * @return {lime.Renderer} base renderer.
  */
 lime.Renderer.prototype.getType = function() {
-    return this.base ? this.base : this;
+  return this.base ? this.base : this;
 };
+
 
 /**
  * Make and return subrenderer object.
@@ -27,7 +32,7 @@ lime.Renderer.prototype.getType = function() {
  * @return {Object|lime.Renderer} Subrenderer.
  */
 lime.Renderer.prototype.makeSubRenderer = function(sub) {
-    goog.object.extend(/** @lends {this} */sub, this);
-    sub.base = this.getType();
-    return sub;
+  goog.object.extend(/** @lends {this} */sub, this);
+  sub.base = this.getType();
+  return sub;
 };
