@@ -203,13 +203,13 @@ lime.audio.Audio.get = function(file_path, exts, opt_volume) {
   var idx = 0;
   var max = 0;
   for (var i = 0; i < audios.length; ++i) {
-    var audio = audios[i];
-    var ct = audio.audio.currentTime;
-    if (ct == 0) {
+    var audio_obj = audios[i];
+    var ct = audio_obj.audio.currentTime;
+    if (audio_obj.audio.ended || ct == 0) {
       if (goog.isDef(opt_volume)) {
-        audio.volume = opt_volume;
+        audio_obj.audio.volume = opt_volume;
       }
-      return audio;
+      return audio_obj;
     } else {
       if (ct > max) {
         idx = i;
