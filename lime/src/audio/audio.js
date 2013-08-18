@@ -182,15 +182,15 @@ lime.audio.Audio.audios_ = {};
 
 
 /**
- * @type {number} maximun number of parallel audio elements.
+ * @define {number} maximun number of parallel audio elements.
  */
 lime.audio.Audio.MAX_AUDIO = 5;
 
 
 /**
  * Get an non-playing audio element from the pools.
- * @param {string} file_path
- * @param {Array.<string>} exts
+ * @param {string} file_path without extension.
+ * @param {Array.<string>} exts file extensions.
  * @return {lime.audio.Audio}
  */
 lime.audio.Audio.get = function(file_path, exts) {
@@ -199,20 +199,22 @@ lime.audio.Audio.get = function(file_path, exts) {
   }
   var audios = lime.audio.Audio.audios_[file_path];
   var idx = 0;
-  var max = 1;
+  var max = 0;
   for (var i = 0; i < audios.length; ++i) {
     var audio = audios[i];
     var ct = audio.audio.currentTime;
     if (ct == 0) {
       return audio;
     } else {
-      if (ct < max) {
+      if (ct > max) {
         idx = i;
         max = ct;
       }
     }
   }
   if (audios.length > lime.audio.Audio.MAX_AUDIO) {
+    this.logger.warning('Maximum number of audio elements reach ' +
+        'for ' + file_path + ', reusing a playing element.');
     return audios[idx];
   } else {
     var audio = new lime.audio.Audio(file_path, exts);
