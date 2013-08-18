@@ -71,11 +71,10 @@ lime.Renderer.DOM.CIRCLE.draw = function(el) {
 /**
  * @inheritDoc
  * @this {lime.Circle}
- * @suppress {accessControls} suppress
  */
 lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
   // console.log('draw');
-  var size = this.getSize(), fill = this.fill_, ap = this.getAnchorPoint();
+  var ap = this.getAnchorPoint();
   var frame = this.getFrame();
   var cx = (frame.right - frame.left) * .5;
   var cy = (frame.bottom - frame.top) * .5;
