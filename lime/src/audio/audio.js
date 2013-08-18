@@ -160,6 +160,7 @@ lime.audio.Audio.prototype.stop = function() {
   if (this.audio) {
     this.audio.pause();
     this.audio.currentTime = 0;
+    this.dispatch_();
   }
 };
 
