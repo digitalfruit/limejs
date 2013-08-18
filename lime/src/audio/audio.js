@@ -191,9 +191,10 @@ lime.audio.Audio.MAX_AUDIO = 5;
  * Get an non-playing audio element from the pools.
  * @param {string} file_path without extension.
  * @param {Array.<string>} exts file extensions.
+ * @param {number=} opt_volume loop the sound.
  * @return {lime.audio.Audio}
  */
-lime.audio.Audio.get = function(file_path, exts) {
+lime.audio.Audio.get = function(file_path, exts, opt_volume) {
   if (!lime.audio.Audio.audios_[file_path]) {
     lime.audio.Audio.audios_[file_path] = [];
   }
@@ -204,6 +205,9 @@ lime.audio.Audio.get = function(file_path, exts) {
     var audio = audios[i];
     var ct = audio.audio.currentTime;
     if (ct == 0) {
+      if (goog.isDef(opt_volume)) {
+        audio.volume = opt_volume;
+      }
       return audio;
     } else {
       if (ct > max) {
@@ -213,11 +217,14 @@ lime.audio.Audio.get = function(file_path, exts) {
     }
   }
   if (audios.length > lime.audio.Audio.MAX_AUDIO) {
-    this.logger.warning('Maximum number of audio elements reach ' +
+    audios[idx].logger.warning('Maximum number of audio elements reach ' +
         'for ' + file_path + ', reusing a playing element.');
+    if (goog.isDef(opt_volume)) {
+      audios[idx].volume = opt_volume;
+    }
     return audios[idx];
   } else {
-    var audio = new lime.audio.Audio(file_path, exts);
+    var audio = new lime.audio.Audio(file_path, exts, opt_volume);
     audios.push(audio);
     return audio;
   }
