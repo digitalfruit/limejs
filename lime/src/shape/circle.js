@@ -71,6 +71,7 @@ lime.Renderer.DOM.CIRCLE.draw = function(el) {
 /**
  * @inheritDoc
  * @this {lime.Circle}
+ * @suppress {accessControls} suppress
  */
 lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
   // console.log('draw');

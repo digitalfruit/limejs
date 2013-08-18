@@ -57,6 +57,7 @@ lime.style.setBorderRadius = function(el, values, opt_vertical, opt_isPerc) {
     x = values[0];
     y = values[1];
   } else {
+    x = values;
     y = opt_vertical;
   }
   if (!goog.isDef(y)) {
