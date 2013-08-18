@@ -230,3 +230,20 @@ lime.audio.Audio.get = function(file_path, exts, opt_volume) {
   }
 };
 
+
+/**
+ * Remove from the pool.
+ * @param {string} file_path
+ */
+lime.audio.Audio.remove = function(file_path) {
+  var audios = lime.audio.Audio.audios_[file_path];
+  if (audios) {
+    for (var i = 0; i < audios.length; ++i) {
+      var audio = audios[i];
+      audio.dispose();
+    }
+    audios.length = 0;
+    delete lime.audio.Audio.audios_[file_path];
+  }
+};
+
