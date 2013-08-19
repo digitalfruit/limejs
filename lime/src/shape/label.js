@@ -86,7 +86,7 @@ lime.Label.prototype.supportedRenderers = [
     if (lime.userAgent.IOS5)
       w += 1;
 
-    var stroke = this.stroke_ ? this.stroke_.width_ : 0;
+    var stroke = this.getStroke() ? this.getStroke().width_ : 0;
     return new goog.math.Size(
         this.padding_[1] + this.padding_[3] + w + stroke * 2,
         this.padding_[0] + this.padding_[2] + lh + stroke * 2
@@ -556,7 +556,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     dowrap = 1;
   }
 
-  var stroke = this.stroke_ ? this.stroke_.width_ : 0;
+  var stroke = this.getStroke() ? this.getStroke().width_ : 0;
 
   context.save();
   var align = this.getAlign();

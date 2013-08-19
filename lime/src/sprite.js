@@ -17,11 +17,11 @@ goog.require('lime.fill.Stroke');
 /**
  * Rectangural textured object
  * @constructor
- * @extends lime.Node
+ * @extends {lime.Node}
  */
 lime.Sprite = function() {
 
-  lime.Node.call(this);
+  goog.base(this);
 
   /**
    * Fill object used while drawing
@@ -30,9 +30,12 @@ lime.Sprite = function() {
    */
   this.fill_ = null;
 
-
+  /**
+   * Stroke.
+   * @type {lime.fill.Stroke}
+   * @private
+   */
   this.stroke_ = null;
-
 
 };
 goog.inherits(lime.Sprite, lime.Node);
@@ -80,6 +83,7 @@ lime.Sprite.prototype.setFill = function(fill, opt_g, opt_b, opt_a) {
   return this;
 };
 
+
 /**
  * Return Stroke object if one is set
  * @return {lime.fill.Stroke} Stroke object.
@@ -88,34 +92,36 @@ lime.Sprite.prototype.getStroke = function() {
   return this.stroke_;
 };
 
+
 /**
  * Sets stroke parameters.
- * @param {*} stroke Stroke object or width and (mixed type) Color.
+ * @param {!lime.fill.Stroke} stroke Stroke object.
  * @return {lime.Sprite} object itself.
  */
 lime.Sprite.prototype.setStroke = function(stroke) {
-  if (stroke && !(stroke instanceof lime.fill.Stroke)) {
-    stroke = new lime.fill.Stroke(goog.array.toArray(arguments));
-  }
   this.stroke_ = stroke;
   this.setDirty(lime.Dirty.CONTENT);
   return this;
 };
 
+
+/**
+ * @type {number}
+ * @private
+ */
+lime.Sprite.prototype.contextID_ = 0;
+
+
 /**
  * @private
  */
-// todo: move this function to canvas background rendermode
-lime.Sprite.prototype.getCanvasContextName_ = (function() {
-  var contextID_ = 0;
-  return function() {
-
-    if (!goog.isDef(this.canvasContextName_)) {
-      this.canvasContextName_ = 'limedc' + (contextID_++);
-    }
-    return this.canvasContextName_;
-  };
-})();
+lime.Sprite.prototype.getCanvasContextName_ = function() {
+  // todo: move this function to canvas background rendermode
+  if (!goog.isDef(this.canvasContextName_)) {
+    this.canvasContextName_ = 'limedc' + (this.contextID_++);
+  }
+  return this.canvasContextName_;
+};
 
 
 /**
@@ -133,6 +139,7 @@ lime.Renderer.DOM.SPRITE.draw = function(el) {
   }
 };
 
+
 /**
  * @inheritDoc
  * @this {lime.Sprite}
@@ -143,8 +150,6 @@ lime.Renderer.CANVAS.SPRITE.draw = function(context) {
   if (!fill && !stroke) return;
 
   var frame = this.getFrame();
-
-
   if (fill) {
     fill.setCanvasStyle(context, this);
 
@@ -153,8 +158,6 @@ lime.Renderer.CANVAS.SPRITE.draw = function(context) {
           size.width, size.height);
     }
   }
-
-
   if (stroke) {
     stroke.setCanvasStyle(context, this);
 
@@ -164,6 +167,5 @@ lime.Renderer.CANVAS.SPRITE.draw = function(context) {
           size.width - 2 * lw, size.height - 2 * lw);
     }
   }
-
 };
 
