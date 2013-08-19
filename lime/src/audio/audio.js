@@ -57,6 +57,7 @@ lime.audio.Audio = function(filePath, exts, opt_volume, opt_loop) {
     this.audio.src = filePath + '.' + ext;
     this.audio.load();
     goog.events.listen(this.audio, 'ended', function(e) {
+      this.audio.loaded = true; // somehow it changed to undefined on next play.
       this.dispatch_();
     }, false, this);
   } else {
