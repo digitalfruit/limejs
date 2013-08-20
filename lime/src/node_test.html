@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Node test</title>
+    <script type="text/javascript" src="../../../closure-library/closure/goog/base.js"></script>
+    <script type="text/javascript" src="./deps.js"></script>
+    <script type="text/javascript" src="../css/lime.css.soy.js"></script>
+    <script type="text/javascript">
+        goog.require("lime.Node");
+        //goog.require("lime.Director");
+        //goog.require("lime.Layer");
+        //goog.require("lime.Sprite");
+        goog.require('goog.testing.jsunit');
+    </script>
+</head>
+<body>
+<script type="text/javascript">
+
+    var testIsOverlap = function() {
+        //var director = new lime.Director(document.body,320,460);
+        //var scene = new lime.Scene();
+        //director.replaceScene(scene);
+        //var layer = new lime.Layer().setPosition(100,100);
+        //scene.appendChild(layer);
+        var n1 = new lime.Node().setSize(20, 20).setPosition(10, 10);
+        var n2 = new lime.Node().setSize(20, 20).setPosition(10, 10);
+        //layer.appendChild(n1);
+        //layer.appendChild(n2);
+        //n1.setFill(255, 0, 0); // red
+        //n2.setFill(0, 255, 0); // green
+        assertTrue('same pos', n1.isOverlap(n2));
+        n2.setPosition(10, 0);
+        assertTrue('dx1', n1.isOverlap(n2));
+        n2.setPosition(0, 10);
+        assertTrue('dy1', n1.isOverlap(n2));
+        n2.setPosition(30, 0);
+        assertFalse('dx3', n1.isOverlap(n2));
+        n2.setPosition(10, 30);
+        assertFalse('dy3', n1.isOverlap(n2));
+
+        n2.setAnchorPoint(0.5, 1);
+        assertTrue('dy3 bottom', n1.isOverlap(n2));
+        n2.setPosition(35, 10);
+        n2.setAnchorPoint(1, 0.5);
+        assertTrue('dx 1', n1.isOverlap(n2));
+        n2.setAnchorPoint(0, 0.5);
+        assertFalse('dx 0', n1.isOverlap(n2));
+    };
+</script>
+
+</body>
+</html>

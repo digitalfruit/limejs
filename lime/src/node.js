@@ -1387,3 +1387,25 @@ lime.Node.prototype.runAction = function(action) {
 };
 
 
+/**
+ * Test if the two node overlap.
+ * @param {lime.Node} other other node.
+ * @return {boolean} true if other node is overlap with this node.
+ */
+lime.Node.prototype.isOverlap = function(other) {
+  if (this.hidden_ === true || other.hidden_ === true) {
+    return false;
+  }
+  var x1 = this.position_.x - (this.anchorPoint_.x * this.size_.width);
+  var x2 = other.position_.x - (other.anchorPoint_.x * other.size_.width);
+  var x_overlap = (x1 <= x2 && x1 + this.size_.width > x2) ||
+      (x2 <= x1 && x2 + other.size_.width > x1);
+  if (!x_overlap) {
+    return false;
+  }
+  var y1 = this.position_.y - (this.anchorPoint_.y * this.size_.height);
+  var y2 = other.position_.y - (other.anchorPoint_.y * other.size_.height);
+  var y_overlap = (y1 <= y2 && y1 + this.size_.height > y2) ||
+      (y2 <= y1 && y2 + other.size_.height > y1);
+  return y_overlap;
+};
