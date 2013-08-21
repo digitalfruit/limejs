@@ -64,7 +64,7 @@ lime.style.setBorderRadius = function(el, values, opt_vertical, opt_isPerc) {
     y = x;
   }
   // support starting from IE9, FF4, Safari 5, Chrome 4
-  el.style.borderRadius = x + unit + ' ' + y + unit;
+  goog.style.setStyle(el, 'borderRadius', x + unit + ' ' + y + unit);
 };
 
 // There are classes like CSSMatrix in some browsers.
