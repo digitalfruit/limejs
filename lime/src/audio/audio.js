@@ -30,12 +30,12 @@ lime.audio.Audio = function(filePath, exts, opt_volume, opt_loop) {
    */
   this.audio = /** @type {HTMLAudioElement} */ (document.createElement(
       'audio'));
-  var codecs = {// Chart from jPlayer
-    ogg: 'audio/ogg; codecs="vorbis"', //OGG
-    wav: 'audio/wav; codecs="1"', // PCM
-    webma: 'audio/webm; codecs="vorbis"', // WEBM
-    mp3: 'audio/mpeg; codecs="mp3"', //MP3
-    m4a: 'audio/mp4; codecs="mp4a.40.2"'// AAC / MP4
+  var codecs = { // Chart from jPlayer
+    'ogg': 'audio/ogg; codecs="vorbis"', //OGG
+    'wav': 'audio/wav; codecs="1"', // PCM
+    'webma': 'audio/webm; codecs="vorbis"', // WEBM
+    'mp3': 'audio/mpeg; codecs="mp3"', //MP3
+    'm4a': 'audio/mp4; codecs="mp4a.40.2"'// AAC / MP4
   };
   var ext;
   for (var i = 0; i < exts.length; ++i) {
