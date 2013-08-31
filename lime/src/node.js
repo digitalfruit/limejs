@@ -215,17 +215,18 @@ lime.Node.prototype.setDirty = function(value, opt_pass, opt_nextframe) {
     var old = this.dirty_;
     this.dirty_ |= value;
 
-    if (value == lime.Dirty.LAYOUT) {
+    if (value == lime.Dirty.LAYOUT && !(old & lime.Dirty.LAYOUT)) {
         for (var i = 0, child; child = this.children_[i]; i++) {
-            if (child instanceof lime.Node)
-            child.setDirty(lime.Dirty.LAYOUT);
+            if (child instanceof lime.Node) {
+                child.setDirty(lime.Dirty.LAYOUT);
+            }
         }
     }
     if (!goog.isDef(this.dirty_) || !value) {
         this.dirty_ = 0;
         lime.clearObjectDirty(this, opt_pass, opt_nextframe);
     }
-    if(value && this.maskTarget_){
+    if (value && this.maskTarget_) {
         this.mSet = false;
         this.maskTarget_.setDirty(~0);
     }
@@ -932,8 +933,7 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
 
     if (child instanceof lime.Node && child.getParent()) {
         child.getParent().removeChild(child);
-    }
-    else if(child.parentNode){
+    } else if (child.parentNode) {
         goog.dom.removeNode(/** @type {Node} */ (child));
     }
 
@@ -941,18 +941,19 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
 
     if (opt_pos == undefined) {
         this.children_.push(child);
-    }
-    else {
+    } else {
         goog.array.insertAt(this.children_, child, opt_pos);
     }
     if (this.renderer.getType() != lime.Renderer.DOM) {
-
         child.setRenderer(this.renderer.getType());
     }
     if (child instanceof lime.Node) {
         child.calcRelativeQuality();
-        if (this.inTree_) child.wasAddedToTree();
+        if (this.inTree_) {
+            child.wasAddedToTree();
+        }
     }
+    child.setDirty(lime.Dirty.LAYOUT);
     return this.setDirty(lime.Dirty.LAYOUT);
 };
 
