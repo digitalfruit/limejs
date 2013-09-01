@@ -1,22 +1,22 @@
 goog.provide('lime.animation.Animation');
 goog.provide('lime.animation.Easing');
-goog.provide('lime.animation.actionManager');
+goog.provide('lime.animation.ActionManager');
 goog.provide('lime.animation.Event');
 
 
 goog.require('goog.array');
 goog.require('goog.events.EventTarget');
 goog.require('goog.fx.easing');
-goog.require('lime.scheduleManager');
+goog.require('lime.ScheduleManager');
 
 
 /**
  * General object for running animations on nodes
  * @constructor
- * @extends goog.events.EventTarget
+ * @extends {goog.events.EventTarget}
  */
 lime.animation.Animation = function() {
-    goog.events.EventTarget.call(this);
+    goog.base(this);
 
     /**
      * Array of active target nodes
@@ -297,17 +297,18 @@ lime.animation.Animation.prototype.reverse = function() {
  * run together on same targets.
  * @constructor
  */
-lime.animation.actionManager = new (function() {
+lime.animation.ActionManager = function() {
     this.actions = {};
-});
+};
+
+lime.animation.actionManager = new lime.animation.ActionManager();
 
 /**
  * Register animation in the manager.
  * @param {lime.animation.Animation} action Action.
  * @param {lime.Node} target Taget node.
- * @this {lime.animation.actionManager}
  */
-lime.animation.actionManager.register = function(action, target) {
+lime.animation.ActionManager.prototype.register = function(action, target) {
     //Todo: probably needs some garbage collection
     if (!action.scope.length) return;
     var id = goog.getUid(target);
@@ -323,9 +324,8 @@ lime.animation.actionManager.register = function(action, target) {
 /**
  * Stop all animations on target.
  * @param {lime.Node} target Target node.
- * @this {lime.animation.actionManager}
  */
-lime.animation.actionManager.stopAll = function(target) {
+lime.animation.ActionManager.prototype.stopAll = function(target) {
     // todo: doesn't stop scopless action atm. (like sequence)
     var id = goog.getUid(target);
     if (goog.isDef(this.actions[id])) {

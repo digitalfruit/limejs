@@ -28,40 +28,44 @@ lime.style.tryProperty = function(name) {
 /**
  * Get the name of actual CSS property from general(unprefixed) name
  * @param {string} name Unprefixed name.
- * @return {string} Actual valid property name.
+ * @return {string|undefined} Actual valid property name.
  */
 lime.style.getCSSproperty = function(name) {
     var name_lower = name.charAt(0).toLowerCase() + name.substr(1),
         prefix_name = prefix + name;
-    return lime.style.tryProperty(name) ?
-        name : (lime.style.tryProperty(name_lower)  ?
+  var ok = lime.style.tryProperty(name);
+    return ok ?
+        name : (lime.style.tryProperty(name_lower) ?
                 name_lower : lime.style.tryProperty(prefix_name) ?
-                prefix_name : undefined );
+                prefix_name : undefined);
 };
 
 })();
 
+
 /**
  * Set border radius of a DOM element
  * @param {Element} el Element to change.
- * @param {Array.<number>} values Radius values.
- * @param {Array.<number>=} opt_vertical Vertical radius values.
+ * @param {(Array.<number>|number)} values Radius values.
+ * @param {number=} opt_vertical Vertical radius values.
  * @param {boolean=} opt_isPerc If values are given in percentages.
  */
-lime.style.setBorderRadius = (function() {
-    var stylename = lime.style.getCSSproperty('BorderRadius');
-    var out = function(values, unit) {
-        return (goog.isArray(values) ? values.join(unit + ' ') : values) + unit;
-    };
-    return function(el, values, opt_vertical, opt_isPerc) {
-        var unit = opt_isPerc ? '%' : 'px';
-        var vertical = goog.isDef(opt_vertical) ? opt_vertical : values;
-        var value = out(values, unit) + '/' + out(vertical, unit);
-        if (value != el.border_radius_cache_) {
-            el.style[stylename] = el.border_radius_cache_ = value;
-        }
-    };
-})();
+lime.style.setBorderRadius = function(el, values, opt_vertical, opt_isPerc) {
+  var unit = opt_isPerc ? '%' : 'px'; // percent ?
+  var x, y;
+  if (goog.isArray(values)) {
+    x = values[0];
+    y = values[1];
+  } else {
+    x = values;
+    y = opt_vertical;
+  }
+  if (!goog.isDef(y)) {
+    y = x;
+  }
+  // support starting from IE9, FF4, Safari 5, Chrome 4
+  goog.style.setStyle(el, 'borderRadius', x + unit + ' ' + y + unit);
+};
 
 // There are classes like CSSMatrix in some browsers.
 // Maybe this would make more sense.
@@ -82,7 +86,7 @@ lime.style.Transform = function(opt_precision) {
 
 /**
  * Sets 3D enabling flag for css hardware acceleration (on by default)
- * @param {Boolean} value
+ * @param {boolean} value
  * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.set3DAllowed = function(value) {
@@ -189,7 +193,7 @@ lime.style.setTransform = (function() {
         if (value != el.transform_cache_) {
             el.style[stylename] = el.transform_cache_ = value;
         }
-        lime.transformSet_=1;
+        lime.transformSet_ = 1;
 
     };
 })();
@@ -212,7 +216,7 @@ lime.style.setTransformOrigin = (function() {
     };
 })();
 
-(function(){
+(function() {
 var stylename = lime.style.getCSSproperty('Transition');
 lime.style.isTransitionsSupported = !!stylename && !goog.userAgent.OPERA;
 // Opera's CSS3 transitions seem to be unstable atm. No shorthand plus

@@ -6,7 +6,7 @@ goog.require('lime.animation.Animation');
 
 /**
  * Animation for changing element's fillcolor value
- * @param {mixed...} args Color definition.
+ * @param {...} args Color definition.
  * @constructor
  * @extends lime.animation.Animation
  */
@@ -40,7 +40,7 @@ lime.animation.ColorTo.Target = {
 
 /**
  * Set the component to apply the animation
- * @param {lime.animation.ColorTo.Target} component type.
+ * @param {lime.animation.ColorTo.Target} target type.
  * @return {lime.animation.ColorTo} object itself.
  */
 lime.animation.ColorTo.prototype.setTargetComponent = function(target) {

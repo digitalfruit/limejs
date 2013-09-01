@@ -1,9 +1,10 @@
 goog.provide('lime.transitions.Transition');
+goog.require('goog.debug.Logger');
 
 /**
  * Animation for switching active scenes
- * @param {lime.Scene} outgoing Outgoing scene.
- * @param {lime.Scene} incoming Incoming scene.
+ * @param {lime.Scene=} outgoing Outgoing scene.
+ * @param {lime.Scene=} incoming Incoming scene.
  * @constructor
  * @extends goog.events.EventTarget
  */
@@ -18,6 +19,26 @@ lime.transitions.Transition = function(outgoing, incoming) {
     this.finished_ = false;
 };
 goog.inherits(lime.transitions.Transition,goog.events.EventTarget);
+
+/**
+ * @protected
+ * @type {goog.debug.Logger} logger.
+ */
+lime.transitions.Transition.prototype.logger =
+    goog.debug.Logger.getLogger('lime.transitions.Transition');
+
+
+/**
+ *
+ * @param {lime.Scene} outgoing
+ * @param {lime.Scene} incoming
+ * @param {boolean=} opt_a
+ */
+lime.transitions.Transition.prototype.init = function(outgoing, incoming, opt_a) {
+  this.outgoing_ = outgoing;
+  this.incoming_ = incoming;
+};
+
 
 /**
  * Returns the animation duration in seconds.
@@ -37,19 +58,6 @@ lime.transitions.Transition.prototype.setDuration = function(value) {
     return this;
 };
 
-/**
- * Set finish callback for transition. This function will be called
- * after the transition has finished. DEPRECATED! Use event listeners instead.
- * @deprecated
- * @param {function()} value Callback.
- * @return {lime.transitions.Transition} object itself.
- */
-lime.transitions.Transition.prototype.setFinishCallback = function(value) {
-    if(goog.DEBUG && console && console.warn){
-        console.warn('Transition.prototype.setFinishCallback() is deprecated. Use event listeners.');
-    }
-    return this;
-};
 
 /**
  * Start the transition animation.

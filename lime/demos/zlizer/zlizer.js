@@ -35,7 +35,7 @@ zlizer.start = function() {
 
 zlizer.isBrokenChrome = function(){
    return (/Chrome\/9\.0\.597/).test(goog.userAgent.getUserAgentString());
-}
+};
 
 
 zlizer.loadMenuScene = function(opt_transition) {

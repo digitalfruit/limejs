@@ -4,266 +4,277 @@ goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('lime.userAgent');
 
+
+
 /**
- * Audio stream object
+ * Audio stream object.
+ * Example: create a loop audio.
+ * <pre>
+ *   bg_sound = new lime.audio.Audio('assets/bg', ['ogg'], 1, true);
+ *   bg_sound.play();
+ * </pre>
+ * However, generally, audio object will construct from audio pool using
+ * @see lime.audio.Audio.get
  * @constructor
- * @param {string} filePath Path to audio file.
+ * @param {string} filePath without extension.
+ * @param {Array.<string>} exts file extensions.
+ * @param {number=} opt_volume loop the sound.
+ * @param {boolean=} opt_loop loop the sound.
+ * @extends {goog.Disposable}
  */
-lime.audio.Audio = function(filePath) {
-    goog.events.EventTarget.call(this);
-
-    if(filePath && goog.isFunction(filePath.data)){
-        filePath = filePath.data();
-    }
-
-    /**
-     * @type bBoolean}
-     * @private
-     */
-    this.loaded_ = false;
-
-    /**
-     * @type {boolean}
-     * @private
-     */
-    this.playing_ = false;
-
-    if (goog.userAgent.GECKO && (/\.mp3$/).test(filePath)) {
-        filePath = filePath.replace(/\.mp3$/, '.ogg');
-    }
-
-    if (lime.audio.AudioContext) {
-        this.volume_ = 1;
-        this.prepareContext_();
-        this.loadBuffer(filePath, goog.bind(this.bufferLoadedHandler_, this));
-    }
-    else {
-        /**
-         * Internal audio element
-         * @type {audio}
-         */
-        this.baseElement = document.createElement('audio');
-        this.baseElement['preload'] = true;
-        this.baseElement['loop'] = false;
-        this.baseElement.src = filePath;
-        this.baseElement.load();
-        this.baseElement.addEventListener('ended', goog.bind(this.onEnded_, this));
-        this.loadInterval = setInterval(goog.bind(this.loadHandler_, this), 10);
-
-        this.loaded_ = false;
-    }
+lime.audio.Audio = function(filePath, exts, opt_volume, opt_loop) {
+  goog.base(this);
+  /**
+   * audio volume
+   * @type {number}
+   */
+  this.volume = goog.isDef(opt_volume) ? opt_volume : 1;
+  /**
+   * Internal audio element
+   * @type {HTMLAudioElement}
+   * @protected
+   */
+  this.audio = null;
+  /**
+   * @type {Array.<Function, scope>}
+   * @private
+   */
+  this.listeners_ = [];
+  this.loop = !!opt_loop;
+  this.exts = exts;
+  this.filePath = filePath;
+  this.createAudio();
 };
-goog.inherits(lime.audio.Audio, goog.events.EventTarget);
+goog.inherits(lime.audio.Audio, goog.Disposable);
 
-lime.audio.AudioContext = goog.global['AudioContext'] || goog.global['webkitAudioContext'];
-lime.audio._buffers = {};
-
-lime.audio.supportsMultiChannel = lime.audio.AudioContext || !(lime.userAgent.IOS || lime.userAgent.WINPHONE);
-
-lime.audio.Audio.prototype.prepareContext_ = function() {
-    if (lime.audio.context) return;
-    var context = lime.audio.context = new lime.audio.AudioContext();
-    var gain = lime.audio.masterGain = context['createGainNode']();
-    gain['connect'](context['destination']);
-};
-
-lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
-    var buffers = lime.audio._buffers;
-    if (buffers[path] && buffers[path].buffer) {
-        cb(buffers[path].buffer, path);
-    }
-    else if (buffers[path]) {
-        buffers[path].push(cb);
-    }
-    else {
-        buffers[path] = [cb];
-        var req = new XMLHttpRequest();
-        req.open('GET', path, true);
-        req.responseType = 'arraybuffer';
-        req.onload = function() {
-            lime.audio.context['decodeAudioData'](req.response, function(buffer) {
-               if (!buffer) {
-                   return console.error('Error decoding file:', path);
-               }
-               var cbArray = buffers[path];
-               buffers[path] = {buffer: buffer};
-               for (var i=0; i < cbArray.length; i++) {
-                   cbArray[i](buffer, path);
-               }
-            }, function(e){console.error('Error decoding file',e);});
-        };
-        req.onerror = function() {
-          console.error('XHR error loading file:', path);
-        };
-        req.send();
-    }
-};
-
-lime.audio.Audio.prototype.bufferLoadedHandler_ = function (buffer, path) {
-    this.buffer = buffer;
-    this.loaded_ = true;
-    var ev = new goog.events.Event('loaded');
-    ev.event = null;
-    this.dispatchEvent(ev);
-    if (this.autoplay_) {
-        this.play.apply(this, this.autoplay_);
-    }
-};
-
-lime.audio.Audio.prototype.onEnded_ = function (e) {
-    this.playing_ = false;
-    var ev = new goog.events.Event('ended');
-    ev.event = e;
-    this.dispatchEvent(ev);
-    this.playPosition_ = 0;
-    var delay = lime.audio.AudioContext ? this.playTime_ + this.buffer.duration - this.playPositionCache - 0.05 : 0;
-    if (this.next_) {
-        for (var i = 0; i < this.next_.length; i++) {
-            this.next_[i][0].play(this.next_[i][1], delay);
-        }
-    }
-    else if (ev.returnValue_ !== false && this.loop_) {
-        this.play(this.loop_, delay);
-    }
-}
 
 /**
- * Handle loading the audio file. Event handlers seem to fail
- * on lot of browsers.
+ * @protected
+ * @type {goog.debug.Logger} logger.
+ */
+lime.audio.Audio.prototype.logger =
+    goog.debug.Logger.getLogger('lime.audio.Audio');
+
+
+/**
+ * @protected
+ */
+lime.audio.Audio.prototype.createAudio = function() {
+
+  this.audio = /** @type {HTMLAudioElement} */ (document.createElement(
+      'audio'));
+  var codecs = { // Chart from jPlayer
+    'ogg': 'audio/ogg; codecs="vorbis"', //OGG
+    'wav': 'audio/wav; codecs="1"', // PCM
+    'webma': 'audio/webm; codecs="vorbis"', // WEBM
+    'mp3': 'audio/mpeg; codecs="mp3"', //MP3
+    'm4a': 'audio/mp4; codecs="mp4a.40.2"'// AAC / MP4
+  };
+  var ext;
+  for (var i = 0; i < this.exts.length; ++i) {
+    var codec = codecs[this.exts[i]];
+    if (goog.DEBUG && !codec) {
+      throw new Error('Invalid extension "' + this.exts[i] + '"');
+    }
+    if (this.audio.canPlayType(codec)) {
+      ext = this.exts[i];
+      break;
+    }
+  }
+  if (ext) {
+    this.audio.preload = 'auto';
+    if (this.loop) {
+      this.audio.loop = true;
+      // this.audio.autoplay = true;
+    }
+    this.audio.src = this.filePath + '.' + ext;
+    this.audio.load();
+    goog.events.listen(this.audio, 'ended', function(e) {
+      this.audio.loaded = true; // somehow it changed to undefined on next play.
+      this.dispatch_();
+    }, false, this);
+  } else {
+    this.logger.warning('Audio codecs ' + JSON.stringify(this.exts) +
+        ' not supported');
+    this.audio = null;
+  }
+};
+
+
+/**
+ * Dispatch listeners.
  * @private
  */
-lime.audio.Audio.prototype.loadHandler_ = function() {
-    if (this.baseElement['readyState'] > 2) {
-        this.bufferLoadedHandler_();
-        clearTimeout(this.loadInterval);
-    }
-    if (this.baseElement['error'])clearTimeout(this.loadInterval);
-
-    if (lime.userAgent.IOS && this.baseElement['readyState'] == 0) {
-        //ios hack do not work any more after 4.2.1 updates
-        // no good solutions that i know
-        this.bufferLoadedHandler_();
-        clearTimeout(this.loadInterval);
-        // this means that ios audio anly works if called from user action
-    }
+lime.audio.Audio.prototype.dispatch_ = function() {
+  var listener = this.listeners_.shift();
+  while (listener) {
+    var fn = listener[0];
+    var scope = listener[1];
+    fn.call(scope);
+    listener = this.listeners_.shift();
+  }
 };
 
+
 /**
- * Returns true if audio file has been loaded
- * @return {boolean} Audio has been loaded.
+ * Play repeat.
+ * @param {number} count number of times to play.
+ * @param {number=} opt_volume volume.
+ * @param {function(this: T)=} opt_cb callback on finish.
+ * @param {T=} opt_scope scope to invoke cb in.
+ * @template T
  */
-lime.audio.Audio.prototype.isLoaded = function() {
-    return this.loaded_;
-};
-
-/**
- * Returns true if audio file is playing
- * @return {boolean} Audio is playing.
- */
-lime.audio.Audio.prototype.isPlaying = function() {
-    return this.playing_;
-};
-
-/**
- * Start playing the audio
- * @param {number=} opt_loop Loop the sound.
- */
-lime.audio.Audio.prototype.play = function(opt_loop) {
-    if (!this.isLoaded()) {
-        this.autoplay_ = goog.array.toArray(arguments);
+lime.audio.Audio.prototype.repeat = function(count, opt_volume, opt_cb,
+                                             opt_scope) {
+  if (count < 1) {
+    if (opt_cb) {
+      opt_cb.call(opt_scope);
     }
-    if (this.isLoaded() && !this.isPlaying() && !lime.audio.getMute()) {
-        if (lime.audio.AudioContext) {
-            if (this.source && this.source['playbackState'] == this.source['FINISHED_STATE']) {
-                this.playPosition_ = 0;
-            }
-            this.source = lime.audio.context['createBufferSource']();
-            this.source.buffer = this.buffer;
-            this.gain = lime.audio.context['createGainNode']();
-            this.gain['connect'](lime.audio.masterGain);
-            this.gain['gain']['value'] = this.volume_;
-            this.source['connect'](this.gain);
-
-            this.playTime_ = lime.audio.context['currentTime'];
-            var delay = arguments[1] || 0
-
-            if (this.playPosition_ > 0) {
-                this.source['noteGrainOn'](delay, this.playPosition_, this.buffer.duration - this.playPosition_);
-            }
-            else {
-                this.source['noteOn'](delay);
-            }
-            this.playPositionCache = this.playPosition_;
-            this.endTimeout_ = setTimeout(goog.bind(this.onEnded_, this),
-                (this.buffer.duration - (this.playPosition_ || 0)) * 1000 - 150);
-        }
-        else {
-            this.baseElement.play();
-        }
-        this.playing_ = true;
-        this.loop_ = !!opt_loop;
-        if (lime.audio._playQueue.indexOf(this) == -1) {
-          lime.audio._playQueue.push(this);
-        }
-    }
+  } else if (count == 1) {
+    this.play(opt_volume, function() {
+      if (opt_cb) {
+        opt_cb.call(opt_scope);
+      }
+    });
+  } else {
+    this.play(opt_volume, function() {
+      this.repeat(count - 1, opt_volume, opt_cb, opt_scope);
+    }, this);
+  }
 };
 
+
 /**
- * Stop playing the audio
+ * Play audio.
+ * @param {number=} opt_volume volume.
+ * @param {function(this: T)=} opt_cb callback on finish.
+ * @param {T=} opt_scope scope to invoke cb in.
+ * @template T
+ */
+lime.audio.Audio.prototype.play = function(opt_volume, opt_cb, opt_scope) {
+  if (!this.audio) {
+    if (opt_cb) {
+      opt_cb.call(opt_scope);
+    }
+  } else {
+    if (this.audio.loop === true) {
+      // loop audio cannot play again, must create a new Element.
+      this.createAudio();
+    }
+    this.audio.volume = goog.isDef(opt_volume) ? opt_volume : this.volume;
+    if (opt_cb) {
+      this.listeners_.push([opt_cb, opt_scope]);
+    }
+    if (this.audio.loaded) {
+      this.audio.currentTime = 0;
+      this.audio.play();
+    } else {
+      this.audio.autoplay = true;
+    }
+  }
+};
+
+
+/**
+ * Stop current playing audio.
  */
 lime.audio.Audio.prototype.stop = function() {
-    if (!this.isLoaded()) {
-        this.autoplay_ = null;
-    }
-    if (this.isPlaying()) {
-        if (lime.audio.AudioContext) {
-            clearTimeout(this.endTimeout_);
-            this.playPosition_ = lime.audio.context.currentTime - this.playTime_ + (this.playPosition_ || 0);
-            if (this.playPosition_ > this.buffer.duration) {
-                this.playPosition_ = 0;
-            }
-            this.source['noteOff'](0);
-            this.gain['disconnect'](lime.audio.masterGain);
-            this.source = null;
-        }
-        else {
-            this.baseElement.pause();
-        }
-        this.playing_ = false;
-    }
-};
-
-lime.audio._isMute = false;
-lime.audio._playQueue = [];
-
-lime.audio.getMute = function() {
-  return lime.audio._isMute;
-};
-
-lime.audio.setMute = function(bool) {
-  if (bool && !lime.audio._isMute) {
-    for (var i = 0; i < lime.audio._playQueue.length; i++) {
-      lime.audio._playQueue[i].stop();
-    }
-    lime.audio._playQueue = [];
+  if (this.audio) {
+    this.audio.pause();
+    this.audio.currentTime = 0;
+    this.dispatch_();
   }
-  lime.audio._isMute = bool;
 };
 
-lime.audio.Audio.prototype.setVolume = function(value) {
-    if (lime.audio.AudioContext) {
-        this.volume_ = value;
-        if (this.gain) this.gain['gain']['value'] = value;
-    }
-    else {
-        this.baseElement.volume = value;
-    }
+
+/**
+ * @inheritDoc
+ */
+lime.audio.Audio.prototype.disposeInternal = function() {
+  if (this.audio) {
+    this.audio.pause();
+  }
+  this.dispatch_();
+  this.audio = null;
 };
-lime.audio.Audio.prototype.getVolume = function() {
-    if (lime.audio.AudioContext) {
-        return this.volume_;
+
+
+/**
+ * List of audio objects.
+ * @type {Object.<Array.<lime.audio.Audio>>}
+ * @private
+ */
+lime.audio.Audio.audios_ = {};
+
+
+/**
+ * @define {number} maximun number of parallel audio elements.
+ */
+lime.audio.Audio.MAX_AUDIO = 5;
+
+
+/**
+ * Get an non-playing audio element from the pools.
+ * Example:
+ * <pre>
+ *   var sound = lime.audio.Audio.get('assets/loud_bang', ['mp3']);
+ *   sound.play();
+ * </pre>
+ * @param {string} file_path without extension.
+ * @param {Array.<string>} exts file extensions.
+ * @param {number=} opt_volume loop the sound.
+ * @return {lime.audio.Audio}
+ */
+lime.audio.Audio.get = function(file_path, exts, opt_volume) {
+  if (!lime.audio.Audio.audios_[file_path]) {
+    lime.audio.Audio.audios_[file_path] = [];
+  }
+  var audios = lime.audio.Audio.audios_[file_path];
+  var idx = 0;
+  var max = 0;
+  for (var i = 0; i < audios.length; ++i) {
+    var audio_obj = audios[i];
+    var ct = audio_obj.audio.currentTime;
+    if (audio_obj.audio.ended || ct == 0) {
+      if (goog.isDef(opt_volume)) {
+        audio_obj.audio.volume = opt_volume;
+      }
+      return audio_obj;
+    } else {
+      if (ct > max) {
+        idx = i;
+        max = ct;
+      }
     }
-    else {
-        return this.baseElement.volume;
+  }
+  if (audios.length > lime.audio.Audio.MAX_AUDIO) {
+    audios[idx].logger.warning('Maximum number of audio elements reach ' +
+        'for ' + file_path + ', reusing a playing element.');
+    if (goog.isDef(opt_volume)) {
+      audios[idx].volume = opt_volume;
     }
+    return audios[idx];
+  } else {
+    var audio = new lime.audio.Audio(file_path, exts, opt_volume);
+    audios.push(audio);
+    return audio;
+  }
 };
+
+
+/**
+ * Remove from the pool.
+ * @param {string} file_path
+ */
+lime.audio.Audio.remove = function(file_path) {
+  var audios = lime.audio.Audio.audios_[file_path];
+  if (audios) {
+    for (var i = 0; i < audios.length; ++i) {
+      var audio = audios[i];
+      audio.dispose();
+    }
+    audios.length = 0;
+    delete lime.audio.Audio.audios_[file_path];
+  }
+};
+

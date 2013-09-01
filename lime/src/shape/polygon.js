@@ -9,12 +9,12 @@ goog.require('lime.Sprite');
 
 /**
  * Polygon shaped textured object
- * @param {Array.<goog.math.Coodinate>} points Polygon points.
+ * @param {Array.<goog.math.Coordinate>} points Polygon points.
  * @constructor
- * @extends lime.Sprite
+ * @extends {lime.Sprite}
  */
 lime.Polygon = function(points) {
-    lime.Sprite.call(this);
+    goog.base(this);
 
     this.setPoints.apply(this, arguments);
 };
@@ -41,7 +41,7 @@ lime.Polygon.prototype.getPoints = function() {
 
 /**
  * Sets points that define the polygon. Also accepts floats.
- * @param {Array.<goog.math.Coodinate>} points Polygon points.
+ * @param {Array.<goog.math.Coordinate>} points Polygon points.
  * @return {lime.Polygon} object itself.
  */
 lime.Polygon.prototype.setPoints = function(points) {
@@ -52,12 +52,12 @@ lime.Polygon.prototype.setPoints = function(points) {
 
 /**
  * Adds points to current polygon points. Also accepts floats.
- * @param {Array.<goog.math.Coodinate>} points Polygon points.
+ * @param {Array.<goog.math.Coordinate>} points Polygon points.
  * @return {lime.Polygon} object itself.
  */
 lime.Polygon.prototype.addPoints = function(points) {
-    var points = goog.array.toArray(arguments);
-    if (!points.length) return;
+    points = goog.array.toArray(arguments);
+    if (!points.length) return null;
 
     if (points[0] instanceof goog.math.Coordinate) {
         goog.array.forEach(points, function(p) {
@@ -136,8 +136,8 @@ lime.Polygon.prototype.hitTest = function(e) {
 lime.Renderer.CANVAS.POLYGON.draw = function(context) {
 
 
-    var size = this.getSize(), fill = this.fill_;
-
+    var size = this.getSize();
+  var fill = this.getFill();
     var pt = this.getPoints();
     
 
@@ -163,7 +163,7 @@ lime.Renderer.CANVAS.POLYGON.draw = function(context) {
 
     lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
     
-    if(this.stroke_){
+    if(this.getStroke()){
         context.lineWidth*=2;
         context.stroke();
     }

@@ -6,14 +6,15 @@ goog.require('goog.array');
 goog.require('goog.math.Coordinate');
 goog.require('lime.Renderer.CANVAS.SPRITE');
 goog.require('lime.Sprite');
+goog.require('lime.Polygon');
 
 /**
  * Custom Canvas context
  * @constructor
- * @extends lime.Sprite
+ * @extends {lime.Sprite}
  */
 lime.CanvasContext = function() {
-    lime.Sprite.call(this);
+    goog.base(this);
 
 };
 goog.inherits(lime.CanvasContext, lime.Sprite);
@@ -40,7 +41,7 @@ lime.CanvasContext.prototype.draw = goog.nullFunction;
 lime.Renderer.CANVAS.CANVASCONTEXT.draw = function(context) {
 
     lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
-    
+
     this.draw(context);
 
 };

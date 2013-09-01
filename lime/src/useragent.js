@@ -68,7 +68,7 @@ lime.userAgent.CHROME = goog.userAgent.WEBKIT && (/Chrome\//i).test(ua);
 
 /**
  * Whether the user agent is running on touch based device
- * @type boolean
+ * @type {boolean}
  */
 lime.userAgent.SUPPORTS_TOUCH = goog.isDef(document['ontouchmove']);
 

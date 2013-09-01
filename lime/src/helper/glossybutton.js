@@ -10,10 +10,10 @@ goog.require('lime.fill.LinearGradient');
  * Use lime.Button for lower level control.
  * @param {string} txt Text shown on the button.
  * @constructor
- * @extends lime.Button
+ * @extends {lime.Button}
  */
 lime.GlossyButton = function(txt) {
-    lime.Button.call(this, this.makeState_(txt), this.makeState_(txt));
+    goog.base(this, this.makeState_(txt), this.makeState_(txt));
 
     this.borderWidth = 2;
 
@@ -74,7 +74,7 @@ lime.GlossyButton.prototype.setText = function(txt) {
 
 /**
  * Set button text font size.
- * @param {number} txt Number.
+ * @param {number} size Number.
  * @return {lime.GlossyButton} object itself.
  */
 lime.GlossyButton.prototype.setFontSize = function(size) {

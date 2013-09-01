@@ -62,7 +62,7 @@ lime.animation.Spawn.prototype.initTarget = function(target) {
  * @see lime.animation.Animation#updateAll
  */
 lime.animation.Spawn.prototype.updateAll = function(t, targets) {
-    if (this.status_ == 0) return undefined;
+    if (this.status_ == 0) return NaN;
     var i = targets.length;
     while (--i >= 0) {
         this.getTargetProp(targets[i]);

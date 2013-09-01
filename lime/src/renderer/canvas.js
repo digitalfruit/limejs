@@ -40,7 +40,7 @@ lime.Renderer.CANVAS.drawCanvas = function() {
         bounds = this.boundsCache;
     }
     else {
-        if (this.staticCanvas != 1 && this.children_.length != 0) {
+        if (this['staticCanvas'] != 1 && this.children_.length != 0) {
            if(!(this instanceof lime.Scene)){
                bounds.expand(PADDING, PADDING, PADDING, PADDING);
            }

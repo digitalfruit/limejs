@@ -50,7 +50,7 @@ lime.fill.LinearGradient.prototype.setDirection = function(x0, y0, x1, y1) {
 /**
  * Add color stop to the gradient. Accepts same format as node.setFill().
  * @param {number} offset Position of color [0-1].
- * @param {*} color Color value.
+ * @param {...} color Color value.
  * @return {lime.fill.LinearGradient} object itself.
  */
 lime.fill.LinearGradient.prototype.addColorStop = function(offset, color) {
