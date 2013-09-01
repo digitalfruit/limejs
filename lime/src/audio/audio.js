@@ -8,6 +8,13 @@ goog.require('lime.userAgent');
 
 /**
  * Audio stream object.
+ * Example: create a loop audio.
+ * <pre>
+ *   bg_sound = new lime.audio.Audio('assets/bg', ['ogg'], 1, true);
+ *   bg_sound.play();
+ * </pre>
+ * However, generally, audio object will construct from audio pool using
+ * @see lime.audio.Audio.get
  * @constructor
  * @param {string} filePath without extension.
  * @param {Array.<string>} exts file extensions.
@@ -208,6 +215,11 @@ lime.audio.Audio.MAX_AUDIO = 5;
 
 /**
  * Get an non-playing audio element from the pools.
+ * Example:
+ * <pre>
+ *   var sound = lime.audio.Audio.get('assets/loud_bang', ['mp3']);
+ *   sound.play();
+ * </pre>
  * @param {string} file_path without extension.
  * @param {Array.<string>} exts file extensions.
  * @param {number=} opt_volume loop the sound.
