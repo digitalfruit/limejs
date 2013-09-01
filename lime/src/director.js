@@ -182,17 +182,19 @@ lime.Director.prototype.isPaused = function() {
  * @param {boolean} value Pause or resume.
  * @return {lime.Director} The director object itself.
  */
-lime.Director.prototype.setPaused = function(value) {
-    this.isPaused_ = value;
-    lime.scheduleManager.changeDirectorActivity(this, !value);
-    if (this.isPaused_) {
-        var pauseClass = this.pauseClassFactory || lime.helper.PauseScene;
-        this.pauseScene = new pauseClass();
-        this.pushScene(this.pauseScene);
-    }
-    else if (this.pauseScene) {
-        this.popScene();
-        delete this.pauseScene;
+lime.Director.prototype.setPaused = function (value) {
+    if (this.isPaused_ != value) {
+        this.isPaused_ = value;
+        lime.scheduleManager.changeDirectorActivity(this, !value);
+        if (this.isPaused_) {
+            var pauseClass = this.pauseClassFactory || lime.helper.PauseScene;
+            this.pauseScene = new pauseClass();
+            this.pushScene(this.pauseScene);
+        }
+        else if (this.pauseScene) {
+            this.popScene();
+            delete this.pauseScene;
+        }
     }
     return this;
 };
