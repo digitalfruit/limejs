@@ -289,7 +289,7 @@ lime.parser.TMX = function (file) {
         insobject.px = insobject.x;
 
         var yAttr = object.attributes.getNamedItem("y")
-        insobject.x = parseInt(yAttr ? yAttr.nodeValue : 0);
+        insobject.y = parseInt(yAttr ? yAttr.nodeValue : 0);
         insobject.py = insobject.y;
 
         var objectproperties = object.getElementsByTagName('property');
