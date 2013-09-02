@@ -245,27 +245,54 @@ lime.parser.TMX = function (file) {
     var objects = map.getElementsByTagName('object');
     this.objects = new Array();
     for (i = 0; i < objects.length; i++) {
+        var object = objects[i];
         var insobject = new Object();
         insobject.properties = new Array();
-        insobject.name = objects[i].attributes.getNamedItem("name").nodeValue;
+        var poly = object.getElementsByTagName("polyline");
+        var elipse = object.getElementsByTagName("ellipse");
+        if (poly.length > 0) {
+            poly = poly[0];
+            insobject.objType = "polyline";
+            insobject.polyPoints = [];
+            var pAttr = poly.attributes.getNamedItem("points");
+            var points = (pAttr ? pAttr.nodeValue : "").split(" ");
+            for (var pIndex = 0; pIndex < points.length; ++pIndex) {
+                var xy = points[pIndex].split(",");
+                insobject.polyPoints.push({ x:parseInt(xy[0]), y:parseInt(xy[1]) });
+            }
+
+        } else if (elipse.length > 0) {
+            insobject.objType = "ellipse";
+        } else {
+            insobject.objType = "rectangle";
+        }
+        var objName = object.attributes.getNamedItem("name");
+        insobject.name = objName ? objName.nodeValue : "";
         // if gid
-        if (objects[i].attributes.getNamedItem("gid")) {
-            insobject.gid = parseInt(objects[i].attributes.getNamedItem("gid").nodeValue);
+        if (object.attributes.getNamedItem("gid")) {
+            insobject.gid = parseInt(object.attributes.getNamedItem("gid").nodeValue);
             insobject.tile = this.getTile(insobject.gid);
             insobject.width = insobject.tile.width;
             insobject.height = insobject.tile.height;
             insobject.hastile = true;
         } else {
             // else
-            insobject.width = parseInt(objects[i].attributes.getNamedItem("width").nodeValue);
-            insobject.height = parseInt(objects[i].attributes.getNamedItem("height").nodeValue);
+            var objWidth = object.attributes.getNamedItem("width");
+            insobject.width = parseInt(objWidth ? objWidth.nodeValue : 0);
+            var objHeight = object.attributes.getNamedItem("height");
+            insobject.height = parseInt(objHeight ? objHeight.nodeValue : 0);
             insobject.hastile = false;
         }
-        insobject.x = parseInt(objects[i].attributes.getNamedItem("x").nodeValue);
+
+        var xAttr = object.attributes.getNamedItem("x")
+        insobject.x = parseInt(xAttr ? xAttr.nodeValue : 0);
         insobject.px = insobject.x;
-        insobject.y = parseInt(objects[i].attributes.getNamedItem("y").nodeValue);
+
+        var yAttr = object.attributes.getNamedItem("y")
+        insobject.y = parseInt(yAttr ? yAttr.nodeValue : 0);
         insobject.py = insobject.y;
-        var objectproperties = objects[i].getElementsByTagName('property');
+
+        var objectproperties = object.getElementsByTagName('property');
         _parseProperties(insobject, objectproperties);
         this.objects.push(insobject);
     }
