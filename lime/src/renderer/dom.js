@@ -46,30 +46,19 @@ lime.Renderer.DOM.updateLayout = function() {
  * @this {lime.Node}
  */
 lime.Renderer.DOM.drawSizePosition = function () {
-    var size = this.getSize(),
-       position = this.getPosition(),
-       scale = this.getScale();
-
-    if (this._lastSize && this._lastPos && this._lastScale && 
-        this._lastSize.width == size.width && this._lastSize.height == size.height &&
-        this._lastPos.x == position.x && this._lastPos.y == position.x &&
-        this._lastScale.x === scale.x && this._lastScale.y == scale.y) {
-        return;
-    }
-    this._lastSize = size.clone();
-    this._lastPos = position.clone();
-    this._lastScale = scale.clone();
-
     var quality = this.getQuality(),
        rquality = this.relativeQuality_ || 1;
     if (quality != 1 || rquality != 1) {
-        lime.Renderer.DOM.drawSizeLQPosition.call(this, size, position, scale);
+        lime.Renderer.DOM.drawSizeLQPosition.call(this);
     } else {
-        lime.Renderer.DOM.drawSizeHQPosition.call(this, size, position, scale);
+        lime.Renderer.DOM.drawSizeHQPosition.call(this);
     }
 };
-lime.Renderer.DOM.drawSizeHQPosition = function(size, position, scale) {
-    var enable3D = this.getCSS3DTransformsAllowed();
+lime.Renderer.DOM.drawSizeHQPosition = function() {
+    var size = this.getSize(),
+        position = this.getPosition(),
+        scale = this.getScale(),
+        enable3D = this.getCSS3DTransformsAllowed();
 
     if (this.transitionsActive_[lime.Transition.POSITION]) {
         position = this.transitionsActive_[lime.Transition.POSITION];
@@ -143,9 +132,11 @@ lime.Renderer.DOM.drawSizeHQPosition = function(size, position, scale) {
 
 };
 
-lime.Renderer.DOM.drawSizeLQPosition = function (size, position) {
-
-    var quality = this.getQuality(),
+lime.Renderer.DOM.drawSizeLQPosition = function () {
+    var size = this.getSize(),
+        position = this.getPosition(),
+        scale = this.getScale(),
+        quality = this.getQuality(),
        rquality = this.relativeQuality_ || 1,
        enable3D = this.getCSS3DTransformsAllowed();
 
