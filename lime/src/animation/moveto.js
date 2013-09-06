@@ -55,7 +55,7 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.POSITION,
             this.position_,
-            this.duration_, this.getEasing());
+            this.getDuration(), this.getEasing());
         target.setDirty(lime.Dirty.POSITION);
     }
 
@@ -100,11 +100,9 @@ lime.animation.MoveTo.prototype.update = function(t, target) {
  * @param {lime.Node} target The target to clear transistion for.
  */
 lime.animation.MoveTo.prototype.clearTransition = function(target) {
-
     if (this.useTransitions()) {
         target.clearTransition(lime.Transition.POSITION);
         target.setDirty(lime.Dirty.POSITION);
     }
-
 };
 

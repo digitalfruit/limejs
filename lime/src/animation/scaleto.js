@@ -45,7 +45,7 @@ lime.animation.ScaleTo.prototype.makeTargetProp = function(target) {
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.SCALE,
             new goog.math.Vec2(scale.x + delta.x, scale.y + delta.y),
-            this.duration_, this.getEasing());
+            this.getDuration(), this.getEasing());
         target.setDirty(lime.Dirty.SCALE);
     }
 

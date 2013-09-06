@@ -35,7 +35,7 @@ lime.animation.Animation = function() {
      */
     this.isPlaying_ = false;
 
-    this.duration_ = 1.0;
+    this.duration_ = 1000;
 
     this.ease = lime.animation.Easing.EASEINOUT;
 
@@ -67,7 +67,7 @@ lime.animation.Event = {
  * @return {number} Animation duration.
  */
 lime.animation.Animation.prototype.getDuration = function() {
-    return this.duration_;
+    return this.duration_ / 1000;
 };
 
 /**
@@ -76,7 +76,7 @@ lime.animation.Animation.prototype.getDuration = function() {
  * @return {lime.animation.Animation} object itself.
  */
  lime.animation.Animation.prototype.setDuration = function(value) {
-     this.duration_ = value;
+     this.duration_ = Math.floor(value * 1000);
      return this;
  };
 
@@ -104,6 +104,9 @@ lime.animation.Animation.prototype.getEasing = function() {
  * @return {lime.animation.Animation} object itself.
  */
 lime.animation.Animation.prototype.addTarget = function(target) {
+    if (this.targets.length === 0 && this.status_ !== 0) {
+        lime.scheduleManager.schedule(this.step_, this);
+    }
     goog.array.insert(this.targets, target);
     return this;
 };
@@ -113,9 +116,13 @@ lime.animation.Animation.prototype.addTarget = function(target) {
  * @param {lime.Node} target Node to be removed.
  * @return {lime.animation.Animation} object itself.
  */
-lime.animation.Animation.prototype.removeTarget = function(target) {
+lime.animation.Animation.prototype.removeTarget = function (target) {
+    var targetCount = this.targets.length;
     goog.array.remove(this.targets, target);
     goog.array.remove(this.initTargets_, target);
+    if (targetCount > 0 && (this.targets.length === 0)) {
+        lime.scheduleManager.unschedule(this.step_, this);
+    }
     return this;
 };
 
@@ -126,15 +133,20 @@ lime.animation.Animation.prototype.play = function() {
     this.playTime_ = 0;
     this.status_ = 1;
     this.firstFrame_ = 1;
-    lime.scheduleManager.schedule(this.step_, this);
+    if (this.targets.length > 0) {
+        lime.scheduleManager.schedule(this.step_, this);
+    }
     this.dispatchEvent({type: lime.animation.Event.START});
 };
 
 /**
- * Stop playing the animstion
+ * Stop playing the animation
  */
 lime.animation.Animation.prototype.stop = function() {
     if (this.status_ != 0) {
+        if (this.targets.length > 0) {
+            lime.scheduleManager.unschedule(this.step_, this);
+        }
         var targets = this.initTargets_;
         if (this.useTransitions() && this.clearTransition) {
             var i = targets.length;
@@ -145,7 +157,6 @@ lime.animation.Animation.prototype.stop = function() {
         this.initTargets_ = [];
         this.targetProp_ = {};
         this.status_ = 0;
-        lime.scheduleManager.unschedule(this.step_, this);
         this.dispatchEvent({type: lime.animation.Event.STOP});
     }
 };
@@ -205,14 +216,13 @@ lime.animation.Animation.prototype.step_ = function(dt) {
     if(this.speed_ && !this.speedCalcDone_ && this.calcDurationFromSpeed_){
         this.calcDurationFromSpeed_();
     }
-    if(this.firstFrame_){
+    if (this.firstFrame_) {
         delete this.firstFrame_;
         dt = 1;
     }
-
     this.playTime_ += dt;
     this.dt_ = dt;
-    var t = this.playTime_ / (this.duration_ * 1000);
+    var t = this.playTime_ / this.duration_;
     if (isNaN(t) || t>=1) t = 1;
     t = this.updateAll(t,this.targets);
 
@@ -247,8 +257,8 @@ lime.animation.Animation.prototype.updateAll = function(t,targets){
  */
 lime.animation.Animation.prototype.useTransitions = function() {
     // Basically everything except Mobile/Desktop Safari seems broken.
-    return this.duration_ > 0 && lime.style.isTransitionsSupported &&
-        this.optimizations_ && lime.userAgent.IOS
+    return lime.userAgent.IOS && this.duration_ > 0 &&
+        lime.style.isTransitionsSupported && this.optimizations_;
         /*
     //  goog.userAgent.MOBILE &&  // I see no boost on mac, only on iOS
         !lime.userAgent.ANDROID && // bug in 2.2 http://code.google.com/p/android/issues/detail?id=12451
@@ -401,7 +411,7 @@ lime.animation.getEasingFunction = function(p1x, p1y, p2x, p2y) {
  */
 lime.animation.Easing = {
     EASE: lime.animation.getEasingFunction(.25, .1, .25, 1),
-    LINEAR: lime.animation.getEasingFunction(0, 0, 1, 1),
+    LINEAR: [function (t) { return t; }, 0, 0, 1, 1], // Don't need to do curve math every frame for a linear transition
     EASEIN: lime.animation.getEasingFunction(.42, 0, 1, 1),
     EASEOUT: lime.animation.getEasingFunction(0, 0, .58, 1),
     EASEINOUT: lime.animation.getEasingFunction(.42, 0, .58, 1)

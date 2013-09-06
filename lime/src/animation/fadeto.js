@@ -32,7 +32,7 @@ lime.animation.FadeTo.prototype.makeTargetProp = function(target) {
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.OPACITY,
             this.opacity_,
-            this.duration_, this.getEasing());
+            this.getDuration(), this.getEasing());
 
         target.setDirty(lime.Dirty.ALPHA);
     }

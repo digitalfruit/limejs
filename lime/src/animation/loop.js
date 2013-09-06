@@ -25,7 +25,7 @@ lime.animation.Loop = function(action) {
     
     this.playing_ = 0;
 
-    this.setDuration(action.duration_);
+    this.setDuration(action.getDuration());
 
 };
 goog.inherits(lime.animation.Loop, lime.animation.Animation);
@@ -37,7 +37,7 @@ goog.inherits(lime.animation.Loop, lime.animation.Animation);
 lime.animation.Loop.prototype.initTarget = function(target) {
     lime.animation.Animation.prototype.initTarget.call(this, target);
 
-    this.setDuration(this.action_.duration_);
+    this.setDuration(this.action_.getDuration());
 };
 
 /**

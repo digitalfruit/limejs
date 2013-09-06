@@ -56,7 +56,7 @@ lime.animation.KeyframeAnimation = function() {
      * Delay in seconds between frames
      * @type {number}
      */
-    this.delay = 1 / 15;
+    this.delay_ = Math.round((1 / 15) * 1000);
 
     /**
      * Should the animation keep looping or stop when frame animation done.
@@ -76,7 +76,7 @@ lime.animation.KeyframeAnimation.prototype.scope = 'keyframe';
  * @return {number} Delay between frames.
  */
 lime.animation.KeyframeAnimation.prototype.getDelay = function() {
-    return this.delay;
+    return this.delay_;
 };
 
 /**
@@ -85,7 +85,7 @@ lime.animation.KeyframeAnimation.prototype.getDelay = function() {
  * @return {lime.animation.KeyframeAnimation} object itself.
  */
 lime.animation.KeyframeAnimation.prototype.setDelay = function(value) {
-    this.delay = value;
+    this.delay_ = Math.round(value * 1000);
     return this;
 };
 
@@ -164,11 +164,11 @@ lime.animation.KeyframeAnimation.prototype.play = function() {
  */
 lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
     var dt = this.dt_,
-        delay_msec = Math.round(this.delay * 1000),
+        delay_msec = this.delay_,
         nextImage = null,
         i = targets.length,
         looping = this.looping,
-        validframe;
+        validframe = false;
 
     while (--i >= 0) {
         this.getTargetProp(targets[i]);
@@ -179,11 +179,9 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
     if (this.lastChangeTime_ > delay_msec) {
         if (nextFrame < this.frames_.length) {
             validframe = true;
-        }else if (looping && nextFrame >= this.frames_.length) {
+        } else if (looping) {
             validframe = true;
             nextFrame = 0;
-        }else {
-            validframe = false;
         }
         if (validframe) {
             nextImage = this.frames_[nextFrame];
@@ -219,8 +217,6 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
             }
 
             this.currentFrame_ = nextFrame;
-
-            this.lastChangeTime_ -= delay_msec;
             this.lastChangeTime_ %= delay_msec;
         }
     }
