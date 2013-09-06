@@ -226,7 +226,7 @@ lime.Node.prototype.setDirty = function(value, opt_pass, opt_nextframe) {
         this.dirty_ = 0;
         lime.clearObjectDirty(this, opt_pass, opt_nextframe);
     }
-    if (value && this.maskTarget_) {
+    if(value && this.maskTarget_){
         this.mSet = false;
         this.maskTarget_.setDirty(~0);
     }
@@ -380,10 +380,12 @@ lime.Node.prototype.getHidden = function() {
  * @param {boolean} value Hide(true) or show(false).
  * @return {lime.Node} object itself.
  */
-lime.Node.prototype.setHidden = function(value) {
-    this.hidden_ = value;
-    this.setDirty(lime.Dirty.VISIBILITY);
-    this.autoHide_ = 0;
+lime.Node.prototype.setHidden = function (value) {
+    if (this.hidden_ !== value) {
+        this.hidden_ = value;
+        this.setDirty(lime.Dirty.VISIBILITY);
+        this.autoHide_ = 0;
+    }
     return this;
 };
 
@@ -660,23 +662,25 @@ lime.Node.prototype.getOpacity = function() {
  * @param {number} value New opacity value(0-1).
  * @return {lime.Node} The node object itself.
  */
-lime.Node.prototype.setOpacity = function(value) {
-    this.opacity_ = value;
+lime.Node.prototype.setOpacity = function (value) {
+    if (this.opacity_ != value) {
+        this.opacity_ = value;
 
-    var hidden = this.getHidden();
-    if (this.opacity_ == 0 && !hidden) {
-        this.setHidden(true);
-        this.autoHide_ = 1;
-    }
-    else if (this.opacity_ != 0 && hidden && this.autoHide_) {
-        this.setHidden(false);
-    }
+        var hidden = this.getHidden();
+        if (this.opacity_ == 0 && !hidden) {
+            this.setHidden(true);
+            this.autoHide_ = 1;
+        }
+        else if (this.opacity_ != 0 && hidden && this.autoHide_) {
+            this.setHidden(false);
+        }
 
-    if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])){
-        return this;
-    }
+        if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])) {
+            return this;
+        }
 
-    this.setDirty(lime.Dirty.ALPHA);
+        this.setDirty(lime.Dirty.ALPHA);
+    }
     return this;
 };
 
@@ -771,7 +775,10 @@ lime.Node.prototype.updateLayout = function() {
  * @param {number=} opt_pass Pass number.
  */
 lime.Node.prototype.update = function(opt_pass) {
- // if (!this.renderer) return;
+    if (!(this.dirty_ & lime.Dirty.VISIBILITY) && this.hidden_) {
+        return;
+    }
+    // if (!this.renderer) return;
     var property,
         value;
    var pass = opt_pass || 0;
@@ -933,7 +940,7 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
 
     if (child instanceof lime.Node && child.getParent()) {
         child.getParent().removeChild(child);
-    } else if (child.parentNode) {
+    } else if(child.parentNode){
         goog.dom.removeNode(/** @type {Node} */ (child));
     }
 
@@ -941,7 +948,8 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
 
     if (opt_pos == undefined) {
         this.children_.push(child);
-    } else {
+    }
+    else {
         goog.array.insertAt(this.children_, child, opt_pos);
     }
     if (this.renderer.getType() != lime.Renderer.DOM) {
@@ -1312,4 +1320,5 @@ lime.Node.prototype.hitTest = function(e) {
 lime.Node.prototype.runAction = function(action) {
     action.addTarget(this);
     action.play();
+    return this;
 };

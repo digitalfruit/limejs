@@ -48,7 +48,23 @@ lime.scheduleManager = new (function() {
      */
     this.lastRunTime_ = 0;
 
+    /**
+     * Time spent paused.
+     * @type {number}
+     * @private
+     */
+    this.startTime_ = goog.now();
+    this.totalPauseTime_ = 0;
+    this.lastPauseTime_ = 0;
 })();
+
+/**
+ * Get Game Time
+ * Time since app start that does not advance while paused.
+ */
+lime.scheduleManager.GetGameTime = function () {
+    return (goog.now() - this.startTime_) - this.totalPauseTime_;
+};
 
 /**
  * Scheduled task
@@ -324,7 +340,6 @@ lime.scheduleManager.changeDirectorActivity = function(director, value) {
     var t, context, f, d, i,
     j = this.taskStack_.length;
     while (--j >= 0) {
-
         t = this.taskStack_[j];
         i = t.functionStack_.length;
         while (--i >= 0) {
@@ -337,6 +352,12 @@ lime.scheduleManager.changeDirectorActivity = function(director, value) {
                 }
             }
         }
+    }
+    if (value && this.lastPauseTime_) {
+        this.totalPauseTime_ += goog.now() - this.lastPauseTime_;
+        this.lastPauseTime = 0;
+    } else {
+        this.lastPauseTime_ = goog.now();
     }
 };
 

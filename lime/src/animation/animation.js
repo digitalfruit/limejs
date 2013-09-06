@@ -131,7 +131,7 @@ lime.animation.Animation.prototype.play = function() {
 };
 
 /**
- * Stop playing the animstion
+ * Stop playing the animation
  */
 lime.animation.Animation.prototype.stop = function() {
     if (this.status_ != 0) {
