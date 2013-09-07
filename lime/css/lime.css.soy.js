@@ -3,8 +3,7 @@
 
 goog.provide('lime.css');
 
-goog.require('soy');
-goog.require('soydata');
+goog.require('goog.soy');
 
 
 lime.css.css = function(opt_data, opt_ignored) {
