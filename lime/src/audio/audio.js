@@ -179,7 +179,7 @@ lime.audio.Audio.prototype.play = function(opt_volume, opt_cb, opt_scope) {
  * Stop current playing audio.
  */
 lime.audio.Audio.prototype.stop = function() {
-  if (this.audio) {
+  if (this.audio && this.audio.loaded) {
     this.audio.pause();
     this.audio.currentTime = 0;
     this.dispatch_();
