@@ -62,8 +62,8 @@ lime.scheduleManager = new (function() {
  * Get Game Time
  * Time since app start that does not advance while paused.
  */
-lime.scheduleManager.GetGameTime = function () {
-    return (goog.now() - this.startTime_) - this.totalPauseTime_;
+lime.scheduleManager.getGameTime = function () {
+    return this.pauseTime ? this.pauseTime : (goog.now() - this.startTime_) - this.totalPauseTime_;
 };
 
 /**
@@ -353,11 +353,15 @@ lime.scheduleManager.changeDirectorActivity = function(director, value) {
             }
         }
     }
-    if (value && this.lastPauseTime_) {
+    if (value) {
+        if (this.lastPauseTime_) {
         this.totalPauseTime_ += goog.now() - this.lastPauseTime_;
+        }
         this.lastPauseTime = 0;
+        this.pauseTime = 0;
     } else {
         this.lastPauseTime_ = goog.now();
+        this.pauseTime = this.getGameTime();
     }
 };
 
