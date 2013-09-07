@@ -62,8 +62,6 @@ lime.Node = function() {
 
     this.setSize(0, 0);
 
-    this.quality_ = 1.0;
-
     this.setAnchorPoint(0.5, 0.5);
 
     this.setRotation(0);
@@ -948,7 +946,6 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
         child.setRenderer(this.renderer.getType());
     }
     if (child instanceof lime.Node) {
-        child.calcRelativeQuality();
         if (this.inTree_) {
             child.wasAddedToTree();
         }

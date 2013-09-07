@@ -32,7 +32,7 @@ test.start = function() {
     var flameLayer = new lime.Layer();//.setRenderer(lime.Renderer.CANVAS); flameLayer.setPosition(100,0);
     gamescene.appendChild(flameLayer);
 
-    var quality = 4; var scale = 1;
+    var scale = 1;
 
     var flame = new lime.Sprite;
     flameLayer.appendChild(flame);

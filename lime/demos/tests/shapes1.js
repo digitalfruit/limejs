@@ -25,7 +25,6 @@ test.start = function() {
 	flameLayer.setPosition(100, 0);
 	gamescene.appendChild(flameLayer);
 
-	var quality = 1;
 	var scale = 1;
 
 
@@ -37,7 +36,6 @@ test.start = function() {
         //	flame.setRotation(90);
         //	flame.setSize(150,100);
         	flame.setPosition(50, 100);
-        //	flame.setQuality(quality);
         //	flame.setScale(flame.getScale().clone().scale(scale));
 
 
@@ -46,7 +44,6 @@ test.start = function() {
         	    .setFill('assets/nano.png')
         	    .setSize(100, 100)
         	    .setPosition(300, 100)
-        	    .setQuality(quality)
         	    .setScale(scale);
 
         	var flame_x = flame.getPosition().x;
@@ -58,7 +55,6 @@ test.start = function() {
         	flameLayer.appendChild(flame);
         	flame.setFill('assets/nano.png');
         	flame.setPosition(new goog.math.Coordinate(50, 250));
-        	flame.setQuality(quality);
         	flame.setScale(flame.getScale().clone().scale(scale));
 
 	// set active scene
