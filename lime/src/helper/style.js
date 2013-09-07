@@ -69,15 +69,11 @@ lime.style.setBorderRadius = (function() {
 /**
  * Object representing CSS Transform.
  * @constructor
- * @param {number=} opt_precision Default precision.
  */
-lime.style.Transform = function(opt_precision) {
+lime.style.Transform = function() {
     this.values = [];
-    this.precision = 1;
     this.enable3D_ = true;
-    if (this.opt_precision) {
-        this.setPrecision(/** @type {number} */ (opt_precision));
-    }
+    this.scale_ = { x: 1, y: 1 };
 };
 
 /**
@@ -98,7 +94,8 @@ lime.style.Transform.prototype.set3DAllowed = function(value) {
  */
 lime.style.Transform.prototype.scale = function(sx, sy) {
     //if(sx!=1 && sy!=1)
-    this.values.push('scale(' + sx + ',' + sy + ')');
+    this.scale_.x *= sx;
+    this.scale_.y *= sy;
     return this;
 };
 
@@ -109,6 +106,7 @@ lime.style.Transform.prototype.scale = function(sx, sy) {
  * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
+    if (angle != 0) {
     var rot_str;
 
     if (this.enable3D_ && (lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
@@ -116,9 +114,8 @@ lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
     } else {
         rot_str = 'rotate(' + angle + (opt_unit ? opt_unit : 'deg') + ')';
     }
-    if (angle != 0)
         this.values.push(rot_str);
-
+    }
     return this;
 };
 
@@ -130,16 +127,14 @@ lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
  * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
-
-    var p = 1 / this.precision;
     var val = 'translate';
 
     if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
         val += '3d';
     }
-    val += '(' + (tx * p) + 'px,' + (ty * p) + 'px';
+    val += '(' + (tx) + 'px,' + (ty) + 'px';
     if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
-        val += ',' + ((opt_tz ? opt_tz : 0) * p) + 'px';
+        val += ',' + (opt_tz ? opt_tz : 0) + 'px';
     }
     this.values.push(val + ')');
 
@@ -153,15 +148,6 @@ lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
  * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.setPrecision = function(p) {
-    if (this.precision != 1) {
-        var opposite = 1 / this.precision;
-        this.scale(opposite, opposite);
-        this.precision = 1;
-    }
-    if (p != 1) {
-        this.scale(p, p);
-        this.precision = p;
-    }
     return this;
 };
 
@@ -170,8 +156,8 @@ lime.style.Transform.prototype.setPrecision = function(p) {
  * @return {string} CSS value string.
  */
 lime.style.Transform.prototype.toString = function() {
-    if (this.precision != 1) {
-        this.setPrecision(1);
+    if ((this.scale_.x !== 1) || (this.scale_.y !== 1)) {
+        this.values.push('scale(' + this.scale_.x + ',' + this.scale_.y + ')');
     }
     return this.values.join(' ');
 };
