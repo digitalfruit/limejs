@@ -119,8 +119,10 @@ lime.Renderer.DOM.SPRITE.draw = function(el) {
     }
     if (!goog.isNull(this.stroke_)) {
         this.stroke_.setDOMStyle(el, this);
-    } else {
+        this.hadStroke_ = true;
+    } else if (this.hadStroke_) {
         goog.style.setStyle(el, 'border-width', 0);
+        this.hadStroke_ = false;
     }
 };
 
