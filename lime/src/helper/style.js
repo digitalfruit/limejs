@@ -73,7 +73,8 @@ lime.style.setBorderRadius = (function() {
 lime.style.Transform = function() {
     this.values = [];
     this.enable3D_ = true;
-    this.scale_ = { x: 1, y: 1 };
+    this.scaleX_ = 1;
+    this.scaleY_ = 1;
 };
 
 /**
@@ -94,8 +95,8 @@ lime.style.Transform.prototype.set3DAllowed = function(value) {
  */
 lime.style.Transform.prototype.scale = function(sx, sy) {
     //if(sx!=1 && sy!=1)
-    this.scale_.x *= sx;
-    this.scale_.y *= sy;
+    this.scaleX_ *= sx;
+    this.scaleY_ *= sy;
     return this;
 };
 
@@ -127,17 +128,11 @@ lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
  * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
-    var val = 'translate';
-
     if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
-        val += '3d';
+        this.values.push('translate3d(' + (tx) + 'px,' + (ty) + 'px' + (opt_tz ? opt_tz : 0) + 'px)');
+    } else {
+        this.values.push('translate(' + (tx) + 'px,' + (ty) + 'px)');
     }
-    val += '(' + (tx) + 'px,' + (ty) + 'px';
-    if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
-        val += ',' + (opt_tz ? opt_tz : 0) + 'px';
-    }
-    this.values.push(val + ')');
-
     return this;
 };
 
@@ -156,8 +151,8 @@ lime.style.Transform.prototype.setPrecision = function(p) {
  * @return {string} CSS value string.
  */
 lime.style.Transform.prototype.toString = function() {
-    if ((this.scale_.x !== 1) || (this.scale_.y !== 1)) {
-        this.values.push('scale(' + this.scale_.x + ',' + this.scale_.y + ')');
+    if ((this.scaleX_ !== 1) || (this.scaleY_ !== 1)) {
+        this.values.push('scale(' + this.scaleX_ + ',' + this.scaleY_ + ')');
     }
     return this.values.join(' ');
 };
