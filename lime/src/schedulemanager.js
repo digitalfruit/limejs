@@ -48,23 +48,7 @@ lime.scheduleManager = new (function() {
      */
     this.lastRunTime_ = 0;
 
-    /**
-     * Time spent paused.
-     * @type {number}
-     * @private
-     */
-    this.startTime_ = goog.now();
-    this.totalPauseTime_ = 0;
-    this.lastPauseTime_ = 0;
 })();
-
-/**
- * Get Game Time
- * Time since app start that does not advance while paused.
- */
-lime.scheduleManager.getGameTime = function () {
-    return this.pauseTime ? this.pauseTime : (goog.now() - this.startTime_) - this.totalPauseTime_;
-};
 
 /**
  * Scheduled task
@@ -352,16 +336,6 @@ lime.scheduleManager.changeDirectorActivity = function(director, value) {
                 }
             }
         }
-    }
-    if (value) {
-        if (this.lastPauseTime_) {
-        this.totalPauseTime_ += goog.now() - this.lastPauseTime_;
-        }
-        this.lastPauseTime = 0;
-        this.pauseTime = 0;
-    } else {
-        this.lastPauseTime_ = goog.now();
-        this.pauseTime = this.getGameTime();
     }
 };
 
