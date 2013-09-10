@@ -26,24 +26,24 @@ lime.fill.Image = function(img) {
 
     if (goog.isString(img)) {
         this.url_ = img;
-        if(this.url_.length>50)
+        if (this.url_.length > 50) {
             this.url_ = this.url_.substr(-50);
+        }
         if(lime.fill.Image.loadedImages_[this.url_]){
             this.image_ = lime.fill.Image.loadedImages_[this.url_];
-        }
-        else {
+        } else {
             this.image_ = new Image();
             this.image_.src = img;
         }
     }
     else {
         this.url_ = img.src;
-        if(this.url_.length>50)
+        if (this.url_.length > 50) {
             this.url_ = this.url_.substr(-50);
+        }
         if(lime.fill.Image.loadedImages_[this.url_]){
             this.image_ = lime.fill.Image.loadedImages_[this.url_];
-        }
-        else {
+        } else {
             this.image_ = img;
         }
 
@@ -85,10 +85,7 @@ lime.fill.Image.prototype.initForSprite = function(sprite){
                 this.setSize(that.image_.width,that.image_.height);
             }
         },false,sprite);
-
-        }
-        else {
-
+        } else {
         sprite.setSize(this.image_.width,this.image_.height);
 
         }
@@ -107,7 +104,7 @@ lime.fill.Image.prototype.initForSprite = function(sprite){
 lime.fill.Image.prototype.addLoadHandler_ = function(){
     goog.events.listen(this.image_, goog.events.EventType.LOAD,
         this.imageLoadedHandler_, false, this);
-}
+};
 
 /**
  * Update sprite dimensions after image has been loaded
@@ -132,7 +129,7 @@ lime.fill.Image.prototype.getImageElement = function(){
  */
 lime.fill.Image.prototype.isLoaded = function(){
     return !!(this.image_ && this.image_.width && this.image_.height);
-}
+};
 
 /**
  * Set the drawing size for the fill. Size can also be passed in
@@ -149,7 +146,7 @@ lime.fill.Image.prototype.setSize = function(size,opt_perc){
     this.size_ = size;
     this.size_perc_ = opt_perc;
     return this;
-}
+};
 
 /**
  * Set the offset that defines the drawing start position. Default is top-left(0,0).
@@ -165,7 +162,7 @@ lime.fill.Image.prototype.setOffset = function(offset,opt_perc){
     this.offset_ = offset;
     this.offset_perc_ = opt_perc;
     return this;
-}
+};
 
 lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape){
     var size = shape.getSize().clone();
@@ -173,8 +170,7 @@ lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape){
        if(this.size_perc_){
            size.width*=this.size_.width;
            size.height*=this.size_.height;
-       }
-       else {
+        } else {
            size = this.size_;
        }
     }
@@ -183,13 +179,12 @@ lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape){
         if(this.offset_perc_){
             offset.x=size.width*this.offset_.x;
             offset.y=size.height*this.offset_.y;
-        }
-        else {
+        } else {
             offset = this.offset_;
         }
     }
     return [size,offset];
-}
+};
 
 
 /**
@@ -207,7 +202,7 @@ lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
     if (this.qualityRenderer) {
     domEl.style['imageRendering'] = 'optimizeQuality';
 }
-}
+};
 
 lime.fill.Image.prototype.IS_IOS_CHROME = lime.userAgent.IOS &&
   (lime.userAgent.CHROME || /CriOS/.test(goog.global.navigator.userAgent));
@@ -231,7 +226,9 @@ lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
 
 lime.fill.Image.prototype.setCanvasStyle = function(context,shape) {
     var size = shape.getSize(),frame = shape.getFrame();
-    if (!size.width || !size.height) return;
+    if (!size.width || !size.height) {
+        return;
+    }
     try {
         var img = this.getImageElement();
         var so = this.getPixelSizeAndOffset(shape),s=so[0],offset=so[1];
