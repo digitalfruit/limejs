@@ -196,15 +196,21 @@ lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape){
  * Common functionality so it could be reused on Frame
  * @protected
  */
-lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
-    var so = this.getPixelSizeAndOffset(shape),size=so[0],offset=so[1],q = shape.getRelativeQuality();
-    domEl.style[lime.style.getCSSproperty('BackgroundSize')] = size.width*q+'px '+size.height*q+'px';
+lime.fill.Image.prototype.setDOMBackgroundProp_ = (function () {
+    var stylename = lime.style.getCSSproperty('BackgroundSize');
+    return function (domEl, shape) {
+        var so = this.getPixelSizeAndOffset(shape),
+            size = so[0],
+            offset = so[1];
+        domEl.style[stylename] = size.width + 'px ' + size.height + 'px';
     var stroke =  shape.stroke_?shape.stroke_.width_:0;
-    domEl.style['backgroundPosition'] = (offset.x*q-stroke)+'px '+(offset.y*q-stroke)+'px';
+        domEl.style['backgroundPosition'] = (offset.x - stroke) + 'px ' + (offset.y - stroke) + 'px';
     //domEl.style['backgroundRepeat'] = 'no-repeat';
-    if (this.qualityRenderer)
+        if (this.qualityRenderer) {
     domEl.style['imageRendering'] = 'optimizeQuality';
 }
+    };
+})();
 
 lime.fill.Image.prototype.IS_IOS_CHROME = lime.userAgent.IOS &&
   (lime.userAgent.CHROME || /CriOS/.test(goog.global.navigator.userAgent));
