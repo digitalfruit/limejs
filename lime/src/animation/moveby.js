@@ -52,7 +52,7 @@ lime.animation.MoveBy.prototype.makeTargetProp = function(target) {
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.POSITION,
             goog.math.Coordinate.sum(target.getPosition(), this.delta_),
-            this.getDuration(), this.getEasing());
+            this.duration_, this.getEasing());
         target.setDirty(lime.Dirty.POSITION);
     }
     return {startpos: target.getPosition()};

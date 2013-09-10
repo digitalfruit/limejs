@@ -35,7 +35,7 @@ lime.animation.Animation = function() {
      */
     this.isPlaying_ = false;
 
-    this.duration_ = 1000;
+    this.duration_ = 1.0;
 
     this.ease = lime.animation.Easing.EASEINOUT;
 
@@ -67,7 +67,7 @@ lime.animation.Event = {
  * @return {number} Animation duration.
  */
 lime.animation.Animation.prototype.getDuration = function() {
-    return this.duration_ / 1000;
+    return this.duration_;
 };
 
 /**
@@ -76,7 +76,7 @@ lime.animation.Animation.prototype.getDuration = function() {
  * @return {lime.animation.Animation} object itself.
  */
  lime.animation.Animation.prototype.setDuration = function(value) {
-     this.duration_ = Math.floor(value * 1000);
+     this.duration_ = value;
      return this;
  };
 
@@ -222,7 +222,7 @@ lime.animation.Animation.prototype.step_ = function(dt) {
     }
     this.playTime_ += dt;
     this.dt_ = dt;
-    var t = this.playTime_ / this.duration_;
+    var t = this.playTime_ / (this.duration_ * 1000);
     if (isNaN(t) || t>=1) t = 1;
     t = this.updateAll(t,this.targets);
 

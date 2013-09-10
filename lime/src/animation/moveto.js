@@ -55,7 +55,7 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.POSITION,
             this.position_,
-            this.getDuration(), this.getEasing());
+            this.duration_, this.getEasing());
         target.setDirty(lime.Dirty.POSITION);
     }
 

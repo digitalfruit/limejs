@@ -56,7 +56,7 @@ lime.animation.KeyframeAnimation = function() {
      * Delay in seconds between frames
      * @type {number}
      */
-    this.delay_ = Math.round((1 / 15) * 1000);
+    this.delay = 1 / 15;
 
     /**
      * Should the animation keep looping or stop when frame animation done.
@@ -76,7 +76,7 @@ lime.animation.KeyframeAnimation.prototype.scope = 'keyframe';
  * @return {number} Delay between frames.
  */
 lime.animation.KeyframeAnimation.prototype.getDelay = function() {
-    return this.delay_;
+    return this.delay;
 };
 
 /**
@@ -85,7 +85,7 @@ lime.animation.KeyframeAnimation.prototype.getDelay = function() {
  * @return {lime.animation.KeyframeAnimation} object itself.
  */
 lime.animation.KeyframeAnimation.prototype.setDelay = function(value) {
-    this.delay_ = Math.round(value * 1000);
+    this.delay = value;
     return this;
 };
 
@@ -164,7 +164,7 @@ lime.animation.KeyframeAnimation.prototype.play = function() {
  */
 lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
     var dt = this.dt_,
-        delay_msec = this.delay_,
+        delay_msec = Math.round(this.delay * 1000),
         nextImage = null,
         i = targets.length,
         looping = this.looping,

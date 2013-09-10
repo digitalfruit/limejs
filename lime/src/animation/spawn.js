@@ -27,8 +27,8 @@ lime.animation.Spawn = function(one) {
         this.one = act[0];
         this.two = act[1];
     }
-    var d1 = this.one.getDuration();
-    var d2 = this.two.getDuration();
+    var d1 = this.one.duration_;
+    var d2 = this.two.duration_;
 
     this.setDuration(Math.max(d1, d2));
 

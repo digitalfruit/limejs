@@ -29,7 +29,7 @@ lime.animation.Sequence = function(one) {
         this.actions = act;
     }
 
-    this.setDuration(this.actions[0].getDuration() + this.actions[1].getDuration());
+    this.setDuration(this.actions[0].duration_ + this.actions[1].duration_);
 
 };
 goog.inherits(lime.animation.Sequence, lime.animation.Animation);
@@ -41,8 +41,8 @@ goog.inherits(lime.animation.Sequence, lime.animation.Animation);
 lime.animation.Sequence.prototype.initTarget = function(target) {
     lime.animation.Animation.prototype.initTarget.call(this, target);
 
-    this.setDuration(this.actions[0].getDuration() + this.actions[1].getDuration());
-    this.split_ = this.actions[0].getDuration() / this.getDuration();
+    this.setDuration(this.actions[0].duration_ + this.actions[1].duration_);
+    this.split_ = this.actions[0].duration_ / this.duration_;
     this.last_ = -1;
 };
 
