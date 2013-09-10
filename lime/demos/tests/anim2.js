@@ -37,7 +37,6 @@ test.start = function() {
 	flameLayer.setRenderer(lime.Renderer.CANVAS);
 
 	gamescene.appendChild(flameLayer);
-	var quality = 4;
 	var scale = 1;
 
 
@@ -60,8 +59,6 @@ test.start = function() {
         	flame = (new lime.Sprite)
         	    .setFill('assets/nano.png')
         	    .setPosition(300, 100)
-        	    .setQuality(quality)
-
         	    .setScale(.3);
 
         	var flame_x = flame.getPosition().x;
@@ -75,20 +72,18 @@ test.start = function() {
         	flameLayer.appendChild(flame);
         	flame.setFill('assets/nano.png');
         	flame.setPosition(new goog.math.Coordinate(50, 250));
-        	flame.setQuality(quality).setOpacity(.6);
+    flame.setOpacity(.6);
         	flame.setScale(flame.getScale().clone().scale(scale));
 
 
           	tex = new lime.Sprite;
             tex.setFill('assets/nano.png');
-        	tex.setQuality(quality);
         	tex.setScale(flame.getScale().clone().scale(scale));
              /*
             flame = new lime.Sprite;
             flameLayer.appendChild(flame);
             flame.setFill(tex);
             flame.setPosition( new goog.math.Coordinate(300,250) );
-        	flame.setQuality(quality);
         	flame.setScale(flame.getScale().clone().scale(scale));*/
 
 

@@ -495,10 +495,10 @@ lime.Renderer.DOM.LABEL.draw = function(el) {
     }
     if (this.dirty_ & lime.Dirty.FONT) {
         style['lineHeight'] = this.getLineHeight();
-        style['padding'] = goog.array.map(this.padding_,function(p){return p * this.getRelativeQuality();},this).join('px ') + 'px';
+        style['padding'] = goog.array.map(this.padding_,function(p){return p;},this).join('px ') + 'px';
         style['color'] = this.getFontColor();
         style['fontFamily'] = this.getFontFamily();
-        style['fontSize'] = this.getFontSize()*this.getRelativeQuality() + 'px';
+        style['fontSize'] = this.getFontSize() + 'px';
         style['fontWeight'] = this.getFontWeight();
         style['textAlign'] = this.getAlign();
         style['font-style'] = this.getStyle();
