@@ -32,6 +32,7 @@ lime.Node = function() {
     this.transitionsActiveSet_ = {};
     /** type {Object.<number, number>} */
     this.transitionsClear_ = {};
+    this.useTransitions_ = false;
 
     /**
      * Allow translate3d and other css optimizations
@@ -252,12 +253,11 @@ lime.Node.prototype.getScale = function() {
 lime.Node.prototype.setScale = function(value, opt_y) {
     if (arguments.length == 1 && goog.isNumber(value)) {
         this.scale_ = new goog.math.Vec2(value, value);
-    }
-    else if (arguments.length == 2) {
+    } else if (arguments.length == 2) {
         this.scale_ = new goog.math.Vec2(arguments[0], arguments[1]);
     }
-    else {
-        this.scale_ = value;
+    if (this.transitionsActive_[lime.Transition.SCALE]) {
+        return this;
     }
     if (this.transitionsActive_[lime.Transition.SCALE]) return this;
     return this.setDirty(lime.Dirty.SCALE);
@@ -284,7 +284,9 @@ lime.Node.prototype.setPosition = function(value, opt_y) {
     else {
         this.position_ = value;
     }
-    if (this.transitionsActive_[lime.Transition.POSITION]) return this;
+    if (this.transitionsActive_[lime.Transition.POSITION]) {
+        return this;
+    }
     return this.setDirty(lime.Dirty.POSITION);
 };
 
@@ -362,7 +364,9 @@ lime.Node.prototype.setRotation = function(value) {
 
     this.rotation_ = value;
 
-    if (this.transitionsActive_[lime.Transition.ROTATION]) return this;
+    if (this.transitionsActive_[lime.Transition.ROTATION]) {
+        return this;
+    }
 
     return this.setDirty(lime.Dirty.POSITION);
 };
@@ -381,9 +385,11 @@ lime.Node.prototype.getHidden = function() {
  * @return {lime.Node} object itself.
  */
 lime.Node.prototype.setHidden = function(value) {
+    if (this.hidden_ !== value) {
     this.hidden_ = value;
     this.setDirty(lime.Dirty.VISIBILITY);
     this.autoHide_ = 0;
+    }
     return this;
 };
 
@@ -771,19 +777,56 @@ lime.Node.prototype.updateLayout = function() {
  * @param {number=} opt_pass Pass number.
  */
 lime.Node.prototype.update = function(opt_pass) {
- // if (!this.renderer) return;
-    var property,
-        value;
-   var pass = opt_pass || 0;
+    if (!(this.dirty_ & lime.Dirty.VISIBILITY) && this.hidden_) {
+        return;
+    }
 
-   var uid = goog.getUid(this);
+    //var uid = goog.getUid(this);
+    var pass = opt_pass || 0,
+        renderType = this.renderer.getType(),
+        do_draw = renderType == lime.Renderer.DOM || pass
+
    if (this.dirty_ & lime.Dirty.LAYOUT) {
        this.updateLayout();
    }
+    if (this.useTransitions_ && do_draw) {
+        this.updateTransitionsPreCanvas_();
+    }
 
-   var do_draw = this.renderer.getType() == lime.Renderer.DOM || pass;
+    if (pass) {
+        this.renderer.drawCanvas.call(this);
+    } else {
+        if (renderType == lime.Renderer.CANVAS) {
+            var parent = this.getDeepestParentWithDom();
 
-    if (do_draw) {
+            parent.redraw_ = 1;
+            if (parent == this && this.dirty_ == lime.Dirty.POSITION && !this.mask_) {
+                parent.redraw_ = 0;
+            }
+            lime.setObjectDirty(this.getDeepestParentWithDom(), 1);
+        }
+
+        // dom draw happens here
+        this.renderer.update.call(this);
+    }
+
+    if (this.useTransitions_ && do_draw) {
+        this.updateTransitionsPostCanvas_();
+    }
+
+    if (this.dependencies_) {
+        for (var i = 0; i < this.dependencies_.length; i++) {
+            this.dependencies_[i].setDirty(lime.Dirty.ALL);
+        }
+    }
+
+    //clear dirty
+    this.setDirty(0, pass);
+
+};
+
+lime.Node.prototype.updateTransitionsPreCanvas_ = function () {
+    var property, value;
 
         //clear transitions in the queue
         for (var i in this.transitionsClear_) {
@@ -863,45 +906,17 @@ lime.Node.prototype.update = function(opt_pass) {
 
 
         this.transitionsClear_ = {};
+};
 
-    }
 
 
-    if (pass) {
-        this.renderer.drawCanvas.call(this);
-    }
-    else {
-        if (this.renderer.getType() == lime.Renderer.CANVAS) {
-            var parent = this.getDeepestParentWithDom();
-            parent.redraw_ = 1;
-            if (parent == this && this.dirty_ == lime.Dirty.POSITION && !this.mask_) {
-                parent.redraw_ = 0;
-            }
-            lime.setObjectDirty(this.getDeepestParentWithDom(), 1);
-        }
-
-        // dom draw happens here
-        this.renderer.update.call(this);
-
-    }
-
+lime.Node.prototype.updateTransitionsPostCanvas_ = function (do_draw) {
     // set flags that transitions have been draw.
-    if(do_draw)
     for (i in this.transitionsActive_) {
         if (this.transitionsActive_[i]) {
             this.transitionsActiveSet_[i] = true;
         }
     }
-
-    if(this.dependencies_){
-        for(var i=0;i<this.dependencies_.length;i++){
-            this.dependencies_[i].setDirty(lime.Dirty.ALL);
-        }
-    }
-
-    //clear dirty
-    this.setDirty(0, pass);
-
 };
 
 /**
@@ -941,7 +956,8 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
 
     if (opt_pos == undefined) {
         this.children_.push(child);
-    } else {
+    }
+    else {
         goog.array.insertAt(this.children_, child, opt_pos);
     }
     if (this.renderer.getType() != lime.Renderer.DOM) {
@@ -1279,6 +1295,7 @@ lime.Node.prototype.measureContents = function() {
  */
 lime.Node.prototype.addTransition = function(property, value, duration, ease) {
     this.transitionsAdd_[property] = [value, duration, ease, 0];
+    this.useTransitions_ = true;
 };
 
 /**
@@ -1287,6 +1304,7 @@ lime.Node.prototype.addTransition = function(property, value, duration, ease) {
  */
 lime.Node.prototype.clearTransition = function(property) {
     this.transitionsClear_[property] = 1;
+    this.useTransitions_ = true;
 };
 
 /**
