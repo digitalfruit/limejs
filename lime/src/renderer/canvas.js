@@ -217,11 +217,10 @@ lime.Renderer.CANVAS.drawCanvasObject = function(context) {
         context.clip();
     }
 
-
-    var zero = new goog.math.Coordinate(0, 0);
-
     this.renderer.draw.call(this, context);
 
+    var zero = new goog.math.Coordinate(0, 0);
+    var degreeToRadian = Math.PI / 180;
     for (var i = 0, child; child = this.children_[i]; i++) {
         var pos = child.localToParent(zero).clone(), rot = child.getRotation(), scale = child.getScale();
         context.save();
@@ -229,7 +228,7 @@ lime.Renderer.CANVAS.drawCanvasObject = function(context) {
         context.scale(scale.x,scale.y);
 
         if (rot != 0) {
-            context.rotate(-rot * Math.PI / 180);
+            context.rotate(-rot * degreeToRadian);
         }
         this.renderer.drawCanvasObject.call(child, context);
         context.restore();

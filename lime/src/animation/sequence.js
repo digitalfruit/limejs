@@ -92,8 +92,10 @@ lime.animation.Sequence.prototype.updateAll = function(t,targets) {
 
     if (this.last_ != found) {
         if (this.last_ != -1) {
-            this.actions[this.last_].updateAll(1, targets);
-            this.actions[this.last_].stop();
+            if (this.actions[this.last_]) {
+                this.actions[this.last_].updateAll(1, targets);
+                this.actions[this.last_].stop();
+            }
         }
         this.actions[found].status_ = 1;
         //this.actions[found].initTarget(target);
