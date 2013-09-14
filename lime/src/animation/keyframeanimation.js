@@ -168,7 +168,7 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
         nextImage = null,
         i = targets.length,
         looping = this.looping,
-        validframe;
+        validframe = false;
 
     while (--i >= 0) {
         this.getTargetProp(targets[i]);
@@ -179,11 +179,9 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
     if (this.lastChangeTime_ > delay_msec) {
         if (nextFrame < this.frames_.length) {
             validframe = true;
-        }else if (looping && nextFrame >= this.frames_.length) {
+        } else if (looping) {
             validframe = true;
             nextFrame = 0;
-        }else {
-            validframe = false;
         }
         if (validframe) {
             nextImage = this.frames_[nextFrame];
@@ -219,8 +217,6 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
             }
 
             this.currentFrame_ = nextFrame;
-
-            this.lastChangeTime_ -= delay_msec;
             this.lastChangeTime_ %= delay_msec;
         }
     }

@@ -205,11 +205,10 @@ lime.animation.Animation.prototype.step_ = function(dt) {
     if(this.speed_ && !this.speedCalcDone_ && this.calcDurationFromSpeed_){
         this.calcDurationFromSpeed_();
     }
-    if(this.firstFrame_){
+    if (this.firstFrame_) {
         delete this.firstFrame_;
         dt = 1;
     }
-
     this.playTime_ += dt;
     this.dt_ = dt;
     var t = this.playTime_ / (this.duration_ * 1000);
@@ -247,8 +246,8 @@ lime.animation.Animation.prototype.updateAll = function(t,targets){
  */
 lime.animation.Animation.prototype.useTransitions = function() {
     // Basically everything except Mobile/Desktop Safari seems broken.
-    return this.duration_ > 0 && lime.style.isTransitionsSupported &&
-        this.optimizations_ && lime.userAgent.IOS
+    return lime.userAgent.IOS && this.duration_ > 0 &&
+        lime.style.isTransitionsSupported && this.optimizations_;
         /*
     //  goog.userAgent.MOBILE &&  // I see no boost on mac, only on iOS
         !lime.userAgent.ANDROID && // bug in 2.2 http://code.google.com/p/android/issues/detail?id=12451
@@ -401,7 +400,7 @@ lime.animation.getEasingFunction = function(p1x, p1y, p2x, p2y) {
  */
 lime.animation.Easing = {
     EASE: lime.animation.getEasingFunction(.25, .1, .25, 1),
-    LINEAR: lime.animation.getEasingFunction(0, 0, 1, 1),
+    LINEAR: [function (t) { return t; }, 0, 0, 1, 1], // Don't need to do curve math every frame for a linear transition
     EASEIN: lime.animation.getEasingFunction(.42, 0, 1, 1),
     EASEOUT: lime.animation.getEasingFunction(0, 0, .58, 1),
     EASEINOUT: lime.animation.getEasingFunction(.42, 0, .58, 1)
