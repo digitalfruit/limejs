@@ -45,38 +45,33 @@ lime.Renderer.DOM.updateLayout = function() {
  * Calculate the size and position of the element and draw it
  * @this {lime.Node}
  */
-lime.Renderer.DOM.drawSizePosition = function() {
+lime.Renderer.DOM.drawSizePosition = function () {
     var size = this.getSize(),
-       quality = this.getQuality(),
-       position = this.getPosition(),
-       rquality = this.relativeQuality_ || 1,
-       enable3D = this.getCSS3DTransformsAllowed();
+        position = this.getPosition(),
+        scale = this.getScale(),
+        enable3D = this.getCSS3DTransformsAllowed();
 
     if (this.transitionsActive_[lime.Transition.POSITION]) {
         position = this.transitionsActive_[lime.Transition.POSITION];
     }
 
-    var width = Math.round(size.width * rquality);
-    var height = Math.round(size.height * rquality);
+    var width = size.width;
+    var height = size.height;
 
-    var realScale = this.getScale().clone();
+    var realScale = scale.clone();
     if (this.transitionsActive_[lime.Transition.SCALE]) {
         realScale = this.transitionsActive_[lime.Transition.SCALE].clone();
     }
-    if (width != 0) realScale.scale(size.width / (width * quality / rquality));
-    else realScale.scale(1 / quality);
-
     lime.style.setSize(this.domElement, width, height);
 
     lime.style.setTransformOrigin(this.domElement,
         this.anchorPoint_.x * 100, this.anchorPoint_.y * 100, true);
 
+    var ax = this.anchorPoint_.x * width;
+    var ay = this.anchorPoint_.y * height;
 
-    var ax = this.anchorPoint_.x * size.width * rquality;
-    var ay = this.anchorPoint_.y * size.height * rquality;
-
-    var px = position.x * rquality / quality - ax,
-        py = position.y * rquality / quality - ay;
+    var px = position.x - ax,
+        py = position.y - ay;
 
     var so = this.stroke_ ? this.stroke_.width_ : 0;
 
@@ -84,7 +79,6 @@ lime.Renderer.DOM.drawSizePosition = function() {
             this.children_.length) {
         lime.Renderer.DOM.makeContainer.call(this);
     }
-
 
     if (this.domElement != this.containerElement) {
         if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION])
@@ -120,8 +114,7 @@ lime.Renderer.DOM.drawSizePosition = function() {
         rotation = -this.transitionsActive_[lime.Transition.ROTATION];
     }
 
-    transform.translate(px, py).scale(realScale.x, realScale.y).
-        rotate(rotation);
+    transform.translate(px, py).scale(realScale.x, realScale.y).rotate(rotation);
 
     if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
        //     console.log('transform',this.transition_position_set_,this.transition_position_);
@@ -153,9 +146,9 @@ lime.Renderer.DOM.update = function() {
         this.domElement.style['display'] = this.hidden_ ? 'none' : 'block';
     }
 
-    if(!this.maskTarget_)
-    this.renderer.draw.call(this, this.domElement);
-
+    if (!this.maskTarget_) {
+        this.renderer.draw.call(this, this.domElement);
+    }
 };
 
 /**

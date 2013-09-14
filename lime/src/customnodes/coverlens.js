@@ -45,7 +45,6 @@ lime.customNodes.CoverLens.prototype.update = function() {
     var style = this.baseElement.style,
         dsize = this.director.getSize(),
         dscale = this.director.getScale(),
-        quality = this.getQuality(),
         size = this.getSize();
 
     if (arguments[0]) {
@@ -60,9 +59,9 @@ lime.customNodes.CoverLens.prototype.update = function() {
         style['height'] = 2 * size.height + 'px';
 
         this.baseElement.width =
-            (2 * size.width / dscale.x) * quality;
+            (2 * size.width / dscale.x);
         this.baseElement.height =
-            (2 * size.height / dscale.y) * quality;
+            (2 * size.height / dscale.y);
 
         this.setNeedsRedraw();
     }
