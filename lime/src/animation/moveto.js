@@ -100,11 +100,9 @@ lime.animation.MoveTo.prototype.update = function(t, target) {
  * @param {lime.Node} target The target to clear transistion for.
  */
 lime.animation.MoveTo.prototype.clearTransition = function(target) {
-
     if (this.useTransitions()) {
         target.clearTransition(lime.Transition.POSITION);
         target.setDirty(lime.Dirty.POSITION);
     }
-
 };
 
