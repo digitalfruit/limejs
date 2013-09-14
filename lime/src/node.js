@@ -62,8 +62,6 @@ lime.Node = function() {
 
     this.setSize(0, 0);
 
-    this.quality_ = 1.0;
-
     this.setAnchorPoint(0.5, 0.5);
 
     this.setRotation(0);
@@ -459,61 +457,6 @@ lime.Node.prototype.setSize = function(value, opt_height) {
     }
     this.size_ = newval;
     return this.setDirty(lime.Dirty.SCALE);
-};
-
-/**
- * Returns elements quality value.
- * @return {number} Quality value.
- */
-lime.Node.prototype.getQuality = function() {
-    return this.quality_;
-};
-/**
- * Sets quality value used while drawing. Not all rendermodes can draw
- * more effectively on lower quality. 1.0 full quality, 0.5 half quality.
- * Setting this walue larger than 1.0 almost never does anything good.
- * @param {number} value New quality value.
- * @return {lime.Node} object itself.
- */
-lime.Node.prototype.setQuality = function(value) {
-    if (this.quality_ != value) {
-        this.quality_ = value;
-        this.setDirty(lime.Dirty.SCALE);
-        this.calcRelativeQuality();
-    }
-    return this;
-};
-
-/**
- * Return cumulative quality value relative to screen full quality.
- * @return {number} Quality value.
- */
-lime.Node.prototype.getRelativeQuality = function(){
-    if(!this.relativeQuality_)
-        this.calcRelativeQuality();
-
-    return this.relativeQuality_;
-}
-
-/**
- * Calculates relative quality change from the
- * parent objects quality
- */
-lime.Node.prototype.calcRelativeQuality = function() {
-    var rq = goog.isDef(this.relativeQuality_) ?
-        this.relativeQuality_ : this.quality_;
-
-    if (this.parent_ && this.parent_.relativeQuality_)
-        rq = this.quality_ * this.parent_.relativeQuality_;
-
-    if (rq != this.relativeQuality_) {
-        this.relativeQuality_ = rq;
-        for (var i = 0, child; child = this.children_[i]; i++) {
-            if (child instanceof lime.Node)
-            child.calcRelativeQuality();
-        }
-        this.setDirty(lime.Dirty.SCALE);
-    }
 };
 
 /**
@@ -948,7 +891,6 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
         child.setRenderer(this.renderer.getType());
     }
     if (child instanceof lime.Node) {
-        child.calcRelativeQuality();
         if (this.inTree_) {
             child.wasAddedToTree();
         }
@@ -1313,3 +1255,15 @@ lime.Node.prototype.runAction = function(action) {
     action.addTarget(this);
     action.play();
 };
+
+
+/**
+ * Deprecated API
+ */
+function throwDeprecated(functionName) {
+    throw new Error("Function " + functionName + " Deprecated");
+}
+lime.Node.prototype.getRelativeQuality = throwDeprecated.bind(null, "getRelativeQuality");
+lime.Node.prototype.calcRelativeQuality = throwDeprecated.bind(null, "calcRelativeQuality");
+lime.Node.prototype.setQuality = throwDeprecated.bind(null, "setQuality");
+lime.Node.prototype.getQuality = throwDeprecated.bind(null, "getQuality");
