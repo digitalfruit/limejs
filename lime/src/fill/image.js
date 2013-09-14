@@ -200,8 +200,8 @@ lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
     domEl.style['backgroundPosition'] = (offset.x-stroke)+'px '+(offset.y-stroke)+'px';
     //domEl.style['backgroundRepeat'] = 'no-repeat';
     if (this.qualityRenderer) {
-    domEl.style['imageRendering'] = 'optimizeQuality';
-}
+        domEl.style['imageRendering'] = 'optimizeQuality';
+    }
 };
 
 lime.fill.Image.prototype.IS_IOS_CHROME = lime.userAgent.IOS &&
