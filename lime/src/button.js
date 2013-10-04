@@ -44,7 +44,7 @@ lime.Button = function(opt_upstate, opt_downstate) {
                 }
             });
             e.swallow(['mouseup', 'touchend'], function(e) {
-                if (t.renderer.getType() === lime.Renderer.DOM && t.hitTest(e)) {
+                if (e.type === 'touchend' || t.renderer.getType() === lime.Renderer.DOM && t.hitTest(e)) {
                     t.dispatchEvent({type: lime.Button.Event.CLICK});
                }
                this.setState(lime.Button.State.UP);
