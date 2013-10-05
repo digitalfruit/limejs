@@ -97,7 +97,7 @@ def checkDependencies():
         print ('Box2DJS not found. Downloading to %s' % box2d_dir)
         print ('Please wait...')
         
-        retcode = subprocess.Popen(subprocess.list2cmdline(["git","clone","http://github.com/thinkpixellab/pl.git",box2d_dir]),shell=True).wait()
+        retcode = subprocess.Popen(subprocess.list2cmdline(["git","clone","https://github.com/thinkpixellab/pl.git",box2d_dir]),shell=True).wait()
         
         if(retcode!=0):
             logging.error('Error while downloading Box2D. Discontinuing.')
