@@ -894,8 +894,8 @@ lime.Node.prototype.appendChild = function(child, opt_pos) {
         if (this.inTree_) {
             child.wasAddedToTree();
         }
+        child.setDirty(lime.Dirty.LAYOUT);
     }
-    child.setDirty(lime.Dirty.LAYOUT);
     return this.setDirty(lime.Dirty.LAYOUT);
 };
 
