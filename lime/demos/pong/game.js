@@ -37,9 +37,9 @@ pong.Game = function(mode) {
 
     this.p2 = new pong.Player(0);
     if (mode == 1)
-    this.p2.enableSimulation();
+        this.p2.enableSimulation();
     else
-    this.p2.enableInteraction();
+        this.p2.enableInteraction();
     this.world.appendChild(this.p2);
 
 
@@ -125,7 +125,7 @@ pong.Game.prototype.step_ = function(dt) {
     }
 
     if (this.mode == 1)
-    this.p2.updateTargetPos(pos.x, this.v.y, dt);
+        this.p2.updateTargetPos(pos.x, this.v.y, dt);
 
     this.ball.setPosition(pos);
 
