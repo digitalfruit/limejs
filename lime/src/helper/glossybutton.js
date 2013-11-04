@@ -83,6 +83,17 @@ lime.GlossyButton.prototype.setFontSize = function(size) {
     return this;
 };
 
+/**
+ * Set button text font family.
+ * @param {string} font-family.
+ * @return {lime.GlossyButton} object itself.
+ */
+lime.GlossyButton.prototype.setFontFamily = function(font) {
+    this.upstate.label.setFontFamily(font);
+    this.downstate.label.setFontFamily(font);
+    return this;
+};
+
 /** @inheritDoc */
 lime.GlossyButton.prototype.setSize = function(value, opt_height) {
     if (this.upstate) {
