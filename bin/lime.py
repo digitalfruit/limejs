@@ -181,8 +181,8 @@ def create(name):
         for fname in files:
             newname = fname.replace('__name__',name)
             if fname.find("__name__")!=-1:
-                os.rename(os.path.join(path,fname),os.path.join(path,newname))
-            for line in fileinput.FileInput(os.path.join(path,newname),inplace=1):
+                os.rename(os.path.join(root,fname),os.path.join(root,newname))
+            for line in fileinput.FileInput(os.path.join(root,newname),inplace=1):
                 line = line.replace('{name}',name)
                 print(line.rstrip())
             
