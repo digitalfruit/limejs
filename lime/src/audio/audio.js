@@ -63,7 +63,7 @@ lime.audio.supportsMultiChannel = lime.audio.AudioContext || !(lime.userAgent.IO
 lime.audio.Audio.prototype.prepareContext_ = function() {
     if (lime.audio.context) return;
     var context = lime.audio.context = new lime.audio.AudioContext();
-    var gain = lime.audio.masterGain = context['createGainNode']();
+    var gain = lime.audio.masterGain = context['createGain']();
     gain['connect'](context['destination']);
 };
 
