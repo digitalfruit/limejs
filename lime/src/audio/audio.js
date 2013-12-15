@@ -17,7 +17,7 @@ lime.audio.Audio = function(filePath) {
     }
 
     /**
-     * @type bBoolean}
+     * @type {Boolean}
      * @private
      */
     this.loaded_ = false;
@@ -179,7 +179,7 @@ lime.audio.Audio.prototype.play = function(opt_loop) {
             }
             this.source = lime.audio.context['createBufferSource']();
             this.source.buffer = this.buffer;
-            this.gain = lime.audio.context['createGainNode']();
+            this.gain = lime.audio.context['createGain']();
             this.gain['connect'](lime.audio.masterGain);
             this.gain['gain']['value'] = this.volume_;
             this.source['connect'](this.gain);
