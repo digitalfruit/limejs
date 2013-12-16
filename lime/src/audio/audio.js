@@ -17,7 +17,7 @@ lime.audio.Audio = function(filePath) {
     }
 
     /**
-     * @type bBoolean}
+     * @type {Boolean}
      * @private
      */
     this.loaded_ = false;
@@ -179,7 +179,7 @@ lime.audio.Audio.prototype.play = function(opt_loop) {
             }
             this.source = lime.audio.context['createBufferSource']();
             this.source.buffer = this.buffer;
-            this.gain = lime.audio.context['createGainNode']();
+            this.gain = lime.audio.context['createGain']();
             this.gain['connect'](lime.audio.masterGain);
             this.gain['gain']['value'] = this.volume_;
             this.source['connect'](this.gain);
@@ -188,10 +188,10 @@ lime.audio.Audio.prototype.play = function(opt_loop) {
             var delay = arguments[1] || 0
 
             if (this.playPosition_ > 0) {
-                this.source['noteGrainOn'](delay, this.playPosition_, this.buffer.duration - this.playPosition_);
+                this.source['start'](delay, this.playPosition_, this.buffer.duration - this.playPosition_);
             }
             else {
-                this.source['noteOn'](delay);
+                this.source['start'](delay);
             }
             this.playPositionCache = this.playPosition_;
             this.endTimeout_ = setTimeout(goog.bind(this.onEnded_, this),
@@ -222,7 +222,7 @@ lime.audio.Audio.prototype.stop = function() {
             if (this.playPosition_ > this.buffer.duration) {
                 this.playPosition_ = 0;
             }
-            this.source['noteOff'](0);
+            this.source['stop'](0);
             this.gain['disconnect'](lime.audio.masterGain);
             this.source = null;
         }
