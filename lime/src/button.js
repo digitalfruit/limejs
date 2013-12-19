@@ -72,7 +72,7 @@ lime.Button.State = {
 lime.Button.Event = {
     UP: 'up',
     DOWN: 'down',
-    CLICK: 'click' // touchUpInside?
+    CLICK: 'buttonClick' // touchUpInside?
 };
 
 /**
