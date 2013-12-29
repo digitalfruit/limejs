@@ -170,8 +170,8 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
                 didhandle = true;
 
                 if (ee.propegationStopped_ || ee.event.propagationStopped_) {
-		    break;
-		}
+                    break;
+                }
             }
 
         }
