@@ -166,10 +166,12 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
             if (handler.hitTest(ee) || e.type.substring(0, 3) == 'key') {
 
                 ee.targetObject = handler;
-                var propagate = handler.dispatchEvent(ee);
+                handler.dispatchEvent(ee);
                 didhandle = true;
 
-                if (!propagate) break;
+                if (ee.propegationStopped_ || ee.event.propagationStopped_) {
+		    break;
+		}
             }
 
         }

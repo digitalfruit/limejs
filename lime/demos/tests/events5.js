@@ -59,7 +59,7 @@ test.start = function() {
         stop_propagation_box, ['mousedown', 'touchstart'],
         function(e) {
             e.startDrag();
-            return false;
+            e.stopPropagation();
         });
     layer.appendChild(stop_propagation_box);
 
