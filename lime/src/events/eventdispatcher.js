@@ -178,7 +178,17 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 
     }
 
-    if (didhandle)
-    e.preventDefault();
+    if (didhandle && this.shouldPreventDefault(e.type)) {
+        e.preventDefault();
+    }
+};
 
+/**
+ * If an event of the given type should be allowed to have default behavior.
+ */
+lime.events.EventDispatcher.prototype.shouldPreventDefault = function(type) {
+    if (goog.string.startsWith(type, "key")) {
+        return false;
+    }
+    return true;
 };
