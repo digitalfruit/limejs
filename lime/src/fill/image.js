@@ -20,6 +20,8 @@ lime.fill.Image = function(img) {
     }
     else */
 
+    this.repeatMode_ = lime.fill.Image.RepeatMode.NO_REPEAT;
+
     if(img && goog.isFunction(img.data)){
         img = img.data();
     }
@@ -70,6 +72,17 @@ lime.fill.Image.loadedImages_ = {};
  * @type {string}
  */
 lime.fill.Image.prototype.id = 'image';
+
+/**
+ *  ImageFill Mode
+ *  @enum {string}
+ */
+lime.fill.Image.RepeatMode = {
+    NO_REPEAT: 'no-repeat',
+    REPEAT_X: 'repeat-x',
+    REPEAT_Y: 'repeat-y',
+    REPEAT: 'repeat'
+};
 
 /**
  * @inheritDoc
@@ -198,7 +211,7 @@ lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
     domEl.style[lime.style.getCSSproperty('BackgroundSize')] = size.width+'px '+size.height+'px';
     var stroke =  shape.stroke_?shape.stroke_.width_:0;
     domEl.style['backgroundPosition'] = (offset.x-stroke)+'px '+(offset.y-stroke)+'px';
-    //domEl.style['backgroundRepeat'] = 'no-repeat';
+    domEl.style['backgroundRepeat'] = this.repeatMode_;
     if (this.qualityRenderer) {
         domEl.style['imageRendering'] = 'optimizeQuality';
     }
@@ -231,16 +244,30 @@ lime.fill.Image.prototype.setCanvasStyle = function(context,shape) {
     }
     try {
         var img = this.getImageElement();
+        if (img.width <= 0 || img.height <= 0) {
+            return;
+        }
+
         var so = this.getPixelSizeAndOffset(shape),s=so[0],offset=so[1];
-        /* todo: No idea if drawimage() with loops is faster or if the
-           pattern object needs to be cached. Needs to be tested! */
-        var ptrn = context.createPattern(img,'repeat');
         var aspx = s.width/img.width, aspy =s.height/img.height;
         context.save();
         context.translate(frame.left+offset.x,frame.top+offset.y);
         context.scale(aspx,aspy);
-        context.fillStyle = ptrn;
-        context.fillRect(-offset.x/aspx,-offset.y/aspy,size.width/aspx, size.height/aspy);
+
+        if (this.repeatMode_ === lime.fill.Image.RepeatMode.NO_REPEAT) {
+            context.drawImage(img, -offset.x/aspx,-offset.y/aspy,size.width/aspx, size.height/aspy);
+        }
+        else {
+
+            /* todo: No idea if drawimage() with loops is faster or if the
+            pattern object needs to be cached. Needs to be tested! */
+
+            var ptrn = context.createPattern(img,this.repeatMode_);
+
+            context.fillStyle = ptrn;
+            context.fillRect(-offset.x/aspx,-offset.y/aspy,size.width/aspx, size.height/aspy);
+        }
+
         context.restore();
     }catch(e){}
 };
