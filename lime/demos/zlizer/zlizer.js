@@ -22,9 +22,10 @@ zlizer.WIDTH = 768;
 zlizer.HEIGHT = 1004;
 
 // entrypoint
-zlizer.start = function() {
+zlizer.start = function(parent) {
+    lime.Renderer.CANVAS.CLEAR_COLOR = '#5ea71d';
 
-    zlizer.director = new lime.Director(document.body, zlizer.WIDTH, zlizer.HEIGHT);
+    zlizer.director = new lime.Director(parent || document.body, zlizer.WIDTH, zlizer.HEIGHT);
     zlizer.director.makeMobileWebAppCapable();
 
     lime.Label.defaultFont = 'Impact';
@@ -81,7 +82,7 @@ zlizer.loadMenuScene = function(opt_transition) {
 
     var btns_layer = new lime.Layer().setPosition(-250, 110);
     levels.appendChild(btns_layer);
-    
+
     var r = 0;
     for (r = 0; r < 4; r++) {
         for (var c = 0; c < 5; c++) {
@@ -95,12 +96,12 @@ zlizer.loadMenuScene = function(opt_transition) {
     }
 
     //Creates a button to go back to the main menu
-    var btn_main = new zlizer.Button('Back to Menu').setSize(400, 80).setPosition(250, r * 90); 
+    var btn_main = new zlizer.Button('Back to Menu').setSize(400, 80).setPosition(250, r * 90);
     btns_layer.appendChild(btn_main);
     goog.events.listen(btn_main, lime.Button.Event.CLICK, function() {
       contents.runAction(new lime.animation.MoveTo(0, 280).enableOptimizations());
     },false, num);
-    
+
 };
 
 

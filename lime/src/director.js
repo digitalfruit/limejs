@@ -14,8 +14,10 @@ goog.require('goog.math.Vec2');
 goog.require('goog.style');
 goog.require('lime');
 goog.require('lime.Node');
+goog.require('lime.dom');
 goog.require('lime.events.EventDispatcher');
 goog.require('lime.helper.PauseScene');
+goog.require('lime.Renderer.CANVAS');
 goog.require('lime.scheduleManager');
 goog.require('lime.transitions.Transition');
 
@@ -30,6 +32,8 @@ goog.require('lime.transitions.Transition');
  */
 lime.Director = function(parentElement, opt_width, opt_height) {
     lime.Node.call(this);
+
+    this.container = parentElement;
 
     // Unlike other nodes Director is always in the DOM as
     // it requires parentNode in the constructor
@@ -54,10 +58,20 @@ lime.Director = function(parentElement, opt_width, opt_height) {
     this.coverStack_ = [];
 
     this.domClassName = goog.getCssName('lime-director');
-    this.createDomElement();
-    parentElement.appendChild(this.domElement);
 
+    if (parentElement.getContext) {
+        if (!this.container.tagName) {
+            this.container.tagName = 'CANVAS'; // Ejecta hack.
+        }
+        this.setRenderer(lime.Renderer.CANVAS);
+        this.domElement = this.container;
+    }
 
+    this.updateDomElement();
+
+    if (this.domElement && this.domElement !== this.container) {
+        parentElement.appendChild(this.domElement);
+    }
 
     if (goog.userAgent.WEBKIT && goog.userAgent.MOBILE) {
     //todo: Not pretty solution. Cover layers may not be needed at all.
@@ -90,8 +104,8 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
         meta.content = content;
         document.getElementsByTagName('head').item(0).appendChild(meta);
-        
-        
+
+
         //todo: look for a less hacky solution
         if(goog.userAgent.MOBILE && !goog.global['navigator'].standalone){
             var that = this;
@@ -112,15 +126,22 @@ lime.Director = function(parentElement, opt_width, opt_height) {
     this.setDisplayFPS(goog.DEBUG);
     this.setPaused(false);
 
-
     var vsm = new goog.dom.ViewportSizeMonitor();
     goog.events.listen(vsm, goog.events.EventType.RESIZE,
         this.invalidateSize_, false, this);
     goog.events.listen(goog.global, 'orientationchange',
         this.invalidateSize_, false, this);
 
-
     lime.scheduleManager.schedule(this.step_, this);
+
+    if (this.container === this.domElement)
+    lime.scheduleManager.schedule(function() {
+        var size = goog.style.getSize(parentElement);
+        if (size.width !== parentSize.width || size.height !== parentSize.height) {
+            this.invalidateSize_();
+            parentSize = size;
+        }
+    }, this);
 
 
     this.eventDispatcher = new lime.events.EventDispatcher(this);
@@ -135,7 +156,7 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
 
     this.invalidateSize_();
-    
+
     if(goog.DEBUG){
         goog.events.listen(goog.global,'keyup',this.keyUpHandler_,false,this);
     }
@@ -143,6 +164,11 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 };
 goog.inherits(lime.Director, lime.Node);
 
+/*
+lime.Director.prototype.needsDomElement = function() {
+    return this.container.tagName !== 'CANVAS'
+};
+*/
 
 /**
  * Milliseconds between recalculating FPS value
@@ -221,6 +247,8 @@ lime.Director.prototype.setDisplayFPS = function(value) {
         this.frames_ = 0;
         this.accumDt_ = 0;
 
+        if (!lime.dom.isDOMSupported()) return;
+
         this.fpsElement_ = goog.dom.createDom('div');
         goog.dom.classes.add(this.fpsElement_, goog.getCssName('lime-fps'));
         this.domElement.parentNode.appendChild(this.fpsElement_);
@@ -293,27 +321,31 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
     var removelist = [];
     var i = this.sceneStack_.length;
     while (--i >= 0) {
-        this.sceneStack_[i].wasRemovedFromTree();
-        removelist.push(this.sceneStack_[i].domElement);
-        this.sceneStack_[i].parent_ = null;
+        //this.sceneStack_[i].wasRemovedFromTree();
+        removelist.push(this.sceneStack_[i]);
+        //this.sceneStack_[i].parent_ = null;
     }
     this.sceneStack_.length = 0;
 
     this.sceneStack_.push(scene);
-    scene.domElement.style['display']='none';
-    this.domElement.appendChild(scene.domElement);
-    scene.parent_ = this;
-    scene.wasAddedToTree();
+    /*if (scene.domElement) {
+    //    scene.domElement.style['display']='none';
+    //    this.domElement.appendChild(scene.domElement);
+    }*/
+    this.appendChild(scene);
+
+    //scene.parent_ = this;
+    //scene.wasAddedToTree();
 
     var transition = new transitionclass(outgoing, scene);
-        
+
     goog.events.listenOnce(transition,'end',function() {
             var i = removelist.length;
             while (--i >= 0) {
-                goog.dom.removeNode(removelist[i]);
+                this.removeChild(removelist[i]);
             }
             removelist.length = 0;
-            
+
         },false,this);
 
     if (goog.isDef(opt_duration)) {
@@ -326,11 +358,11 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
 };
 
 /** @inheritDoc */
-lime.Director.prototype.updateLayout = function() {
+/*lime.Director.prototype.updateLayout = function() {
    // debugger;
     this.dirty_ &= ~lime.Dirty.LAYOUT;
 };
-
+*/
 /**
  * Push scene to the top of scene stack
  * @param {lime.Scene} scene New scene.
@@ -353,9 +385,10 @@ lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration
         scene.domElement.style['display'] = 'none';
     }
     this.sceneStack_.push(scene);
-    this.domElement.appendChild(scene.domElement);
-    scene.parent_ = this;
-    scene.wasAddedToTree();
+    this.appendChild(scene);
+    //this.domElement.appendChild(scene.domElement);
+    //scene.parent_ = this;
+    //scene.wasAddedToTree();
 
     if (transition) {
         transition.start();
@@ -371,22 +404,23 @@ lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration
  * @return Transition object if opt_transition is defined
  */
 lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
-    var transition, 
+    var transition,
       outgoing = this.getCurrentScene();
-      
+
     if (goog.isNull(outgoing)) return;
-    
+
     var popOutgoing = function() {
-        outgoing.wasRemovedFromTree();
-        outgoing.parent_ = null;
-        goog.dom.removeNode(outgoing.domElement);
+        //outgoing.wasRemovedFromTree();
+        //outgoing.parent_ = null;
+        this.removeChild(outgoing);
+        //goog.dom.removeNode(outgoing.domElement);
         this.sceneStack_.pop();
         outgoing = null; // GC
     };
     // Transitions require an existing incoming scene
     if (goog.isDef(opt_transition) && (this.sceneStack_.length > 1)) {
         transition = new opt_transition(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);
-      
+
         if (goog.isDef(opt_duration)) {
             transition.setDuration(opt_duration);
         }
@@ -483,12 +517,17 @@ lime.Director.prototype.localToScreen = function(c) {
     return coord;
 };
 
+lime.Director.prototype.measureContents = function() {
+
+    return this.getFrame();
+
+};
 
 /**
  * @inheritDoc
  */
 lime.Director.prototype.update = function() {
-    lime.Node.prototype.update.call(this);
+    lime.Node.prototype.update.apply(this, arguments);
 
     var i = this.coverStack_.length;
     while (--i >= 0) {
@@ -503,9 +542,9 @@ lime.Director.prototype.update = function() {
  */
 lime.Director.prototype.invalidateSize_ = function() {
 
-    var stageSize = goog.style.getSize(this.domElement.parentNode);
+    var stageSize = goog.style.getSize(this.container);
 
-    if (this.domElement.parentNode == document.body) {
+    if (this.container == document.body) {
         window.scrollTo(0, 0);
         if (goog.isNumber(window.innerHeight)) {
             stageSize.height = window.innerHeight;
@@ -525,7 +564,7 @@ lime.Director.prototype.invalidateSize_ = function() {
     }
 
     this.updateDomOffset_();
-    
+
     // overflow hidden is for hiding away unused edges of document
     // height addition is because scroll(0,0) doesn't work any more if the
     // document has no edge @tonis todo:look for less hacky solution(iframe?).
@@ -542,6 +581,7 @@ lime.Director.prototype.invalidateSize_ = function() {
  * web application on iOS devices
  */
 lime.Director.prototype.makeMobileWebAppCapable = function() {
+    if (!lime.dom.isDOMSupported()) return;
 
     var meta = document.createElement('meta');
     meta.name = 'apple-mobile-web-app-capable';
@@ -574,7 +614,7 @@ lime.Director.prototype.makeMobileWebAppCapable = function() {
  * @private
  */
 lime.Director.prototype.updateDomOffset_ = function() {
-    this.domOffset = goog.style.getPageOffset(this.domElement.parentNode);
+    this.domOffset = goog.style.getPageOffset(this.container);
 };
 
 /**

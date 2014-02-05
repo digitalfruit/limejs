@@ -13,7 +13,12 @@ goog.require('lime.fill.LinearGradient');
  * @extends lime.Button
  */
 lime.GlossyButton = function(txt) {
-    lime.Button.call(this, this.makeState_(txt), this.makeState_(txt));
+    var upstate = this.makeState_(txt);
+    var downstate = this.makeState_(txt);
+    lime.Button.call(this, upstate.rect, downstate.rect);
+
+    this.upstate_ = upstate;
+    this.downstate_ = downstate;
 
     this.borderWidth = 2;
 
@@ -30,12 +35,14 @@ goog.inherits(lime.GlossyButton, lime.Button);
  * @return {lime.RoundedRect} state.
  */
 lime.GlossyButton.prototype.makeState_ = function(txt) {
-    var state = new lime.RoundedRect();
+    var state = new lime.GlossyButton.State();
+
+    state.rect = new lime.RoundedRect();
     state.inner = new lime.RoundedRect();
     state.label = new lime.Label(txt).setAlign('center').
         setFontFamily('"Trebuchet MS"').setFontColor('#010101').setFontSize(17);
 
-    state.appendChild(state.inner);
+    state.rect.appendChild(state.inner);
     state.inner.appendChild(state.label);
     return state;
 };
@@ -47,9 +54,9 @@ lime.GlossyButton.prototype.makeState_ = function(txt) {
  */
 lime.GlossyButton.prototype.setColor = function(clr) {
     clr = lime.fill.parse(clr);
-    goog.array.forEach([this.upstate, this.downstate], function(s) {
-        var c = s == this.downstate ? clr.clone().addSaturation(-.2) : clr;
-        s.setFill(c);
+    goog.array.forEach([this.upstate_, this.downstate_], function(s) {
+        var c = s == this.downstate_ ? clr.clone().addSaturation(-.2) : clr;
+        s.rect.setFill(c);
         var grad = new lime.fill.LinearGradient().setDirection(0, 0, 0, 1);
         grad.addColorStop(0, c.clone().addBrightness(.13));
         grad.addColorStop(.5, c.clone().addBrightness(.05));
@@ -66,8 +73,8 @@ lime.GlossyButton.prototype.setColor = function(clr) {
  * @return {lime.GlossyButton} object itself.
  */
 lime.GlossyButton.prototype.setText = function(txt) {
-    this.upstate.label.setText(txt);
-    this.downstate.label.setText(txt);
+    this.upstate_.label.setText(txt);
+    this.downstate_.label.setText(txt);
     return this;
 };
 
@@ -98,9 +105,9 @@ lime.GlossyButton.prototype.setFontFamily = function(font) {
 lime.GlossyButton.prototype.setSize = function(value, opt_height) {
     if (this.upstate) {
     this.upstate.setSize.apply(this.upstate, arguments);
-    var size = this.upstate.getSize();
-    goog.array.forEach([this.upstate, this.downstate], function(s) {
-        s.setSize(size);
+    var size = this.upstate_.rect.getSize();
+    goog.array.forEach([this.upstate_, this.downstate_], function(s) {
+        s.rect.setSize(size);
         var innerSize = size.clone();
         innerSize.width -= this.borderWidth;
         innerSize.height -= this.borderWidth;
@@ -114,3 +121,5 @@ lime.GlossyButton.prototype.setSize = function(value, opt_height) {
 lime.GlossyButton.prototype.getSize = function() {
     return this.upstate.getSize();
 };
+
+lime.GlossyButton.State = function() {};

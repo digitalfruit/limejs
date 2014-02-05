@@ -25,6 +25,9 @@ lime.animation.MoveBy = function(delta, opt_y) {
         this.delta_ = /** @type {!goog.math.Coordinate} */ (delta);
     }
 
+    this.speed_ = 0;
+    this.speedCalcDone_ = 0;
+
 
 };
 goog.inherits(lime.animation.MoveBy, lime.animation.Animation);
@@ -64,10 +67,10 @@ lime.animation.MoveBy.prototype.makeTargetProp = function(target) {
  */
 lime.animation.MoveBy.prototype.calcDurationFromSpeed_ = function(){
     if(!this.speed_) return;
-    
+
     this.setDuration(this.speed_ * goog.math.Coordinate.distance(
         this.delta_, new goog.math.Coordinate(0, 0)) / 100);
-            
+
     this.speedCalcDone_ = 1;
 }
 

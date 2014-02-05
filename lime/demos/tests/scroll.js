@@ -15,10 +15,10 @@ test.WIDTH = 800;
 test.HEIGHT = 600;
 
 
-test.start = function() {
+test.start = function(parent) {
 
 	//director
-	test.director = new lime.Director(document.body, test.WIDTH, test.HEIGHT);
+	test.director = new lime.Director(parent || document.body, test.WIDTH, test.HEIGHT);
 	test.director.makeMobileWebAppCapable();
 
 	var gamescene = new lime.Scene;

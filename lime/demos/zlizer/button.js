@@ -12,24 +12,23 @@ goog.require('lime.GlossyButton');
 zlizer.Button = function(txt) {
     lime.GlossyButton.call(this, txt);
 
+    this.updateState(this.upstate_);
+    this.updateState(this.downstate_);
+
     this.borderWidth = 4;
     this.setColor('#000');
 };
 goog.inherits(zlizer.Button, lime.GlossyButton);
 
-/**
- * Make state for a button.
- * @private
- * @return {lime.RoundedRect} state.
- */
-zlizer.Button.prototype.makeState_ = function() {
-    var state = new lime.RoundedRect().setFill('#fff').setRadius(15);
-    state.inner = new lime.RoundedRect().setRadius(15);
-    state.label = new lime.Label().setAlign('center').setFontColor('#eef').setFontSize(35).setSize(250, 35);
 
-    state.appendChild(state.inner);
-    state.inner.appendChild(state.label);
-    return state;
+/**
+ * @inheritDoc
+ */
+zlizer.Button.prototype.updateState = function(s) {
+    s.rect.setFill('#fff').setRadius(15);
+    s.inner.setRadius(15);
+    s.label.setAlign('center').
+        setFontColor('#eef').setFontSize(35).setSize(250, 35);
 };
 
 /**
@@ -39,8 +38,8 @@ zlizer.Button.prototype.makeState_ = function() {
  */
 zlizer.Button.prototype.setColor = function(clr) {
     clr = lime.fill.parse(clr);
-    goog.array.forEach([this.upstate, this.downstate], function(s) {
-        var c = s == this.downstate ? clr.clone().addBrightness(.1) : clr;
+    goog.array.forEach([this.upstate_, this.downstate_], function(s) {
+        var c = s == this.downstate_ ? clr.clone().addBrightness(.1) : clr;
         //s.setFill(c);
         var c2 = c.clone().addBrightness(.3);
         var grad = new lime.fill.LinearGradient().setDirection(0, 0, 0, 1);

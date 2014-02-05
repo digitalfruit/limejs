@@ -2,6 +2,7 @@ goog.provide('lime');
 
 goog.require('goog.style');
 goog.require('lime.css');
+goog.require('lime.dom');
 goog.require('lime.userAgent');
 
 (function() {
@@ -107,6 +108,7 @@ lime.Transition = {
     OPACITY: 5
 };
 
-
-goog.style.installStyles(lime.css.css(null, null));
+if (lime.dom.isDOMSupported()) {
+    goog.style.installStyles(lime.css.css(null, null));
+}
 

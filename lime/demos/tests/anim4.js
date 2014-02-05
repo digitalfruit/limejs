@@ -19,10 +19,10 @@ test.WIDTH = 800;
 test.HEIGHT = 400;
 
 
-test.start = function() {
+test.start = function(parent) {
 
 	//director
-	test.director = new lime.Director(document.body,1024, 768);
+	test.director = new lime.Director(parent || document.body,1024, 768);
 	test.director.makeMobileWebAppCapable();
 
     var scene = new lime.Scene();

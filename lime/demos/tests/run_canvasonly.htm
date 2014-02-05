@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+<title>Run demos</title> 
+<script type="text/javascript" src="../../../closure/closure/goog/base.js"></script>
+<script type="text/javascript">
+    (function(){
+        var match = window.location.href.toString().search(/run=.*$/);
+        
+        if(match==-1){
+            goog.require('goog.dom');
+            test={start: function(){
+            var _allDemos = [
+                'anim1','anim2','anim3','anim4',
+                'audio',
+                'autoresize',
+                'box2d','box2d_2',
+                'button1','button2',
+                'canvas','canvas2','canvascontext',
+                'drag1',
+                'events1','events2','events3','events4','events5',
+                'frame1','frame2','frame3','frame4',
+                'keyframe','keyframe2',
+                'labels1', 'labels2',
+                'mask','mask2',
+                'opacity',
+                'poly1',
+                'shapes1','shapes2','shapes3',
+                'scroll',
+                'stroke',
+                'tiled1', 'tiled2', 'tiled3',
+                'transitions1'
+                ].sort();
+                
+            for(var i=0;i<_allDemos.length;i++){
+                var a = goog.dom.createDom('a',{href:'?run='+_allDemos[i]},_allDemos[i]);
+                document.body.appendChild(a);
+                document.body.appendChild(document.createElement('br'));
+                
+            }
+            }};
+        }
+        else {
+        var testname = window.location.href.substring(match+4);
+        
+        goog.global.document.write('<script type="text/javascript" src="' +testname + '.js"></' + 'script>');
+        }
+        
+    })();
+    
+</script>
+<style type="text/css">
+</style>
+
+
+</head>
+
+<body onload="test.start(document.getElementById('mycanvas'))">
+  
+  <canvas id="mycanvas" width="500" height="500" style="border: 3px solid #c00"></canvas>
+  
+</body>
+
+</html>

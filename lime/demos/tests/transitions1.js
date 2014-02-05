@@ -14,9 +14,9 @@ goog.require('lime.transitions.SlideIn');
 test.WIDTH = 800;
 test.HEIGHT = 600;
 
-test.start = function() {
+test.start = function(parent) {
 
-    test.director = new lime.Director(document.body, test.WIDTH, test.HEIGHT);
+    test.director = new lime.Director(parent || document.body, test.WIDTH, test.HEIGHT);
     test.director.makeMobileWebAppCapable();
 
     var scene1 = test.createScene('#666');
@@ -42,11 +42,11 @@ test.start = function() {
 
             scene2.appendChild(button1);
             scene2.appendChild(button2);
-            
+
             goog.events.listenOnce(button1, 'click', function() {
                 test.director.popScene();
             }, false, this);
-            
+
             goog.events.listenOnce(button2, 'click', function() {
                 test.director.popScene(lime.transitions.SlideIn);
             }, false, this);

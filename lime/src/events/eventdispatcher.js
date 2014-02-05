@@ -27,7 +27,7 @@ lime.events.EventDispatcher.prototype.register = function(node, eventType) {
         //dom tree changes otherwise
         goog.events.listen(eventType.substring(0, 5) == 'touch' && node!=this.director ?
             document : (eventType.substring(0, 3) == 'key' ?
-            window : this.director.domElement.parentNode), eventType,
+            window : this.director.container), eventType,
             this, false, this);
     }
     else {
@@ -47,7 +47,7 @@ lime.events.EventDispatcher.prototype.release = function(node, eventType) {
     if (goog.isDef(this.handlers[eventType])) {
          goog.array.remove(this.handlers[eventType], node);
          if (!this.handlers[eventType].length) {
-             goog.events.unlisten(this.director.domElement.parentNode,
+             goog.events.unlisten(this.director.container,
                  eventType, this, false, this);
             delete this.handlers[eventType];
          }

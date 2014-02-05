@@ -75,6 +75,22 @@ lime.Node = function() {
     this.setRenderer(this.supportedRenderers[0].getType());
 
     this.setDirty(lime.Dirty.LAYOUT);
+
+    this.activeMask_ = null;
+    this.isMask = null;
+    this.targetNode = null;
+    this.mWidth = null;
+    this.mHeight = null;
+    this.mPos = null;
+    this.mSet = null;
+    this.mX = null;
+    this.mY = null;
+    this.mRot = null;
+    this.relativeQuality_ = null;
+    this.hidden_ = null;
+    this.autoHide_ = null;
+    this.dependencySet_ = null;
+    this.maskTarget_ = null;
 };
 goog.inherits(lime.Node, goog.events.EventTarget);
 
@@ -714,10 +730,14 @@ lime.Node.prototype.updateLayout = function() {
  * @param {number=} opt_pass Pass number.
  */
 lime.Node.prototype.update = function(opt_pass) {
- // if (!this.renderer) return;
-    var property,
+   // if (!this.renderer) return;
+   var property,
         value;
    var pass = opt_pass || 0;
+
+   if (!this.inTree_) {
+       return this.setDirty(0, pass);
+   }
 
    var uid = goog.getUid(this);
    if (this.dirty_ & lime.Dirty.LAYOUT) {
@@ -863,7 +883,7 @@ lime.Node.getPropertyForTransition = function(transition) {
  * @return {lime.Node} Parent node.
  */
 lime.Node.prototype.getParent = function() {
-    return this.parent_ ? this.parent_ : null;
+    return this.parent_ || null;
 };
 
 /**

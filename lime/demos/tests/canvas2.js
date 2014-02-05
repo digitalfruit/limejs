@@ -21,9 +21,9 @@ test.WIDTH = 500;
 test.HEIGHT = 350;
 
 
-test.start = function() {
+test.start = function(parent) {
 
-	var director = new lime.Director(document.body, test.WIDTH, test.HEIGHT);
+	var director = new lime.Director(parent || document.body, test.WIDTH, test.HEIGHT);
 	director.makeMobileWebAppCapable();
 
 	var scene = new lime.Scene;

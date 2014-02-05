@@ -78,7 +78,6 @@ lime.fill.Image.prototype.initForSprite = function(sprite){
     var size = sprite.getSize(),that = this;
     if(!size.width && !size.height){
         if(!this.isLoaded()){
-
         goog.events.listen(this,goog.events.EventType.LOAD,function(){
             var size = this.getSize();
             if(!size.width && !size.height){
@@ -112,7 +111,7 @@ lime.fill.Image.prototype.addLoadHandler_ = function(){
  * @private
  */
 lime.fill.Image.prototype.imageLoadedHandler_ = function(e) {
-    this.dispatchEvent(e);
+    this.dispatchEvent({type:'load'});
 };
 
 /**
@@ -226,21 +225,53 @@ lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
 
 lime.fill.Image.prototype.setCanvasStyle = function(context,shape) {
     var size = shape.getSize(),frame = shape.getFrame();
-    if (!size.width || !size.height) {
-        return;
-    }
-    try {
+
+    if (!size.width || !size.height) return;
+
+    var so = this.getPixelSizeAndOffset(shape),s=so[0],offset=so[1];
+    var pat = offset.x < 0 || offset.y < 0 || size.width > s.width - offset.x || size.height > s.height - offset.y;
+    if (pat || !this.writeToCanvas || this.rotated_) {
         var img = this.getImageElement();
-        var so = this.getPixelSizeAndOffset(shape),s=so[0],offset=so[1];
-        /* todo: No idea if drawimage() with loops is faster or if the
-           pattern object needs to be cached. Needs to be tested! */
-        var ptrn = context.createPattern(img,'repeat');
+
+        if (!img._pattern && img.complete) {
+            // todo: different context? memory leak?
+            img._pattern = context.createPattern(img,'repeat');
+        }
         var aspx = s.width/img.width, aspy =s.height/img.height;
         context.save();
         context.translate(frame.left+offset.x,frame.top+offset.y);
         context.scale(aspx,aspy);
-        context.fillStyle = ptrn;
+        context.fillStyle = img._pattern || 'none';
         context.fillRect(-offset.x/aspx,-offset.y/aspy,size.width/aspx, size.height/aspy);
         context.restore();
-    }catch(e){}
+    }
+    else {
+        img = this.image_;
+        if (!img._pattern && img.complete) {
+            // todo: different context? memory leak?
+            img._pattern = context.createPattern(img,'repeat');
+        }
+        aspx = s.width/this.csize_.width, aspy =s.height/this.csize_.height;
+        context.save();
+        context.translate(frame.left+offset.x,frame.top+offset.y);
+        context.scale(aspx,aspy);
+
+        context.fillStyle = img._pattern || 'none';
+        // todo: negative offsets?
+        var l = this.rect_.left;
+        var t = this.rect_.top;
+
+        context.translate(this.coffset_.x - l, this.coffset_.y - t);
+        var rr = goog.math.Rect.intersection(this.rect_,
+            new goog.math.Rect(
+                l - offset.x/aspx - this.coffset_.x,
+                t - offset.y/aspy - this.coffset_.y,
+                size.width/aspx,
+                size.height/aspy
+            )
+        )
+        context.fillRect(rr.left, rr.top, rr.width, rr.height);
+        context.restore();
+    }
+
 };

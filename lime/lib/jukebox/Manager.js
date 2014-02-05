@@ -164,7 +164,7 @@ jukebox.Manager.prototype = {
 		 * Flash Audio Support
 		 * Hint: All Android devices support Flash, even Android 1.6 ones
 		 */
-		this.features.flashaudio = !!navigator.mimeTypes['application/x-shockwave-flash'] || !!navigator.plugins['Shockwave Flash'] || false;
+		this.features.flashaudio = !!navigator.mimeTypes && (!!navigator.mimeTypes['application/x-shockwave-flash'] || !!navigator.plugins['Shockwave Flash'] || false);
 
 		// Internet Explorer
 		if (window.ActiveXObject){

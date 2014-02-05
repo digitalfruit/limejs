@@ -15,7 +15,8 @@ lime.Scene = function() {
     this.setAnchorPoint(0, 0);
 
     this.domClassName = goog.getCssName('lime-scene');
-    this.createDomElement();
+
+    //this.updateDomElement();
 
 };
 goog.inherits(lime.Scene, lime.Node);

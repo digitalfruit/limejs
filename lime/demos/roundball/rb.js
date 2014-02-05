@@ -12,24 +12,34 @@ goog.require('rb.Board');
 goog.require('rb.Button');
 goog.require('rb.Game');
 goog.require('rb.Help');
+goog.require('lime.dom');
+goog.require('lime.SpriteSheet');
+goog.require('lime.ASSETS.roundball.json');
+goog.require('lime.parser.JSON');
 
 //constant iPad size
 rb.WIDTH = 720;
 rb.HEIGHT = 1004;
 
+
+
 // entrypoint
-rb.start = function() {
+rb.start = function(parent) {
+
+    lime.Renderer.CANVAS.CLEAR_COLOR = '#1c6aa1';
 /*
 
     //enable for non-seeded random. useful for debugging
     var pseudoRandom = new goog.testing.PseudoRandom(109);
     pseudoRandom.install();
     */
-
-	rb.director = new lime.Director(document.body, rb.WIDTH, rb.HEIGHT);
+	rb.director = new lime.Director(parent || document.body, rb.WIDTH, rb.HEIGHT);
 	rb.director.makeMobileWebAppCapable();
 
-	rb.loadMenu();
+    rb.ss = new lime.SpriteSheet('assets/roundball.png',lime.ASSETS.roundball.json, lime.parser.JSON);
+
+
+    rb.loadMenu();
 
 };
 
@@ -46,9 +56,7 @@ rb.Mode = {
 rb.loadMenu = function() {
     var scene = new lime.Scene(),
 	    layer = new lime.Layer().setPosition(rb.WIDTH / 2, 0);
-
 	if(rb.isBrokenChrome()) layer.setRenderer(lime.Renderer.CANVAS);
-
 
 	var title = new lime.Sprite().setFill('assets/main_title.png').setPosition(0, 290);
 	title.qualityRenderer = true;

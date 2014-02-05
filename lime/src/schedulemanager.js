@@ -48,6 +48,8 @@ lime.scheduleManager = new (function() {
      */
     this.lastRunTime_ = 0;
 
+    this.animationFrameHandlerBinded_ = null;
+
 })();
 
 /**

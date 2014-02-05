@@ -2,7 +2,7 @@ goog.provide('lime.Label');
 goog.provide('lime.Renderer.CANVAS.LABEL');
 goog.provide('lime.Renderer.DOM.LABEL');
 
-
+goog.require('lime.dom');
 goog.require('lime.Renderer.CANVAS.SPRITE');
 goog.require('lime.Renderer.DOM.SPRITE');
 goog.require('lime.Sprite');
@@ -35,6 +35,11 @@ lime.Label = function(txt) {
     this.setFill(255, 255, 255, 0);
 
     this.setStyle("normal");
+
+    this.lastDrawnWidth_ = null;
+    this.sizeCache_ = null;
+    this.words_ = null;
+    this.lines_ = null;
 
 };
 goog.inherits(lime.Label, lime.Sprite);
@@ -75,7 +80,8 @@ lime.Label.prototype.measureText = function() {
     if (this.getMultiline()) {
         lh *= goog.string.trim(this.text_).split('\n').length
     }
-    mContext.font = this.getStyle() + ' ' + this.getFontWeight() + ' ' + this.getFontSize() + 'px ' + this.getFontFamily();
+
+    mContext.font = this.getFontSize() + 'px Helvetica' //+ ' ' + this.getFontWeight() + ' ' + this.getFontSize() + 'px ' + this.getFontFamily();
 
     var metrics = mContext.measureText(this.text_);
     var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
@@ -84,7 +90,7 @@ lime.Label.prototype.measureText = function() {
         w += 1;
 
     var stroke = this.stroke_?this.stroke_.width_:0;
-    return new goog.math.Size(
+    return this.sizeCache_ = new goog.math.Size(
         this.padding_[1] + this.padding_[3] + w + stroke*2,
         this.padding_[0] + this.padding_[2] + lh + stroke*2
     );
@@ -95,7 +101,7 @@ lime.Label.prototype.measureText = function() {
 lime.Label.prototype.getSize = function() {
     var size = lime.Node.prototype.getSize.call(this);
     if (!size || (!size.width && !size.height)) {
-        return this.measureText();
+        return this.sizeCache_ || this.measureText();
     }
     return size;
 };
@@ -116,7 +122,7 @@ lime.Label.prototype.getText = function() {
 lime.Label.prototype.setText = function(txt) {
     this.text_ = txt + '';
     this.setDirty(lime.Dirty.CONTENT);
-    delete this.words_;
+    this.words_ = null;
     return this;
 };
 
@@ -472,8 +478,12 @@ lime.Label.prototype.wrapText = function(context, width) {
 /** @inheritDoc */
 lime.Label.prototype.update = function(){
 
-    if(this.getDirty() & lime.Dirty.CONTENT)
-        delete this.lastDrawnWidth_;
+    var dirty = this.getDirty();
+
+    if (dirty & lime.Dirty.CONTENT) this.lastDrawnWidth_ = null;
+    if (dirty) {
+        this.sizeCache_ = null;
+    }
 
     lime.Node.prototype.update.apply(this,arguments);
 };
@@ -545,8 +555,10 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     var lh = this.getLineHeight();
 
     context.fillStyle = this.getFontColor();
-    context.font = this.getStyle() + ' '+ this.getFontWeight() + ' ' + this.getFontSize() +
-        'px/' + lh + ' ' + this.getFontFamily();
+
+    context.font = this.getFontSize() + 'px Helvetica'/*this.getFontWeight() + ' ' + this.getFontSize() +
+        'px/' + lh + ' ' + this.getFontFamily();*/
+
     context.textAlign = align;
     context.textBaseline = 'top';
 
@@ -584,6 +596,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
  * @param {string=} opt_format Font format.
  */
 lime.Label.installFont = function(name, fileurl, opt_format) {
+    if (!lime.dom.isDOMSupported()) return;
     var format = opt_format || 'truetype';
     goog.style.installStyles('@font-face{font-family: "' + name +
         '";src: url(' + fileurl + ') format("' + format + '");})');
