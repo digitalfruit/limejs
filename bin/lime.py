@@ -182,8 +182,14 @@ def create(name):
             newname = fname.replace('__name__',name)
             if fname.find("__name__")!=-1:
                 os.rename(os.path.join(root,fname),os.path.join(root,newname))
+            
+            limejs_directory = os.path.relpath(basedir, proj).replace('\\', '/')
+
             for line in fileinput.FileInput(os.path.join(root,newname),inplace=1):
                 line = line.replace('{name}',name)
+                line = line.replace('{limejs_directory}', limejs_directory)
+
+
                 print(line.rstrip())
             
     print ('Created %s' % path)
@@ -275,12 +281,21 @@ def build(name,options):
 
     opt = ' '.join(map(lambda x: '--root="'+os.path.join(basedir,x.rstrip())+'/"',dir_list))
     
-    call = 'python ' + escapeSpace(os.path.join(closure_dir,'closure/bin/build/closurebuilder.py'))+' '+opt+' --namespace="'+name+'" '+\
-        '-o compiled -c '+compiler_path;
-    
-    
-    if options.advanced:
+    call = 'python ' + escapeSpace(os.path.join(closure_dir,'closure/bin/build/closurebuilder.py'))+' '+opt+' ' 
+    call +='--namespace="'+name+'" '
+    call += '--output_mode="' + options.output_mode + '" '
+
+
+    call += '-c '+compiler_path;
+
+    if options.compilation_level:
+        call+=" -f --compilation_level=" + options.compilation_level + " "
+    elif options.whitespace:
+        call+=" -f --compilation_level=WHITESPACE_ONLY "
+    elif options.advanced:
         call+=" -f --compilation_level=ADVANCED_OPTIMIZATIONS"
+    else:
+        call+=" -f --compilation_level=SIMPLE_OPTIMIZATIONS "
         
     if options.externs_file:
         for i, opt in enumerate(options.externs_file):
@@ -377,14 +392,34 @@ Commands:
     build [name]    Compile project to single Javascript file"""
     parser = optparse.OptionParser(usage)
     
+    parser.add_option("", "--output_mode", dest="output_mode", default="compiled",
+                     help='The type of output to generate from this script. '
+                    'Options are "list" for a list of filenames, "script" '
+                    'for a single script containing the contents of all the '
+                    'files, or "compiled" to produce compiled output with '
+                    'the Closure Compiler.  Default is "list".')
+
+    parser.add_option("", "--simple", dest="simple", action="store_true", help="With the default compilation level of SIMPLE_OPTIMIZATIONS, the Closure Compiler makes JavaScript smaller by renaming local variables. There are symbols other than local variables that can be shortened, however, and there are ways to shrink code other than renaming symbols. Compilation with ADVANCED_OPTIMIZATIONS exploits the full range of code-shrinking possibilities.")
+
     parser.add_option("-a", "--advanced", dest="advanced", action="store_true",
-                      help="Build uses ADVANCED_OPTIMIZATIONS mode (encouraged)")
+                      help="The ADVANCED_OPTIMIZATIONS level goes beyond simple shortening of variable names in several ways:"
+                      "* more aggressive renaming"
+                      "* dead code removal"
+                      "* function inlining")
+
+    parser.add_option("-c", "--compilation-level", dest="compilation_level", help="ADVANCED_OPTIMIZATIONS, SIMPLE_OPTIMIZATIONS or WHITESPACE_ONLY")
+
+    parser.add_option("-w", "--whitespace", dest="whitespace", action="store_true",
+                      help="Build uses output_mode= mode (encouraged)")
 
     parser.add_option('-e', '--externs', dest="externs_file", action='append',
                       help="File with externs declarations.")
 
-    parser.add_option("-o", "--output", dest="output", action="store", type="string",
+    parser.add_option("-o", "--output_file", dest="output", action="store", type="string",
                       help="Output file for build result")
+    
+    parser.add_option("-f", "--compiler_flags", dest="compiler_flags", action="store", type="string",
+                      help="Additional flags to pass to the Closure compiler")
     
     parser.add_option("-m", "--map", dest="map_file", action="store_true",
                       help="Build result sourcemap for debugging. Also turns on pretty print.")
