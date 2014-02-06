@@ -8,7 +8,7 @@ def main():
 	call += '--use-strict '
 	call += '--simple '
 	call += '--output_file="../compiled/simple/{name}.js" '
-	call += '--output_mode="simple" '
+	call += '--output_mode="compiled" '
 
 	subprocess.call(call,shell=True)
 if __name__ == '__main__':
