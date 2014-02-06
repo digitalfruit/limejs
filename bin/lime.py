@@ -270,60 +270,98 @@ def genSoy(path):
     update()
              
 
+def getDefineCompilerFlag(name, value):
+    return getDefineCompilerFlagByValue(name + '=' + value)
+
+def getDefineCompilerFlagByValue(value):
+    return getCompilerFlag_('--define', value)
+
+def getCompilerFlag_(name, value):
+    return getCompilerFlagByValue_(name + '=' + value + '')
+
+def getCompilerFlagByValue_(value):
+    return getFlag('--compiler_flag', value)
+
+def getFlag(name, value):
+    #return name + '=' + value + ' '
+    return name + '="' + value.replace('"', '\\"') + '" '
+
+def escapePathSeperators(path):
+    return path.replace('\\', '/')
+
 def build(name,options):
-    
     dir_list = open(projects_path,'r').readlines()
     dir_list.append('lime')
     dir_list.append('box2d/src')
     dir_list.append('closure')
     
-    #dir_list = filter(lambda x: os.path.isdir(os.path.join(basedir,x)) and ['.git','bin','docs'].count(x)==0 ,os.listdir(basedir))
-
-    opt = ' '.join(map(lambda x: '--root="'+os.path.join(basedir,x.rstrip())+'/"',dir_list))
+    opt = ' '.join(
+        map(
+            lambda x:
+                getFlag('--root', escapePathSeperators(os.path.join(basedir, x.rstrip())) + '/'), dir_list
+        )
+    )
     
-    call = 'python ' + escapeSpace(os.path.join(closure_dir,'closure/bin/build/closurebuilder.py'))+' '+opt+' ' 
-    call +='--namespace="'+name+'" '
-    call += '--output_mode="' + options.output_mode + '" '
+    call = 'python "' + escapeSpace(
+        escapePathSeperators(
+            os.path.join(closure_dir,'closure/bin/build/closurebuilder.py')
+            )
+        ) + '" '
+    call += opt + ' ' 
+    call += getFlag('--compiler_jar', compiler_path)
+    call += getFlag('--namespace', name)
+    call += getFlag('--output_mode', options.output_mode)
 
+    call += getCompilerFlag_('--compilation_level', options.compilation_level)
 
-    call += '-c '+compiler_path;
+    if(options.compilation_level != 'WHITESPACE_ONLY'):
+        call += getDefineCompilerFlag('COMPILED', 'true')
 
-    if options.compilation_level:
-        call+=" -f --compilation_level=" + options.compilation_level + " "
-    elif options.whitespace:
-        call+=" -f --compilation_level=WHITESPACE_ONLY "
-    elif options.advanced:
-        call+=" -f --compilation_level=ADVANCED_OPTIMIZATIONS"
-    else:
-        call+=" -f --compilation_level=SIMPLE_OPTIMIZATIONS "
-        
     if options.externs_file:
         for i, opt in enumerate(options.externs_file):
-            call+=" -f --externs="+opt
+            call+= getCompilerFlag_('--externs', opt)
 
-    outname = options.output
-    if options.output[-3:] != '.js':
+    outname = options.output_file
+    if options.output_mode != 'list' and options.output_file[-3:] != '.js':
         outname += '.js' 
     
+    if options.compiler_flags:
+        for flag in options.compiler_flags:
+            call+= getCompilerFlagByValue_(flag)
+
+    call += getCompilerFlag_('--warning_level', 'VERBOSE')
+    #call += getCompilerFlag_('--output_wrapper', '!function(){%' + 'output}();')
+
     if options.map_file:
-        call+=" -f --formatting=PRETTY_PRINT -f --source_map_format=V3 -f --create_source_map="+outname+'.map'
+        call += getCompilerFlag_('--formatting', 'PRETTY_PRINT')
+        call += getCompilerFlag_('--source_map_format', 'V3')
+        call += getCompilerFlag_('--create_source_map', outname + '.map')
     else:
-        call+=" -f --define='goog.DEBUG=false'"
+        call += getDefineCompilerFlag('goog.DEBUG', 'false')
         
     if options.use_strict:
-        call+=" -f --language_in=ECMASCRIPT5_STRICT"
+        call += getCompilerFlag_('--language_in', 'ECMASCRIPT5_STRICT')
         
     if options.define:
         for i, opt in enumerate(options.define):
-            call+=" -f --define='"+opt+"'"
+            call+= getDefineCompilerFlagByValue(opt)
 
-    if options.output:
-        call+=' --output_file="'+outname+'"'
+    if options.output_file:
+        call+= getFlag('--output_file', outname) + ' '
+        #call+= '> "' + outname + '"'
+        
         if not exists(os.path.dirname(outname)):
             os.makedirs(os.path.dirname(outname))
 
     errhandle = 0
     try:
+        callTrace = call;
+        callTrace = callTrace.replace(' --', ' \n\t--') + '\n'
+        sys.stdout.write(callTrace)
+        sys.stdout.write('================================\n')
+        #sys.stdout.write(call + '\n')
+        #sys.stdout.write('================================\n')
+
         subprocess.check_call(call, shell=True);
     except subprocess.CalledProcessError:
         # handle error later
@@ -347,7 +385,7 @@ def build(name,options):
         out_file.write('\n//@ sourceMappingURL=' + os.path.relpath(map_filename, os.path.dirname(outname)))
         out_file.close()
     
-    if options.output and options.preload:
+    if options.output_file and options.preload:
         name = os.path.basename(outname)[:-3]
         target = os.path.dirname(outname)
         source = os.path.join(basedir,'lime/templates/preloader')
@@ -399,26 +437,29 @@ Commands:
                     'files, or "compiled" to produce compiled output with '
                     'the Closure Compiler.  Default is "list".')
 
-    parser.add_option("", "--simple", dest="simple", action="store_true", help="With the default compilation level of SIMPLE_OPTIMIZATIONS, the Closure Compiler makes JavaScript smaller by renaming local variables. There are symbols other than local variables that can be shortened, however, and there are ways to shrink code other than renaming symbols. Compilation with ADVANCED_OPTIMIZATIONS exploits the full range of code-shrinking possibilities.")
 
-    parser.add_option("-a", "--advanced", dest="advanced", action="store_true",
+
+    parser.add_option("-c", "--compilation-level", dest="compilation_level", default="SIMPLE_OPTIMIZATIONS", help="ADVANCED_OPTIMIZATIONS, SIMPLE_OPTIMIZATIONS or WHITESPACE_ONLY")
+
+    parser.add_option("-w", "--whitespace", dest="compilation_level", action="store_const", const="WHITESPACE_ONLY",
+                      help="Build uses output_mode= mode (encouraged)")
+
+    parser.add_option("--simple", dest="compilation_level", action="store_const", const="SIMPLE_OPTIMIZATIONS",
+                      help="With the default compilation level of SIMPLE_OPTIMIZATIONS, the Closure Compiler makes JavaScript smaller by renaming local variables. There are symbols other than local variables that can be shortened, however, and there are ways to shrink code other than renaming symbols. Compilation with ADVANCED_OPTIMIZATIONS exploits the full range of code-shrinking possibilities.")
+    
+    parser.add_option("-a", "--advanced", dest="compilation_level", action="store_const", const="ADVANCED_OPTIMIZATIONS",
                       help="The ADVANCED_OPTIMIZATIONS level goes beyond simple shortening of variable names in several ways:"
                       "* more aggressive renaming"
                       "* dead code removal"
                       "* function inlining")
 
-    parser.add_option("-c", "--compilation-level", dest="compilation_level", help="ADVANCED_OPTIMIZATIONS, SIMPLE_OPTIMIZATIONS or WHITESPACE_ONLY")
-
-    parser.add_option("-w", "--whitespace", dest="whitespace", action="store_true",
-                      help="Build uses output_mode= mode (encouraged)")
-
     parser.add_option('-e', '--externs', dest="externs_file", action='append',
                       help="File with externs declarations.")
 
-    parser.add_option("-o", "--output_file", dest="output", action="store", type="string",
+    parser.add_option("-o", "--output_file", dest="output_file", action="store", type="string",
                       help="Output file for build result")
     
-    parser.add_option("-f", "--compiler_flags", dest="compiler_flags", action="store", type="string",
+    parser.add_option("-f", "--compiler_flags", dest="compiler_flags", action="append", type="string",
                       help="Additional flags to pass to the Closure compiler")
     
     parser.add_option("-m", "--map", dest="map_file", action="store_true",
