@@ -183,7 +183,7 @@ def create(name):
             if fname.find("__name__")!=-1:
                 os.rename(os.path.join(root,fname),os.path.join(root,newname))
             
-            limejs_directory = os.path.relpath(basedir, proj).replace('\\', '/')
+            limejs_directory = os.path.relpath(basedir, root).replace('\\', '/')
 
             for line in fileinput.FileInput(os.path.join(root,newname),inplace=1):
                 line = line.replace('{name}',name)
