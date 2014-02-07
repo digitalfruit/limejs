@@ -554,6 +554,8 @@ lime.Director.prototype.makeMobileWebAppCapable = function() {
     document.getElementsByTagName('head').item(0).appendChild(meta);
 
     var visited = false;
+    var localStorage = goog.global['localStorage'];
+    
     if (goog.isDef(localStorage)) {
         visited = localStorage.getItem('_lime_visited');
     }
