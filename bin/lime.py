@@ -173,22 +173,23 @@ def create(name):
     
     name = os.path.basename(path)
     
-    proj = os.path.relpath(path,basedir)
+    proj = os.path.relpath(path, basedir)
     
     shutil.copytree(os.path.join(basedir,'lime/templates/default'),path)
     
     for root, dirs, files in os.walk(path):
+        limejs_directory = escapePathSeperators(basedir)
+        project_directory = escapePathSeperators(path)
+
         for fname in files:
             newname = fname.replace('__name__',name)
             if fname.find("__name__")!=-1:
-                os.rename(os.path.join(root,fname),os.path.join(root,newname))
-            
-            limejs_directory = os.path.relpath(basedir, root).replace('\\', '/')
+                os.rename(os.path.join(root, fname),os.path.join(root,newname))
 
-            for line in fileinput.FileInput(os.path.join(root,newname),inplace=1):
+            for line in fileinput.FileInput(os.path.join(root, newname),inplace=1):
                 line = line.replace('{name}',name)
                 line = line.replace('{limejs_directory}', limejs_directory)
-
+                line = line.replace('{project_directory}', project_directory)
 
                 print(line.rstrip())
             
@@ -268,7 +269,6 @@ def genSoy(path):
                     makeSoyJSFile(soypath,False)
        
     update()
-             
 
 def getDefineCompilerFlag(name, value):
     return getDefineCompilerFlagByValue(name + '=' + value)
@@ -289,16 +289,19 @@ def getFlag(name, value):
 def escapePathSeperators(path):
     return path.replace('\\', '/')
 
-def build(name,options):
-    dir_list = open(projects_path,'r').readlines()
-    dir_list.append('lime')
-    dir_list.append('box2d/src')
-    dir_list.append('closure')
-    
+def build(name, options):
+    if(options.project_paths_file):
+        dir_list = open(options.project_paths_file,'r').readlines()
+    else:
+        dir_list = open(projects_path,'r').readlines()
+        dir_list.append('lime')
+        dir_list.append('box2d/src')
+        dir_list.append('closure')
+        
     opt = ' '.join(
         map(
             lambda x:
-                getFlag('--root', escapePathSeperators(os.path.join(basedir, x.rstrip())) + '/'), dir_list
+                getFlag('--root', escapePathSeperators(os.path.join(basedir, x.rstrip()))), dir_list
         )
     )
     
@@ -308,7 +311,7 @@ def build(name,options):
             )
         ) + '" '
     call += opt + ' ' 
-    call += getFlag('--compiler_jar', compiler_path)
+    call += getFlag('--compiler_jar', escapePathSeperators(compiler_path))
     call += getFlag('--namespace', name)
     call += getFlag('--output_mode', options.output_mode)
 
@@ -430,16 +433,16 @@ Commands:
     build [name]    Compile project to single Javascript file"""
     parser = optparse.OptionParser(usage)
     
-    parser.add_option("", "--output_mode", dest="output_mode", default="compiled",
+    parser.add_option("--output_mode", dest="output_mode", default="compiled",
                      help='The type of output to generate from this script. '
                     'Options are "list" for a list of filenames, "script" '
                     'for a single script containing the contents of all the '
                     'files, or "compiled" to produce compiled output with '
                     'the Closure Compiler.  Default is "list".')
 
+    parser.add_option("", "--project_paths_file", dest="project_paths_file", help="Relative to lime.py to project")
 
-
-    parser.add_option("-c", "--compilation-level", dest="compilation_level", default="SIMPLE_OPTIMIZATIONS", help="ADVANCED_OPTIMIZATIONS, SIMPLE_OPTIMIZATIONS or WHITESPACE_ONLY")
+    parser.add_option("-c", "--compilation_level", dest="compilation_level", default="SIMPLE_OPTIMIZATIONS", help="ADVANCED_OPTIMIZATIONS, SIMPLE_OPTIMIZATIONS or WHITESPACE_ONLY")
 
     parser.add_option("-w", "--whitespace", dest="compilation_level", action="store_const", const="WHITESPACE_ONLY",
                       help="Build uses output_mode= mode (encouraged)")
