@@ -153,7 +153,7 @@ lime.fill.Color.prototype.clone = function() {
  * @return {boolean} True if the RGBa or hex str values are equal
  */
 lime.fill.Color.prototype.equals = function(a) {
-    return a && 
+    return a &&
         a instanceof lime.fill.Color && (
         this.str === a.str || (
             goog.isDef(a.r) &&
