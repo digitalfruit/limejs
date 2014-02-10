@@ -1,5 +1,4 @@
 {project_directory}/src/
-{project_directory}/lib/
 {limejs_directory}/lime/
 {limejs_directory}/box2d/src/
 {limejs_directory}/closure/
