@@ -2,6 +2,7 @@ goog.provide('lime.audio.Audio');
 
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
+goog.require('goog.log');
 goog.require('lime.userAgent');
 
 /**
@@ -69,6 +70,7 @@ lime.audio.Audio.prototype.prepareContext_ = function() {
 
 lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
     var buffers = lime.audio._buffers;
+    var self = this;
     if (buffers[path] && buffers[path].buffer) {
         cb(buffers[path].buffer, path);
     }
@@ -81,19 +83,24 @@ lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
         req.open('GET', path, true);
         req.responseType = 'arraybuffer';
         req.onload = function() {
-            lime.audio.context['decodeAudioData'](req.response, function(buffer) {
-               if (!buffer) {
-                   return console.error('Error decoding file:', path);
-               }
-               var cbArray = buffers[path];
-               buffers[path] = {buffer: buffer};
-               for (var i=0; i < cbArray.length; i++) {
-                   cbArray[i](buffer, path);
-               }
-            }, function(e){console.error('Error decoding file',e);});
+            lime.audio.context['decodeAudioData'](req.response,
+                function (buffer) {
+                    if (!buffer) {
+                       return self.logger_.error('Error decoding file: ' + path);
+                    }
+                    var cbArray = buffers[path];
+                    buffers[path] = {buffer: buffer};
+                    for (var i=0; i < cbArray.length; i++) {
+                       cbArray[i](buffer, path);
+                    }
+                },
+                function (e) {
+                    self.logger_.error('Error decoding file ' + e);
+                }
+            );
         };
         req.onerror = function() {
-          console.error('XHR error loading file:', path);
+          self.logger_.error('XHR error loading file: ' + path);
         };
         req.send();
     }
@@ -267,3 +274,10 @@ lime.audio.Audio.prototype.getVolume = function() {
         return this.baseElement.volume;
     }
 };
+
+/**
+* @private
+* @type {goog.log.Logger}
+*/
+
+lime.audio.Audio.prototype.logger_ = goog.log.getLogger('lime.audio.Audio');

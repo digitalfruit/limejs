@@ -1,6 +1,6 @@
 goog.provide('lime.transitions.Transition');
 
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 
 /**
  * Animation for switching active scenes
@@ -71,9 +71,9 @@ lime.transitions.Transition.prototype.finish = function() {
     this.finished_ = true;
 };
 
-/** 
+/**
 * @private
-* @type {goog.debug.Logger}
+* @type {goog.log.Logger}
 */
 
-lime.transitions.Transition.prototype.logger_ = goog.debug.Logger.getLogger('lime.transitions.Transition');
+lime.transitions.Transition.prototype.logger_ = goog.log.getLogger('lime.transitions.Transition');
