@@ -78,9 +78,8 @@ lime.Renderer.DOM.ROUNDEDRECT.draw = function(el) {
  */
 lime.Renderer.CANVAS.ROUNDEDRECT.draw = function(context) {
     //http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html
-
-    var size = this.getSize(),
-        fill = this.getFill(),
+    var fill = this.getFill(),
+        stroke = this.getStroke(),
         frame = this.getFrame(),
         radius = this.getRadius(),
         x = frame.left,
@@ -102,14 +101,20 @@ lime.Renderer.CANVAS.ROUNDEDRECT.draw = function(context) {
     context.quadraticCurveTo(x, y, x + radius, y);
     context.closePath();
 
-    context.clip();
+    if (fill !== null) {
+        if (fill.id === 'image') {
+            context.clip();
+            fill.setCanvasStyle(context, this);
+        } else {
+            fill.setCanvasStyle(context, this);
+            context.fill();
+        }
+    }
 
-    lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
-    
-    if(this.stroke_){
-        context.lineWidth*=2;
+    if (stroke !== null) {
+        stroke.setCanvasStyle(context, this);
         context.stroke();
     }
-    
+
     context.restore();
 };
