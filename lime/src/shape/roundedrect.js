@@ -73,6 +73,26 @@ lime.Renderer.DOM.ROUNDEDRECT.draw = function(el) {
 };
 
 /**
+ * Draw the shape path in canvas
+ * @private
+ */
+lime.RoundedRect.prototype.makeCanvasPath_ = function(context, x, y, width, height, radius) {
+    context.save();
+    context.beginPath();
+    context.moveTo(x + radius, y);
+    context.lineTo(x + width - radius, y);
+    context.quadraticCurveTo(x + width, y, x + width, y + radius);
+    context.lineTo(x + width, y + height - radius);
+    context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    context.lineTo(x + radius, y + height);
+    context.quadraticCurveTo(x, y + height, x, y + height - radius);
+    context.lineTo(x, y + radius);
+    context.quadraticCurveTo(x, y, x + radius, y);
+    context.closePath();
+    context.restore();
+};
+
+/**
  * @inheritDoc
  * @this {lime.RoundedRect}
  */
@@ -87,31 +107,18 @@ lime.Renderer.CANVAS.ROUNDEDRECT.draw = function(context) {
         width = frame.right - frame.left,
         height = frame.bottom - frame.top;
 
-    context.save();
-    context.beginPath();
-    context.moveTo(x + radius, y);
-    context.lineTo(x + width - radius, y);
-    context.quadraticCurveTo(x + width, y, x + width, y + radius);
-    context.lineTo(x + width, y + height - radius);
-    context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    context.lineTo(x + radius, y + height);
-    context.quadraticCurveTo(x, y + height, x, y + height - radius);
-    context.lineTo(x, y + radius);
-    context.quadraticCurveTo(x, y, x + radius, y);
-    context.closePath();
-
     if (fill !== null) {
+        this.makeCanvasPath_(context, x, y, width, height, radius);
         fill.setCanvasStyle(context, this);
 
-        if (fill.id !== 'image') {
+        if (!(fill instanceof lime.fill.Image)) {
             context.fill();
         }
     }
 
     if (stroke !== null) {
+        this.makeCanvasPath_(context, x + stroke.width_ / 2, y + stroke.width_ / 2, width - stroke.width_, height - stroke.width_, radius - stroke.width_ / 2);
         stroke.setCanvasStyle(context, this);
         context.stroke();
     }
-
-    context.restore();
 };

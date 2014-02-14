@@ -65,23 +65,11 @@ lime.Renderer.DOM.CIRCLE.draw = function(el) {
 };
 
 /**
- * @inheritDoc
- * @this {lime.Circle}
+ * Draw the shape path in canvas
+ * @private
  */
-lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
-    var fill = this.getFill(),
-        stroke = this.getStroke(),
-        ap = this.getAnchorPoint(),
-        frame = this.getFrame(),
-        cx = (frame.right - frame.left) * .5,
-        cy = (frame.bottom - frame.top) * .5;
-
-    if (stroke !== null) {
-        cx -= stroke.width_ / 2;
-        cy -= stroke.width_ / 2;
-    }
-
-    context.save();
+lime.Circle.prototype.makeCanvasPath_ = function(context, cx, cy) {
+    var ap = this.getAnchorPoint();
     context.save();
     context.scale(cx, cy);
     context.translate(1 - 2 * ap.x, 1 - 2 * ap.y);
@@ -89,18 +77,31 @@ lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
     context.arc(0, 0, 1, 0, 2 * Math.PI, false);
     context.closePath();
     context.restore();
+};
+
+/**
+ * @inheritDoc
+ * @this {lime.Circle}
+ */
+lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
+    var fill = this.getFill(),
+        stroke = this.getStroke(),
+        frame = this.getFrame(),
+        cx = (frame.right - frame.left) * .5,
+        cy = (frame.bottom - frame.top) * .5;
 
     if (fill !== null) {
+        this.makeCanvasPath_(context, cx, cy);
         fill.setCanvasStyle(context, this);
 
-        if (fill.id !== 'image') {
+        if (!(fill instanceof lime.fill.Image)) {
             context.fill();
         }
     }
 
     if (stroke !== null) {
+        this.makeCanvasPath_(context, cx - stroke.width_ / 2, cy - stroke.width_ / 2);
         stroke.setCanvasStyle(context, this);
         context.stroke();
     }
-    context.restore();
 };
