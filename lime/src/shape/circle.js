@@ -91,11 +91,9 @@ lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
     context.restore();
 
     if (fill !== null) {
-        if (fill.id === 'image') {
-            context.clip();
-            fill.setCanvasStyle(context, this);
-        } else {
-            fill.setCanvasStyle(context, this);
+        fill.setCanvasStyle(context, this);
+
+        if (fill.id !== 'image') {
             context.fill();
         }
     }
