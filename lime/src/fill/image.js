@@ -240,7 +240,11 @@ lime.fill.Image.prototype.setCanvasStyle = function(context,shape) {
         context.translate(frame.left+offset.x,frame.top+offset.y);
         context.scale(aspx,aspy);
         context.fillStyle = ptrn;
-        context.fillRect(-offset.x/aspx,-offset.y/aspy,size.width/aspx, size.height/aspy);
+        if (shape instanceof lime.Circle || shape instanceof lime.RoundedRect) {
+            context.fill();
+        } else {
+            context.fillRect(-offset.x / aspx, -offset.y / aspy, size.width / aspx, size.height / aspy);
+        }
         context.restore();
     }catch(e){}
 };
