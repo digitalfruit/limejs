@@ -50,12 +50,11 @@ lime.scheduleManager = new (function() {
 
 })();
 
-lime.scheduleManager.Callback = function (f, ctx) {
+lime.scheduleManager.Callback = function (f, ctx, delta) {
     this.f = f;
     this.ctx = ctx;
     this.paused = false;
-    this.offset = 0;
-    this.pauseTime = 0;
+    this.delta = delta;
 }
 
 /**
@@ -65,7 +64,7 @@ lime.scheduleManager.Callback = function (f, ctx) {
  * @constructor
  */
 lime.scheduleManager.Task = function(maxdelta, opt_limit) {
-    this.delta = this.maxdelta = maxdelta;
+    this.maxdelta = maxdelta;
     this.limit = goog.isDef(opt_limit) ? opt_limit : -1;
     this.functionStack_ = [];
 };
@@ -77,25 +76,27 @@ lime.scheduleManager.Task = function(maxdelta, opt_limit) {
  */
 lime.scheduleManager.Task.prototype.step_ = function(dt) {
     if (!this.functionStack_.length) return;
-    if (this.delta > dt) {
-        this.delta -= dt;
-    }
-    else {
-        var delta = this.maxdelta + dt - this.delta;
-        this.delta = this.maxdelta - (dt - this.delta);
-        if (this.delta < 0) this.delta = 0;
-        var f;
-        var i = this.functionStack_.length;
-        while (--i >= 0) {
-            f = this.functionStack_[i];
-            if (f && !f.paused && goog.isFunction(f.f))
-            (f.f).call(f.ctx, delta);
-        }
-        if (this.limit != -1) {
-            this.limit--;
-            if (this.limit == 0) {
-                lime.scheduleManager.unschedule(f.f, f.ctx);
+
+    var f;
+    var i = this.functionStack_.length;
+    while (--i >= 0) {
+        f = this.functionStack_[i];
+        if (f && !f.paused && goog.isFunction(f.f)) {
+            if (f.delta > dt) {
+                f.delta -= dt;
             }
+            else {
+                var delta = this.maxdelta + dt - f.delta;
+                f.delta = this.maxdelta - (dt - f.delta);
+                if (f.delta < 0) f.delta = 0;
+                (f.f).call(f.ctx, delta);
+            }
+        }
+    }
+    if (this.limit !== -1) {
+        this.limit--;
+        if (this.limit == 0) {
+            lime.scheduleManager.unschedule(f.f, f.ctx);
         }
     }
 };
@@ -155,7 +156,7 @@ lime.scheduleManager.setDisplayRate = function(value) {
  */
 lime.scheduleManager.schedule = function(f, context, opt_task) {
     var task = goog.isDef(opt_task) ? opt_task : this.taskStack_[0];
-    goog.array.insert(task.functionStack_, new this.Callback(f, context));
+    goog.array.insert(task.functionStack_, new this.Callback(f, context, task.maxdelta));
     goog.array.insert(this.taskStack_, task);
     if (!this.active_) {
         lime.scheduleManager.activate_();
@@ -342,7 +343,7 @@ lime.scheduleManager.changeDirectorActivity = function(director, value) {
             if (goog.isFunction(context.getDirector)) {
                 d = context.getDirector();
                 if (d == director) {
-                    f.paused = value ? true : false;
+                    f.paused = !!value
                 }
             }
         }
