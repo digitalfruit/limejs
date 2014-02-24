@@ -192,7 +192,7 @@ lime.scheduleManager.unschedule = function(f, context) {
 lime.scheduleManager.activate_ = function() {
     if (this.active_) return;
 
-    this.lastRunTime_ = goog.now();
+    this.lastRunTime_ = this.now();
 
     if(lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
         // old mozilla
@@ -213,7 +213,16 @@ lime.scheduleManager.activate_ = function() {
     this.active_ = true;
 };
 
+(function() {
 
+var performance = goog.global['performance']
+var now = performance && (performance['now'] || performance['webkitNow'])
+
+lime.scheduleManager.now = function() {
+    return now ? now.call(performance) : goog.now();
+};
+
+})();
 
 /**
  * Stop interval timer functions
@@ -243,15 +252,8 @@ lime.scheduleManager.disable_ = function() {
  * @this {lime.scheduleManager}
  * @private
  */
-lime.scheduleManager.animationFrameHandler_ = function(time){
-    var performance = goog.global['performance'],
-        now;
-    if (performance && (now = performance['now'] || performance['webkitNow'])) {
-        time = performance['timing']['navigationStart'] + now.call(performance);
-    }
-    else if (!time) {
-        time = goog.now();
-    }
+lime.scheduleManager.animationFrameHandler_ = function(){
+    time = this.now()
     var delta = time - this.lastRunTime_;
     if (delta < 0) { // i0S6 reports relative to the device restart time. So first is negative.
         delta = 1;
@@ -280,7 +282,7 @@ lime.scheduleManager.beforePaintHandler_ = function(event){
  */
 lime.scheduleManager.stepTimer_ = function() {
     var t;
-    var curTime = goog.now();
+    var curTime = this.now();
     var delta = curTime - this.lastRunTime_;
     if (delta < 0) delta = 1;
     lime.scheduleManager.dispatch_(delta);
