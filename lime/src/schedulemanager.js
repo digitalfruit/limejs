@@ -26,6 +26,7 @@ lime.scheduleManager = new (function() {
      * @private
      */
     this.active_ = false;
+    this.started_ = false;
 
     /**
      * Internal setInterval id
@@ -202,6 +203,16 @@ lime.scheduleManager.unschedule = function(f, context) {
 lime.scheduleManager.activate_ = function() {
     if (this.active_) return;
 
+    // There are serious freezes on startup so its better to wait for first event loop.
+    if (this.started_) this.activate__();
+    else setTimeout(goog.bind(this.activate__, this));
+
+    this.started_ = true;
+
+    this.active_ = true;
+};
+
+lime.scheduleManager.activate__ = function() {
     this.lastRunTime_ = this.now();
 
     if(lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
@@ -220,7 +231,6 @@ lime.scheduleManager.activate_ = function() {
         this.intervalID_ = setInterval(goog.bind(lime.scheduleManager.stepTimer_, this),
             lime.scheduleManager.getDisplayRate());
     }
-    this.active_ = true;
 };
 
 (function() {
