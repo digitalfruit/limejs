@@ -90,15 +90,17 @@ lime.scheduleManager.Task.prototype.step_ = function(dt) {
                 f.delta = this.maxdelta - (dt - f.delta);
                 if (f.delta < 0) f.delta = 0;
                 (f.f).call(f.ctx, delta);
+
+                if (this.limit !== -1) {
+                    this.limit--;
+                    if (this.limit == 0) {
+                        lime.scheduleManager.unschedule(f.f, f.ctx);
+                    }
+                }
             }
         }
     }
-    if (this.limit !== -1) {
-        this.limit--;
-        if (this.limit == 0) {
-            lime.scheduleManager.unschedule(f.f, f.ctx);
-        }
-    }
+
 };
 
 lime.scheduleManager.taskStack_.push(new lime.scheduleManager.Task(0));
