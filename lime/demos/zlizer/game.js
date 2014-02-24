@@ -113,7 +113,7 @@ zlizer.Game.prototype.start = function() {
 
     this.layer.runAction(new lime.animation.FadeTo(1));
     
-    this.graphics = new lime.CanvasContext().setSize(zlizer.director.getSize().clone()).setAnchorPoint(0,0).setQuality(.5);
+    this.graphics = new lime.CanvasContext().setSize(zlizer.director.getSize().clone()).setAnchorPoint(0,0);
     this.appendChild(this.graphics);
     this.graphics.draw = goog.bind(this.drawTouches_,this);
 
