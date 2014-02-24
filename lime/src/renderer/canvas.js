@@ -30,6 +30,8 @@ lime.Renderer.CANVAS.drawCanvas = function() {
 
     if (!this.domElement) return;
 
+    var context = this.domElement.getContext('2d');
+
     if (this.boundsCache && this.boundsCache.contains(bounds) &&
         (sizediff = this.boundsCache.size().area() / bounds.size().area()) &&
         sizediff < 1.6 && sizediff > 0.5) {
@@ -69,16 +71,35 @@ lime.Renderer.CANVAS.drawCanvas = function() {
 
     this.boundsCache = bounds; //save for later use
 
-    var bsize = bounds.size();
-    var pxsize = bsize.clone().ceil();
+    var bsize = bounds.size(),
+        pxsize = bsize.clone().ceil(),
+        width = this.domElement.width,
+        height = this.domElement.height;
 
-    if (this.domElement.width != pxsize.width ||
-        this.domElement.height != pxsize.height) {
+    if (this.pixelRatio) {
+        width /= this.pixelRatio;
+        height /= this.pixelRatio;
+    }
+
+    if (width != pxsize.width || height != pxsize.height) {
+
+        // High DPI canvas support: http://www.html5rocks.com/en/tutorials/canvas/hidpi/
+        var ratio = (goog.global['devicePixelRatio'] || 1) / (context.webkitBackingStorePixelRatio || 1);
+
+        if (ratio !== 1) {
+            this.domElement.width = pxsize.width * ratio;
+            this.domElement.height = pxsize.height * ratio;
+            this.domElement.style.width = pxsize.width + 'px';
+            this.domElement.style.height = pxsize.height + 'px';
+            context.scale(ratio, ratio);
+            this.pixelRatio = ratio;
+        } else {
             this.domElement.width = pxsize.width;
             this.domElement.height = pxsize.height;
-            this.redraw_ = 1;
-            //   console.log('redraw');
         }
+
+        this.redraw_ = 1;
+    }
 
 
 
@@ -125,8 +146,6 @@ lime.Renderer.CANVAS.drawCanvas = function() {
         }
 
         if (this.redraw_) {
-            var context = this.domElement.getContext('2d');
-
             context.clearRect(0, 0, pxsize.width, pxsize.height);
             context.save();
             context.translate(this.ax, this.ay);
