@@ -50,6 +50,14 @@ lime.scheduleManager = new (function() {
 
 })();
 
+lime.scheduleManager.Callback = function (f, ctx) {
+    this.f = f;
+    this.ctx = ctx;
+    this.paused = false;
+    this.offset = 0;
+    this.pauseTime = 0;
+}
+
 /**
  * Scheduled task
  * @param {number} maxdelta Timer wait value after iteration.
@@ -80,13 +88,13 @@ lime.scheduleManager.Task.prototype.step_ = function(dt) {
         var i = this.functionStack_.length;
         while (--i >= 0) {
             f = this.functionStack_[i];
-            if (f && f[0] && goog.isFunction(f[1]))
-            (f[1]).call(f[2], delta);
+            if (f && !f.paused && goog.isFunction(f.f))
+            (f.f).call(f.ctx, delta);
         }
         if (this.limit != -1) {
             this.limit--;
             if (this.limit == 0) {
-                lime.scheduleManager.unschedule(f[1], f[2]);
+                lime.scheduleManager.unschedule(f.f, f.ctx);
             }
         }
     }
@@ -147,7 +155,7 @@ lime.scheduleManager.setDisplayRate = function(value) {
  */
 lime.scheduleManager.schedule = function(f, context, opt_task) {
     var task = goog.isDef(opt_task) ? opt_task : this.taskStack_[0];
-    goog.array.insert(task.functionStack_, [1, f, context]);
+    goog.array.insert(task.functionStack_, new this.Callback(f, context));
     goog.array.insert(this.taskStack_, task);
     if (!this.active_) {
         lime.scheduleManager.activate_();
@@ -168,9 +176,8 @@ lime.scheduleManager.unschedule = function(f, context) {
             fi, i = functionStack_.length;
         while (--i >= 0) {
             fi = functionStack_[i];
-            if (fi[1] == f && fi[2] == context) {
+            if (fi.f == f && fi.ctx == context) {
                 goog.array.remove(functionStack_, fi);
-
             }
         }
         if (functionStack_.length == 0 && j != 0) {
@@ -331,11 +338,11 @@ lime.scheduleManager.changeDirectorActivity = function(director, value) {
         i = t.functionStack_.length;
         while (--i >= 0) {
             f = t.functionStack_[i];
-            context = f[2];
+            context = f.ctx;
             if (goog.isFunction(context.getDirector)) {
                 d = context.getDirector();
                 if (d == director) {
-                    f[0] = value;
+                    f.paused = value ? true : false;
                 }
             }
         }
