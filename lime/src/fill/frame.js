@@ -54,10 +54,9 @@ lime.fill.Frame = function(img, rect, opt_offset, opt_size, opt_rotated) {
         if(this.USE_CSS_CANVAS){
             this.ctx = document.getCSSCanvasContext('2d', this.data_.classname, this.csize_.width, this.csize_.height);
         }
-        else {
-            //todo: FF4 has support for element backgrounds. probably faster than this png url.
-            this.ctx = this.makeCanvas();
-        }
+    
+        // Regular canvas fallback is still needed for the Canvas renderer.
+        this.ctx = this.makeCanvas();
     
         if(this.isLoaded()){
             this.makeFrameData_();
