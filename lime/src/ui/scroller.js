@@ -1,5 +1,6 @@
 goog.provide('lime.ui.Scroller');
 
+goog.require('lime.Layer');
 goog.require('lime.Sprite');
 goog.require('lime.animation.MoveTo');
 
