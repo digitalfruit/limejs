@@ -995,6 +995,7 @@ lime.Node.prototype.setChildIndex = function(child,index){
 
 /**
  * @inheritDoc
+ * @private
  */
 lime.Node.prototype.listen = function(type, handler,
         opt_capture, opt_handlerScope) {
