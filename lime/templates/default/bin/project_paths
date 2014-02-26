@@ -1,0 +1,4 @@
+{project_directory}/src/
+{limejs_directory}/lime/
+{limejs_directory}/box2d/src/
+{limejs_directory}/closure/

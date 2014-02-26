@@ -542,6 +542,8 @@ lime.Director.prototype.invalidateSize_ = function() {
  */
 lime.Director.prototype.makeMobileWebAppCapable = function() {
     var visited = false;
+    var localStorage = goog.global['localStorage'];
+    
     if (goog.isDef(localStorage)) {
         visited = localStorage.getItem('_lime_visited');
     }
