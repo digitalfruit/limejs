@@ -248,7 +248,7 @@ lime.scheduleManager.disable_ = function() {
 lime.scheduleManager.animationFrameHandler_ = function(time){
     var performance = goog.global['performance'],
         now;
-    if (performance && (now = performance['now'] || performance['webkitNow'])) {
+    if (performance && performance['timing'] && (now = performance['now'] || performance['webkitNow'])) {
         time = performance['timing']['navigationStart'] + now.call(performance);
     }
     else if (!time) {
