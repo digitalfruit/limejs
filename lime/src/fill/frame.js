@@ -137,9 +137,7 @@ lime.fill.Frame.prototype.makeFrameData_ = function(){
             styleSheet = document.styleSheets[document.styleSheets.length-1];
         }
         else {
-            // why doesn't addCssRule work in IE9???
-           if (goog.userAgent.IE) styleSheet.cssText += rule;
-           else goog.cssom.addCssRule(styleSheet,rule);
+            goog.cssom.addCssRule(styleSheet,rule);
         }
 
         // loading into image to avoid flickery onf firefox first load
