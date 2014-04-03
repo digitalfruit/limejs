@@ -28,4 +28,4 @@ lime.Scene.prototype.getScene = function() {
 /** @inheritDoc */
 lime.Scene.prototype.measureContents = function() {
     return this.getFrame();
-}
+};
