@@ -109,7 +109,7 @@ lime.Renderer.CANVAS.drawCanvas = function() {
         var rotation = -this.getRotation();
 
         lime.style.setTransform(this.domElement,
-            new lime.style.Transform().setPrecision(.1).translate(pos.x, pos.y).
+            new lime.style.Transform().translate(pos.x, pos.y).
             scale(realScale.x, realScale.y).rotate(rotation));
 
 

@@ -93,14 +93,12 @@ lime.Renderer.DOM.drawSizePosition = function () {
     }
 
     var transform = new lime.style.Transform()
-        .setPrecision(0.1)
         .set3DAllowed(enable3D);
 
     if (this.mask_) {
         lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);
-        transform.setPrecision(0.1)
-            .translate(-this.mask_.mX - ax, -this.mask_.mY - ay)
-            .rotate(this.mask_.mRot, 'rad').translate(ax, ay).setPrecision(1);
+        transform.translate(-this.mask_.mX - ax, -this.mask_.mY - ay)
+            .rotate(this.mask_.mRot, 'rad').translate(ax, ay);
     }
 
     var rotation = -this.getRotation();
@@ -183,7 +181,6 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
         goog.style.setSize(el, this.mWidth, this.mHeight);
 
         lime.style.setTransform(el, new lime.style.Transform()
-            .setPrecision(0.1)
             .set3DAllowed(this.getCSS3DTransformsAllowed())
             .translate(tl.x, tl.y).rotate(-rot, 'rad'));
     }

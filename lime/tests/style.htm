@@ -124,7 +124,7 @@ function testTransform(){
     lime.style.setTransform(stage,tf);
     assertEquals('Translated matrix','1, 0, 0, 1, 100, -50',getMatrix());
     
-    lime.style.setTransform(stage,tf.scale(1.5,1.5).setPrecision(Math.random()));
+    lime.style.setTransform(stage,tf.scale(1.5,1.5));
     assertEquals('Scaled matrix','1.5, 0, 0, 1.5, 100, -50',getMatrix());
     
     lime.style.setTransform(stage,tf.rotate(2));
