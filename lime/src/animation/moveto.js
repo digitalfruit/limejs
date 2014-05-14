@@ -51,13 +51,6 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
     var delta = new goog.math.Coordinate(
         this.position_.x - start.x,
         this.position_.y - start.y);
-        
-    if (this.useTransitions()) {
-        target.addTransition(lime.Transition.POSITION,
-            this.position_,
-            this.duration_, this.getEasing());
-        target.setDirty(lime.Dirty.POSITION);
-    }
 
     return {startpos: start, delta: delta};
 };
@@ -92,17 +85,5 @@ lime.animation.MoveTo.prototype.update = function(t, target) {
         prop.startpos.x + prop.delta.x * t,
         prop.startpos.y + prop.delta.y * t
     );
-};
-
-/**
- * Clear transistion when animation is stoped.
- * @see lime.animation.Animation#clearTransition
- * @param {lime.Node} target The target to clear transistion for.
- */
-lime.animation.MoveTo.prototype.clearTransition = function(target) {
-    if (this.useTransitions()) {
-        target.clearTransition(lime.Transition.POSITION);
-        target.setDirty(lime.Dirty.POSITION);
-    }
 };
 

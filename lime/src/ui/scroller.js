@@ -189,7 +189,7 @@ lime.ui.Scroller.prototype.scrollTo = function(offset, opt_duration) {
 
     if (duration) {
         this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).
-            setDuration(duration).enableOptimizations().
+            setDuration(duration).
             setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));
     }
     else this.moving_.setPosition(pos);
@@ -365,7 +365,7 @@ lime.ui.Scroller.prototype.upHandler_ = function(e) {
 
     if (Math.abs(duration) < 10) {
          this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).
-            setDuration(duration).enableOptimizations().
+            setDuration(duration).
             setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));
     }
 

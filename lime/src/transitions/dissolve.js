@@ -19,7 +19,7 @@ goog.inherits(lime.transitions.Dissolve, lime.transitions.Transition);
 lime.transitions.Dissolve.prototype.start = function() {
     this.incoming_.setOpacity(0);
     this.incoming_.setHidden(false);
-    var hide = new lime.animation.FadeTo(0).setDuration(this.getDuration()).enableOptimizations();
+    var hide = new lime.animation.FadeTo(0).setDuration(this.getDuration());
 
     goog.events.listen(hide, lime.animation.Event.STOP, function() {
         if (this.outgoing_) {

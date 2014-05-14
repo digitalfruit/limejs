@@ -42,13 +42,6 @@ lime.animation.ScaleTo.prototype.makeTargetProp = function(target) {
         delta = new goog.math.Vec2(this.scale_.x - scale.x,
                                   this.scale_.y - scale.y);
 
-    if (this.useTransitions()) {
-        target.addTransition(lime.Transition.SCALE,
-            new goog.math.Vec2(scale.x + delta.x, scale.y + delta.y),
-            this.duration_, this.getEasing());
-        target.setDirty(lime.Dirty.SCALE);
-    }
-
     return {startScale: scale,
             delta: delta};
 };
@@ -65,16 +58,5 @@ lime.animation.ScaleTo.prototype.update = function(t, target) {
         prop.startScale.x + prop.delta.x * t,
         prop.startScale.y + prop.delta.y * t
     );
-};
-
-/**
- * Clear transistion when animation is stoped.
- * @param {lime.Node} target The target to clear transistion for.
- */
-lime.animation.ScaleTo.prototype.clearTransition = function(target) {
-    if (this.useTransitions()) {
-        target.clearTransition(lime.Transition.SCALE);
-        target.setDirty(lime.Dirty.SCALE);
-    }
 };
 

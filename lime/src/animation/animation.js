@@ -135,13 +135,6 @@ lime.animation.Animation.prototype.play = function() {
  */
 lime.animation.Animation.prototype.stop = function() {
     if (this.status_ != 0) {
-        var targets = this.initTargets_;
-        if (this.useTransitions() && this.clearTransition) {
-            var i = targets.length;
-            while (--i >= 0) {
-                this.clearTransition(targets[i]);
-            }
-        }
         this.initTargets_ = [];
         this.targetProp_ = {};
         this.status_ = 0;
@@ -240,33 +233,6 @@ lime.animation.Animation.prototype.updateAll = function(t,targets){
 };
 
 /**
- * Returns true if CSS transitions are used to make the animation.
- * Performes better on iOS devices.
- * @return {boolean} Transitions are being used?
- */
-lime.animation.Animation.prototype.useTransitions = function() {
-    // Basically everything except Mobile/Desktop Safari seems broken.
-    return lime.userAgent.IOS && this.duration_ > 0 &&
-        lime.style.isTransitionsSupported && this.optimizations_;
-        /*
-    //  goog.userAgent.MOBILE &&  // I see no boost on mac, only on iOS
-        !lime.userAgent.ANDROID && // bug in 2.2 http://code.google.com/p/android/issues/detail?id=12451
-        !goog.userAgent.GECKO; // still many bugs on FF4Beta Mac when hardware acceleration in ON*/
-};
-
-/**
- * Enable CSS3 transitions to make animation. Usually performes better
- * but is limited to single parallel transform action.
- * @param {boolean=} opt_value Enable or disable.
- * @return {lime.animation.Animation} object itself.
- */
-lime.animation.Animation.prototype.enableOptimizations = function(opt_value) {
-    var bool = goog.isDef(opt_value) ? opt_value : true;
-    this.optimizations_ = bool;
-    return this;
-};
-
-/**
  * Update targets to new values
  * @param {number} t Time position of animation[0-1].
  * @param {lime.Node} target Target node to update.
@@ -278,7 +244,7 @@ lime.animation.Animation.prototype.update = goog.abstractMethod;
  * @protected
  */
 lime.animation.Animation.prototype.cloneParam = function(origin){
-    return this.setDuration(origin.getDuration()).enableOptimizations(origin.optimizations_);
+    return this.setDuration(origin.getDuration());
 };
 
 /**

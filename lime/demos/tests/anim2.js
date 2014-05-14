@@ -61,7 +61,7 @@ test.start = function() {
         	    .setPosition(300, 100)
         	    .setScale(.3);
 
-        	var flame_x = flame.getPosition().x;
+        	//var flame_x = flame.getPosition().x;
 
             flameLayer.appendChild(flame);
 

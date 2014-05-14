@@ -66,10 +66,10 @@ test.start = function() {
     scene.appendChild(circle2);
     
     var moveRight2 = new lime.animation.MoveTo(874, 200)
-        .setDuration(774/100).setEasing(lime.animation.Easing.LINEAR).enableOptimizations();
+        .setDuration(774/100).setEasing(lime.animation.Easing.LINEAR);
 
     var moveLeft2 = new lime.animation.MoveTo(100, 200)
-        .setDuration(774/100).setEasing(lime.animation.Easing.LINEAR).enableOptimizations();
+        .setDuration(774/100).setEasing(lime.animation.Easing.LINEAR);
 
     circle2.runAction(new lime.animation.Loop(
        new lime.animation.Sequence(

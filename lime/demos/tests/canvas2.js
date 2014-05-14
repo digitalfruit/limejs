@@ -68,8 +68,8 @@ test.makeLayerOfStuff = function(){
     layer.appendChild(rrect);
     
     var anim = new lime.animation.Spawn(
-        new lime.animation.ScaleBy(.3).setDuration(3).enableOptimizations(),
-        new lime.animation.MoveBy(0,-30).setDuration(3).enableOptimizations()
+        new lime.animation.ScaleBy(.3).setDuration(3),
+        new lime.animation.MoveBy(0,-30).setDuration(3)
     );
     
     rrect.runAction(

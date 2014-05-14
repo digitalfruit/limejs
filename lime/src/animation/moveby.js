@@ -49,12 +49,6 @@ lime.animation.MoveBy.prototype.setSpeed = function(speed) {
  * @see lime.animation.Animation#makeTargetProp
  */
 lime.animation.MoveBy.prototype.makeTargetProp = function(target) {
-    if (this.useTransitions()) {
-        target.addTransition(lime.Transition.POSITION,
-            goog.math.Coordinate.sum(target.getPosition(), this.delta_),
-            this.duration_, this.getEasing());
-        target.setDirty(lime.Dirty.POSITION);
-    }
     return {startpos: target.getPosition()};
 };
 
@@ -83,20 +77,6 @@ lime.animation.MoveBy.prototype.update = function(t, target) {
         prop.startpos.x + this.delta_.x * t,
         prop.startpos.y + this.delta_.y * t
     );
-
-};
-
-/**
- * Clear previously set transition values.
- * @param {lime.Node} target Target node.
- */
-lime.animation.MoveBy.prototype.clearTransition = function(target) {
-
-    if (this.useTransitions()) {
-        target.clearTransition(lime.Transition.POSITION);
-        target.setDirty(lime.Dirty.POSITION);
-    }
-
 
 };
 

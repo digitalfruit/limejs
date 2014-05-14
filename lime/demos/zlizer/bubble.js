@@ -38,6 +38,6 @@ zlizer.Bubble.prototype.updateFloatingSpeed = function() {
 
     var delta = this.v.clone().scale(zlizer.BUBBLE_SPEED);
 
-    this.move = new lime.animation.MoveBy(delta.x, delta.y).setDuration(20).enableOptimizations().setEasing(lime.animation.Easing.LINEAR);
+    this.move = new lime.animation.MoveBy(delta.x, delta.y).setDuration(20).setEasing(lime.animation.Easing.LINEAR);
     this.runAction(this.move);
 };

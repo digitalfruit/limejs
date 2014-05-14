@@ -38,7 +38,7 @@ test.start = function() {
     flameLayer.appendChild(flame);
     flame.setFill(100, 0, 0).setPosition(0, 100).setSize(100, 100);
 
-    var move = new lime.animation.MoveBy(700, 0).setDuration(5).enableOptimizations()
+    var move = new lime.animation.MoveBy(700, 0).setDuration(5)
         .setEasing(lime.animation.Easing.EASEINOUT);
     move.addTarget(flame);
     move.play();

@@ -57,8 +57,8 @@ test.start = function() {
 	layer.appendChild(sprite);
 
 	var anim = new lime.animation.Spawn(
-	    new lime.animation.RotateBy(-90).setDuration(3).enableOptimizations(),
-	    new lime.animation.MoveBy(300, 0).setDuration(3).enableOptimizations()
+	    new lime.animation.RotateBy(-90).setDuration(3),
+	    new lime.animation.MoveBy(300, 0).setDuration(3)
     );
     var a2 = new lime.animation.Sequence(anim, anim.reverse());
     sprite.runAction(new lime.animation.Loop(a2).setLimit(5));

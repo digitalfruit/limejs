@@ -40,7 +40,7 @@ rb.MultiMove.prototype.play = function(opt_static) {
     var action, longest_action, longest_duration = 0;
     for (var i in this.requests_) {
         var req = this.requests_[i];
-        action = new lime.animation.MoveBy(req[0][1]).setSpeed(.3).enableOptimizations();
+        action = new lime.animation.MoveBy(req[0][1]).setSpeed(.3);
         if (longest_duration < action.getDuration()) {
             longest_action = action;
             longest_duration = action.getDuration();

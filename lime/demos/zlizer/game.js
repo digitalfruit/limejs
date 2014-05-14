@@ -467,8 +467,8 @@ zlizer.Game.prototype.combine = function(bubs) {
     sumcoord[1] /= bubs.length;
 
     var anim = new lime.animation.Spawn(
-        new lime.animation.MoveTo(sumcoord[0], sumcoord[1]).enableOptimizations(),
-        new lime.animation.FadeTo(0).enableOptimizations()
+        new lime.animation.MoveTo(sumcoord[0], sumcoord[1]),
+        new lime.animation.FadeTo(0)
     );
     for (var i = 0; i < bubs.length; i++) {
         anim.addTarget(bubs[i]);

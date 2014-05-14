@@ -57,7 +57,7 @@ rb.loadMenu = function() {
 
 	var btns = new lime.Layer().setPosition(0, 430);
 	layer.appendChild(btns);
-	var move = new lime.animation.MoveBy(-rb.WIDTH, 0).enableOptimizations();
+	var move = new lime.animation.MoveBy(-rb.WIDTH, 0);
 
 	var btn = rb.makeButton('Play Classic').setPosition(0, 200);
 	goog.events.listen(btn, 'click', function() {

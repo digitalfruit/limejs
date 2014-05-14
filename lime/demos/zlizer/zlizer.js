@@ -66,7 +66,7 @@ zlizer.loadMenuScene = function(opt_transition) {
     var btn_levels = new zlizer.Button('PICK LEVEL').setPosition(0, 480).setSize(250, 100);
     contents.appendChild(btn_levels);
     goog.events.listen(btn_levels, lime.Button.Event.CLICK, function() {
-       contents.runAction(new lime.animation.MoveTo(0, -255).enableOptimizations());
+       contents.runAction(new lime.animation.MoveTo(0, -255));
     });
 
     var levels = new lime.Layer().setPosition(0, 690);
@@ -98,7 +98,7 @@ zlizer.loadMenuScene = function(opt_transition) {
     var btn_main = new zlizer.Button('Back to Menu').setSize(400, 80).setPosition(250, r * 90); 
     btns_layer.appendChild(btn_main);
     goog.events.listen(btn_main, lime.Button.Event.CLICK, function() {
-      contents.runAction(new lime.animation.MoveTo(0, 280).enableOptimizations());
+      contents.runAction(new lime.animation.MoveTo(0, 280));
     },false, num);
     
 };

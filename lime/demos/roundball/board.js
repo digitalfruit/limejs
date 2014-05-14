@@ -140,7 +140,7 @@ rb.Board.prototype.checkSolutions = function() {
     var action = new lime.animation.Spawn(
         new lime.animation.ScaleTo(0),
         new lime.animation.FadeTo(0).setDuration(.8)
-    ).enableOptimizations();
+    );
 
     goog.array.removeDuplicates(solutions);
 

@@ -83,10 +83,7 @@ lime.Renderer.CANVAS.drawCanvas = function() {
 
 
         var realScale = this.getScale().clone();
-        if (this.transitionsActive_[lime.Transition.SCALE]) {
-            realScale = this.transitionsActive_[lime.Transition.SCALE];
-            //this.redraw_ = 1;
-        }
+
         if (pxsize.width != 0) {
             realScale.scale(bsize.width / pxsize.width);
         }
@@ -101,11 +98,6 @@ lime.Renderer.CANVAS.drawCanvas = function() {
 
         var pos = this.getPosition().clone();
 
-        if (this.transitionsActive_[lime.Transition.POSITION]) {
-            pos = this.transitionsActive_[lime.Transition.POSITION];
-            //this.redraw_ = 1;
-        }
-
         pos.x -= ap_offset.width + this.ax;
         pos.y -= ap_offset.height + this.ay;
 
@@ -113,16 +105,13 @@ lime.Renderer.CANVAS.drawCanvas = function() {
             (this.ax + ap_offset.width) / pxsize.width * 100,
             (this.ay + ap_offset.height) / pxsize.height * 100, true);
 
-        if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
 
-            var rotation = -this.getRotation();
-            if (goog.isDef(this.transitionsActive_[lime.Transition.ROTATION])) {
-                rotation = -this.transitionsActive_[lime.Transition.ROTATION];
-            }
-            lime.style.setTransform(this.domElement,
-                new lime.style.Transform().setPrecision(.1).translate(pos.x, pos.y).
-                scale(realScale.x, realScale.y).rotate(rotation));
-        }
+        var rotation = -this.getRotation();
+
+        lime.style.setTransform(this.domElement,
+            new lime.style.Transform().setPrecision(.1).translate(pos.x, pos.y).
+            scale(realScale.x, realScale.y).rotate(rotation));
+
 
         if (this.redraw_) {
             var context = this.domElement.getContext('2d');

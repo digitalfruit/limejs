@@ -41,13 +41,6 @@ lime.animation.ScaleBy.prototype.makeTargetProp = function(target) {
         delta = new goog.math.Vec2(scale.x * this.factor_.x - scale.x,
                                   scale.y * this.factor_.y - scale.y);
 
-    if (this.useTransitions()) {
-        target.addTransition(lime.Transition.SCALE,
-            new goog.math.Vec2(scale.x + delta.x, scale.y + delta.y),
-            this.duration_, this.getEasing());
-            target.setDirty(lime.Dirty.SCALE);
-    }
-
     return {startScale: scale,
             delta: delta};
 };
@@ -64,17 +57,6 @@ lime.animation.ScaleBy.prototype.update = function(t, target) {
         prop.startScale.x + prop.delta.x * t,
         prop.startScale.y + prop.delta.y * t
     );
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#clearTransition
- */
-lime.animation.ScaleBy.prototype.clearTransition = function(target) {
-    if (this.useTransitions()) {
-        target.clearTransition(lime.Transition.SCALE);
-        target.setDirty(lime.Dirty.SCALE);
-    }
 };
 
 /**

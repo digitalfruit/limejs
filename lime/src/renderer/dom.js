@@ -51,17 +51,11 @@ lime.Renderer.DOM.drawSizePosition = function () {
         scale = this.getScale(),
         enable3D = this.getCSS3DTransformsAllowed();
 
-    if (this.transitionsActive_[lime.Transition.POSITION]) {
-        position = this.transitionsActive_[lime.Transition.POSITION];
-    }
-
     var width = size.width;
     var height = size.height;
 
     var realScale = scale.clone();
-    if (this.transitionsActive_[lime.Transition.SCALE]) {
-        realScale = this.transitionsActive_[lime.Transition.SCALE].clone();
-    }
+
     lime.style.setSize(this.domElement, width, height);
 
     lime.style.setTransformOrigin(this.domElement,
@@ -81,7 +75,7 @@ lime.Renderer.DOM.drawSizePosition = function () {
     }
 
     if (this.domElement != this.containerElement) {
-        if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION])
+
         lime.style.setTransform(this.containerElement,
                 new lime.style.Transform()
                     .set3DAllowed(enable3D)
@@ -110,16 +104,10 @@ lime.Renderer.DOM.drawSizePosition = function () {
     }
 
     var rotation = -this.getRotation();
-    if (goog.isDef(this.transitionsActive_[lime.Transition.ROTATION])) {
-        rotation = -this.transitionsActive_[lime.Transition.ROTATION];
-    }
 
     transform.translate(px, py).scale(realScale.x, realScale.y).rotate(rotation);
 
-    if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
-       //     console.log('transform',this.transition_position_set_,this.transition_position_);
-        lime.style.setTransform(this.domElement, transform);
-    }
+    lime.style.setTransform(this.domElement, transform);
 
 };
 
@@ -132,15 +120,11 @@ lime.Renderer.DOM.update = function() {
 
     lime.Renderer.DOM.drawSizePosition.call(this);
 
-    if (!this.transitionsActiveSet_[lime.Transition.OPACITY]) {
+    if (this.getDirty() & lime.Dirty.ALPHA) {
         var opacity = this.opacity_;
-        if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])) {
-            opacity = this.transitionsActive_[lime.Transition.OPACITY];
-        }
-        if (this.getDirty() & lime.Dirty.ALPHA) {
-            goog.style.setOpacity(this.domElement, opacity);
-        }
+        goog.style.setOpacity(this.domElement, opacity);
     }
+
 
     if (this.getDirty() & lime.Dirty.VISIBILITY) {
         this.domElement.style['display'] = this.hidden_ ? 'none' : 'block';
