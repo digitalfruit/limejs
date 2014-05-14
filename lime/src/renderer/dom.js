@@ -48,8 +48,7 @@ lime.Renderer.DOM.updateLayout = function() {
 lime.Renderer.DOM.drawSizePosition = function () {
     var size = this.getSize(),
         position = this.getPosition(),
-        scale = this.getScale(),
-        enable3D = this.getCSS3DTransformsAllowed();
+        scale = this.getScale();
 
     var width = size.width;
     var height = size.height;
@@ -78,7 +77,6 @@ lime.Renderer.DOM.drawSizePosition = function () {
 
         lime.style.setTransform(this.containerElement,
                 new lime.style.Transform()
-                    .set3DAllowed(enable3D)
                     .translate(ax-so, ay-so));
     }
 
@@ -92,8 +90,7 @@ lime.Renderer.DOM.drawSizePosition = function () {
         }
     }
 
-    var transform = new lime.style.Transform()
-        .set3DAllowed(enable3D);
+    var transform = new lime.style.Transform();
 
     if (this.mask_) {
         lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);
@@ -181,7 +178,6 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
         goog.style.setSize(el, this.mWidth, this.mHeight);
 
         lime.style.setTransform(el, new lime.style.Transform()
-            .set3DAllowed(this.getCSS3DTransformsAllowed())
             .translate(tl.x, tl.y).rotate(-rot, 'rad'));
     }
 

@@ -72,17 +72,6 @@ lime.style.setBorderRadius = (function() {
  */
 lime.style.Transform = function() {
     this.values = [];
-    this.enable3D_ = true;
-};
-
-/**
- * Sets 3D enabling flag for css hardware acceleration (on by default)
- * @param {Boolean} value
- * @return {lime.style.Transform} object itself.
- */
-lime.style.Transform.prototype.set3DAllowed = function(value) {
-    this.enable3D_ = value;
-    return this;
 };
 
 /**
@@ -106,7 +95,7 @@ lime.style.Transform.prototype.scale = function(sx, sy) {
 lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
     var rot_str;
 
-    if (this.enable3D_ && (lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
+    if (lime.userAgent.IOS || lime.userAgent.PLAYBOOK) {
         rot_str = 'rotate3d(0, 0, 1, ' + angle + (opt_unit ? opt_unit : 'deg') + ')';
     } else {
         rot_str = 'rotate(' + angle + (opt_unit ? opt_unit : 'deg') + ')';
@@ -128,11 +117,11 @@ lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
 
     var val = 'translate';
 
-    if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
+    if (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK) {
         val += '3d';
     }
     val += '(' + (tx) + 'px,' + (ty) + 'px';
-    if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
+    if (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK) {
         val += ',' + ((opt_tz ? opt_tz : 0)) + 'px';
     }
     this.values.push(val + ')');
