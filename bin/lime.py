@@ -85,7 +85,7 @@ def checkDependencies():
         print ('Closure Library not found. Downloading to %s' % closure_dir)
         print ('Please wait...')
         
-        retcode = subprocess.Popen(subprocess.list2cmdline(["git","clone","https://code.google.com/p/closure-library/",closure_dir]),shell=True).wait()
+        retcode = subprocess.Popen(subprocess.list2cmdline(["git","clone","https://github.com/google/closure-library.git",closure_dir]),shell=True).wait()
         
         if(retcode!=0):
             print ('Failed to clone Closure Library via Git. Discontinuing.')
