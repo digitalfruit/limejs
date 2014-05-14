@@ -121,7 +121,7 @@ lime.Renderer.CANVAS.drawCanvas = function() {
             }
             lime.style.setTransform(this.domElement,
                 new lime.style.Transform().setPrecision(.1).translate(pos.x, pos.y).
-                scale(realScale.x, realScale.y).rotate(rotation));
+                rotate(rotation).scale(realScale.x, realScale.y));
         }
 
         if (this.redraw_) {
