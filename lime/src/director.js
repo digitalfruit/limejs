@@ -90,8 +90,8 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
         meta.content = content;
         document.getElementsByTagName('head').item(0).appendChild(meta);
-        
-        
+
+
         //todo: look for a less hacky solution
         if(goog.userAgent.MOBILE && !goog.global['navigator'].standalone){
             var that = this;
@@ -135,7 +135,7 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
 
     this.invalidateSize_();
-    
+
     if(goog.DEBUG){
         goog.events.listen(goog.global,'keyup',this.keyUpHandler_,false,this);
     }
@@ -185,7 +185,7 @@ lime.Director.prototype.isPaused = function() {
 lime.Director.prototype.setPaused = function (value) {
     if (this.isPaused_ != value) {
         this.isPaused_ = value;
-        lime.scheduleManager.changeDirectorActivity(this, !value);
+        lime.scheduleManager.changeDirectorActivity(this, value);
         if (this.isPaused_) {
             var pauseClass = this.pauseClassFactory || lime.helper.PauseScene;
             this.pauseScene = new pauseClass();
@@ -306,14 +306,14 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
     scene.wasAddedToTree();
 
     var transition = new transitionclass(outgoing, scene);
-        
+
     goog.events.listenOnce(transition,'end',function() {
             var i = removelist.length;
             while (--i >= 0) {
                 goog.dom.removeNode(removelist[i]);
             }
             removelist.length = 0;
-            
+
         },false,this);
 
     if (goog.isDef(opt_duration)) {
@@ -371,11 +371,11 @@ lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration
  * @return Transition object if opt_transition is defined
  */
 lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
-    var transition, 
+    var transition,
       outgoing = this.getCurrentScene();
-      
+
     if (goog.isNull(outgoing)) return;
-    
+
     var popOutgoing = function() {
         outgoing.wasRemovedFromTree();
         outgoing.parent_ = null;
@@ -386,7 +386,7 @@ lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
     // Transitions require an existing incoming scene
     if (goog.isDef(opt_transition) && (this.sceneStack_.length > 1)) {
         transition = new opt_transition(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);
-      
+
         if (goog.isDef(opt_duration)) {
             transition.setDuration(opt_duration);
         }
@@ -525,7 +525,7 @@ lime.Director.prototype.invalidateSize_ = function() {
     }
 
     this.updateDomOffset_();
-    
+
     // overflow hidden is for hiding away unused edges of document
     // height addition is because scroll(0,0) doesn't work any more if the
     // document has no edge @tonis todo:look for less hacky solution(iframe?).
@@ -538,35 +538,41 @@ lime.Director.prototype.invalidateSize_ = function() {
 };
 
 /**
- * Add support for adding game to Springboard as a
- * web application on iOS devices
+ * Add support for adding game as a web application to iOS and Android.
  */
 lime.Director.prototype.makeMobileWebAppCapable = function() {
-
-    var meta = document.createElement('meta');
-    meta.name = 'apple-mobile-web-app-capable';
-    meta.content = 'yes';
-    document.getElementsByTagName('head').item(0).appendChild(meta);
-
-    meta = document.createElement('meta');
-    meta.name = 'apple-mobile-web-app-status-bar-style';
-    meta.content = 'black';
-    document.getElementsByTagName('head').item(0).appendChild(meta);
-
     var visited = false;
     if (goog.isDef(localStorage)) {
         visited = localStorage.getItem('_lime_visited');
     }
 
+    var addMeta = function(meta_name, meta_val) {
+        var meta = document.createElement('meta');
+        meta.name = meta_name;
+        meta.content = meta_val;
+        document.getElementsByTagName('head').item(0).appendChild(meta);
+    };
+
+    // Adds meta for Android devices (and doesn't hurt anything on others). See
+    // https://developers.google.com/chrome/mobile/docs/installtohomescreen
+    // for how to specify app icons.
+    addMeta('mobile-web-app-capable', 'yes');
+
     var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
-    if (ios && !window.navigator.standalone && COMPILED && !visited && this.domElement.parentNode==document.body) {
-        alert('Please install this page as a web app by ' +
-            'clicking Share + Add to home screen.');
-        if (goog.isDef(localStorage)) {
-           localStorage.setItem('_lime_visited', true);
+    if (ios) {
+        addMeta('apple-mobile-web-app-capable', 'yes');
+        addMeta('apple-mobile-web-app-status-bar-style', 'black');
+
+        if (!window.navigator.standalone &&
+            COMPILED && !visited &&
+            this.domElement.parentNode==document.body) {
+            alert('Please install this page as a web app by ' +
+                  'clicking Share + Add to home screen.');
+            if (goog.isDef(localStorage)) {
+                localStorage.setItem('_lime_visited', true);
+            }
         }
     }
-
 };
 
 /**
