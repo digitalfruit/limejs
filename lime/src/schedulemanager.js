@@ -26,6 +26,7 @@ lime.scheduleManager = new (function() {
      * @private
      */
     this.active_ = false;
+    this.started_ = false;
 
     /**
      * Internal setInterval id
@@ -50,6 +51,13 @@ lime.scheduleManager = new (function() {
 
 })();
 
+lime.scheduleManager.Callback = function (f, ctx, delta) {
+    this.f = f;
+    this.ctx = ctx;
+    this.paused = false;
+    this.delta = delta;
+}
+
 /**
  * Scheduled task
  * @param {number} maxdelta Timer wait value after iteration.
@@ -57,7 +65,7 @@ lime.scheduleManager = new (function() {
  * @constructor
  */
 lime.scheduleManager.Task = function(maxdelta, opt_limit) {
-    this.delta = this.maxdelta = maxdelta;
+    this.maxdelta = maxdelta;
     this.limit = goog.isDef(opt_limit) ? opt_limit : -1;
     this.functionStack_ = [];
 };
@@ -69,27 +77,31 @@ lime.scheduleManager.Task = function(maxdelta, opt_limit) {
  */
 lime.scheduleManager.Task.prototype.step_ = function(dt) {
     if (!this.functionStack_.length) return;
-    if (this.delta > dt) {
-        this.delta -= dt;
-    }
-    else {
-        var delta = this.maxdelta + dt - this.delta;
-        this.delta = this.maxdelta - (dt - this.delta);
-        if (this.delta < 0) this.delta = 0;
-        var f;
-        var i = this.functionStack_.length;
-        while (--i >= 0) {
-            f = this.functionStack_[i];
-            if (f && f[0] && goog.isFunction(f[1]))
-            (f[1]).call(f[2], delta);
-        }
-        if (this.limit != -1) {
-            this.limit--;
-            if (this.limit == 0) {
-                lime.scheduleManager.unschedule(f[1], f[2]);
+
+    var f;
+    var i = this.functionStack_.length;
+    while (--i >= 0) {
+        f = this.functionStack_[i];
+        if (f && !f.paused && goog.isFunction(f.f)) {
+            if (f.delta > dt) {
+                f.delta -= dt;
+            }
+            else {
+                var delta = this.maxdelta + dt - f.delta;
+                f.delta = this.maxdelta - (dt - f.delta);
+                if (f.delta < 0) f.delta = 0;
+                (f.f).call(f.ctx, delta);
+
+                if (this.limit !== -1) {
+                    this.limit--;
+                    if (this.limit == 0) {
+                        lime.scheduleManager.unschedule(f.f, f.ctx);
+                    }
+                }
             }
         }
     }
+
 };
 
 lime.scheduleManager.taskStack_.push(new lime.scheduleManager.Task(0));
@@ -147,7 +159,7 @@ lime.scheduleManager.setDisplayRate = function(value) {
  */
 lime.scheduleManager.schedule = function(f, context, opt_task) {
     var task = goog.isDef(opt_task) ? opt_task : this.taskStack_[0];
-    goog.array.insert(task.functionStack_, [1, f, context]);
+    goog.array.insert(task.functionStack_, new this.Callback(f, context, task.maxdelta));
     goog.array.insert(this.taskStack_, task);
     if (!this.active_) {
         lime.scheduleManager.activate_();
@@ -168,9 +180,8 @@ lime.scheduleManager.unschedule = function(f, context) {
             fi, i = functionStack_.length;
         while (--i >= 0) {
             fi = functionStack_[i];
-            if (fi[1] == f && fi[2] == context) {
+            if (fi.f == f && fi.ctx == context) {
                 goog.array.remove(functionStack_, fi);
-
             }
         }
         if (functionStack_.length == 0 && j != 0) {
@@ -192,7 +203,17 @@ lime.scheduleManager.unschedule = function(f, context) {
 lime.scheduleManager.activate_ = function() {
     if (this.active_) return;
 
-    this.lastRunTime_ = goog.now();
+    // There are serious freezes on startup so its better to wait for first event loop.
+    if (this.started_) this.activate__();
+    else setTimeout(goog.bind(this.activate__, this));
+
+    this.started_ = true;
+
+    this.active_ = true;
+};
+
+lime.scheduleManager.activate__ = function() {
+    this.lastRunTime_ = this.now();
 
     if(lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
         // old mozilla
@@ -210,10 +231,18 @@ lime.scheduleManager.activate_ = function() {
         this.intervalID_ = setInterval(goog.bind(lime.scheduleManager.stepTimer_, this),
             lime.scheduleManager.getDisplayRate());
     }
-    this.active_ = true;
 };
 
+(function() {
 
+var performance = goog.global['performance']
+var now = performance && (performance['now'] || performance['webkitNow'])
+
+lime.scheduleManager.now = function() {
+    return now ? now.call(performance) : goog.now();
+};
+
+})();
 
 /**
  * Stop interval timer functions
@@ -243,15 +272,8 @@ lime.scheduleManager.disable_ = function() {
  * @this {lime.scheduleManager}
  * @private
  */
-lime.scheduleManager.animationFrameHandler_ = function(time){
-    var performance = goog.global['performance'],
-        now;
-    if (performance && (now = performance['now'] || performance['webkitNow'])) {
-        time = performance['timing']['navigationStart'] + now.call(performance);
-    }
-    else if (!time) {
-        time = goog.now();
-    }
+lime.scheduleManager.animationFrameHandler_ = function(){
+    time = this.now()
     var delta = time - this.lastRunTime_;
     if (delta < 0) { // i0S6 reports relative to the device restart time. So first is negative.
         delta = 1;
@@ -280,7 +302,7 @@ lime.scheduleManager.beforePaintHandler_ = function(event){
  */
 lime.scheduleManager.stepTimer_ = function() {
     var t;
-    var curTime = goog.now();
+    var curTime = this.now();
     var delta = curTime - this.lastRunTime_;
     if (delta < 0) delta = 1;
     lime.scheduleManager.dispatch_(delta);
@@ -329,11 +351,11 @@ lime.scheduleManager.changeDirectorActivity = function(director, value) {
         i = t.functionStack_.length;
         while (--i >= 0) {
             f = t.functionStack_[i];
-            context = f[2];
+            context = f.ctx;
             if (goog.isFunction(context.getDirector)) {
                 d = context.getDirector();
                 if (d == director) {
-                    f[0] = value;
+                    f.paused = !!value
                 }
             }
         }
