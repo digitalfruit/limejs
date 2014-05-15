@@ -100,7 +100,7 @@ lime.Renderer.DOM.drawSizePosition = function () {
 
     var rotation = -this.getRotation();
 
-    transform.translate(px, py).scale(realScale.x, realScale.y).rotate(rotation);
+    transform.translate(px, py).rotate(rotation).scale(realScale.x, realScale.y);
 
     lime.style.setTransform(this.domElement, transform);
 
