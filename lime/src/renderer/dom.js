@@ -3,6 +3,7 @@ goog.provide('lime.Renderer.DOM');
 goog.require('goog.dom');
 goog.require('lime.Renderer');
 goog.require('lime.style');
+goog.require('goog.graphics.AffineTransform');
 
 /**
  * DOM renderer. This renders as div dom elements and
@@ -53,13 +54,6 @@ lime.Renderer.DOM.drawSizePosition = function () {
     var width = size.width;
     var height = size.height;
 
-    var realScale = scale.clone();
-
-    lime.style.setSize(this.domElement, width, height);
-
-    lime.style.setTransformOrigin(this.domElement,
-        this.anchorPoint_.x * 100, this.anchorPoint_.y * 100, true);
-
     var ax = this.anchorPoint_.x * width;
     var ay = this.anchorPoint_.y * height;
 
@@ -75,9 +69,9 @@ lime.Renderer.DOM.drawSizePosition = function () {
 
     if (this.domElement != this.containerElement) {
 
-        lime.style.setTransform(this.containerElement,
-                new lime.style.Transform()
-                    .translate(ax-so, ay-so));
+        var containerTransform = goog.graphics.AffineTransform.getTranslateInstance(ax-so, ay-so);
+
+        lime.style.setAffineTransform(this.containerElement, containerTransform);
     }
 
     if (this.mask_ != this.activeMask_) {
@@ -90,19 +84,37 @@ lime.Renderer.DOM.drawSizePosition = function () {
         }
     }
 
-    var transform = new lime.style.Transform();
+    lime.style.setSize(this.domElement, width, height);
+
+    // --- Start with the Identity
+    var tx = goog.graphics.AffineTransform.getScaleInstance(1, 1);
 
     if (this.mask_) {
+
         lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);
-        transform.translate(-this.mask_.mX - ax, -this.mask_.mY - ay)
-            .rotate(this.mask_.mRot, 'rad').translate(ax, ay);
+
+        tx.translate(-this.mask_.mX - ax, -this.mask_.mY - ay);
+
+        tx.rotate(this.mask_.mRot, ax, ay);
+
+        tx.translate(ax, ay);
+
     }
+
 
     var rotation = -this.getRotation();
 
-    transform.translate(px, py).rotate(rotation).scale(realScale.x, realScale.y);
+    tx.translate(px, py);
 
-    lime.style.setTransform(this.domElement, transform);
+    tx.translate(ax, ay);
+
+    tx.rotate(rotation * (Math.PI / 180), 0, 0);
+
+    tx.scale(scale.x, scale.y);
+
+    tx.translate(-ax, -ay);
+
+    lime.style.setAffineTransform(this.domElement, tx);
 
 };
 
@@ -177,8 +189,14 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
         //todo: can be optimized
         goog.style.setSize(el, this.mWidth, this.mHeight);
 
-        lime.style.setTransform(el, new lime.style.Transform()
-            .translate(tl.x, tl.y).rotate(-rot, 'rad'));
+        var maskTransform = goog.graphics.AffineTransform.getScaleInstance(1, 1);
+
+        maskTransform.translate(tl.x, tl.y);
+
+        maskTransform.rotate(-rot, 0, 0);
+
+        lime.style.setAffineTransform(el, maskTransform);
+
     }
 
     if (this.renderer.getType() == lime.Renderer.DOM) {

@@ -156,6 +156,37 @@ lime.style.setTransform = (function() {
     };
 })();
 
+lime.style.setAffineTransform = (function () {
+    var stylename = lime.style.getCSSproperty('Transform');
+    return function (el, transform) {
+        var value = 'matrix3d(' +
+            [ transform.m00_,
+              transform.m10_,
+              0,
+              0,
+              transform.m01_,
+              transform.m11_,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                transform.m02_,
+                transform.m12_,
+                0,
+                1].join(
+                ',') +
+            ')';
+
+        if (value != el.transform_cache_) {
+            el.style[stylename] = el.transform_cache_ = value;
+        }
+        lime.transformSet_=1;
+
+    };
+})();
+
 /**
  * Set transform origin point for a DOM element.
  * @param {Element} el Element to change.

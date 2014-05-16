@@ -3,6 +3,7 @@ goog.provide('lime.Renderer.CANVAS');
 goog.require('goog.math.Box.size');
 goog.require('goog.math.Size.scaleVec2');
 goog.require('lime.Renderer');
+goog.require('goog.graphics.AffineTransform');
 
 /**
 * Canvas renderer. This renders as canvas element or just
@@ -101,17 +102,23 @@ lime.Renderer.CANVAS.drawCanvas = function() {
         pos.x -= ap_offset.width + this.ax;
         pos.y -= ap_offset.height + this.ay;
 
-        lime.style.setTransformOrigin(this.domElement,
-            (this.ax + ap_offset.width) / pxsize.width * 100,
-            (this.ay + ap_offset.height) / pxsize.height * 100, true);
-
-
+        var ox = (this.ax + ap_offset.width) / pxsize.width * 100;
+        var oy = (this.ay + ap_offset.height) / pxsize.height * 100;
         var rotation = -this.getRotation();
 
-        lime.style.setTransform(this.domElement,
-            new lime.style.Transform().translate(pos.x, pos.y).
-            scale(realScale.x, realScale.y).rotate(rotation));
+        var tx = goog.graphics.AffineTransform.getScaleInstance(1, 1);
 
+        tx.translate(pos.x, pos.y);
+
+        tx.translate(ox, oy);
+
+        tx.rotate(rotation * (Math.PI / 180), 0, 0);
+
+        tx.scale(realScale.x, realScale.y);
+
+        tx.translate(-ox, -oy);
+
+        lime.style.setAffineTransform(this.domElement, tx);
 
         if (this.redraw_) {
             var context = this.domElement.getContext('2d');
