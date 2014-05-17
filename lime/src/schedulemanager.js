@@ -205,7 +205,7 @@ lime.scheduleManager.activate_ = function() {
 
     // There are serious freezes on startup so its better to wait for first event loop.
     if (this.started_) this.activate__();
-    else setTimeout(goog.bind(this.activate__, this));
+    else setTimeout(goog.bind(this.activate__, this), 0);
 
     this.started_ = true;
 
