@@ -31,6 +31,7 @@ lime.Renderer.DOM.updateLayout = function() {
                 goog.dom.removeNode(el);
             }
             lime.Renderer.DOM.appendAt_(this.containerElement, el, j++);
+            j++;
             continue;
         }
     }
@@ -60,20 +61,6 @@ lime.Renderer.DOM.drawSizePosition = function () {
     var px = position.x - ax,
         py = position.y - ay;
 
-    var so = this.stroke_ ? this.stroke_.width_ : 0;
-
-    if (((ax-so) != 0 || (ay-so) != 0) && this.domElement == this.containerElement &&
-            this.children_.length) {
-        lime.Renderer.DOM.makeContainer.call(this);
-    }
-
-    if (this.domElement != this.containerElement) {
-
-        var containerTransform = goog.graphics.AffineTransform.getTranslateInstance(ax-so, ay-so);
-
-        lime.style.setAffineTransform(this.containerElement, containerTransform);
-    }
-
     if (this.mask_ != this.activeMask_) {
         if (this.activeMask_) {
             lime.Renderer.DOM.removeMask.call(this);
@@ -100,6 +87,27 @@ lime.Renderer.DOM.drawSizePosition = function () {
         tx.translate(ax, ay);
 
     }
+
+
+    // --- Begin removing of container Node
+
+    var parentAnchorX = 0;
+    var parentAnchorY = 0;
+
+    var parent = this.getParent();
+
+    if (parent) {
+        var parentAnchor = parent.getAnchorPoint();
+        var parentSize = parent.getSize();
+
+        parentAnchorX = parentAnchor.x * parentSize.width;
+        parentAnchorY = parentAnchor.y * parentSize.height;
+
+        tx.translate(parentAnchorX, parentAnchorY);
+    }
+
+
+    // --- End of removing container Node
 
 
     var rotation = -this.getRotation();
