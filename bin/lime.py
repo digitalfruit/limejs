@@ -165,7 +165,7 @@ def update():
 
 def create(name):
     
-    path = os.path.join(curdir,name)
+    path = os.path.join(basedir,name)
     
     if exists(path):
         logging.error('Directory already exists: %s',path)
