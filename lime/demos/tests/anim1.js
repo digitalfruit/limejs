@@ -33,11 +33,16 @@ test.start = function() {
 
 	var menuscene = new lime.Scene;
 
-	var layer = (new lime.Layer).setPosition(100, 100);
+	var layer = (new lime.Layer).setPosition(0, 0);
 	menuscene.appendChild(layer);
 
 
-	var sprite = new lime.Sprite().setFill(100,0,0).setSize(50, 50).setRenderer(lime.Renderer.CANVAS);
+	var sprite = new lime.Sprite().setFill(100,0,0).setSize(50, 50);
+
+    var sprite2 = new lime.Sprite().setFill(100,100,0).setSize(25, 25);
+
+    sprite.appendChild(sprite2);
+
 	layer.appendChild(sprite);
 
 	var anim = new lime.animation.Sequence(new lime.animation.Spawn(
@@ -51,7 +56,7 @@ test.start = function() {
                     new lime.animation.ColorTo(200,0,0)
 
         	    ));
-	sprite.runAction(new lime.animation.Loop(anim).setLimit(5));
+	//sprite.runAction(new lime.animation.Loop(anim).setLimit(5));
 
 	var sprite = new lime.Sprite().setFill('#0c0').setSize(50, 50).setPosition(0, 100).setRenderer(lime.Renderer.CANVAS);
 	layer.appendChild(sprite);
@@ -61,7 +66,7 @@ test.start = function() {
 	    new lime.animation.MoveBy(300, 0).setDuration(3)
     );
     var a2 = new lime.animation.Sequence(anim, anim.reverse());
-    sprite.runAction(new lime.animation.Loop(a2).setLimit(5));
+    //sprite.runAction(new lime.animation.Loop(a2).setLimit(5));
 
 	// set active scene
 	test.director.replaceScene(menuscene);

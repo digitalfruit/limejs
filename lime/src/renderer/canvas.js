@@ -3,7 +3,7 @@ goog.provide('lime.Renderer.CANVAS');
 goog.require('goog.math.Box.size');
 goog.require('goog.math.Size.scaleVec2');
 goog.require('lime.Renderer');
-goog.require('goog.graphics.AffineTransform');
+goog.require('lime.math.AffineTransform');
 
 /**
 * Canvas renderer. This renders as canvas element or just
@@ -106,7 +106,7 @@ lime.Renderer.CANVAS.drawCanvas = function() {
         var oy = (this.ay + ap_offset.height) / pxsize.height * 100;
         var rotation = -this.getRotation();
 
-        var tx = goog.graphics.AffineTransform.getScaleInstance(1, 1);
+        var tx = lime.math.AffineTransform.getScaleInstance(1, 1);
 
         tx.translate(pos.x, pos.y);
 

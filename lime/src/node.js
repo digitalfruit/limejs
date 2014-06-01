@@ -8,6 +8,7 @@ goog.require('goog.math.Size');
 goog.require('goog.math.Vec2');
 goog.require('lime');
 goog.require('lime.DirtyObject');
+goog.require('lime.math.TrigTable');
 
 goog.require('lime.Renderer.CANVAS');
 goog.require('lime.Renderer.DOM');
@@ -490,11 +491,14 @@ lime.Node.prototype.parentToLocal = function(coord) {
 
     if (this.rotation_ != 0) {
         var c2 = coord.clone(),
-            rot = this.rotation_ * Math.PI / 180,
-            cos = Math.cos(rot),
-            sin = Math.sin(rot);
+            //rot = this.rotation_ * Math.PI / 180,
+            cos = lime.math.TrigTable.getCosine(this.rotation_),
+            sin = lime.math.TrigTable.getSine(this.rotation_);
         coord.x = cos * c2.x - sin * c2.y;
         coord.y = cos * c2.y + sin * c2.x;
+
+
+        console.log("Test: " + Math.cos(this.rotation_ * Math.PI / 180) + ' vs: tables: ' + cos);
     }
 
     return coord;
@@ -522,9 +526,9 @@ lime.Node.prototype.localToParent = function(coord) {
     var newcoord = coord.clone();
 
     if (this.rotation_ != 0) {
-        var rot = -this.rotation_ * Math.PI / 180,
-            cos = Math.cos(rot),
-            sin = Math.sin(rot);
+        //var rot = -this.rotation_ * Math.PI / 180,
+        var    cos = lime.math.TrigTable.getCosine(-this.rotation_),
+            sin = lime.math.TrigTable.getSine(-this.rotation_);
         newcoord.x = cos * coord.x - sin * coord.y;
         newcoord.y = cos * coord.y + sin * coord.x;
     }

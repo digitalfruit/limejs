@@ -3,7 +3,8 @@ goog.provide('lime.Renderer.DOM');
 goog.require('goog.dom');
 goog.require('lime.Renderer');
 goog.require('lime.style');
-goog.require('goog.graphics.AffineTransform');
+goog.require('lime.math.AffineTransform');
+goog.require('lime.math.TrigTable');
 
 /**
  * DOM renderer. This renders as div dom elements and
@@ -74,7 +75,7 @@ lime.Renderer.DOM.drawSizePosition = function () {
     lime.style.setSize(this.domElement, width, height);
 
     // --- Start with the Identity
-    var tx = goog.graphics.AffineTransform.getScaleInstance(1, 1);
+    var tx = lime.math.AffineTransform.getScaleInstance(1, 1);
 
     if (this.mask_) {
 
@@ -184,8 +185,8 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
     var x2 = br.x - tr.x;
     var y2 = br.y - tr.y;
 
-    var cos = Math.cos(rot);
-    var sin = Math.sin(rot);
+    var cos = lime.math.TrigTable.getCosineFromRadians(rot);
+    var sin = lime.math.TrigTable.getSineFromRadians(rot);
 
 
     this.mWidth = Math.round(Math.sqrt(x1 * x1 + y1 * y1));
@@ -197,7 +198,7 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
         //todo: can be optimized
         goog.style.setSize(el, this.mWidth, this.mHeight);
 
-        var maskTransform = goog.graphics.AffineTransform.getScaleInstance(1, 1);
+        var maskTransform = lime.math.AffineTransform.getScaleInstance(1, 1);
 
         maskTransform.translate(tl.x, tl.y);
 
