@@ -128,7 +128,7 @@ lime.Renderer.DOM.drawSizePosition = function () {
  * @this {lime.Node}
  */
 lime.Renderer.DOM.update = function() {
-    if (!this.domElement) return;
+    if (!this.domElement || this.isMask) return;
 
     lime.Renderer.DOM.drawSizePosition.call(this);
 
