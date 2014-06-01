@@ -496,9 +496,6 @@ lime.Node.prototype.parentToLocal = function(coord) {
             sin = lime.math.TrigTable.getSine(this.rotation_);
         coord.x = cos * c2.x - sin * c2.y;
         coord.y = cos * c2.y + sin * c2.x;
-
-
-        console.log("Test: " + Math.cos(this.rotation_ * Math.PI / 180) + ' vs: tables: ' + cos);
     }
 
     return coord;
