@@ -240,22 +240,6 @@ lime.Renderer.DOM.appendAt_ = function(p, c, opt_pos) {
 };
 
 /**
- * Make separate container element for the childnodes
- * @this {lime.Node}
- */
-lime.Renderer.DOM.makeContainer = function() {
-    this.containerElement = goog.dom.createDom('div');
-    var fragment = document.createDocumentFragment(),
-        child;
-    while ((child = this.domElement.firstChild)) {
-       this.domElement.removeChild(child);
-       fragment.appendChild(child);
-    }
-    this.containerElement.appendChild(fragment);
-    this.domElement.appendChild(this.containerElement);
-};
-
-/**
  * Remove mask element relations
  * @this {lime.Node}
  */
