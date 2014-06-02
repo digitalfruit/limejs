@@ -32,7 +32,6 @@ lime.Renderer.DOM.updateLayout = function() {
                 goog.dom.removeNode(el);
             }
             lime.Renderer.DOM.appendAt_(this.containerElement, el, j++);
-            j++;
             continue;
         }
     }
