@@ -31,6 +31,8 @@ lime.math.TrigTable.radToDeg = 360 / lime.math.TrigTable.twoPie_;
 
 lime.math.TrigTable.getSine = function (deg) {
 
+    if (deg === undefined) { return NaN; }
+
     //var index = lime.math.TrigTable.getIndex(deg);
 
     // --- DUPLICATION for speed, these functions get call A LOT!
@@ -52,11 +54,16 @@ lime.math.TrigTable.getSine = function (deg) {
 };
 
 lime.math.TrigTable.getSineFromRadians = function (rad) {
+
+    if (rad === undefined) { return NaN; }
+
     var deg = lime.math.TrigTable.radToDeg * rad;
     return lime.math.TrigTable.getSine(deg);
 };
 
 lime.math.TrigTable.getCosine = function (deg) {
+
+    if (deg === undefined) { return NaN; }
 
     // --- DUPLICATION for speed, these functions get call A LOT!
     while (deg < 0) {
@@ -77,6 +84,9 @@ lime.math.TrigTable.getCosine = function (deg) {
 };
 
 lime.math.TrigTable.getCosineFromRadians = function (rad) {
+
+    if (rad === undefined) { return NaN; }
+
     var deg = lime.math.TrigTable.radToDeg * rad;
     return lime.math.TrigTable.getCosine(deg);
 };
