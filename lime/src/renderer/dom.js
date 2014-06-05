@@ -214,9 +214,9 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
     this.mPos = target.parentToLocal(tl.clone());
 
     this.mSet = true;
-    this.mX = cos * tl.x - sin * tl.y;
-    this.mY = cos * tl.y + sin * tl.x;
-    this.mRot = rot;
+    this.mX = (cos * tl.x - sin * tl.y).toPrecision(8);
+    this.mY = (cos * tl.y + sin * tl.x).toPrecision(8);
+    this.mRot = rot.toPrecision(8);
 /*
     target.setDirty(lime.Dirty.POSITION);
     target.update();
