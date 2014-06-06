@@ -26,17 +26,17 @@ lime.Renderer.DOM.updateLayout = function() {
             continue;
         }
         else {
-            if (goog.dom.contains(this.containerElement, el)) {
+            if (goog.dom.contains(this.domElement, el)) {
                 goog.dom.removeNode(el);
             }
-            lime.Renderer.DOM.appendAt_(this.containerElement, el, j++);
+            lime.Renderer.DOM.appendAt_(this.domElement, el, j++);
             continue;
         }
     }
 
-   /* var lastIndex = this.containerElement.childNodes.length - 1;
+   /* var lastIndex = this.domElement.childNodes.length - 1;
     while (lastIndex >= j) {
-        goog.dom.removeNode(this.containerElement.childNodes[lastIndex]);
+        goog.dom.removeNode(this.domElement.childNodes[lastIndex]);
         lastIndex--;
     }*/
 };
@@ -73,20 +73,23 @@ lime.Renderer.DOM.drawSizePosition = function () {
     var px = position.x - ax,
         py = position.y - ay;
 
-    var so = this.stroke_ ? this.stroke_.width_ : 0;
+    // --- BEGIN: Translate to account for Parent AnchorPoint
+    var parentAnchorX = 0;
+    var parentAnchorY = 0;
 
-    if (((ax-so) != 0 || (ay-so) != 0) && this.domElement == this.containerElement &&
-            this.children_.length) {
-        lime.Renderer.DOM.makeContainer.call(this);
-    }
+    var parent = this.getParent();
 
-    if (this.domElement != this.containerElement) {
-        if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION])
-        lime.style.setTransform(this.containerElement,
-                new lime.style.Transform()
-                    .set3DAllowed(enable3D)
-                    .translate(ax-so, ay-so));
+    if (parent) {
+        var parentAnchor = parent.getAnchorPoint();
+        var parentSize = parent.getSize();
+
+        parentAnchorX = parentAnchor.x * parentSize.width;
+        parentAnchorY = parentAnchor.y * parentSize.height;
+
+        px += parentAnchorX;
+        py += parentAnchorY;
     }
+    // --- END: Translate
 
     if (this.mask_ != this.activeMask_) {
         if (this.activeMask_) {
@@ -234,22 +237,6 @@ lime.Renderer.DOM.appendAt_ = function(p, c, opt_pos) {
         p.appendChild(c);
     else
         p.insertBefore(c, p.childNodes[opt_pos]);
-};
-
-/**
- * Make separate container element for the childnodes
- * @this {lime.Node}
- */
-lime.Renderer.DOM.makeContainer = function() {
-    this.containerElement = goog.dom.createDom('div');
-    var fragment = document.createDocumentFragment(),
-        child;
-    while ((child = this.domElement.firstChild)) {
-       this.domElement.removeChild(child);
-       fragment.appendChild(child);
-    }
-    this.containerElement.appendChild(fragment);
-    this.domElement.appendChild(this.containerElement);
 };
 
 /**
