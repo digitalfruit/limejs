@@ -104,6 +104,12 @@ lime.Renderer.DOM.drawSizePosition = function () {
         parentAnchorY = parentAnchor.y * parentSize.height;
 
         tx.translate(parentAnchorX, parentAnchorY);
+
+
+        // --- Fix for Stroke
+        if (parent.stroke_) {
+            tx.translate(-parent.stroke_.width_, -parent.stroke_.width_)
+        }
     }
 
 

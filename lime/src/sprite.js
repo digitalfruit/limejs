@@ -90,6 +90,12 @@ lime.Sprite.prototype.setStroke = function(stroke){
     }
     this.stroke_ = stroke;
     this.setDirty(lime.Dirty.CONTENT);
+
+    // --- Strokes affect attach point of children, we must dirty the children
+    for (var i = 0; i < this.children_.length; ++i) {
+        this.children_[i].setDirty(lime.Dirty.POSITION);
+    }
+
     return this;
 };
 
