@@ -8,6 +8,7 @@ goog.require('lime.Label');
 goog.require('lime.Layer');
 goog.require('lime.Scene');
 goog.require('lime.animation.MoveBy');
+goog.require('lime.RoundedRect');
 
 
 test.WIDTH = 600;
@@ -41,7 +42,7 @@ test.start = function() {
     flameLayer.appendChild(box);
 
 
-    var box2 = new lime.Sprite().setFill('#0c0').setSize(70, 70).setAnchorPoint(1, 1).setRotation(0).setPosition(0, 0);
+    var box2 = new lime.RoundedRect().setFill('#0c0').setSize(70, 70).setAnchorPoint(1, 1).setRotation(0).setPosition(0, 0);
     goog.events.listen(box2, ['mousedown', 'touchstart'], dragFunc);
     box.appendChild(box2);
 
