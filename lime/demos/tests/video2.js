@@ -34,7 +34,7 @@ test.start = function() {
     var layer = (new lime.Layer).setSize(test.WIDTH, test.HEIGHT).setPosition(0, 0).setRenderer(lime.Renderer.CANVAS);
     videoscene.appendChild(layer);
 
-    var video = new lime.Video().setSize(320, 240).setAnchorPoint(0.5,0.5).setPosition(0,160).setVideoUrl('assets/eye_of_beholder_intro.mp4');
+    var video = new lime.Video().setSize(320, 240).setAnchorPoint(0,0).setPosition(0,0).setVideoUrl('http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4');
 
     layer.appendChild(video);
 
