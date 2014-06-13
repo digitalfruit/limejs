@@ -16,6 +16,7 @@ lime.math.TrigTable.generateNewTable = function () {
 
     for (var i = 0; i < len; ++i) {
 
+        // --- Use toFixed() here since CSS can't handle exponential numbers
         sine[i]       = Math.sin(curvalue).toFixed(7);
         cosine[i]     = Math.cos(curvalue).toFixed(7);
 
