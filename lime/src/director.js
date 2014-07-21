@@ -113,7 +113,7 @@ lime.Director = function(parentElement, opt_width, opt_height) {
     this.setPaused(false);
 
 
-    var vsm = new goog.dom.ViewportSizeMonitor();
+    var vsm = goog.dom.ViewportSizeMonitor.getInstanceForWindow();
     goog.events.listen(vsm, goog.events.EventType.RESIZE,
         this.invalidateSize_, false, this);
     goog.events.listen(goog.global, 'orientationchange',
