@@ -210,15 +210,9 @@ lime.fill.Image.prototype.IS_IOS_CHROME = lime.userAgent.IOS &&
 /** @inheritDoc */
 lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
     var value = 'url(' + this.image_.src + ')';
-    // See https://github.com/digitalfruit/limejs/issues/87
-    if (this.IS_IOS_CHROME) {
-        var current = domEl.style['background'];
-        if (!current || current.indexOf(value) === -1) {
-            domEl.style['background'] = value;
-        }
-    }
-    else {
-        domEl.style['background'] = value;
+
+    if (domEl._background_cache !== value) {
+      domEl.style['background'] = domEl._background_cache = value;
     }
 
     this.setDOMBackgroundProp_(domEl,shape);
