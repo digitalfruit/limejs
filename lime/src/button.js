@@ -111,6 +111,13 @@ lime.Button.prototype.getState = function() {
     return this.state_;
 };
 
+/**
+ * @inheritDoc
+ */
+lime.Button.prototype.hitTest = function(e) {
+  if (e.type == 'click') return false // clicks have emulated through other events
+  return lime.Layer.prototype.hitTest.call(this, e)
+};
 
 /**
  * Sets the state of the button. Also fires events is state changes.
