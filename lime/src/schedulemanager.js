@@ -36,6 +36,13 @@ lime.scheduleManager = new (function() {
     this.intervalID_ = 0;
 
     /**
+     * Internal requestAnimationFrame id
+     * @type {number}
+     * @private
+     */
+    this.requestID_ = 0;
+
+    /**
      * Maximum update rate in ms.
      * @type {number}
      * @private
@@ -224,7 +231,7 @@ lime.scheduleManager.activate__ = function() {
         }
         else {
             this.animationFrameHandlerBinded_ = goog.bind(lime.scheduleManager.animationFrameHandler_,this);
-            goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
+            this.requestID_ = goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
         }
     }
     else {
@@ -258,7 +265,7 @@ lime.scheduleManager.disable_ = function() {
             goog.global.removeEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
         }
         else {
-            goog.global.cancelAnimationFrame(this.animationFrameHandlerBinded_);
+            goog.global.cancelAnimationFrame(this.requestId_);
         }
     }
     else {
@@ -280,7 +287,7 @@ lime.scheduleManager.animationFrameHandler_ = function(){
     }
     lime.scheduleManager.dispatch_(delta);
     this.lastRunTime_ = time;
-    goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
+    this.requestId_ = goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
 }
 
 /**
