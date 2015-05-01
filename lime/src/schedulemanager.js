@@ -102,7 +102,7 @@ lime.scheduleManager.Task.prototype.step_ = function(dt) {
                 if (this.limit !== -1) {
                     this.limit--;
                     if (this.limit == 0) {
-                        lime.scheduleManager.unschedule(f.f, f.ctx);
+                        lime.scheduleManager.unschedule(f.id);
                     }
                 }
             }
@@ -155,7 +155,14 @@ lime.scheduleManager.setDisplayRate = function(value) {
          lime.scheduleManager.activate_();
      }
 };
-
+/**
+ * Generate unique id for scheduled function
+ */
+lime.scheduleManager.nextFunctionId__=(function() {
+	var curId = 0;
+	//next id
+	return function(){return curId++};
+})()
 /**
  * Schedule a function. Passed function will be called on every frame
  * with delta time from last run time
@@ -164,9 +171,12 @@ lime.scheduleManager.setDisplayRate = function(value) {
  * @param {Object} context The context used when calling function.
  * @param {lime.scheduleManager.Task=} opt_task Task object.
  */
+
 lime.scheduleManager.schedule = function(f, context, opt_task) {
     var task = goog.isDef(opt_task) ? opt_task : this.taskStack_[0];
-    goog.array.insert(task.functionStack_, new this.Callback(f, context, task.maxdelta));
+	var cb = new this.Callback(f, context, task.maxdelta);
+	cb.id = this.nextFunctionId__();
+    goog.array.insert(task.functionStack_, cb);
     goog.array.insert(this.taskStack_, task);
     if (!this.active_) {
         lime.scheduleManager.activate_();
@@ -179,7 +189,7 @@ lime.scheduleManager.schedule = function(f, context, opt_task) {
  * @param {function(number)} f Function to be unscheduled.
  * @param {Object} context Context used when scheduling.
  */
-lime.scheduleManager.unschedule = function(f, context) {
+lime.scheduleManager.unschedule = function(functionId) {
     var j = this.taskStack_.length;
     while (--j >= 0) {
         var task = this.taskStack_[j],
@@ -187,7 +197,7 @@ lime.scheduleManager.unschedule = function(f, context) {
             fi, i = functionStack_.length;
         while (--i >= 0) {
             fi = functionStack_[i];
-            if (fi.f == f && fi.ctx == context) {
+            if (fi.id == functionId) {
                 goog.array.remove(functionStack_, fi);
             }
         }
