@@ -190,14 +190,16 @@ lime.scheduleManager.schedule = function(f, context, opt_task) {
  */
 lime.scheduleManager.unschedule = function(functionId) {
     var j = this.taskStack_.length;
-	//Just for  compatible with the old API lime.scheduleManager.unschedule(function,context)
-	var isEqualFun = goog.isFunction(functionId)?(function(context) {
-		console&&console.warn&&console.warn("lime.scheduleManager.unschedule(function,context)"+ " is deprecated,You can use  unschedule(functionId) to replace it,"
-		+"details see https://github.com/digitalfruit/limejs/issues/43")
-		return function(f) {return f.f == functionId && f.ctx == context}
-	})(arguments[1]):function(f) {
-		return f.id == functionId;
-	}
+    //Just for compatible with the old API lime.scheduleManager.unschedule(function,context)
+    var isEqualFun = goog.isFunction(functionId)?(function(context) {
+    // this can be deprecated again if animations/scroller are moved to new API
+    // console&&console.warn&&console.warn("lime.scheduleManager.unschedule(function,context)" +
+    // " is deprecated,You can use  unschedule(functionId) to replace it," +
+    // "details see https://github.com/digitalfruit/limejs/issues/43")
+        return function(f) {return f.f == functionId && f.ctx == context}
+    })(arguments[1]):function(f) {
+        return f.id == functionId;
+    }
     while (--j >= 0) {
         var task = this.taskStack_[j],
             functionStack_ = task.functionStack_,
