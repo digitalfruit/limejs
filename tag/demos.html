@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Posts tagged "demos"  | LimeJS</title>
+    <link rel="stylesheet" href="../static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="../static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="../feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="HTML5 Game Framework for building fast, native-experience games for all modern touchscreens and desktop browsers." />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="../index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    
+        
+        <div class="post">
+            <h1><a href="../2011/03/03/using-keyframeanimation-for-fill-effects.html">Using KeyframeAnimation for fill effects</a></h1>
+            <div class="datetime">Mar 03 2011 21:48
+        </div>
+               <div class="comments">
+                <a href="../2011/03/03/using-keyframeanimation-for-fill-effects.html#disqus_thread">Comments</a></div>
+                <div class="tags"> Tags: <a href="demos.html">demos</a><br /></div>
+                 <div class="clear"></div>
+            
+            <p>Some posts ago we showed how to use KeyframeAnimation in the <a href="../2011/02/21/introducing-sprite-sheets.html">normal way</a>. That is by making a SpriteSheet image and using separate areas from that image as separate frames in the animation. But theres a bit more in it. The &#8216;addFrame()&#8217; method can actually accept any kind of fills. Depending on what you wish to achieve this may give you a way to have some animating objects without using lot of images.</p>
+<p>Please note that following can not be counted as a major feature of LimeJS but rather a side effect that we are happy about.</p>
+<p>Starting with the simplest fill types here is the animation using plain colors as fills. All syntax is the same. Just pass the color name to the &#8216;addFrame()&#8217; method. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">RoundedRect</span><span class="p">().</span><span class="nx">setRadius</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">50</span><span class="o">,</span><span class="mi">50</span><span class="p">).</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">200</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">().</span><span class="nx">setDelay</span><span class="p">(.</span><span class="mi">5</span><span class="p">).</span>
+    <span class="nx">addFrame</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">addFrame</span><span class="p">(</span><span class="s1">&#39;#0c0&#39;</span><span class="p">).</span><span class="nx">addFrame</span><span class="p">(</span><span class="s1">&#39;#00c&#39;</span><span class="p">);</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>This creates&#8230;.</p>
+            <div class="readmore"><a href="../2011/03/03/using-keyframeanimation-for-fill-effects.html">Read more</a></div>
+            
+        </div>
+        
+        <div class="post">
+            <h1><a href="../2011/02/21/introducing-sprite-sheets.html">Introducing Sprite Sheets</a></h1>
+            <div class="datetime">Feb 21 2011 23:23
+        </div>
+               <div class="comments">
+                <a href="../2011/02/21/introducing-sprite-sheets.html#disqus_thread">Comments</a></div>
+                <div class="tags"> Tags: <a href="demos.html">demos</a> <a href="spritesheet.html">spritesheet</a><br /></div>
+                 <div class="clear"></div>
+            
+            <p>LimeJS now has full support of sprite sheets. This means that you can gather your image assets to the same file and define areas that contain only the parts you are interested about. This lets you load multiple images with one request and export your whole keyframe animation with single file. </p>
+<p>To define a fill for a part of a image there is a new Frame fill. It takes in an image(as url or Image element) and frame definition(as goog.math.Rect object or numbers). You can then use the Frame fill instance as you would  use any other fill. All the same methods can be used for Frame as for Image fill(this covers repeating patterns) and performance should be also similar.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">frame</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">Frame</span><span class="p">(</span><span class="s1">&#39;sheet.png&#39;</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="mi">30</span><span class="o">,</span> <span class="mi">200</span><span class="o">,</span> <span class="mi">150</span><span class="p">);</span> <span class="c">//x , y, width, height</span>
+<span class="nx">box</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="nx">frame</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>By default the fill&#8230;.</p>
+            <div class="readmore"><a href="../2011/02/21/introducing-sprite-sheets.html">Read more</a></div>
+            
+        </div>
+        
+    
+    
+    
+    
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="../0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="../static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="../static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="../feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/limejs/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>#1 The Timeline  | LimeJS</title>
+    <link rel="stylesheet" href="static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="#1 The Timeline - page on LimeJS" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+        <h1>Programming guide</h1>
+        Chapters  <br> <a href="0-getting-started.html" title="#0 Getting Started">#0 Getting Started</a> | <a href="1_the_timeline.html" title="#1 The Timeline">#1 The Timeline</a> | <a href="2_layout_and_nodes.html" title="#2 Layout and Nodes">#2 Layout and Nodes</a> | <a href="3_shapes_and_fills.html" title="#3 Shapes and Fills">#3 Shapes and Fills</a> | <a href="4_events.html" title="#4 Events">#4 Events</a> | <a href="5_animations.html" title="#5 Animations">#5 Animations</a> | <a href="6_drawing_engines.html" title="#6 Drawing Engines">#6 Drawing Engines</a> | <a href="7-building.html" title="#7 Building">#7 Building</a>
+        
+        <h1 id="the_timeline">The Timeline</h1>
+<h2 id="director">Director</h2>
+<p>It all starts from the director. Director is a base object needed for every game and connects all LimeJS logic to a single place on the webpage. If you come from flash world you can think of it as a stage, Cocos2d users see familiarities with Cocos2d-s own Director. All other can think of it just as a front controller. </p>
+<p>There is only one director instance for each game. It handles games global viewport and controls which scenes are visible. In the beginning of your game logic you have to create an instance of director. The parameters for the constructor method are container DOM element, stage width in pixels and height in pixels.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">director</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">dfkit</span><span class="p">.</span><span class="nx">Director</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="o">,</span><span class="mi">320</span><span class="o">,</span><span class="mi">460</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="scene">Scene</h2>
+<p>Scene is a independent portion of visible elements that cover all the viewport. This means that only one scene can be active at a given time. For example, in common game logic you would have menu scene, play scene and game-over scene. To make a scene visible you call <code>director.replaceScene(scene)</code> or <code>director.pushScene(scene)</code>. The difference is that <em>pushScene</em> does not remove the previous scene but keeps it in a hidden stack so it can be made visible again with <code>director.popScene()</code> call.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">scene</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
+<span class="nx">director</span><span class="p">.</span><span class="nx">replaceScene</span><span class="p">(</span><span class="nx">scene</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="transitions">Transitions</h2>
+<p>Using plain <code>replaceScene()</code> just makes a quick switch between the scenes that may not be visually appealing. To make it better you can set optional <em>transition</em> and <em>duration</em> property of your <code>replaceScene()</code> call. The transition defines the animation that happens when current scene is dismissed and new scene is activated. Currently various <em>Slide</em> and <em>Move</em> transitions are supported as well as <em>Dissolve</em> for fade-in effect.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">director</span><span class="p">.</span><span class="nx">replaceScene</span><span class="p">(</span><span class="nx">menuscene</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">transitions</span><span class="p">.</span><span class="nx">SlideInRight</span><span class="p">);</span>
+
+<span class="nx">director</span><span class="p">.</span><span class="nx">replaceScene</span><span class="p">(</span><span class="nx">gamescene</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">transitions</span><span class="p">.</span><span class="nx">Dissolve</span><span class="o">,</span><span class="mi">2</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="schedulemanager">ScheduleManager</h2>
+<p>Everything in Lime is drawn with repaint-dirty pattern. That means that every time you change something your method calls aren&#8217;t strictly related to the equivalent DOM or Canvas2dContext calls. Instead property you set is marked as dirty and will be redrawn in the next frame. This allows us to update only once, update only what is necessary and keep all updates stateless. Last criteria allows us to switch between the renderer methods any time. As there isn&#8217;t any on-enter-frame event in Javascript we&#8217;ve made a <em>lime.sheduleManager</em> static object that simulates it. These are the methods it provides:</p>
+<ul>
+<li>schedule(callback, context) - Call a function in every frame. Context is object that represents <em>this</em>.</li>
+<li>unschedule(callback, context) - Clear previously scheduled function.</li>
+<li>scheduleWithDelay(callback, context, delay, opt_limit) - Same as <em>schedule</em> but function is only called if more than <em>delay</em> seconds has passed from last execution.</li>
+<li>callAfter(callback, context, delay) - Only call function once after the delay.</li>
+</ul>
+<p>You should never use JavaScript built in methods <code>setTimeout()</code> and <code>setInterval()</code> directly in your game code. <em>lime.schduleManager</em> provides you with the same functionality with extra features. Your callback is called with a parameter that is the delay from the last execution of the same callback in milliseconds. This allows you to make smooth animations even if the CPU performance changes drastically.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">velocity</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+<span class="nx">lime</span><span class="p">.</span><span class="nx">scheduleManager</span><span class="p">.</span><span class="nx">schedule</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">dt</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">position</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getPosition</span><span class="p">();</span>
+    <span class="nx">position</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">velocity</span> <span class="o">*</span> <span class="nx">dt</span><span class="o">;</span> <span class="c">// if dt is bigger we just move more</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="nx">position</span><span class="p">);</span> 
+<span class="p">}</span><span class="o">,</span><span class="nx">ball</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="pausing">Pausing</h2>
+<p>Using scheduleManager instead of timer functions also gives you benefit of pausing support. When you wish to pause your game you simply have to call the <code>setPaused(true)</code> on your Director object. This pauses all the scheduled functions and animations. Once you resume by calling <code>setPaused(false)</code> all your code is resumed as if nothing ever happened. While your game is in paused state instance of <em>lime.PauseScene</em> is placed as a active scene of the Director. If you wish to have some custom appearance on this state you can override this class functionality. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">mygame</span><span class="p">.</span><span class="nx">director</span><span class="p">.</span><span class="nx">setPaused</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="layers">Layers</h2>
+<p>Now we are ready to add something on the screen. To better manage your display object we have introduced <em>lime.Layer</em> objects. You can think about them in a same way as Photoshop layers. Layers are there to hold stuff in. They act as any other display objects with an exception that they don&#8217;t have any body or size themselves. Their only contents is their children objects. So you create them, add to the tree, position if necessary and add child objects into to them. Just to be clear, using layers is not required  - your can add any display objects to the scene. Layers just make your life easier.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">layer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Layer</span><span class="p">().</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">100</span><span class="p">);</span>
+<span class="nx">scene</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">layer</span><span class="p">);</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">box</span> <span class="o">=</span> <span class="nx">customMakeBoxFunc</span><span class="p">().</span><span class="nx">setPosition</span><span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">50</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+    <span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">box</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+    </div>
+	
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

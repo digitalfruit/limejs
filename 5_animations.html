@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>#5 Animations  | LimeJS</title>
+    <link rel="stylesheet" href="static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="#5 Animations - page on LimeJS" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+        <h1>Programming guide</h1>
+        Chapters  <br> <a href="0-getting-started.html" title="#0 Getting Started">#0 Getting Started</a> | <a href="1_the_timeline.html" title="#1 The Timeline">#1 The Timeline</a> | <a href="2_layout_and_nodes.html" title="#2 Layout and Nodes">#2 Layout and Nodes</a> | <a href="3_shapes_and_fills.html" title="#3 Shapes and Fills">#3 Shapes and Fills</a> | <a href="4_events.html" title="#4 Events">#4 Events</a> | <a href="5_animations.html" title="#5 Animations">#5 Animations</a> | <a href="6_drawing_engines.html" title="#6 Drawing Engines">#6 Drawing Engines</a> | <a href="7-building.html" title="#7 Building">#7 Building</a>
+        
+        <h1 id="animations">Animations</h1>
+<p>Animations provide a way to change elements properties over time. Typical uses are making object larger or changing its position in a way it looks natural for the user. To make an animation you make an animation object and then run it on target. Don&#8217;t forget that you have to include the animation using <code>goog.require()</code>, as no animations are loaded automatically. By default all animations run for 1 second, you can change it with <code>setDuration()</code> method.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">fadehalf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">FadeTo</span><span class="p">(.</span><span class="mi">5</span><span class="p">).</span><span class="nx">setDuration</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">ball</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">fadehalf</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Different types of animations supported:</p>
+<ul>
+<li><em>MoveBy</em> - move object by offset from current location.</li>
+<li><em>MoveTo</em> - move object to specific location.</li>
+<li><em>ScaleBy</em> - scale objects dimensions by a factor. Passing 2 makes object 2 times bigger from its current size.</li>
+<li><em>ScaleTo</em> - scale objects dimensions to a given factor.</li>
+<li><em>RotateBy</em> - rotate object by a given angle</li>
+<li><em>RotateTo</em> - rotate object to a specific angle</li>
+<li><em>ColorTo</em> - change objects color from current color to another.</li>
+<li><em>FadeTo</em> - fade elements opacity to a given value.</li>
+</ul>
+<p>If you wish know when an animation has ended you can listen for its <em>stop</em> event. Event name is also defined as constant <code>lime.animation.Event.STOP</code>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">moveleft</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">MoveBy</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="nx">ball</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">moveleft</span><span class="p">);</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">moveleft</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">STOP</span><span class="o">,</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Ball has finished moving&#39;</span><span class="p">);</span>
+<span class="p">})</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="multiple_targets">Multiple targets</h2>
+<p>There is also possibility to run a single animation on multiple targets. For that you create animation instance, then add targets to this instance and finally call the <code>play()</code> method.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">doublesize</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">ScaleBy</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">doublesize</span><span class="p">.</span><span class="nx">addTarget</span><span class="p">(</span><span class="nx">ball</span><span class="p">);</span>
+<span class="nx">doublesize</span><span class="p">.</span><span class="nx">addTarget</span><span class="p">(</span><span class="nx">square</span><span class="p">);</span>
+<span class="nx">doublesize</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="sequence_spawn_and_loop">Sequence, Spawn and Loop</h2>
+<p>Sequence, Spawn and Loop are animations that combine other animations to make a new effect. Sequence takes in unlimited amount of animations and runs them in a queue one after another. Spawn is similar but all the subanimations run together in same time. Loop is used if you wish the animation to restart itself after it has finished.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">zoomout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Spawn</span><span class="p">(</span>
+    <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">ScaleTo</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">,</span>
+    <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">FadeTo</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">keepturning</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Loop</span><span class="p">(</span>
+    <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">RotateBy</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+    <span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="precompiled_css3_animations">Precompiled CSS3 animations</h2>
+<p>Making animations as described earlier results in Javascript animations. This means the way the effect is created is by changing objects properties with Javascript on timer intervals. Some modern browsers also support different kind of effects called CSS3 transitions. These events may run smoother as they are hardware accelerated in some platforms(iOS). To enable this accelerated support in LimeJS you have to run the animations <code>enableOptimizations()</code> method. This makes the animation run smoother on iOS devices and possibly use less CPU resources.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">ball</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">MoveBy</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="p">).</span><span class="nx">enableOptimizations</span><span class="p">());</span>
+</pre></div>
+</td></tr></table>
+
+<p>The downside is that <code>enableOptimizations()</code> does not always work. This is also the reason why you specifically have to say you wish the animation to use this feature. The CSS3 transitions API isn&#8217;t so flexible that it could handle all possible scenarios.</p>
+<p>Things that are not currently supported when <code>enableOptimizations()</code> is turned on:</p>
+<ul>
+<li>You can&#8217;t combine move,scale and rotate animations in a way that their timings overlap but aren&#8217;t the same. You can still use them together in a Sequence and you can use them together in a Spawn if their durations match.</li>
+<li>You can&#8217;t combine position,scale and size in a way that one of the parameters is being changed manually while another is animating.</li>
+</ul>
+<h2 id="easing">Easing</h2>
+<p>Easing defines the characteristics how the time is changing when the animation is running. It provides more natural motion as it doesn&#8217;t change the properties in fixed intervals. This makes an object slow down and speed up. All Lime animations have easing ease-in-out by default. This means that object will first speed up and then slow down when it reaches its destination. You define the easing function with <code>setEasing()</code> method. Built in values thath you can use include:</p>
+<ul>
+<li>lime.animation.Easing.EASE</li>
+<li>lime.animation.Easing.LINEAR</li>
+<li>lime.animation.Easing.EASEIN</li>
+<li>lime.animation.Easing.EASEOUT</li>
+<li>lime.animation.Easing.EASEINOUT</li>
+</ul>
+<p>You can also provide custom function made of points of cubic bezier curve.</p>
+<p><em>Lime animations do not use or rely on goog.fx.* libraries. These are common functions for making animations in Closure Library but don&#8217;t quite fit in with LimeJS logic. This may change in the future but not very likely.</em></p>
+    </div>
+	
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

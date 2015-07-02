@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Making flexible views  | LimeJS</title>
+    <link rel="stylesheet" href="../../../static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="../../../static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="../../../feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="Making flexible views - post on LimeJS tagged anchorpoint, autoresize" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+
+<script type="text/javascript">
+    var disqus_developer=1;
+</script>
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="../../../index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+             
+        <h1>Making flexible views</h1>
+       
+        <div class="datetime">
+        
+            4 years ago</div>
+           <div class="tags"> Tags: <a href="../../../tag/anchorpoint.html">anchorpoint</a> <a href="../../../tag/autoresize.html">autoresize</a></div>
+           <div class="clear"></div>
+        </div>
+        <div class="post_body">
+        <p>While creating games with LimeJS you don&#8217;t have to think about the different screen sizes your players will be using. In the beginning of your game you just have to define the stage size and we will take care of that you game appears in maximum size on both HD monitors and on an iPhone. This enables you to use fixed positions and sizes, much like in Flash. When the display size or device orientation changes you don&#8217;t have to recalculate your game elements positions as your stage is still same size, although it appears visually bigger on the screen.</p>
+<p>This all happens automatically for screen sizes. But what should you use when your element itself transforms or elements parent element is resized?</p>
+<h2 id="anchorpoint_-_handling_elements_own_tranforms">AnchorPoint - handling element&#8217;s own tranforms.</h2>
+<p>AnchorPoint lets you define the location in your element that is most important for your game object. When you position your element this is the point that is put on the exact position you give in &#8216;setPosition()&#8217;. The element rotates around this point when you use &#8216;setRotation()&#8217;. If you scale an element this location remains in its position and everything around it is scaled. All children of the element are by default positioned by the parent element&#8217;s anchor point.</p>
+<p>AnchorPoint is defined with &#8216;setAnchorPoint()&#8217; method. The parameters are vector points in 0 to 1 range where (0,0) means top-left and (1,1) bottom right corner. By default all elements are positioned from the center and so have anchor point set to (0.5,0.5).</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">80</span><span class="o">,</span><span class="mi">30</span><span class="p">).</span><span class="nx">setAnchorPoint</span><span class="p">(.</span><span class="mi">25</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>These are some examples of &#8216;setAnchorPoint()&#8217; in action:</p>
+<p><img alt="AnchorPoint examples" src="../../../static/flex_anchorpoint.png" /></p>
+<h2 id="autoresize_masks_-_when_the_parents_size_changes">AutoResize masks - when the parent&#8217;s size changes.</h2>
+<p>AutoResize is common technique to define item&#8217;s size relative to the parents size. For example Flex and UIKit use very similar pattern. In LimeJS there is a method &#8216;setAutoResize()&#8217;. Into this method you can pass the combination of bitmask constants that define the areas that are flexible. So if the parent element&#8217;s size changes only the flexible parts get stretched.</p>
+<p>All bitmask constants you can use are:</p>
+<ul>
+<li>lime.AutoResize.NONE</li>
+<li>lime.AutoResize.LEFT</li>
+<li>lime.AutoResize.TOP</li>
+<li>lime.AutoResize.RIGHT</li>
+<li>lime.AutoResize.BOTTOM</li>
+<li>lime.AutoResize.WIDTH</li>
+<li>lime.AutoResize.HEIGHT</li>
+<li>lime.AutoResize.ALL</li>
+</ul>
+<p>To make a combination of multiple areas you tie them together with | operator(bitwise or) before passing them into &#8216;setAutoResize()&#8217;. By default elements have autoresize mask lime.AutoResize.NONE and therefore do not resize automatically when parent&#8217;s size changes.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#00c&#39;</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">80</span><span class="o">,</span><span class="mi">20</span><span class="p">).</span>
+    <span class="nx">setAutoResize</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">AutoResize</span><span class="p">.</span><span class="nx">LEFT</span> <span class="o">|</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">AutoResize</span><span class="p">.</span><span class="nx">HEIGHT</span><span class="p">);</span>
+<span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>And here are the examples:</p>
+<p><img alt="AnchorPoint examples" src="../../../static/flex_autoresize.png" /></p>
+<p>We are also looking into enabling simple ways for allowing completely different layouts for different orientations and screen size ranges. You can currently also change the stage size during gameplay but manually positioning all elements between different sizes is not easy. If you have some ideas or suggestions about it let us know.</p>
+        </div>
+    </div>
+    
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="../../../0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="../../../static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="../../../static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="../../../feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

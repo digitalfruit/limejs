@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>#7 Building  | LimeJS</title>
+    <link rel="stylesheet" href="static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="#7 Building - page on LimeJS" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+        <h1>Programming guide</h1>
+        Chapters  <br> <a href="0-getting-started.html" title="#0 Getting Started">#0 Getting Started</a> | <a href="1_the_timeline.html" title="#1 The Timeline">#1 The Timeline</a> | <a href="2_layout_and_nodes.html" title="#2 Layout and Nodes">#2 Layout and Nodes</a> | <a href="3_shapes_and_fills.html" title="#3 Shapes and Fills">#3 Shapes and Fills</a> | <a href="4_events.html" title="#4 Events">#4 Events</a> | <a href="5_animations.html" title="#5 Animations">#5 Animations</a> | <a href="6_drawing_engines.html" title="#6 Drawing Engines">#6 Drawing Engines</a> | <a href="7-building.html" title="#7 Building">#7 Building</a>
+        
+        <h1 id="building">Building</h1>
+<p>If you have followed along previous examples you may have looked up how the internals looked like in <a href="http://getfirebug.com/">Firebug</a> or Webkit Developer Tools. What you see there in the Resources tab may have not made you happy. Even the Hello World example loads in lot of different Javascript files and their total size is huge. Not quite the way <a href="http://developer.yahoo.com/yslow/">YSlow</a> or <a href="http://code.google.com/speed/page-speed/">Google Page Speed</a> have told how it should be done and a nightmare to distribute.</p>
+<p>Fortunately there is a solution named <em>Closure Compiler</em> and it was already downloaded when you first ran the init script. You should never distribute the development files(unless for open source reasons). Once you have completed your project simply run the <em>lime.py</em> helper script with <em>build</em> command. This will combine all Javascript code needed for your project into a single file. To start this file you use the same HTML file you had before with an exception that you don&#8217;t need to include Closure Library&#8217;s base.js any more.</p>
+<p>The build command takes in base namespace of the code that you need to compile. This namespace needs to be defined with <code>goog.provide()</code> in the entrypoint of you projects code. With <code>-o</code> parameter you can define the path where the compiled version should be written(defaults to <em>stdout</em>).</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py build helloworld -o helloworld/compiled/hw.js
+</pre></div>
+</td></tr></table>
+
+<h2 id="advanced_optimizations_mode">Advanced optimizations mode</h2>
+<p>Though default build process strips out all whitespace, replaces local variable names and does much more, the compression rate can be taken to much higher level. If you enable advanced optimizations additional optimizations like property name replacing for all variables and redundant code removal will also take place. Your final code will be much smaller, but there are some extra requirements that you must stick to if you wish to use this mode. For example you can&#8217;t use property names inconsistently (with dot notation in some places and string notation in other) and must <em>jsdoc</em> the <em>@this</em> object type in static functions. More on that <a href="http://code.google.com/closure/compiler/docs/api-tutorial3.html">here</a>. To enable advanced optimizations you simple add <code>-a</code> to the build command.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py build helloworld -o helloworld/compiled/hw_adv.js -a
+</pre></div>
+</td></tr></table>
+
+<p>To further optimize the compiled version it is encouraged that you compress it with <code>gzip</code>. <a href="http://code.google.com/speed/page-speed/docs/payload.html#GzipCompression">Read more</a></p>
+<h3 id="declaring_externs">Declaring Externs</h3>
+<p>To declare Externs to be used by the Advanced Compilation, use the <code>-e</code> option in the build command. This option can be passed multiple times, in case you have multiple externs files.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py build helloworld -o helloworld/compiled/hw_adv.js -e helloworld/externs/some_externs.js -e helloworld/externs/more_externs.js -a
+</pre></div>
+</td></tr></table>
+
+<h2 id="exports">Exports</h2>
+<p>As said before advanced optimizations mode replaces all variable names. This means there are no way to interact with you compiled code from some external code(for example onload handler in your HTML file). To deal with that you can define externs and exports from your code. Extern means that this variable/propery will not be renamed so you can fully interact with it from any external code. Export means variable will be renamed but a link to the new variable will be created with original name. In 99% of places you will only need export and save lot of space this way. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">goog</span><span class="p">.</span><span class="nx">exportSymbol</span><span class="p">(</span><span class="s1">&#39;helloworld.start&#39;</span><span class="o">,</span> <span class="nx">helloworld</span><span class="p">.</span><span class="nx">start</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="debugging">Debugging</h2>
+<p>Sometimes you may find out that you have made a mistake following the advanced optimizations guidelines and your compiled version doesn&#8217;t run any more though your development version worked fine. Common debugging techniques can&#8217;t be applied here as the compressed file is completely unreadable. The solution is to compile with a <code>-m/--map</code> option. This way compiler makes a function map file that binds a compressed function to the position of the uncompressed function in original source. To use the map you have to download Closure Inspector that is a addon for Firebug. Now Firebug can show you the place in the original source where the error happened. <a href="http://code.google.com/closure/compiler/docs/inspector.html">Read more</a></p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py build helloworld -o helloworld/compiled/hw_adv.js -a -m helloworld/complied/debug_map.txt
+</pre></div>
+</td></tr></table>
+
+<h2 id="preloaderoffline_support">Preloader/Offline support</h2>
+<p><em>Preloader support is currenlty very limited. Much more functionality will be added in the future.</em></p>
+<p>Having a single Javascript file makes your game easy to distribute but the Javascript file and all the assets you wish to use still need to be loaded every time the game is accessed. To make the experience better for the player you can compile your game with preloader file. This preloader file use modern browsers offline support capabilities and downloads all files you need before starting the game. Even better, next time the game is played it starts much quicker because it is loaded from users hard drive. If the game is updated, preloader will first download the updated files and then start your game. Offline access is specially important on iOS devices where it allows people to play your webapp game even when they are not connected to the internet.</p>
+<p>You can build your game with preloader by specifying <code>-p</code> option and a callback that starts your game. This callback is the same Javascript function name that you would usually use in the onload handler of your development version.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py build helloworld -o helloworld/compiled/hw_adv.js -a -p helloworld.start
+</pre></div>
+</td></tr></table>
+
+<p>Here are some rules on working with <a href="http://www.w3.org/TR/html5/offline.html#manifests">*.manifest</a> file the preloader build creates:</p>
+<ul>
+<li>Manifest file needs to be served as <em>text/cache-manifest</em> from your webserver. <a href="http://www.thecssninja.com/javascript/how-to-create-offline-webapps-on-the-iphone">Tutorial</a></li>
+<li>If you use your game specific assets(images etc.) you need to list them in the manifest manually</li>
+<li>If you change some of the files in the manifest(without running build again) you also have to change the manifest file. Simplest is to just update the generation time.</li>
+</ul>
+    </div>
+	
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

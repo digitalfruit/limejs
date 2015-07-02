@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebGL API description  | LimeJS</title>
+    <link rel="stylesheet" href="../../../static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="../../../static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="../../../feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="WebGL API description - post on LimeJS tagged webgl, 3d" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+
+<script type="text/javascript">
+    var disqus_developer=1;
+</script>
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="../../../index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+             
+        <h1>WebGL API description</h1>
+       
+        <div class="datetime">
+        
+            4 years ago</div>
+           <div class="tags"> Tags: <a href="../../../tag/webgl.html">webgl</a> <a href="../../../tag/3d.html">3d</a></div>
+           <div class="clear"></div>
+        </div>
+        <div class="post_body">
+        <p>In this post we are going to dive more deeply into the WebGL library methods that are included in the LimeJS WebGL branch. Those methods are used while making the <em>lime.Renderer.WEBGL</em> renderer and are available for developers to create custom WebGL games.</p>
+<h2 id="what_it_is_about">What it is about:</h2>
+<ul>
+<li>Cleaned up workflow. No more multiline inlining shaders.</li>
+<li>Object oriented API. C style turned into JavaScript style.</li>
+<li>Complete handling of format conversions. No need to convert something to another format before sending to WebGL.</li>
+<li>Debugging support. Get error messages for invalid inputs, instead of black screen.</li>
+<li>Make it easier to work with big models.</li>
+<li>Math utility helpers </li>
+<li>Getting out of your way and letting you concentrate on your shaders.</li>
+</ul>
+<h2 id="what_its_not_about">What it&#8217;s not about:</h2>
+<ul>
+<li>A simplified or alternative way of making 3D</li>
+<li>A higher level abstraction layer.</li>
+<li>You still have to know how OpenGL works. You just have to code less and get your work done quicker.</li>
+<li>If you need a Closure port of something like <a href="https://github.com/mrdoob/three.js/">three.js</a> of <a href="http://www.glge.org/">GLGE</a> this is not it.</li>
+</ul>
+<h2 id="the_api">The API:</h2>
+<h2 id="limewebglglcontroller">lime.webgl.GLController</h2>
+<p>GLController is front controller object for your 3D Canvas context. You can use controller object for storing data you need persistent for your context. It also provides method for resizing the viewport. Only real reason for this class existence is that we don&#8217;t want to modify the context object itself.</p>
+<h3 id="static_methods">Static Methods:</h3>
+<ul>
+<li><strong>GLController.forCanvas(element)</strong> - returns GLController instance for Canvas element. Always returns same object for same element.</li>
+</ul>
+<h3 id="methods">Methods:</h3>
+<ul>
+<li><strong>getSize()</strong> - get current canvas and viewport size.</li>
+<li><strong>setSize(size)</strong> - resize canvas to new values and also resize WebGL viewport to same size.</li>
+<li><strong>makeProgram()</strong> - Return new Program object for the context.</li>
+</ul>
+&nbsp;
+
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">glc</span> <span class="o">=</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">webgl</span><span class="p">.</span><span class="nx">GLController</span><span class="p">.</span><span class="nx">forCanvas</span><span class="p">(</span><span class="s1">&#39;mycanvas&#39;</span><span class="p">)</span><span class="o">,</span>
+    <span class="nx">gl</span> <span class="o">=</span> <span class="nx">glc</span><span class="p">.</span><span class="nx">gl</span><span class="o">;</span>
+
+<span class="nx">glc</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">480</span><span class="o">,</span><span class="mi">320</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="limewebglprogram">lime.webgl.Program</h2>
+<p>Program connects the shaders to your code. You use it to initialize your shaders, set shaders properties and draw. Program object accepts data in almost any reasonable form and converts between formats if necessary. When you pass in data in wrong format it will let you know about the error and not just quietly fail with black screen.</p>
+<h3 id="methods_1">Methods:</h3>
+<ul>
+<li><strong>setShader(shader)</strong> - load in the shaders to be used by the program. Shaders are meant to be written in separate files and included as a template after running them through lime.py with gensoy command. </li>
+<li><strong>set*(mixed)</strong> - set the value for an attribute or uniform defined in shader. Can accept raw numeric data, arrays, typed arrays, buffers, vectors and matrices. The * is the same name that is used in the shader(for example setUModelViewMatrix()).</li>
+<li><strong>draw(mode,opt_offset,opt_length)</strong> - draw through the program. Mode is WebGL drawing mode constant(gl.TRIANGLES,gl.TRIANGLE_STRIP etc). If offset or length is not set it is taken from the minimal buffer size used.</li>
+<li><strong>drawElements(buffer,mode,opt_offset,opt_length)</strong> - draw the program using element array buffer. First element is the buffer that defines the order of indices that is used for drawing the vertices.</li>
+<li><strong>use()</strong> - set current program as active. You don&#8217;t have to call it if you use built in setter and draw commands.</li>
+</ul>
+&nbsp;
+
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td><td class="code"><div class="codehilite"><pre><span class="n">attribute</span> <span class="n">vec3</span> <span class="n">VertexPosition</span><span class="p">;</span>
+<span class="n">attribute</span> <span class="n">vec3</span> <span class="n">VertexNormal</span><span class="p">;</span>
+
+<span class="n">uniform</span> <span class="kt">float</span> <span class="n">LightIntensity</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">mat4</span> <span class="n">ModelViewMatrix</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">(){</span>
+    <span class="p">....</span>
+    <span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>&nbsp; <br />
+</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">program</span> <span class="o">=</span> <span class="nx">glc</span><span class="p">.</span><span class="nx">makeProgram</span><span class="p">().</span><span class="nx">setShader</span><span class="p">(</span><span class="nx">mygame</span><span class="p">.</span><span class="nx">shaders</span><span class="p">.</span><span class="nx">myshader</span><span class="p">);</span>
+
+<span class="nx">program</span><span class="p">.</span><span class="nx">setLightIntensity</span><span class="p">(.</span><span class="mi">9</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">modelview</span> <span class="o">=</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">webgl</span><span class="p">.</span><span class="nx">M4</span><span class="p">().</span><span class="nx">identity</span><span class="p">().</span><span class="nx">translate</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,-</span><span class="mi">7</span><span class="p">);</span>
+<span class="nx">program</span><span class="p">.</span><span class="nx">setModelViewMatrix</span><span class="p">(</span><span class="nx">modelview</span><span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="nx">program</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="nx">gl</span><span class="p">.</span><span class="nx">TRIANGLES</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="limewebglbuffer">lime.webgl.Buffer</h2>
+<p>Buffers are objects for holding and manipulating big amounts of numeric data. Usually data that represents your model. If you have big models it is good idea to put the data in separate files and then include it with <em>goog.require()</em> when needed. </p>
+<h3 id="methods_2">Methods:</h3>
+<ul>
+<li><strong>Buffer(type,opt_data)</strong> - constructor. Type is a JSON object that defines the buffers elements structure. If your buffer only consists of 3 axis vertices the type would be &#8220;{float:3}&#8221;. If it is a mixture of positions, normals and 4 byte colors the type would be &#8220;[{float:3},{float:3},{uint8:4}]&#8221;.</li>
+<li><strong>set(data)</strong> - Set new data for the buffer. Accepts array or typed array. All elements are converted based on the buffer definition type.</li>
+<li><strong>setSize(n)</strong> - Resize the buffer to hold up to n elements.</li>
+<li><strong>reset()</strong> - Reset current buffer length to 0. Length represents the number of filled elements. Size represents number of memory slots allocated.</li>
+<li><strong>getNext()</strong> - Get reference to the element at the next empty position of the buffer. Returns an array of typed arrays in same format as the type definition. If you modify the returned element new values will be included in the buffer.</li>
+<li><strong>subBuffer(index)</strong> - Return the SubBuffer object for the index defined in buffer type. Note that when you pass a subbuffer into a shader no data is actually cloned but it just chooses correct stride and offset values.</li>
+</ul>
+&nbsp;
+
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">teapot</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">webgl</span><span class="p">.</span><span class="nx">Buffer</span><span class="p">([{</span><span class="nx">float</span><span class="o">:</span><span class="mi">3</span><span class="p">}</span><span class="o">,</span><span class="p">{</span><span class="nx">float</span><span class="o">:</span><span class="mi">3</span><span class="p">}]</span><span class="o">,</span><span class="nx">mygame</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">teapot</span><span class="p">.</span><span class="nx">VERTICES_NORMALS</span><span class="p">)</span><span class="o">,</span>
+    <span class="nx">teapot_indices</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">webgl</span><span class="p">.</span><span class="nx">Buffer</span><span class="p">({</span><span class="nx">uint16</span><span class="o">:</span><span class="mi">1</span><span class="p">}</span><span class="o">,</span><span class="nx">mygame</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">teapot</span><span class="p">.</span><span class="nx">INDICES</span><span class="p">);</span>
+
+<span class="nx">program</span><span class="p">.</span><span class="nx">setVertexPosition</span><span class="p">(</span><span class="nx">teapot</span><span class="p">.</span><span class="nx">subBuffer</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+<span class="nx">program</span><span class="p">.</span><span class="nx">setVertexNormal</span><span class="p">(</span><span class="nx">teapot</span><span class="p">.</span><span class="nx">subBuffer</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+
+<span class="nx">program</span><span class="p">.</span><span class="nx">drawElements</span><span class="p">(</span><span class="nx">teapot_indices</span><span class="o">,</span><span class="nx">gl</span><span class="p">.</span><span class="nx">TRIANGLES</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="math_functions_for_vector_and_matrix_calculations">Math functions for vector and matrix calculations</h2>
+<p>In addition the library provides many vector and matrix helper functions. Their main use is to allow quick setup and modification of transformation matrices.</p>
+<h3 id="common_methods">Common Methods:</h3>
+<ul>
+<li><strong>set(mixed)</strong></li>
+<li><strong>clone()</strong> </li>
+<li><strong>equals()</strong></li>
+<li><strong>sum()</strong></li>
+<li><strong>difference()</strong></li>
+<li><strong>negate()</strong></li>
+<li><strong>toArray()</strong> </li>
+<li><strong>save()</strong> - Saves a vector/matrix values. Can be restored same way as in Canvas2D spec.</li>
+<li><strong>restore()</strong> - Restores vector/matrix values to previously saved values. </li>
+</ul>
+<h3 id="vector_methods">Vector Methods:</h3>
+<ul>
+<li><strong>modulus()</strong></li>
+<li><strong>normalize()</strong></li>
+<li><strong>dot(vector)</strong> </li>
+<li><strong>multiply(matrix)</strong> - Transform a vector with a 4x4 Matrix.</li>
+</ul>
+<h3 id="matrix_methods">Matrix Methods:</h3>
+<ul>
+<li><strong>identity()</strong> </li>
+<li><strong>translate(mixed)</strong> </li>
+<li><strong>scale(mixed)</strong></li>
+<li><strong>rotate(theta, axis)</strong> </li>
+<li><strong>determinant()</strong> </li>
+<li><strong>inverse()</strong></li>
+<li><strong>multiply(matrix)</strong></li>
+<li><strong>skew(sx, sy)</strong> </li>
+<li><strong>transpose()</strong> </li>
+</ul>
+<h3 id="helper_functions">Helper functions:</h3>
+<ul>
+<li><strong>lime.webgl.perspective(fovy, aspect, znear, zfar)</strong> - Return perspective projection matrix.</li>
+<li><strong>lime.webgl.ortho(left, right, bottom, top, znear, zfar)</strong> - Return orthogonal projection matrix.</li>
+</ul>
+&nbsp;
+
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">mvMatrix</span> <span class="o">=</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">webgl</span><span class="p">.</span><span class="nx">M4</span><span class="p">().</span><span class="nx">identity</span><span class="p">().</span><span class="nx">translate</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,-</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c">//draw with translation only</span>
+
+<span class="nx">mvMatrix</span><span class="p">.</span><span class="nx">save</span><span class="p">().</span><span class="nx">scale</span><span class="p">(</span><span class="mf">1.5</span><span class="o">,</span><span class="mf">1.5</span><span class="p">).</span><span class="nx">rotate</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">/</span><span class="mi">2</span><span class="o">,</span><span class="p">[</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="p">]);</span>
+
+<span class="c">//translation + scale + rotation</span>
+
+<span class="nx">mvMatrix</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+
+<span class="c">// back to translation only</span>
+</pre></div>
+</td></tr></table>
+
+<p>Current WebGL API is not in any way complete and will probably change a lot over time. If you have any questions or suggestions, please let us know.</p>
+        </div>
+    </div>
+    
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="../../../0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="../../../static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="../../../static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="../../../feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

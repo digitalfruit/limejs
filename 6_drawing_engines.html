@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>#6 Drawing Engines  | LimeJS</title>
+    <link rel="stylesheet" href="static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="#6 Drawing Engines - page on LimeJS" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+        <h1>Programming guide</h1>
+        Chapters  <br> <a href="0-getting-started.html" title="#0 Getting Started">#0 Getting Started</a> | <a href="1_the_timeline.html" title="#1 The Timeline">#1 The Timeline</a> | <a href="2_layout_and_nodes.html" title="#2 Layout and Nodes">#2 Layout and Nodes</a> | <a href="3_shapes_and_fills.html" title="#3 Shapes and Fills">#3 Shapes and Fills</a> | <a href="4_events.html" title="#4 Events">#4 Events</a> | <a href="5_animations.html" title="#5 Animations">#5 Animations</a> | <a href="6_drawing_engines.html" title="#6 Drawing Engines">#6 Drawing Engines</a> | <a href="7-building.html" title="#7 Building">#7 Building</a>
+        
+        <h1 id="drawing_engine">Drawing engine</h1>
+<p>One of the most important features of LimeJS is its different rendering engines support. It is wrong to call LimeJS a Canvas game framework as Canvas is only one of the lower level technologies supported. The lower level methods that have ability to draw to screen are gathered into namespace <em>lime.Renderer</em>. Different renderers can be switched on any Node with <code>setRenderer(renderer)</code>method in any time. Currently supported renderers in LimeJS are <em>lime.Renderer.DOM</em> and <em>lime.Renderer.CANVAS</em>.</p>
+<h2 id="why_many_renderers_are_required">Why many renderers are required?</h2>
+<p>Maybe your first intention is that Canvas is so cool and everything could be done with that. In some day we will maybe get to that but we&#8217;re not there at the moment at least. Canvas is great and allows you to do almost anything but due to it&#8217;s bitmap type nature can&#8217;t be suitable for everything. You may have seen SVG vs Canvas charts about when to use which, same could be done about DOM vs Canvas. Also there isn&#8217;t currently a stable browser that has hardware accelerated Canvas implementation. In mobile devices this is a must because mobile CPU-s aren&#8217;t so speedy as your PC may be.</p>
+<p>There are lot of innovative technologies in HTML5 and Canvas is only one of them. Rounded corners, transforms, transitions and gradients are some of the cool thing HTML5 adds to DOM. Every device/browser has a bit different implementation(performance wise and sometimes API-wise). This is actually a good thing as it helps the web move forward faster and doesn&#8217;t limit us to some fixed stack. But it isn&#8217;t something you want to worry about when you want to develop your game for many devices and the deadline is approaching. For example current iOS version 4.2 has very slow implementation of the Canvas element, instead it has GPU accelerated CSS transforms. On the other hand current non-beta PC browsers don&#8217;t have hardware accelerated CSS transforms, but because they have fast CPU-s they can draw to Canvas pretty quickly. Because CSS transforms and Canvas are very different technologies you would practically have to make two games if you would want to support both. Luckily you have LimeJS that lets you do this with one line. </p>
+<h2 id="limerendererdom">lime.Renderer.DOM</h2>
+<p>DOM renderer renders the nodes it draws as DIV elements and changes their CSS properties to make them look like wanted from the script. DOM renderer is default renderer for all elements that support it.</p>
+<p>You should usually use DOM renderer when:</p>
+<ul>
+<li>On iOS</li>
+<li>The node tree is relatively simple and not deep</li>
+<li>Your element changes/animates often</li>
+<li>Your element takes big part of the screen</li>
+</ul>
+<p>Instances on Director and Scene always use DOM renderer and can&#8217;t be switched to Canvas.</p>
+<h2 id="limerenderercanvas">lime.Renderer.CANVAS</h2>
+<p>Canvas renderer makes a single Canvas element and draw into its 2D context with Canvas drawing methods. If element has children they will be drawn to the same Canvas. If any element changes whole Canvas will be redrawn in the next frame. You can&#8217;t add pure DOM elements as children of a Node if it is being drawn with Canvas renderer.</p>
+<p>You should usually use Canvas renderer when:</p>
+<ul>
+<li>You have a piece of tree that is relatively static</li>
+<li>DOM renderer result doesn&#8217;t satisfy you</li>
+<li>You can see groups of elements that usually change together</li>
+<li>You are on machine with fast CPU or browser that has hardware accelerated Canvas implementation.</li>
+</ul>
+<p>Polygon shapes are always drawn with Canvas renderer as there isn&#8217;t any way to make them with CSS.</p>
+<h2 id="future_compatibility">Future compatibility</h2>
+<p>There is one more thing why this method is important. Web is moving in rapid speed and there is no way to see what will happen in even couple of years. There will probably be even better technologies then available. By hiding away this layer we can implement them as soon as they arrive. The game developer doesn&#8217;t need to change anything and users who still use older browsers/devices can use the old version.</p>
+<p>We have already decided that there will be a WebGL renderer in the future. It will be pretty similar to the Canvas implementation but things will be drawn to WebGL graphics context. All the hard shaders stuff will be hidden away from you. You only need to call the <code>setRenderer()</code> method for your current element. As the development is open for everyone someone else could very well make a SVG renderer or even VML if there is a need for that.</p>
+    </div>
+	
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

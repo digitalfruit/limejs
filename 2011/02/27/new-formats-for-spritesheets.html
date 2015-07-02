@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New formats for SpriteSheets  | LimeJS</title>
+    <link rel="stylesheet" href="../../../static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="../../../static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="../../../feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="New formats for SpriteSheets - post on LimeJS tagged spritesheet" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+
+<script type="text/javascript">
+    var disqus_developer=1;
+</script>
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="../../../index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+             
+        <h1>New formats for SpriteSheets</h1>
+       
+        <div class="datetime">
+        
+            4 years ago</div>
+           <div class="tags"> Tags: <a href="../../../tag/spritesheet.html">spritesheet</a></div>
+           <div class="clear"></div>
+        </div>
+        <div class="post_body">
+        <p>There has been some new features added to SpriteSheet functionality. In addition to the Zwoptex Flash format LimeJS now also supports the newer Zwoptex (cocos2d) format and JSON format present in <a href="http://texturepacker.com/">TexturePacker</a>. While you could use trimming before you now can pack your files even more by using rotation switching.</p>
+<p>We have put a parser logic for each format in the special object that needs to be included with <em>goog.require()</em> and passed in to the SpriteSheet constructor as a third parameter. All currently supported parser objects are:</p>
+<ul>
+<li><em>lime.parser.ZWOPTEX</em> - Original Zwoptex format, also known as Zwoptex Flash format or cocos2d-0.99.4</li>
+<li><em>lime.parser.ZWOPTEX2</em> - New Zwoptex format, also known as Zwoptex Generic or cocos2d</li>
+<li><em>lime.parser.JSON</em> - JSON format that can be exported from TexturePacker </li>
+</ul>
+<p>So your new code may look something like this:</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">goog</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;lime.parser.JSON&#39;</span><span class="p">);</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;lime.ASSETS.mysheet.json&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">ss</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">SpriteSheet</span><span class="p">(</span><span class="s1">&#39;mysheet.png&#39;</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">ASSETS</span><span class="p">.</span><span class="nx">mysheet</span><span class="p">.</span><span class="nx">json</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">parser</span><span class="p">.</span><span class="nx">JSON</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Note that previous logic that meant that initializing SpriteSheet with only two parameters is still supported but marked deprecated. It is safest to always pass the third parameter. Maybe in the future we will make JSON format default as it is more JavaScript friendly than XML Zwoptex formats.</p>
+<p>If you use the JSON coordinate format make sure you name your file with <em>.json</em> extension before you make it an asset with the <em>gensoy</em> command. This way the program knows to include the file as raw data instead of escaping it into strings that is required for XML formats. Otherwise everything is the same as described in <a href="../21/introducing-sprite-sheets.html">previous post</a>.</p>
+<p>To use the new rotation features you don&#8217;t have to do anything in the code. Only select &#8220;allow rotation&#8221; in the program you use for generating the sheet. Everything else is done automatically.</p>
+<p>If you think any more formats would be useful for LimeJS let us know in the comments.</p>
+        </div>
+    </div>
+    
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="../../../0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="../../../static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="../../../static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="../../../feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

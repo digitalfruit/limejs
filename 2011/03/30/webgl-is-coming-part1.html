@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebGL is coming  | LimeJS</title>
+    <link rel="stylesheet" href="../../../static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="../../../static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="../../../feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="WebGL is coming - post on LimeJS tagged webgl, renderers, 3d" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+
+<script type="text/javascript">
+    var disqus_developer=1;
+</script>
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="../../../index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+             
+        <h1>WebGL is coming</h1>
+       
+        <div class="datetime">
+        
+            4 years ago</div>
+           <div class="tags"> Tags: <a href="../../../tag/webgl.html">webgl</a> <a href="../../../tag/renderers.html">renderers</a> <a href="../../../tag/3d.html">3d</a></div>
+           <div class="clear"></div>
+        </div>
+        <div class="post_body">
+        <p>WebGL is a new open technology for building HTML5 games. I enables developers access to lower level graphics APIs allowing high performance and 3D transformations. All fully hardware accelerated. WebGL is based on OpenGLES 2.0 and it basically works in three steps. First you write small shader programs and send them to be run on your graphics card. Then combine your vertex/color/texture/etc data to the data buffers and send the buffers to the graphics card. And finally tell your graphics card to draw the data inside the buffers using the shader programs. Good introduction to OpenGL ES 2.0 can be found from <a href="http://iphonedevelopment.blogspot.com/2010/10/opengl-es-20-for-ios-chapter-1.html">Jeff LaMarche blog</a>. Luckily you don&#8217;t have to know everything about WebGL to use it in LimeJS. The WebGL renderer can be used as a simple on/off switch with no further knowledge needed. As an extra we will include Closure Library style WebGL framework methods that we use for writing the renderer so you can use it for your custom WebGL related work.</p>
+<p>You can follow along WebGL related development in the <a href="https://github.com/digitalfruit/limejs/tree/webgl">WebGL branch on Github</a>. Its not in any way stable or feature complete at the moment but may be interesting for you to follow along when features appear. This also means that we are very open to suggestions about all aspects what it should do, what it should not and how it should be implemented. As there is no features yet marked ready there is a very good change your own idea can make into it.</p>
+<p>The main benefit WebGL gives is better performance and ability to draw 3D contents on WebGLContext shape. WebGL renderer &#8216;lime.Renderer.WEBGL&#8217; can be used as any other renderer, so any shape accepts it on it&#8217;s &#8216;setRenderer()&#8217; method. But there are some aspects that make it special. The startup time of starting a new WebGL context is pretty high so it may not be very usable to switch between WebGL renderer and some other renderer method. Also it does not make much sense to have many WebGL contexts on the screen - the benefits of using WebGL start to appear when it can draw lot of stuff in one context. So usually we would see it used for whole Scene objects and not so much for independent elements.</p>
+<p>So how much faster will it be? Not too much actually. Don&#8217;t expect 10 times performance gain unless your current browser&#8217;s DOM or Canvas implementation is very slow. Some benchmarks will show that magnitude change is possible but it really is for certain tasks only. OpenGL is really good if you have many static triangles(big model) and you apply a 3D transformation to them all together. You will be abled to use this method via WebGLContext shape that lets you have exact low level control of everything that is drawn using our WebGL helper library(same way as you can use CanvasContext shape currently). But for the WebGL renderer we need to write middleware that converts LimeJS nodes to vertex arrays and draws them using right shaders. This middleware will probably be the bottleneck, not the WebGL draw commands themselves.</p>
+<p>Here is a simple example of 3 renderers in action. It just draws 1000 sprites on the screen and then resizes and rotates them all in random factors in every frame. You can compare the performance by switching between renderers and comparing the FPS value. Remember that this is not something that WebGL is very much suited for, more like a worst case example because every box moves independently.</p>
+<p>Code to draw and animate the sprites is:</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">numboxes</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">numboxes</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+
+    <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span>
+        <span class="nx">setSize</span><span class="p">(</span><span class="mi">10</span><span class="o">+</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">20</span><span class="o">,</span><span class="mi">10</span><span class="o">+</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">20</span><span class="p">).</span>
+        <span class="nx">setPosition</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">600</span><span class="o">,</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">400</span><span class="p">).</span>
+        <span class="nx">setFill</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">255</span><span class="p">)</span><span class="o">,</span>
+                <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">255</span><span class="p">)</span><span class="o">,</span>
+                <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">255</span><span class="p">));</span>
+    <span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">seq</span> <span class="o">=</span>  <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Spawn</span><span class="p">(</span>
+        <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">ScaleBy</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()).</span><span class="nx">setDuration</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="o">,</span>
+        <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">RotateBy</span><span class="p">(</span><span class="mi">360</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()).</span><span class="nx">setDuration</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Loop</span><span class="p">(</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Sequence</span><span class="p">(</span><span class="nx">seq</span><span class="o">,</span><span class="nx">seq</span><span class="p">.</span><span class="nx">reverse</span><span class="p">()));</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim</span><span class="p">);</span>
+
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>Full code is available on <a href="https://github.com/digitalfruit/limejs/blob/webgl/lime/demos/tests/webgl.js">github</a> and here is the <a href="../../../static/demo_webgl.html">LIVE SAMPLE</a> (needs WebGL capable browser: Chrome9+,Firefox4,Webkit Nightly).</p>
+<p>In couple of days I&#8217;ll write more in depth about the WebGL library features and design goals. Stay tuned. </p>
+        </div>
+    </div>
+    
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="../../../0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="../../../static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="../../../static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="../../../feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

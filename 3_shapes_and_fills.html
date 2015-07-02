@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>#3 Shapes and Fills  | LimeJS</title>
+    <link rel="stylesheet" href="static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="#3 Shapes and Fills - page on LimeJS" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+        <h1>Programming guide</h1>
+        Chapters  <br> <a href="0-getting-started.html" title="#0 Getting Started">#0 Getting Started</a> | <a href="1_the_timeline.html" title="#1 The Timeline">#1 The Timeline</a> | <a href="2_layout_and_nodes.html" title="#2 Layout and Nodes">#2 Layout and Nodes</a> | <a href="3_shapes_and_fills.html" title="#3 Shapes and Fills">#3 Shapes and Fills</a> | <a href="4_events.html" title="#4 Events">#4 Events</a> | <a href="5_animations.html" title="#5 Animations">#5 Animations</a> | <a href="6_drawing_engines.html" title="#6 Drawing Engines">#6 Drawing Engines</a> | <a href="7-building.html" title="#7 Building">#7 Building</a>
+        
+        <h1 id="shapes_and_fills">Shapes and Fills</h1>
+<h2 id="sprites">Sprites</h2>
+<p>In previous chapter you learned about Node class. Though Node is the most important class in LimeJS you almost never create instances of Node itself. You will create Sprites. Sprite is a rectangular display object that can have visual appearance. The appearance can be added with ’setFill(fill)’ method. All of the functionality of the Node class can still be used on sprites and other shapes that inherit from it. This includes adding children sprites.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">redsquare</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">50</span><span class="o">,</span><span class="mi">50</span><span class="p">).</span>
+    <span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">setAnchorPoint</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">redsquare</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="other_common_shapes">Other common shapes</h2>
+<h3 id="circle">Circle</h3>
+<p>Circle shape makes it easy to create circles or ellipses. All methods are the same as for Sprite. Note that you don&#8217;t define radius for a circle but just set it&#8217;s width and height.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">circle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Circle</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">40</span><span class="o">,</span><span class="mi">40</span><span class="p">);</span>
+    <span class="c">// circle with radius 20</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="roundedrect">RoundedRect</h3>
+<p>RoundedRect shape acts like a Sprite but you get a extra method ’setRadius(radius)’. Radius is the same corner radius property that you will find in any drawing application.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">shape</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">RoundedRect</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">40</span><span class="p">).</span>
+    <span class="nx">setRadius</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="label">Label</h3>
+<p>Label is a shape what can have textual content inside. Text can be defined with ’setText(str)’ method. You can also set various font properties of a label and alignment of its text. If you don&#8217;t set fixed size for the label one is calculated automatically based on the length of the text and size of the font.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">lbl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Label</span><span class="p">().</span><span class="nx">setText</span><span class="p">(</span><span class="s1">&#39;Your Score: 10&#39;</span><span class="p">).</span><span class="nx">setFontFamily</span><span class="p">(</span><span class="s1">&#39;Verdana&#39;</span><span class="p">).</span>
+    <span class="nx">setFontColor</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">setFontSize</span><span class="p">(</span><span class="mi">26</span><span class="p">).</span><span class="nx">setFontWeight</span><span class="p">(</span><span class="s1">&#39;bold&#39;</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">150</span><span class="o">,</span><span class="mi">30</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="polygon">Polygon</h3>
+<p>Polygons are most abstract shapes you can create with LimeJS. You need to define the points that make up the polygon, all the rest is done for you. You can not change the anchorPoint and size properties of a polygon caused this are also taken from the point values. This flexible way allows you to create almost anything but realize that less points will mean better performance.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">triangle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Polygon</span><span class="p">().</span>
+    <span class="nx">addPoints</span><span class="p">(</span><span class="mi">0</span><span class="o">,-</span><span class="mi">1</span><span class="o">,</span> <span class="p">.</span><span class="mi">5</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="o">,</span> <span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="fills">Fills</h2>
+<p>Simply creating shapes will not show anything on the screen, it will only set up connections between them. To add some visual appearance you have to set shape&#8217;s fill property with ’setFill(fill)’ method. The property passed in to <em>setFill</em> can be object that implements <em>lime.fill.Fill</em> or for some simpler fills you can just pass in the values that will be parsed through ’lime.fill.Fill.parse()’ function to automatically create the fills. <br />
+</p>
+<h3 id="colors">Colors</h3>
+<p>Color is the simplest fill you can add to your shape to have it appear in single solid color. You can pass in the values in many different forms: as a hex string, rgb(a) string or raw rgb(a) values.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">shape</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span> <span class="c">//dark red</span>
+<span class="nx">shape</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span> <span class="c">// 50% transparent gray</span>
+
+<span class="nx">shape</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">);</span> <span class="c">//white</span>
+<span class="nx">shape</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;rgb(100,0,0)&#39;</span><span class="p">);</span> <span class="c">//same dark red as first</span>
+</pre></div>
+</td></tr></table>
+
+<p>Once you have created your Color fill object you can transform its value with some built in functions. More specifically you can change color&#8217;s brightness with method ’addBrightness(factor)’ and saturation with ’addSaturation(factor)’. The factor must be in -1 to +1 range.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">green</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">Color</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span> <span class="c">// neutral green</span>
+<span class="kd">var</span> <span class="nx">darker_green</span> <span class="o">=</span> <span class="nx">green</span><span class="p">.</span><span class="nx">addBrightness</span><span class="p">(</span><span class="o">-</span><span class="p">.</span><span class="mi">2</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">intensive_green</span> <span class="o">=</span> <span class="nx">green</span><span class="p">.</span><span class="nx">addSaturation</span><span class="p">(.</span><span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="images">Images</h3>
+<p>As it&#8217;s name says Image fill simply allows you to set external image file as background of a shape. Image is scaled to fit the elements size.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">sprite</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;assets/image.png&#39;</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="gradients">Gradients</h3>
+<p>Currently only supported gradient is <em>lime.fill.LinearGradient</em> that allows to create a background transform between colors on a single direction. Radial gradients are not supported at the moment. The angle of the gradient can be defined with method ’setDirection(x0,y0,x1,y1)’ where P(x0,y0) and P(x1,y1) define start and end positions inside 1x1 square. Colors can be defined with method ’addColorStop(offset,var_args)’ where offset must be in 0-1 range.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">gradient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">LinearGradient</span><span class="p">().</span>
+        <span class="nx">setDirection</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="mi">1</span><span class="p">).</span> <span class="c">// 45&#39; angle </span>
+        <span class="nx">addColorStop</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="p">).</span> <span class="c">// start from red color</span>
+        <span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">100</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span> <span class="c">// end with transparent blue</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="nx">gradient</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="masks">Masks</h2>
+<p>Adding mask to a shape means that you only show some specific area of your element. In LimeJS masking is done similarly as in Flash - you create two objects and set one as a mask for the other. This means that only the intersection part is shown and all other parts are clipped away from original element. Only rectangular masks are supported at the moment. After the masks are set you can still modify all the properties of both elements.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">mask</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">100</span><span class="p">).</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">100</span><span class="p">);</span>
+<span class="nx">parent</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">mask</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">image</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">300</span><span class="o">,</span><span class="mi">200</span><span class="p">).</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;assets/myimage.png&#39;</span><span class="p">);</span>
+<span class="nx">parent</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">image</span><span class="p">);</span>
+
+<span class="nx">image</span><span class="p">.</span><span class="nx">setMask</span><span class="p">(</span><span class="nx">mask</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+    </div>
+	
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

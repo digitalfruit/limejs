@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>#2 Layout and Nodes  | LimeJS</title>
+    <link rel="stylesheet" href="static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="#2 Layout and Nodes - page on LimeJS" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+        <h1>Programming guide</h1>
+        Chapters  <br> <a href="0-getting-started.html" title="#0 Getting Started">#0 Getting Started</a> | <a href="1_the_timeline.html" title="#1 The Timeline">#1 The Timeline</a> | <a href="2_layout_and_nodes.html" title="#2 Layout and Nodes">#2 Layout and Nodes</a> | <a href="3_shapes_and_fills.html" title="#3 Shapes and Fills">#3 Shapes and Fills</a> | <a href="4_events.html" title="#4 Events">#4 Events</a> | <a href="5_animations.html" title="#5 Animations">#5 Animations</a> | <a href="6_drawing_engines.html" title="#6 Drawing Engines">#6 Drawing Engines</a> | <a href="7-building.html" title="#7 Building">#7 Building</a>
+        
+        <h1 id="layout_and_nodes">Layout and nodes</h1>
+<h2 id="resize_and_orientation_changes">Resize and orientation changes</h2>
+<p>There is not much you have to do to support different screen sizes and viewport size changes in LimeJS. It&#8217;s all done automatically. In the constructor of the Director(or in the <em>setSize</em> method) you define the stage size, but this doesn&#8217;t need to match the actual screen size. The actual size of your game is taken from the size of the container DOM element your game is located in. If the size of the container object changes your game will resize as well to fill the container. It is important to note that although your game scales the coordinates you use in your game logic will still reflect your original stage size so you can completely ignore it while programming.</p>
+<h2 id="full_screen_games">Full screen games</h2>
+<p>The default project template initializes the Director directly inside the body element. This makes it easy to make a game that is always in full screen - something that is a must for mobile web applications. But this behavior isn&#8217;t something that is required. You could very well just make a fixed size DIV element and use it as a parent container. This will then look more like a usual flash game inside HTML page. </p>
+<h2 id="nodes">Nodes</h2>
+<p>Node is the most important object in LimeJS as it&#8217;s the base object for every object in the display objects tree structure. In fact even the Director, Scene and Layer classes described earlier all inherit from Node class. </p>
+<p>Node class defines lot of common functionality for the display objects. Note that all the setter functions return the object itself so they can be combined together in a chain. All setters also have getter counterpart. Everything is similar to the DOM element tree or Flash displayobjects tree.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">parent</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">();</span>
+<span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">child</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="size">Size</h3>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">50</span><span class="o">,</span><span class="mi">50</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">size</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getSize</span><span class="p">();</span> <span class="c">// returns object</span>
+<span class="nx">size</span><span class="p">.</span><span class="nx">width</span><span class="o">+=</span><span class="mi">100</span><span class="o">;</span>
+<span class="nx">node</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="nx">size</span><span class="p">);</span>
+
+<span class="nx">node</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="k">new</span> <span class="nx">goog</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">Size</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">50</span><span class="p">));</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="position">Position</h3>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">().</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">200</span><span class="o">,</span><span class="mi">100</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">pos</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getPosition</span><span class="p">();</span> <span class="c">// return object</span>
+<span class="nx">pos</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">150</span><span class="o">;</span>
+<span class="nx">node</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="nx">pos</span><span class="p">);</span>
+
+<span class="nx">node</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="k">new</span> <span class="nx">goog</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">Coordinate</span><span class="p">(</span><span class="mi">50</span><span class="o">,</span><span class="mi">50</span><span class="p">));</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="scale">Scale</h3>
+<p>Scale makes object larges by a factor. Note that the position of the element isn&#8217;t changed.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">().</span><span class="nx">setScale</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">node</span><span class="p">.</span><span class="nx">setScale</span><span class="p">(.</span><span class="mi">7</span><span class="p">);</span> <span class="c">//scale in both axis</span>
+<span class="nx">node</span><span class="p">.</span><span class="nx">setScale</span><span class="p">(</span><span class="k">new</span> <span class="nx">goog</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">Vec2</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="p">));</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="rotation">Rotation</h3>
+<p>Object rotation is defined in degrees.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">().</span><span class="nx">setRotation</span><span class="p">(</span><span class="mi">90</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="quality">Quality</h3>
+<p>Setting object&#8217;s quality value makes it render in a smaller size and then scale the whole element to its original size. In some cases this allows boost performance by loosing in quality. Note that it almost never makes sense to to set the quality value larger than 1 as if quality is already 100% it can&#8217;t get any better.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">node</span><span class="p">.</span><span class="nx">setQuality</span><span class="p">(.</span><span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="autoresize">AutoResize</h3>
+<p>AutoResize define how the objects size should change when its parent objects size changes. There are no percentage unit sizes in LimeJS but this allows you to have same result in much powerful way. Enum lime.AutoResize defines different properties that can be flexible. You pass the combination of these bitmask properties to ’setAutoResize()’ method to make the combination you need. Similar method is used in iOS UIKit framework.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">box</span><span class="p">.</span><span class="nx">setAutoResize</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">AutoResize</span><span class="p">.</span><span class="nx">WIDTH</span> <span class="o">|</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">AutoResize</span><span class="p">.</span><span class="nx">HEIGHT</span><span class="p">);</span>
+
+<span class="nx">footer</span><span class="p">.</span><span class="nx">setAutoResize</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">AutoResize</span><span class="p">.</span><span class="nx">TOP</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="anchor_points">Anchor Points</h3>
+<p>In HTML all objects position relatively from its top left corner by default. In games this isn&#8217;t always suitable. There are many object that have their most important point in some other area. Node&#8217;s method ’setAnchorPoint(vec2)’ allows you to set any position as base relative point. The vector passed in should have values in 0-1 range where (0,0) means top-left and (1,1) bottom-right. By default all objects are positioned by their center. Anchor point is used when positioning the element and its children and also while rotating.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">box</span><span class="p">.</span><span class="nx">setAnchorPoint</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="nx">circle</span><span class="p">.</span><span class="nx">setAnchorPoint</span><span class="p">(.</span><span class="mi">5</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span> <span class="c">//also default value</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="coordinate_conversion">Coordinate conversion</h2>
+<p>In some situation you may need to set one elements position relatively from another. When the objects aren&#8217;t in the same layer this isn&#8217;t so simple as the position properties originate from different parent. For dealing with that issue Lime provides functions to convert coordinates from one node&#8217;s coordinate space to other.</p>
+<div class="codehilite"><pre>box.localToScreen(coord) - Converts local coordinate to screen coordinate.
+box.screenToLocal(coord) - Converts screen coordinate to local nodes space.
+box.localToNode(coord,node) - Converts local coordinate to any other nodes coordinate space.
+</pre></div>
+    </div>
+	
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

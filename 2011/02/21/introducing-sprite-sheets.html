@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Introducing Sprite Sheets  | LimeJS</title>
+    <link rel="stylesheet" href="../../../static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="../../../static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="../../../feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="Introducing Sprite Sheets - post on LimeJS tagged demos, spritesheet" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+
+<script type="text/javascript">
+    var disqus_developer=1;
+</script>
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="../../../index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+             
+        <h1>Introducing Sprite Sheets</h1>
+       
+        <div class="datetime">
+        
+            4 years ago</div>
+           <div class="tags"> Tags: <a href="../../../tag/demos.html">demos</a> <a href="../../../tag/spritesheet.html">spritesheet</a></div>
+           <div class="clear"></div>
+        </div>
+        <div class="post_body">
+        <p>LimeJS now has full support of sprite sheets. This means that you can gather your image assets to the same file and define areas that contain only the parts you are interested about. This lets you load multiple images with one request and export your whole keyframe animation with single file. </p>
+<p>To define a fill for a part of a image there is a new Frame fill. It takes in an image(as url or Image element) and frame definition(as goog.math.Rect object or numbers). You can then use the Frame fill instance as you would  use any other fill. All the same methods can be used for Frame as for Image fill(this covers repeating patterns) and performance should be also similar.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">frame</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">Frame</span><span class="p">(</span><span class="s1">&#39;sheet.png&#39;</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="mi">30</span><span class="o">,</span> <span class="mi">200</span><span class="o">,</span> <span class="mi">150</span><span class="p">);</span> <span class="c">//x , y, width, height</span>
+<span class="nx">box</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="nx">frame</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>By default the fill will take the same size as your object but you can change it with setSize(width,height,opt_isrelative) method. You may also change around the position from where the drawing of a fill starts with method setOffset(x,y,opt_isrelative). If the opt_isrelative parameter is set then the values don&#8217;t represent actual pixel values but the factors the target size is multiplied with.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">frame</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(.</span><span class="mi">5</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="o">,</span><span class="kc">true</span><span class="p">);</span> <span class="c">// make fill half the target size</span>
+</pre></div>
+</td></tr></table>
+
+<p>Of course managing your sprite sheets by hand and updating the positions directly to the code can be very hard. To make it much easier other people have made cool apps like <a href="http://zwoptexapp.com/">Zwoptex</a>, <a href="http://texturepacker.com/">TexturePacker</a>, <a href="http://www.bit-101.com/blog/?p=2939">SWFSheet</a> and many more. These programs allow you to import your assets and export them out as single image plus a coordinate definition file. Luckily LimeJS has direct support for both of these files.</p>
+<p>Lets look at SWFSheet first. This program, made by author of many great books <a href="http://www.bit-101.com/">Keith Peters</a>, allows to convert a Flash animation exported as a SWF into separate frames inside a sprite sheet. There&#8217;s a good video about the functionality <a href="http://www.bit-101.com/blog/?p=2939">here</a>. After setting all correct  parameters save the sheet and metadata. Select &#8220;Zwoptex&#8221; as metadata format.</p>
+<p>Now put the files inside your project. The metadata file is XML so we have to convert it to template asset to directly use it from the code. To do that run:</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py gensoy path/to/the/spinner.zwoptex
+</pre></div>
+</td></tr></table>
+
+<p>After doing this the contents of the file can be accessed from Javascript under namespace prefix <em>lime.ASSETS</em>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">goog</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">ASSETS</span><span class="p">.</span><span class="nx">spinner</span><span class="p">.</span><span class="nx">zwoptex</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">myfile</span> <span class="o">=</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">ASSETS</span><span class="p">.</span><span class="nx">spinner</span><span class="p">.</span><span class="nx">zwoptex</span><span class="o">;</span> <span class="c">//assignment to local not really needed</span>
+</pre></div>
+</td></tr></table>
+
+<p>Now lets construct the animation again. First create a lime.SpriteSheet object. Then you can ask for all the separate frames from the sheet with ’getFrame(name)’ method. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">ss</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">SpriteSheet</span><span class="p">(</span><span class="s1">&#39;assets/spinner.png&#39;</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">ASSETS</span><span class="p">.</span><span class="nx">spinner</span><span class="p">.</span><span class="nx">zwoptex</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Create a sprite to run the animations on. Set the initial frame. Note that the frame name does not reflect a URL to the file but only the name frame is defined for the sheet. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">100</span><span class="p">).</span><span class="nx">setFill</span><span class="p">(</span><span class="nx">ss</span><span class="p">.</span><span class="nx">getFrame</span><span class="p">(</span><span class="s1">&#39;frame_0001.png&#39;</span><span class="p">));</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>And finally create KeyframeAnimation. Set up all its frames and run it on the sprite.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">();</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="mi">60</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="nx">anim</span><span class="p">.</span><span class="nx">addFrame</span><span class="p">(</span><span class="nx">ss</span><span class="p">.</span><span class="nx">getFrame</span><span class="p">(</span><span class="s1">&#39;frame_&#39;</span><span class="o">+</span><span class="nx">goog</span><span class="p">.</span><span class="nx">string</span><span class="p">.</span><span class="nx">padNumber</span><span class="p">(</span><span class="nx">i</span><span class="o">,</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Thats it. Here is how it looks like (using the test files that came with SWFSheet):</p>
+<div id="demo_01" style="padding:20px;border: 3px solid #ccc;width:200px;height:200px;margin: 20px auto;"></div>
+
+<script type="text/javascript" src="../../../static/demo_01.js%3F1"></script>
+
+<p>Now lets make something bit more interactive. I downloaded some game asset tiles for a monster character from <a href="http://reinerstileset.4players.de/monstersE.html">this page</a>. Zip file contains BMP files that need to be converted to PNGs for Zwoptex app. I choosed the walking related images, imported them into Zwoptex and turned on trimming. It looked like this:</p>
+<p><img alt="Zwoptex screenshot" src="../../../static/zwoptex_ss.png" /></p>
+<p>Publishing is similar as for SWFSheet. Format currently supported in LimeJS is Zwoptex Flash format(can be changed from publishing settings). After that convert the coordinates XML file to assets same way as for SWFSheet(gensoy). </p>
+<p>The objective is to make the monster object move to the place clicked/touched while animating through the frames same time. I won&#8217;t paste full source code (can be seen <a href="https://github.com/digitalfruit/limejs/blob/master/lime/demos/tests/frame4.js">here</a>) but here is the basic function that does it.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">test</span><span class="p">.</span><span class="nx">moveToPosition</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">monster</span><span class="o">,</span><span class="nx">pos</span><span class="p">){</span>
+
+<span class="kd">var</span> <span class="nx">delta</span> <span class="o">=</span> <span class="nx">goog</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">Coordinate</span><span class="p">.</span><span class="nx">difference</span><span class="p">(</span><span class="nx">pos</span><span class="o">,</span><span class="nx">monster</span><span class="p">.</span><span class="nx">getPosition</span><span class="p">())</span><span class="o">,</span> 
+    <span class="nx">angle</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="o">-</span><span class="nx">delta</span><span class="p">.</span><span class="nx">y</span><span class="o">,</span><span class="nx">delta</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span> <span class="c">// in radians</span>
+
+<span class="c">//determine the direction    </span>
+<span class="kd">var</span> <span class="nx">dir</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">angle</span><span class="o">/</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">8</span><span class="p">);</span> <span class="c">// 8th of the circle</span>
+<span class="kd">var</span> <span class="nx">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="o">,</span><span class="s1">&#39;ne&#39;</span><span class="o">,</span><span class="s1">&#39;n&#39;</span><span class="o">,</span><span class="s1">&#39;nw&#39;</span><span class="o">,</span><span class="s1">&#39;w&#39;</span><span class="o">,</span><span class="s1">&#39;sw&#39;</span><span class="o">,</span><span class="s1">&#39;s&#39;</span><span class="o">,</span><span class="s1">&#39;se&#39;</span><span class="p">];</span> <span class="c">//from original file names</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">dir</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="nx">dir</span><span class="o">=</span><span class="mi">8</span><span class="o">+</span><span class="nx">dir</span><span class="o">;</span> <span class="c">//backwards for negative angles</span>
+<span class="nx">dir</span> <span class="o">=</span> <span class="nx">dirs</span><span class="p">[</span><span class="nx">dir</span><span class="p">];</span>
+
+<span class="c">// move animation</span>
+<span class="kd">var</span> <span class="nx">move</span> <span class="o">=</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">MoveBy</span><span class="p">(</span><span class="nx">delta</span><span class="p">).</span><span class="nx">setEasing</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">LINEAR</span><span class="p">).</span><span class="nx">setSpeed</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="c">//setSpeed is just a helper that sets the duration based on the length of the delta</span>
+<span class="nx">monster</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">move</span><span class="p">);</span>
+
+<span class="c">// keyframe animation</span>
+<span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">();</span>
+<span class="nx">anim</span><span class="p">.</span><span class="nx">delay</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">7</span><span class="o">;</span> <span class="c">// 1/7 sec between frames, too fast otherwise</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="mi">7</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span> <span class="c">//add the frames</span>
+    <span class="nx">anim</span><span class="p">.</span><span class="nx">addFrame</span><span class="p">(</span><span class="nx">test</span><span class="p">.</span><span class="nx">ss</span><span class="p">.</span><span class="nx">getFrame</span><span class="p">(</span><span class="s1">&#39;walking-&#39;</span><span class="o">+</span><span class="nx">dir</span><span class="o">+</span><span class="s1">&#39;000&#39;</span><span class="o">+</span><span class="nx">i</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="nx">monster</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim</span><span class="p">);</span>
+
+<span class="c">// on stop show front facing frame</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">move</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">STOP</span><span class="o">,</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">anim</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span> <span class="c">//keyframeanimation has no duration so have to be stopped manually</span>
+    <span class="nx">monster</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="nx">test</span><span class="p">.</span><span class="nx">ss</span><span class="p">.</span><span class="nx">getFrame</span><span class="p">(</span><span class="s1">&#39;walking-s0001.png&#39;</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="p">};</span>
+</pre></div>
+</td></tr></table>
+
+<p>Here is how it looks like. Click on a monster first to select it then somewhere else to move it to this position.</p>
+<div id="demo_02" style="padding:20px;border: 3px solid #ccc;width:600px;height:400px;margin: 20px auto;"><a href="../../../static/monster_demo.html" target="_blank"><img src="../../../static/monsters_ss.png"></a></div>
+        </div>
+    </div>
+    
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="../../../0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="../../../static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="../../../static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="../../../feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

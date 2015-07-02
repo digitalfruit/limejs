@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Using KeyframeAnimation for fill effects  | LimeJS</title>
+    <link rel="stylesheet" href="../../../static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="../../../static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="../../../feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="Using KeyframeAnimation for fill effects - post on LimeJS tagged demos" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+
+<script type="text/javascript">
+    var disqus_developer=1;
+</script>
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="../../../index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+             
+        <h1>Using KeyframeAnimation for fill effects</h1>
+       
+        <div class="datetime">
+        
+            4 years ago</div>
+           <div class="tags"> Tags: <a href="../../../tag/demos.html">demos</a></div>
+           <div class="clear"></div>
+        </div>
+        <div class="post_body">
+        <p>Some posts ago we showed how to use KeyframeAnimation in the <a href="../../02/21/introducing-sprite-sheets.html">normal way</a>. That is by making a SpriteSheet image and using separate areas from that image as separate frames in the animation. But theres a bit more in it. The &#8216;addFrame()&#8217; method can actually accept any kind of fills. Depending on what you wish to achieve this may give you a way to have some animating objects without using lot of images.</p>
+<p>Please note that following can not be counted as a major feature of LimeJS but rather a side effect that we are happy about.</p>
+<p>Starting with the simplest fill types here is the animation using plain colors as fills. All syntax is the same. Just pass the color name to the &#8216;addFrame()&#8217; method. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">RoundedRect</span><span class="p">().</span><span class="nx">setRadius</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">50</span><span class="o">,</span><span class="mi">50</span><span class="p">).</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">200</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">().</span><span class="nx">setDelay</span><span class="p">(.</span><span class="mi">5</span><span class="p">).</span>
+    <span class="nx">addFrame</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">addFrame</span><span class="p">(</span><span class="s1">&#39;#0c0&#39;</span><span class="p">).</span><span class="nx">addFrame</span><span class="p">(</span><span class="s1">&#39;#00c&#39;</span><span class="p">);</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>This creates a simple blinking effect. One other use case would be to use &#8216;addBrightness()&#8217; or &#8216;addSaturation()&#8217; and create a stepping version of ColorTo animation.</p>
+<div id="demo_03_1" style="width:100px;height:100px;margin: 40px auto;"></div>
+
+<p>Next up gradients. Gradients are defined by their direction points and color locations. With a simple loop you could alter some parameters of the gradient to make an effect that the gradient is transforming into another. Here is an example of such case.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">circle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Circle</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">120</span><span class="o">,</span><span class="mi">120</span><span class="p">).</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">250</span><span class="o">,</span><span class="mi">200</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">circle</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">anim2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">().</span><span class="nx">setDelay</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">15</span><span class="p">)</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="mi">10</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="nx">anim2</span><span class="p">.</span><span class="nx">addFrame</span><span class="p">(</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">LinearGradient</span><span class="p">().</span><span class="nx">setDirection</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="nx">i</span><span class="o">/</span><span class="mi">10</span><span class="o">,</span><span class="nx">i</span><span class="o">/</span><span class="mi">10</span><span class="p">).</span>
+        <span class="nx">addColorStop</span><span class="p">(</span><span class="nx">i</span><span class="o">/</span><span class="mi">11</span><span class="o">,</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span><span class="s1">&#39;#00c&#39;</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="mi">10</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="nx">anim2</span><span class="p">.</span><span class="nx">addFrame</span><span class="p">(</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">LinearGradient</span><span class="p">().</span><span class="nx">setDirection</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="nx">i</span><span class="o">/</span><span class="mi">10</span><span class="o">,</span><span class="mi">1</span><span class="o">-</span><span class="nx">i</span><span class="o">/</span><span class="mi">10</span><span class="p">).</span>
+        <span class="nx">addColorStop</span><span class="p">(</span><span class="nx">i</span><span class="o">/</span><span class="mi">11</span><span class="o">,</span><span class="s1">&#39;#00c&#39;</span><span class="p">).</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span><span class="s1">&#39;#c00&#39;</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="nx">circle</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim2</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Here we add gradient from red (#c00) to blue (#00c) to the animations. While doing so in each step the location of the gradient is moved from top-left closer to the bottom right. This makes an effect that the gradient is sliding. Then the effect is repeated with swapped colors from different corner so we end up in the same position as the original frame. Note that the loop runs only once while defining the frames not when the animation itself is playing. It looks like this:</p>
+<div id="demo_03_2" style="width:200px;height:200px;margin: 40px auto;"></div>
+
+<p>One more way how this could be used is by using a single image and defining different size or position offset for each frame. As an example we draw a polygon arrow that uses single image of the &#8220;police line&#8221; that is scrolling over in a loop. To make such effect the x-axis offset if changed inside the for loop to move it from the left position to the right. Here is the code:<br />
+</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sign</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Polygon</span><span class="p">().</span><span class="nx">setPoints</span><span class="p">(</span><span class="mi">10</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">60</span><span class="o">,</span><span class="mi">60</span><span class="o">,</span><span class="mi">50</span><span class="o">,</span><span class="mi">20</span><span class="o">,</span><span class="mi">120</span><span class="o">,</span><span class="mi">20</span><span class="o">,</span><span class="mi">120</span><span class="o">,-</span><span class="mi">20</span><span class="o">,</span><span class="mi">50</span><span class="o">,-</span><span class="mi">20</span><span class="o">,</span><span class="mi">60</span><span class="o">,-</span><span class="mi">60</span><span class="p">).</span>
+    <span class="nx">setPosition</span><span class="p">(</span><span class="mi">450</span><span class="o">,</span><span class="mi">200</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sign</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">anim3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">().</span><span class="nx">setDelay</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">30</span><span class="p">);</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="mi">100</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+<span class="nx">anim3</span><span class="p">.</span><span class="nx">addFrame</span><span class="p">(</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">Image</span><span class="p">(</span><span class="s1">&#39;assets/sign.png&#39;</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">200</span><span class="o">,</span><span class="mi">33</span><span class="p">).</span>
+    <span class="nx">setOffset</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">i</span><span class="o">/</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="kc">true</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="nx">sign</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim3</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Add a RotateBy animation for bit more effect and here&#8217;s how it looks.</p>
+<div id="demo_03_3" style="width:300px;height:300px;margin: 40px auto;"></div>
+
+<p>These were some samples of KeyframeAnimation effects. You may also combine different techniques as well, so that for example some of the frames use full colors and some use gradients. All depends of course on the effect you need in your game.</p>
+<p>All source code for demos above can be seen <a href="https://github.com/digitalfruit/limejs/blob/master/lime/demos/tests/keyframe2.js">here</a>. </p>
+<script type="text/javascript" src="../../../static/demo_03.js"></script>
+<script type="text/javascript">
+test.start('demo_03_1',100,1,50);
+test.start('demo_03_2',200,2,100);
+test.start('demo_03_3',300,3,150);
+</script>
+        </div>
+    </div>
+    
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="../../../0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="../../../static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="../../../static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="../../../feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

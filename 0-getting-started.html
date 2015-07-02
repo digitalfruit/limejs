@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>#0 Getting Started  | LimeJS</title>
+    <link rel="stylesheet" href="static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="#0 Getting Started - page on LimeJS" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+        <h1>Programming guide</h1>
+        Chapters  <br> <a href="0-getting-started.html" title="#0 Getting Started">#0 Getting Started</a> | <a href="1_the_timeline.html" title="#1 The Timeline">#1 The Timeline</a> | <a href="2_layout_and_nodes.html" title="#2 Layout and Nodes">#2 Layout and Nodes</a> | <a href="3_shapes_and_fills.html" title="#3 Shapes and Fills">#3 Shapes and Fills</a> | <a href="4_events.html" title="#4 Events">#4 Events</a> | <a href="5_animations.html" title="#5 Animations">#5 Animations</a> | <a href="6_drawing_engines.html" title="#6 Drawing Engines">#6 Drawing Engines</a> | <a href="7-building.html" title="#7 Building">#7 Building</a>
+        
+        <h1 id="getting_started">Getting started</h1>
+<h2 id="installation">Installation</h2>
+<p><strong>Windows users:</strong> please follow the installation guide in the README file</p>
+<p>The dependencies required to develop with LimeJS include <a href="http://www.python.org/">Python 2.6+</a>, <a href="http://git-scm.com/download">Git</a> and <a href="http://subversion.apache.org/">Subversion</a> or Git-SVN. If you wish to use Closure Compiler then <a href="http://www.java.com/en/">Java</a> is also required. Once you have your built game there are no specific requirements for the distribution server.</p>
+<p>Download the source from <a href="http://github.com/digitalfruit/limejs">github</a>. The files include Javascript source files (in lime/) and one Python helper command line tool(lime.py) in bin/ directory.</p>
+<p>Check out the features of the CLI utility by running</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py --help
+</pre></div>
+</td></tr></table>
+
+<p>You will see the utility can handle initial setup, dependency updating, project creation, template generations and project building.</p>
+<p>Start by running inital setup: </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py init
+</pre></div>
+</td></tr></table>
+
+<p>This will download <a href="http://code.google.com/closure/library/">Closure Library</a>, <a href="http://box2d.thinkpixellab.com/">Box2D physics library</a>, <a href="http://code.google.com/closure/compiler/">Closure Compiler</a> &amp; <a href="http://code.google.com/closure/templates/">Templates</a> and set them all up so they are ready for being used.</p>
+<p>You&#8217;re done! Create a simple helloworld project by running </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py create helloworld
+</pre></div>
+</td></tr></table>
+
+<p>Open helloworld/helloworld.html in the browser and enjoy your accomplishment.</p>
+<h2 id="common_closure">Common Closure</h2>
+<p>LimeJS is built with Closure Library. Closure is JavaScript library built by Google, it has been used to develop lot of Google&#8217;s great products like Gmail or Docs. It is highly maintainable and readable, fast and feature rich. It also integrates well with other Closure tools like Compiler and Templates.</p>
+<h3 id="namespaces">Namespaces</h3>
+<p>One of Closure&#8217;s the most noticeable features is its namespacing system. Unlike some other libraries all the code is separated between files. Every file provides names for its code and can request some other files being present. While developing you only have to include <em>base.js</em> file that gives you new functions <code>goog.provide(namespace)</code> and <code>goog.require(namespace)</code>. Provide function declares that all code in the file can be requested with that name. Require function requests another file with that name. The whole system is analogues with any other language that has namespaces built in (Java, ActionScript, Python) with an exception that the name does not need to specify correct folder structure but can be completely arbitrary. Closure uses its built in <em>deps.js</em> file to map the namespaces to file paths. This means that if you add new namespaces you have to run </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>python bin/lime.py update
+</pre></div>
+</td></tr></table>
+
+<p>to update the <em>deps.js</em> so your new file can be accessed.</p>
+<p>It is not required that you use <code>goog.provide()</code> for your own project files but its highly encouraged. Using this will also get you much better results when you are ready to compile your game.</p>
+<h3 id="inheritance">Inheritance</h3>
+<p>Working with LimeJS one of the common actions is to make your custom subclass of a builtin class. Using this you can add your custom game specific methods to common objects. This is an example of a <em>lime.Circle</em>&#8216;s subclass <em>mygame.Ball</em>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></td><td class="code"><div class="codehilite"><pre><span class="c">// make file loadable from other files</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">provide</span><span class="p">(</span><span class="s1">&#39;mygame.Ball&#39;</span><span class="p">);</span>
+
+<span class="c">// request that lime.Circle&#39;s definitions are loaded</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;lime.Circle&#39;</span><span class="p">);</span>
+
+<span class="c">// new constructor</span>
+<span class="nx">mygame</span><span class="p">.</span><span class="nx">Ball</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c">// call parents constructor </span>
+    <span class="nx">goog</span><span class="p">.</span><span class="nx">base</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="c">// custom initialization code</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">color_</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="o">;</span>
+<span class="p">}</span>
+<span class="c">// define parent class</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">inherits</span><span class="p">(</span><span class="nx">mygame</span><span class="p">.</span><span class="nx">Ball</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">Circle</span><span class="p">);</span>
+
+<span class="c">// new custom method for ball instances</span>
+<span class="nx">mygame</span><span class="p">.</span><span class="nx">Ball</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">myMethod</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>    
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="events">Events</h3>
+<p>Closure provides you functions for listening and unlistening events for objects. You add an event listener with function <code>goog.events.listen(src, type, listener, opt_capture, opt_handler)</code>. Src is the target object dispatching the event, type is the event name(for example mousedown). Listener is callback function that is called when event fires. You can also make the event fire in capture phase and define custom context object for callback function. Removing event listener uses same kind of function named <code>goog.events.unlisten()</code> with all the same parameters.</p>
+<p>If you wish to dispatch events from your custom object you have to make them subclass of <em>goog.events.EventTarget</em> and then call the objects <code>dispatchEvent()</code> method.</p>
+<p><em>There is much more you could know about Closure Library, check out the <a href="http://closure-library.googlecode.com/svn/docs/index.html">docs</a>, <a href="http://www.amazon.com/Closure-Definitive-Guide-Michael-Bolin/dp/1449381871">book</a> or <a href="http://www.youtube.com/watch?v=yp_9q3tgDnQ">video</a> for more information.</em></p>
+    </div>
+	
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

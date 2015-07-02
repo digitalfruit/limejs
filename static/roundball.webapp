@@ -1,0 +1,13 @@
+{
+	"name" : "Roundball",
+	"description" : "Roundball is a fun match three puzzle game where you form horizontal or vertical lines of at least three similar objects by swapping two adjacent items. The more matches you make, the higher your score. Two game modes: Classic and Timed mode. Works on regular computer or on touchscreens.",
+	"launch_path" : "http://www.limejs.com/static/roundball/index.html",
+	"developer" : {
+		"name" : "Digital Fruit",
+		"url" : "http://www.limejs.com/"
+	},
+	"icons" : {
+		"128" : "/static/roundball_icon_128.png"
+	},
+	"installs_allowed_from" : ["*"]
+}

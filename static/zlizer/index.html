@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+
+<html manifest="zlizer.manifest">
+<head>
+  <title>Zlizer</title>
+  <script type="text/javascript">
+    document.write('<link rel="apple-touch-startup-image" href="assets/startup'+(navigator.platform=='iPad'?'_ipad':'')+'.jpg">');
+  </script>
+  <link rel="apple-touch-icon" href="assets/icon.png"/>
+  <style>
+  body {
+    font-family: Helvetica;
+    color: #050;
+    background: #5ea71d;
+    background:-webkit-gradient(radial, 50% 50%, 10, 50% 50%, 850, from(#93d81e), to(#2f5c1b), color-stop(.6,#5ea71d));
+    background: -moz-radial-gradient(center 45deg, circle farthest-side, #93d81e 0%, #5ea71d 60%, #2f5c1b 100%);
+  }
+  </style>
+</head>
+<body>
+  <script type="text/javascript">
+    (function(name, firstFunc){
+
+      function getObjectByName(name, opt_obj) {
+        var parts = name.split('.');
+        var cur = opt_obj || window;
+        var part;
+        while (part = parts.shift()) {
+          if (cur[part]) {
+            cur = cur[part];
+          } else {
+            return null;
+          }
+        }
+        return cur;
+      };
+
+      function loadJS(call){
+        var script = document.createElement('script');
+        script.setAttribute('type','text/javascript');
+        script.setAttribute('src',name);
+        script.onload = function(){
+          (getObjectByName(firstFunc))();
+          call();
+        };
+        document.getElementsByTagName('head')[0].appendChild(script);
+      }
+
+      var webappCache = window.applicationCache;
+
+      if(webappCache && window.navigator.userAgent.indexOf('WebKit') != -1){
+
+        var WIDTH = 200, HEIGHT = 100;
+
+        var scripts = document.getElementsByTagName('script');
+        var script = scripts[scripts.length - 1];
+        var el = document.createElement('div');
+        var parent = script.parentNode;
+        if(parent.style.position!='absolute' && parent.style.position!='relative'){
+          parent.style.cssText = 'relative';
+        }
+        var pwidth = window.innerWidth;
+        var pheight = window.innerHeight;
+        el.style.cssText = 'text-align:center;width:'+WIDTH+'px;height:'+HEIGHT+'px;position:absolute;left:'+Math.round((pwidth-WIDTH)*.5)+'px;top:'+Math.round((pheight-HEIGHT)*.5)+'px';
+        script.parentNode.insertBefore(el,script);
+        script.parentNode.removeChild(script);
+
+        var started = false;
+        var lastProgress = new Date
+        var timeout;
+
+        function init(){
+          if(started) return;
+          el.innerHTML = '';
+          loadJS(function(){ el.parentNode.removeChild(el); });
+          started = true;
+          clearTimeout(timeout);
+        };
+
+        function timeoutFunc() {
+          if (new Date - lastProgress > 3000) {
+            init()
+          }
+          else {
+            timeout = setTimeout(timeoutFunc, 3000)
+          }
+        }
+        timeoutFunc()
+
+        webappCache.addEventListener('checking', function(){
+          el.innerHTML = 'Initializing...';
+        },false);
+
+        webappCache.addEventListener('cached', function(){
+          init();
+        },false);
+
+        webappCache.addEventListener('noupdate', function(){
+          init();
+        },false);
+
+        webappCache.addEventListener('updateready', function(){
+          //webappCache.swapCache();
+          window.location.reload()
+        },false);
+
+        webappCache.addEventListener('progress', function(e){
+          lastProgress = new Date
+          el.innerHTML = 'Loading... ' + Math.round(e.loaded / e.total * 100) + '%';
+        },false);
+
+        webappCache.addEventListener('obsolete', function(){
+          init();
+        }, false);
+
+        webappCache.addEventListener('error', function(e){
+          init();
+        }, false);
+      }
+      else {
+        loadJS(function(){});
+      }
+
+    })('zlizer.js','zlizer.start');
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Posts tagged "strokes"  | LimeJS</title>
+    <link rel="stylesheet" href="../static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="../static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="../feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="HTML5 Game Framework for building fast, native-experience games for all modern touchscreens and desktop browsers." />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="../index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    
+        
+        <div class="post">
+            <h1><a href="../2011/05/12/stroke-support-has-landed.html">Stroke support has landed</a></h1>
+            <div class="datetime">May 12 2011 19:08
+        </div>
+               <div class="comments">
+                <a href="../2011/05/12/stroke-support-has-landed.html#disqus_thread">Comments</a></div>
+                <div class="tags"> Tags: <a href="strokes.html">strokes</a><br /></div>
+                 <div class="clear"></div>
+            
+            <p>The stroke support was one of the top features developers have asked from us. Starting from today you can finally add strokes to your shapes. All shapes and renders are fully supported, you can add both fill and stroke to a shape or use them individually.</p>
+<p>The API is very similar to adding fills. All shapes have new method <code>setStroke()</code>. Like the <code>setFill()</code> method it can accept parameters in many forms. You can pass in an instance of <code>lime.fill.Stroke</code> or just pass in stroke width and color. For color all the same parameters are accepted that you previously could use for color fills.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6</pre></td><td class="code"><div class="codehilite"><pre><span class="c">// All of the following are valid ways of adding a stroke.</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">setStroke</span><span class="p">(</span><span class="mi">5</span><span class="o">,</span><span class="s1">&#39;#c00&#39;</span><span class="p">);</span> <span class="c">//5px red stroke</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">setStroke</span><span class="p">(</span><span class="mi">5</span><span class="o">,</span><span class="s1">&#39;rgb(100,0,0)&#39;</span><span class="p">);</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">setStroke</span><span class="p">(</span><span class="mi">5</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span> <span class="c">// semi-transparent green</span>
+<span class="kd">var</span> <span class="nx">redline</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">Stroke</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">setColor</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">setStroke</span><span class="p">(</span><span class="nx">redline</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>If you need to remove previously set stroke call <code>setStroke(null)</code>. The same technique can be used for fills.</p>
+<p>Below you can find a simple demo&#8230;.</p>
+            <div class="readmore"><a href="../2011/05/12/stroke-support-has-landed.html">Read more</a></div>
+            
+        </div>
+        
+    
+    
+    
+    
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="../0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="../static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="../static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="../feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/limejs/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

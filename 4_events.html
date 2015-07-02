@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>#4 Events  | LimeJS</title>
+    <link rel="stylesheet" href="static/default/css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="static/default/css/tango.css" type="text/css" media="screen, projection" />
+    <link href="feed" type="application/atom+xml" rel="alternate" title="LimeJS Atom Feed" />
+    <meta name="description" content="#4 Events - page on LimeJS" />
+    <meta name="keywords" content="limejs, lime, game framework, zlizer, roundball, blog, lime js, html5" />
+    <meta name="author" content="Digital Fruit" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+        <div class="main">
+            
+            <div class="sub_head_block">
+                <a href="index.html" class="name">Lime<span class="js">JS</span></a>
+            </div>
+            
+            <div class="contents">
+            
+    <div class="post">
+        <h1>Programming guide</h1>
+        Chapters  <br> <a href="0-getting-started.html" title="#0 Getting Started">#0 Getting Started</a> | <a href="1_the_timeline.html" title="#1 The Timeline">#1 The Timeline</a> | <a href="2_layout_and_nodes.html" title="#2 Layout and Nodes">#2 Layout and Nodes</a> | <a href="3_shapes_and_fills.html" title="#3 Shapes and Fills">#3 Shapes and Fills</a> | <a href="4_events.html" title="#4 Events">#4 Events</a> | <a href="5_animations.html" title="#5 Animations">#5 Animations</a> | <a href="6_drawing_engines.html" title="#6 Drawing Engines">#6 Drawing Engines</a> | <a href="7-building.html" title="#7 Building">#7 Building</a>
+        
+        <h1 id="events">Events</h1>
+<p>Event management in Lime is very similar to normal events management in Closure library. You use the same methods <code>goog.events.listen(src, type, listener, opt_capt, opt_handler)</code> to listen for events and <code>goog.events.unlisten(src, type, listener, opt_capt, opt_handler)</code> to remove the listener. The target object(src) is the same Node element that you interact normally. Event types are the ones you would normally add to your DOM elements: usually <em>mousedown</em>, <em>mousemove</em> and <em>mouseup</em> for mouse events and <em>touchstart</em>, <em>touchmove</em>, <em>touchend</em> and <em>touchcancel</em> for touch events. Event types can be also specified as an array.</p>
+<p>The idea behind Lime event management is to allow you to write all your code only once for both touch and mouse based devices. If you have tried to do this before you might know this is not so simple to achieve as it first sounds. First of all there is no one-to-one relation between mouse and touch events. Mousedown may usually mean same as touchstart but mousemove is totally different concept than touchmove. Secondly there is a implementation difference - the position of the different events is exposed differently for different events. And thirdly the touch devices usually support multitouch. This means that you can&#8217;t only have handlers for specific events but you need to set next responders for specific interations. Lime tries to solve all those problems.</p>
+<p>When you listen for an event on an element in Lime the Event object you receive in your handler function isn&#8217;t the normal browser event but instance of <em>lime.events.Event</em>. The properties of this object include:</p>
+<ul>
+<li><em>position</em> - Coordinate for the event in target node&#8217;s coordinate space</li>
+<li><em>screenPosition</em> - Coordinate for the event in screen coordinate space</li>
+<li><em>targetObject</em> - Object that fired the event</li>
+<li><em>event</em> - Normal browser event(you can call stopPropagation() on that for example)</li>
+</ul>
+<p>These positions are the same for both mouse and touch events. All the coordinates can be transformed to different coordinate spaces with Node object&#8217;s helper functions.</p>
+<h2 id="eventswallow">event.swallow()</h2>
+<p>Event object also has <code>swallow(eventType,handler)</code> method. This allows you to interact with queue of events. You would normally use it so that you listen for a first interaction(mousdown, touchstart etc) as you normally would and then on a handler would swallow next mousemove or mouseup events. Swallow means that the handlers only get called if it is still part of the same interaction. On a multitouch capable device every individual touch has its own swallow handlers so if your touchstart had been started by one finger it never gets mixed up with movement of some other finger. When the interaction ends(touchend, mouseup) all swallowed listeners are automatically cleared.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">goog</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">ball</span><span class="o">,</span><span class="p">[</span><span class="s1">&#39;mousedown&#39;</span><span class="o">,</span><span class="s1">&#39;touchstart&#39;</span><span class="p">]</span><span class="o">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">);</span> <span class="c">// ball is colored to red when touched</span>
+
+    <span class="nx">e</span><span class="p">.</span><span class="nx">swallow</span><span class="p">([</span><span class="s1">&#39;mouseup&#39;</span><span class="o">,</span><span class="s1">&#39;touchend&#39;</span><span class="o">,</span><span class="s1">&#39;touchcancel&#39;</span><span class="p">]</span><span class="o">,</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#0c0&#39;</span><span class="p">);</span> <span class="c">// ball is colored back to green when interaction ends</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="dragging">Dragging</h2>
+<p>One common interaction is to drag elements around. Lime has made it simple for you. In the event handler simply call <code>event.startDrag()</code>. You can also provide parameters that limit the draggable area, snap to center or provide custom target object. Because the drag method uses the same <code>swallow()</code> logic as described earlier every dragging is handled separately and you can drag around multiple items same time without writing a single line of code.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">goog</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">ball</span><span class="o">,</span><span class="p">[</span><span class="s1">&#39;mousedown&#39;</span><span class="o">,</span><span class="s1">&#39;touchstart&#39;</span><span class="p">]</span><span class="o">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">startDrag</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span> <span class="c">// true is for snapToCenter</span>
+<span class="p">});</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="non_dom_elements">Non DOM elements</h2>
+<p>When you use Canvas renderer there are no DOM elements to pick up the events. While developing with raw Canvas methods this can be problem cause you only have one event target. Fortunately in Lime using different renderers doesn&#8217;t affect the event system at all. You can still listen events on Nodes that don&#8217;t have a DOM counterpart. </p>
+<h2 id="the_hit_test">The Hit Test</h2>
+<p>If you have some weird custom displayobject you can override it&#8217;s <code>hitTest()</code> method to give it a custom area from where it responds to events. By default all sprites respond to their bounding box(not to fill). Custom shapes check their own geometry. Layers don&#8217;t have any body so they respond to all of their children.</p>
+    </div>
+	
+        <div id="disqus_thread">
+        <script type="text/javascript" src="http://disqus.com/forums/limejs/embed.js"></script>
+        <noscript><a href="http://limejs.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    
+
+            </div>
+        </div>
+        <div class="side">
+            <div class="downlaod_box">
+                <div class="download">
+                    <div class="link">
+                        <a href="http://www.github.com/digitalfruit/limejs">
+                            Download from <em>GitHub</em>
+                        </a>
+                    </div>
+                    <div class="link">
+                        <a href="https://github.com/digitalfruit/limejs/zipball/master">
+                            Download as <em>ZIP</em> package
+                        </a>
+                    </div>
+                </div>
+                <div class="subitems">
+                    <div class="item"><a href="0-getting-started.html">Learn from the <em>guide</em></a></div>
+                    <div class="item"><a href="http://limejs.digitalfruit.ee/docs/">Study the <em>documentation</em></a></div>
+                    <div class="item"><a href="http://groups.google.com/group/limejs/topics">Get help from <em>community</em></a></div>
+                </div>
+            </div>
+            <div class="html5_badge_box">
+                <a href="http://www.w3.org/html/logo/">
+                <img src="static/html5_custom_badge.png" alt="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage" title="HTML5 Powered with Connectivity / Realtime, CSS3 / Styling, Device Access, Graphics, 3D &amp; Effects, Multimedia, Performance &amp; Integration, and Offline &amp; Storage">
+                </a>
+            </div>
+            <div class="twitter_box">
+                <a href="http://twitter.com/tonistiigi/">
+                Follow us on Twitter
+                </a>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="author">
+                <a href="http://www.digitalfruit.eu/"><img src="static/df_logo.png"></a>
+            </div>
+            <div class="feed">
+                 <a href="feed" class="rss" title="LimeJS Atom feed">RSS</a>
+            </div>
+            <div class="licence">
+            LimeJS is released under the <a href="http://en.wikipedia.org/wiki/Apache_License">Apache Licence</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20665051-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script');
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+             'http://www') + '.google-analytics.com/ga.js';
+         ga.setAttribute('async', 'true');
+         document.documentElement.firstChild.appendChild(ga);
+         })();
+    </script>
+    
+</body>
+</html>

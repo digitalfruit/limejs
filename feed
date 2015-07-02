@@ -1,0 +1,1556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title><![CDATA[LimeJS]]></title>
+    <subtitle type="text"><![CDATA[HTML5 Game Framework for building fast, native-experience games for all modern touchscreens and desktop browsers.]]></subtitle>
+    <updated>2013-01-10T09:48:55Z</updated>
+    <id>http://www.limejs.com/</id>
+    <link rel="alternate" href="http://www.limejs.com" title="LimeJS" type="text/html" />
+    <link rel="self" href="http://www.limejs.com/feed" title="LimeJS Atom Feed" type="application/atom+xml" />
+    <link rel="hub" href="http://pubsubhubbub.appspot.com" />
+    <link rel="hub" href="http://hubbub.api.typepad.com/" />
+    <author>
+        <name><![CDATA[Digital Fruit]]></name>
+        <email>lime@limejs.com</email>
+        <uri>http://www.limejs.com</uri>
+    </author>
+    <generator uri="http://github.com/caio/bizarrice" version="0.1">Bizarrice Blog for AppEngine</generator>
+    <rights type="html"><![CDATA[&amp;copy; 2009 Digital Fruit]]></rights>
+    
+    <entry>
+        <id>http://www.limejs.com/2013/01/10/train-brain-with-smartgameslive</id>
+        <title type="text"><![CDATA[Train your Brain with SmartGamesLive!]]></title>
+        <link href="http://www.limejs.com/2013/01/10/train-brain-with-smartgameslive" rel="alternate" type="text/html" />
+        <updated>2013-01-10T09:48:55Z</updated>
+        <published>2013-01-10T09:29:45Z</published>
+        <content type="html"><![CDATA[<div style="float: right;margin: 10px"><a href="http://www.smartgameslive.com/"><img width="300" src="http://commondatastorage.googleapis.com/limejs/smartgameslive.jpg"></div>
+
+</a>
+
+<p>Not too often we get feedback from developers about great products and games created with LimeJS. Still sometimes they let us know about their great accomplishments. SmartGamesLive is one of them. The creators of SmartGames have informed us about launching a new online digital platform. For their 20th anniversary they have created 12 online versions of their most popular in real life boardgames.</p>
+<p>You can play more than 1400 brain teasing challenges in 4 different levels of difficulty. Of course in true spirit of LimeJS you can play all the the games in full-screen mode on your desktop or mobile device.</p>
+<p>You can find all the games in SmartGames homepage:
+<a href="http://www.smartgameslive.com">http://www.smartgameslive.com</a>
+<br><br><br><br></p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2012/05/22/play-voodoo-friends</id>
+        <title type="text"><![CDATA[Play Voodoo Friends]]></title>
+        <link href="http://www.limejs.com/2012/05/22/play-voodoo-friends" rel="alternate" type="text/html" />
+        <updated>2012-05-22T08:22:47Z</updated>
+        <published>2012-05-22T08:22:47Z</published>
+        <content type="html"><![CDATA[<div style="float: right;margin: 10px"><a href="https://chrome.google.com/webstore/detail/fmedapekkakaehidplfhmblngkelolaj"><img src="http://dl.dropbox.com/u/25033309/voodoo_friends.png"></div>
+
+<p></a>
+If you want to see what it&#8217;s possible to make with LimeJS or just want to have fun playing a good game then check out Voodoo Friends. It&#8217;s an awesome platform puzzle game built by Danish game developer Cego. And of course its built with LimeJS.</p>
+<div style="clear:both"></div>
+
+<p>You can play it in the browser at Chrome Web Store: <a href="https://chrome.google.com/webstore/detail/fmedapekkakaehidplfhmblngkelolaj">https://chrome.google.com/webstore/detail/fmedapekkakaehidplfhmblngkelolaj</a></p>
+<p>Or get it for your iPhone or iPad from the App Store: <a href="http://itunes.apple.com/us/app/voodoo-friends/id514562699">http://itunes.apple.com/us/app/voodoo-friends/id514562699</a></p>
+<p>Cego developers have also been active contributors to LimeJS on Github, adding new features and fixing bugs. So big thanks to the team and congrats on the launch. </p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/06/30/cognuse-cures-brain-injury-with-limejs</id>
+        <title type="text"><![CDATA[Cognuse cures brain injury with LimeJS ]]></title>
+        <link href="http://www.limejs.com/2011/06/30/cognuse-cures-brain-injury-with-limejs" rel="alternate" type="text/html" />
+        <updated>2011-06-30T10:04:50Z</updated>
+        <published>2011-06-30T08:21:49Z</published>
+        <content type="html"><![CDATA[<p>Developers from the medical start-up <a href="http://www.cognuse.com/">Cognuse</a> have been developing new generation cognitive rehabilitation platform for restoring and training executive functions after a brain injury or stroke since 2006. Their method consists of set of games specially designed by specialists of the brain injury area, that patients have to repeatedly play through. System stores their results and provides new harder levels based on their performance. Platform can be also used for general <a href="http://en.wikipedia.org/wiki/Cognitive_training"> cognitive training</a> to battle the cognitive decline in the elderly population, including people with a tendency to develop Alzheimer&#8217;s or similar diseases. </p>
+
+<p>Cognuse&#8217;s clients are mainly health-care service providers and hospitals who specialize in brain health treatments, diagnostics, and rehabilitation services. For the ease of use and effectiveness of the training all games are to be based on touch interaction (and possibly provide mouse controlled fallback). The program would be used both on-site and on patients homes by their individual schedule. This meant that picking a single platform in the beginning would have been very risky and lot of people with only PCs/Macs on their homes would be completely left out. </p>
+
+<p>Those requirements did leave the development team with only a few possible technology choices:</p>
+
+<ul>
+<li>Native applications (Android, iOS, desktop).</li>
+<li>Adobe Flash.</li>
+<li>HTML5 &amp; JavaScript.</li>
+</ul>
+
+<p>Native approach was excluded first as very capable but most expensive choice. Over time there would be a need to create too many different application versions to different platform and development costs would have skyrocketed over very short time period. To cover only iOS and Android Cognuse would needed at least  two teams of developers just for beginning.
+Flash as a choice was seriously considered but it would omit  iOS as there is no support for Flash in this platform. iPad  was (still is) the only serious contender for readily available and polished touchscreen device. All this did lead them to HTML5 and JavaScript.</p>
+
+<p>Creating solution like Cognuse from scratch in JavaScript raises lots of problems: big Javascript project tend to be hard to maintain, incompatibility of devices and performance issues with same code running on different devices. Not to mention how complicated would be manage touch  and mouse interaction together and achieve the effect of native full-screen iPad applications. LimeJS provided answer to all issues mentioned and was therefore obvious choice as the development platform. Also in the future there won&#8217;t require a notable (additional) development to support next new device or platform as long as LimeJS does it. What development team gained using LimeJS with this project is near native: look and feel, systematic approach and possibility to run it everywhere.</p>
+
+<p>Main target device iPad is perfect choice - users will use games/exercises in unconventional environment. From rehabilitation point of view its perfect: iPad is very easy to use and understand.  Its fast (yes, LimeJS runs really fast even on original iPad), it has multi-touch (sure, we did not mention that LimeJS has a great support for multi-touch, but it does) and as mentioned already there is no need for rocket scientist to operate it.  The exercises do feature multi-control options and specialized user-interface design to meet needs of its target users.</p>
+
+<p>Cognuse is currently in private beta stage. Platform and exercises will be released for hospitals and test groups in summer 2011 in different continents. We can not give out specific dates or details about  but I&#8217;m sure you will find more info in near future from <a href="http://www.cognuse.com/" target="_new">Cognuse homepage</a>. Sadly we cannot link to games yet but here are some screens to give you a understanding what we were talking about.</p>
+
+<p><a href="http://dl.dropbox.com/u/25033309/IMG_0.PNG"><img src="http://dl.dropbox.com/u/25033309/IMG_0.PNG" alt="cognuse platform screenshot" width="120" height="90" border="0"></a>
+<a href="http://dl.dropbox.com/u/25033309/IMG_1.PNG"> <img src="http://dl.dropbox.com/u/25033309/IMG_1.PNG" alt="cognuse platform screenshot" width="120" height="90" border="0"></a>
+<a href="http://dl.dropbox.com/u/25033309/IMG_2.PNG"> <img src="http://dl.dropbox.com/u/25033309/IMG_2.PNG" alt="cognuse platform screenshot" width="120" height="90" border="0"></a>
+<a href="http://dl.dropbox.com/u/25033309/IMG_3.PNG"><img src="http://dl.dropbox.com/u/25033309/IMG_3.PNG" alt="cognuse platform screenshot" width="120" height="90" border="0" ></a>
+<a href="http://dl.dropbox.com/u/25033309/IMG_4.PNG"><img src="http://dl.dropbox.com/u/25033309/IMG_4.PNG" alt="cognuse platform screenshot" width="120" height="90" border="0"></a></p>
+
+<p>Olavi Tõnisson <br />
+CEO <a href="http://www.digitalfruit.eu">DigitalFruit</a>/LimeJS</p>
+
+<p>Andress Mellik <br />
+CTO <a href="http://www.cognuse.com/">Cognuse</a> </p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/05/12/stroke-support-has-landed</id>
+        <title type="text"><![CDATA[Stroke support has landed]]></title>
+        <link href="http://www.limejs.com/2011/05/12/stroke-support-has-landed" rel="alternate" type="text/html" />
+        <updated>2011-05-12T19:08:43Z</updated>
+        <published>2011-05-12T19:08:42Z</published>
+        <content type="html"><![CDATA[<p>The stroke support was one of the top features developers have asked from us. Starting from today you can finally add strokes to your shapes. All shapes and renders are fully supported, you can add both fill and stroke to a shape or use them individually.</p>
+<p>The API is very similar to adding fills. All shapes have new method <code>setStroke()</code>. Like the <code>setFill()</code> method it can accept parameters in many forms. You can pass in an instance of <code>lime.fill.Stroke</code> or just pass in stroke width and color. For color all the same parameters are accepted that you previously could use for color fills.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6</pre></td><td class="code"><div class="codehilite"><pre><span class="c">// All of the following are valid ways of adding a stroke.</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">setStroke</span><span class="p">(</span><span class="mi">5</span><span class="o">,</span><span class="s1">&#39;#c00&#39;</span><span class="p">);</span> <span class="c">//5px red stroke</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">setStroke</span><span class="p">(</span><span class="mi">5</span><span class="o">,</span><span class="s1">&#39;rgb(100,0,0)&#39;</span><span class="p">);</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">setStroke</span><span class="p">(</span><span class="mi">5</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span> <span class="c">// semi-transparent green</span>
+<span class="kd">var</span> <span class="nx">redline</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">Stroke</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">setColor</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">setStroke</span><span class="p">(</span><span class="nx">redline</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>If you need to remove previously set stroke call <code>setStroke(null)</code>. The same technique can be used for fills.</p>
+<p>Below you can find a simple demo about the new functionality. Sample sets a new random stroke to a shape after every 500ms. Source code for this demo can be seen <a href="https://github.com/digitalfruit/limejs/blob/master/lime/demos/tests/stroke.js">here</a>.</p>
+<div id="demo_04" style="pborder: 5px solid #fff;width:500px;height:150px;margin: 20px auto;"></div>
+
+<script type="text/javascript" src="/static/demo_04.js?1"></script>
+
+<p>Check it out!</p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/04/12/webgl-api-description</id>
+        <title type="text"><![CDATA[WebGL API description]]></title>
+        <link href="http://www.limejs.com/2011/04/12/webgl-api-description" rel="alternate" type="text/html" />
+        <updated>2011-04-12T12:30:53Z</updated>
+        <published>2011-04-12T12:26:51Z</published>
+        <content type="html"><![CDATA[<p>In this post we are going to dive more deeply into the WebGL library methods that are included in the LimeJS WebGL branch. Those methods are used while making the <em>lime.Renderer.WEBGL</em> renderer and are available for developers to create custom WebGL games.</p>
+<h2 id="what_it_is_about">What it is about:</h2>
+<ul>
+<li>Cleaned up workflow. No more multiline inlining shaders.</li>
+<li>Object oriented API. C style turned into JavaScript style.</li>
+<li>Complete handling of format conversions. No need to convert something to another format before sending to WebGL.</li>
+<li>Debugging support. Get error messages for invalid inputs, instead of black screen.</li>
+<li>Make it easier to work with big models.</li>
+<li>Math utility helpers </li>
+<li>Getting out of your way and letting you concentrate on your shaders.</li>
+</ul>
+<h2 id="what_its_not_about">What it&#8217;s not about:</h2>
+<ul>
+<li>A simplified or alternative way of making 3D</li>
+<li>A higher level abstraction layer.</li>
+<li>You still have to know how OpenGL works. You just have to code less and get your work done quicker.</li>
+<li>If you need a Closure port of something like <a href="https://github.com/mrdoob/three.js/">three.js</a> of <a href="http://www.glge.org/">GLGE</a> this is not it.</li>
+</ul>
+<h2 id="the_api">The API:</h2>
+<h2 id="limewebglglcontroller">lime.webgl.GLController</h2>
+<p>GLController is front controller object for your 3D Canvas context. You can use controller object for storing data you need persistent for your context. It also provides method for resizing the viewport. Only real reason for this class existence is that we don&#8217;t want to modify the context object itself.</p>
+<h3 id="static_methods">Static Methods:</h3>
+<ul>
+<li><strong>GLController.forCanvas(element)</strong> - returns GLController instance for Canvas element. Always returns same object for same element.</li>
+</ul>
+<h3 id="methods">Methods:</h3>
+<ul>
+<li><strong>getSize()</strong> - get current canvas and viewport size.</li>
+<li><strong>setSize(size)</strong> - resize canvas to new values and also resize WebGL viewport to same size.</li>
+<li><strong>makeProgram()</strong> - Return new Program object for the context.</li>
+</ul>
+&nbsp;
+
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">glc</span> <span class="o">=</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">webgl</span><span class="p">.</span><span class="nx">GLController</span><span class="p">.</span><span class="nx">forCanvas</span><span class="p">(</span><span class="s1">&#39;mycanvas&#39;</span><span class="p">)</span><span class="o">,</span>
+    <span class="nx">gl</span> <span class="o">=</span> <span class="nx">glc</span><span class="p">.</span><span class="nx">gl</span><span class="o">;</span>
+
+<span class="nx">glc</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">480</span><span class="o">,</span><span class="mi">320</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="limewebglprogram">lime.webgl.Program</h2>
+<p>Program connects the shaders to your code. You use it to initialize your shaders, set shaders properties and draw. Program object accepts data in almost any reasonable form and converts between formats if necessary. When you pass in data in wrong format it will let you know about the error and not just quietly fail with black screen.</p>
+<h3 id="methods_1">Methods:</h3>
+<ul>
+<li><strong>setShader(shader)</strong> - load in the shaders to be used by the program. Shaders are meant to be written in separate files and included as a template after running them through lime.py with gensoy command. </li>
+<li><strong>set*(mixed)</strong> - set the value for an attribute or uniform defined in shader. Can accept raw numeric data, arrays, typed arrays, buffers, vectors and matrices. The * is the same name that is used in the shader(for example setUModelViewMatrix()).</li>
+<li><strong>draw(mode,opt_offset,opt_length)</strong> - draw through the program. Mode is WebGL drawing mode constant(gl.TRIANGLES,gl.TRIANGLE_STRIP etc). If offset or length is not set it is taken from the minimal buffer size used.</li>
+<li><strong>drawElements(buffer,mode,opt_offset,opt_length)</strong> - draw the program using element array buffer. First element is the buffer that defines the order of indices that is used for drawing the vertices.</li>
+<li><strong>use()</strong> - set current program as active. You don&#8217;t have to call it if you use built in setter and draw commands.</li>
+</ul>
+&nbsp;
+
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td><td class="code"><div class="codehilite"><pre><span class="n">attribute</span> <span class="n">vec3</span> <span class="n">VertexPosition</span><span class="p">;</span>
+<span class="n">attribute</span> <span class="n">vec3</span> <span class="n">VertexNormal</span><span class="p">;</span>
+
+<span class="n">uniform</span> <span class="kt">float</span> <span class="n">LightIntensity</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">mat4</span> <span class="n">ModelViewMatrix</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">(){</span>
+    <span class="p">....</span>
+    <span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>&nbsp; <br />
+</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">program</span> <span class="o">=</span> <span class="nx">glc</span><span class="p">.</span><span class="nx">makeProgram</span><span class="p">().</span><span class="nx">setShader</span><span class="p">(</span><span class="nx">mygame</span><span class="p">.</span><span class="nx">shaders</span><span class="p">.</span><span class="nx">myshader</span><span class="p">);</span>
+
+<span class="nx">program</span><span class="p">.</span><span class="nx">setLightIntensity</span><span class="p">(.</span><span class="mi">9</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">modelview</span> <span class="o">=</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">webgl</span><span class="p">.</span><span class="nx">M4</span><span class="p">().</span><span class="nx">identity</span><span class="p">().</span><span class="nx">translate</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,-</span><span class="mi">7</span><span class="p">);</span>
+<span class="nx">program</span><span class="p">.</span><span class="nx">setModelViewMatrix</span><span class="p">(</span><span class="nx">modelview</span><span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="nx">program</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="nx">gl</span><span class="p">.</span><span class="nx">TRIANGLES</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="limewebglbuffer">lime.webgl.Buffer</h2>
+<p>Buffers are objects for holding and manipulating big amounts of numeric data. Usually data that represents your model. If you have big models it is good idea to put the data in separate files and then include it with <em>goog.require()</em> when needed. </p>
+<h3 id="methods_2">Methods:</h3>
+<ul>
+<li><strong>Buffer(type,opt_data)</strong> - constructor. Type is a JSON object that defines the buffers elements structure. If your buffer only consists of 3 axis vertices the type would be &#8220;{float:3}&#8221;. If it is a mixture of positions, normals and 4 byte colors the type would be &#8220;[{float:3},{float:3},{uint8:4}]&#8221;.</li>
+<li><strong>set(data)</strong> - Set new data for the buffer. Accepts array or typed array. All elements are converted based on the buffer definition type.</li>
+<li><strong>setSize(n)</strong> - Resize the buffer to hold up to n elements.</li>
+<li><strong>reset()</strong> - Reset current buffer length to 0. Length represents the number of filled elements. Size represents number of memory slots allocated.</li>
+<li><strong>getNext()</strong> - Get reference to the element at the next empty position of the buffer. Returns an array of typed arrays in same format as the type definition. If you modify the returned element new values will be included in the buffer.</li>
+<li><strong>subBuffer(index)</strong> - Return the SubBuffer object for the index defined in buffer type. Note that when you pass a subbuffer into a shader no data is actually cloned but it just chooses correct stride and offset values.</li>
+</ul>
+&nbsp;
+
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">teapot</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">webgl</span><span class="p">.</span><span class="nx">Buffer</span><span class="p">([{</span><span class="nx">float</span><span class="o">:</span><span class="mi">3</span><span class="p">}</span><span class="o">,</span><span class="p">{</span><span class="nx">float</span><span class="o">:</span><span class="mi">3</span><span class="p">}]</span><span class="o">,</span><span class="nx">mygame</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">teapot</span><span class="p">.</span><span class="nx">VERTICES_NORMALS</span><span class="p">)</span><span class="o">,</span>
+    <span class="nx">teapot_indices</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">webgl</span><span class="p">.</span><span class="nx">Buffer</span><span class="p">({</span><span class="nx">uint16</span><span class="o">:</span><span class="mi">1</span><span class="p">}</span><span class="o">,</span><span class="nx">mygame</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">teapot</span><span class="p">.</span><span class="nx">INDICES</span><span class="p">);</span>
+
+<span class="nx">program</span><span class="p">.</span><span class="nx">setVertexPosition</span><span class="p">(</span><span class="nx">teapot</span><span class="p">.</span><span class="nx">subBuffer</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+<span class="nx">program</span><span class="p">.</span><span class="nx">setVertexNormal</span><span class="p">(</span><span class="nx">teapot</span><span class="p">.</span><span class="nx">subBuffer</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+
+<span class="nx">program</span><span class="p">.</span><span class="nx">drawElements</span><span class="p">(</span><span class="nx">teapot_indices</span><span class="o">,</span><span class="nx">gl</span><span class="p">.</span><span class="nx">TRIANGLES</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="math_functions_for_vector_and_matrix_calculations">Math functions for vector and matrix calculations</h2>
+<p>In addition the library provides many vector and matrix helper functions. Their main use is to allow quick setup and modification of transformation matrices.</p>
+<h3 id="common_methods">Common Methods:</h3>
+<ul>
+<li><strong>set(mixed)</strong></li>
+<li><strong>clone()</strong> </li>
+<li><strong>equals()</strong></li>
+<li><strong>sum()</strong></li>
+<li><strong>difference()</strong></li>
+<li><strong>negate()</strong></li>
+<li><strong>toArray()</strong> </li>
+<li><strong>save()</strong> - Saves a vector/matrix values. Can be restored same way as in Canvas2D spec.</li>
+<li><strong>restore()</strong> - Restores vector/matrix values to previously saved values. </li>
+</ul>
+<h3 id="vector_methods">Vector Methods:</h3>
+<ul>
+<li><strong>modulus()</strong></li>
+<li><strong>normalize()</strong></li>
+<li><strong>dot(vector)</strong> </li>
+<li><strong>multiply(matrix)</strong> - Transform a vector with a 4x4 Matrix.</li>
+</ul>
+<h3 id="matrix_methods">Matrix Methods:</h3>
+<ul>
+<li><strong>identity()</strong> </li>
+<li><strong>translate(mixed)</strong> </li>
+<li><strong>scale(mixed)</strong></li>
+<li><strong>rotate(theta, axis)</strong> </li>
+<li><strong>determinant()</strong> </li>
+<li><strong>inverse()</strong></li>
+<li><strong>multiply(matrix)</strong></li>
+<li><strong>skew(sx, sy)</strong> </li>
+<li><strong>transpose()</strong> </li>
+</ul>
+<h3 id="helper_functions">Helper functions:</h3>
+<ul>
+<li><strong>lime.webgl.perspective(fovy, aspect, znear, zfar)</strong> - Return perspective projection matrix.</li>
+<li><strong>lime.webgl.ortho(left, right, bottom, top, znear, zfar)</strong> - Return orthogonal projection matrix.</li>
+</ul>
+&nbsp;
+
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">mvMatrix</span> <span class="o">=</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">webgl</span><span class="p">.</span><span class="nx">M4</span><span class="p">().</span><span class="nx">identity</span><span class="p">().</span><span class="nx">translate</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,-</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c">//draw with translation only</span>
+
+<span class="nx">mvMatrix</span><span class="p">.</span><span class="nx">save</span><span class="p">().</span><span class="nx">scale</span><span class="p">(</span><span class="mf">1.5</span><span class="o">,</span><span class="mf">1.5</span><span class="p">).</span><span class="nx">rotate</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">/</span><span class="mi">2</span><span class="o">,</span><span class="p">[</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="p">]);</span>
+
+<span class="c">//translation + scale + rotation</span>
+
+<span class="nx">mvMatrix</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+
+<span class="c">// back to translation only</span>
+</pre></div>
+</td></tr></table>
+
+<p>Current WebGL API is not in any way complete and will probably change a lot over time. If you have any questions or suggestions, please let us know.</p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/03/30/webgl-is-coming-part1</id>
+        <title type="text"><![CDATA[WebGL is coming]]></title>
+        <link href="http://www.limejs.com/2011/03/30/webgl-is-coming-part1" rel="alternate" type="text/html" />
+        <updated>2011-03-30T15:32:51Z</updated>
+        <published>2011-03-30T15:24:05Z</published>
+        <content type="html"><![CDATA[<p>WebGL is a new open technology for building HTML5 games. I enables developers access to lower level graphics APIs allowing high performance and 3D transformations. All fully hardware accelerated. WebGL is based on OpenGLES 2.0 and it basically works in three steps. First you write small shader programs and send them to be run on your graphics card. Then combine your vertex/color/texture/etc data to the data buffers and send the buffers to the graphics card. And finally tell your graphics card to draw the data inside the buffers using the shader programs. Good introduction to OpenGL ES 2.0 can be found from <a href="http://iphonedevelopment.blogspot.com/2010/10/opengl-es-20-for-ios-chapter-1.html">Jeff LaMarche blog</a>. Luckily you don&#8217;t have to know everything about WebGL to use it in LimeJS. The WebGL renderer can be used as a simple on/off switch with no further knowledge needed. As an extra we will include Closure Library style WebGL framework methods that we use for writing the renderer so you can use it for your custom WebGL related work.</p>
+<p>You can follow along WebGL related development in the <a href="https://github.com/digitalfruit/limejs/tree/webgl">WebGL branch on Github</a>. Its not in any way stable or feature complete at the moment but may be interesting for you to follow along when features appear. This also means that we are very open to suggestions about all aspects what it should do, what it should not and how it should be implemented. As there is no features yet marked ready there is a very good change your own idea can make into it.</p>
+<p>The main benefit WebGL gives is better performance and ability to draw 3D contents on WebGLContext shape. WebGL renderer &#8216;lime.Renderer.WEBGL&#8217; can be used as any other renderer, so any shape accepts it on it&#8217;s &#8216;setRenderer()&#8217; method. But there are some aspects that make it special. The startup time of starting a new WebGL context is pretty high so it may not be very usable to switch between WebGL renderer and some other renderer method. Also it does not make much sense to have many WebGL contexts on the screen - the benefits of using WebGL start to appear when it can draw lot of stuff in one context. So usually we would see it used for whole Scene objects and not so much for independent elements.</p>
+<p>So how much faster will it be? Not too much actually. Don&#8217;t expect 10 times performance gain unless your current browser&#8217;s DOM or Canvas implementation is very slow. Some benchmarks will show that magnitude change is possible but it really is for certain tasks only. OpenGL is really good if you have many static triangles(big model) and you apply a 3D transformation to them all together. You will be abled to use this method via WebGLContext shape that lets you have exact low level control of everything that is drawn using our WebGL helper library(same way as you can use CanvasContext shape currently). But for the WebGL renderer we need to write middleware that converts LimeJS nodes to vertex arrays and draws them using right shaders. This middleware will probably be the bottleneck, not the WebGL draw commands themselves.</p>
+<p>Here is a simple example of 3 renderers in action. It just draws 1000 sprites on the screen and then resizes and rotates them all in random factors in every frame. You can compare the performance by switching between renderers and comparing the FPS value. Remember that this is not something that WebGL is very much suited for, more like a worst case example because every box moves independently.</p>
+<p>Code to draw and animate the sprites is:</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">numboxes</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">numboxes</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+
+    <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span>
+        <span class="nx">setSize</span><span class="p">(</span><span class="mi">10</span><span class="o">+</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">20</span><span class="o">,</span><span class="mi">10</span><span class="o">+</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">20</span><span class="p">).</span>
+        <span class="nx">setPosition</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">600</span><span class="o">,</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">400</span><span class="p">).</span>
+        <span class="nx">setFill</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">255</span><span class="p">)</span><span class="o">,</span>
+                <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">255</span><span class="p">)</span><span class="o">,</span>
+                <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">255</span><span class="p">));</span>
+    <span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">seq</span> <span class="o">=</span>  <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Spawn</span><span class="p">(</span>
+        <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">ScaleBy</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()).</span><span class="nx">setDuration</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="o">,</span>
+        <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">RotateBy</span><span class="p">(</span><span class="mi">360</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()).</span><span class="nx">setDuration</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Loop</span><span class="p">(</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Sequence</span><span class="p">(</span><span class="nx">seq</span><span class="o">,</span><span class="nx">seq</span><span class="p">.</span><span class="nx">reverse</span><span class="p">()));</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim</span><span class="p">);</span>
+
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>Full code is available on <a href="https://github.com/digitalfruit/limejs/blob/webgl/lime/demos/tests/webgl.js">github</a> and here is the <a href="/static/demo_webgl.html">LIVE SAMPLE</a> (needs WebGL capable browser: Chrome9+,Firefox4,Webkit Nightly).</p>
+<p>In couple of days I&#8217;ll write more in depth about the WebGL library features and design goals. Stay tuned. </p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/03/18/is-html5-the-future-of-mobile-gaming</id>
+        <title type="text"><![CDATA[Is HTML5 the future of (mobile) gaming?]]></title>
+        <link href="http://www.limejs.com/2011/03/18/is-html5-the-future-of-mobile-gaming" rel="alternate" type="text/html" />
+        <updated>2011-03-18T08:50:31Z</updated>
+        <published>2011-03-18T08:50:31Z</published>
+        <content type="html"><![CDATA[<p><p>According to TechCrunch  <a href="http://techcrunch.com/2011/02/09/html5-versus-native-apps/">HTML5 Is An Oncoming Train, But Native App Development Is An Oncoming Rocket Ship</a> at least that&#8217;s what it advocates and believes strongly, the same time Google&rsquo;s Eric Schmidt is quite convinced that<a href="http://www.techalps.com/android/eric-schmidt-claims-almost-all-mobile-apps-will-be-built-with-html5.html"> HTML5 will eventually dominate almost all apps</a>. Its very old debate and probably truth is somewhere in between. But as technology advances and developers get more and more aware of possibilities, I think we&rsquo;ll start to see some serious competition coming from web-based game developers.<br />
+  <br />
+  Main promise is to write it once, and have it run everywhere. Its still &ldquo;the promise&rdquo;, since game creation with HTML5 is still not painless and has so many platforms and devices to deal with, that&#8217;s what we would like to change rapidly with LimeJS. Every day brings us closer and closer to situation where programmer has to deal only with creation of game and not technical problematics around it.<br />
+  <br />
+  We at Digital Fruit are convinced that HTML5 is a outstanding technology for mobile (and even desktop gaming). That&#8217;s why we invested considerable amount of time to create LimeJS at first place. It can be used right now with already existing skills: developers just need to make right decisions and understand limitations of technology. HTML5 can be used to make games and achieve a outstanding user experience. In the end, that&rsquo;s what really matters and what will make apps success or fail.</p>
+<h3><br />
+  <strong>Major benefits of HTML5 (and in our case specially benefits of LimeJS)?</strong>
+</h3>
+<ul>
+  <li><strong>You already know how to use it<br />
+  </strong>Generally, web development and JavaScript skills are also much easier to find compared to native development skills. Expected costs will be lower and development can probably start faster. Native app development is not only difficult but it&rsquo;s also expensive. </li>
+    <li><strong>Cross platform</strong><br />
+  If you&rsquo;re planning to create native mobile apps then you have to support on minimum level at least iOS and Android. That means two completely different languages: Objective C and Java. Using LimeJS (or any other advanced JavaScript game framework) the app will be usable immediately across a range of devices and operating systems (there is still no Nokia/Symbian and never will). You will reach even further: all major mobile and desktop browsers are covered. Many smart-phone browsers are getting better support for HTML5 and that&#8217;s only going to improve rapidly. Also you can instantly add Facebook to current list of supported platforms as I believe it is clearly platform its own (even if its run from browser). Facebook is also encouraging people to get into HTML5 gaming.</li>
+    <li><strong>Social</strong><br />
+  In essence there is nothing social in HTML5 but as server clearly exists, it&rsquo;s not too complicated to add social interaction there.  </li>
+    <li><strong>Speed of development<br />
+    </strong>Where HTML5 game development with LimeJS really excels is it takes considerably lot less of the time (compared to a native app) to get it ready for market. Add here cross-platform and you got real winner here. Native apps are like fossil fuels - they are useful and readily available today but they will finally lead to less desirable outcome.</li>
+    <li><strong>Dynamic distribution</strong><br />
+  This is part where HTML5 really shines - it&rsquo;s possible to change content on the fly without requiring any additional lengthy approval process from Market/AppStore.  It allows really fast content (and even interface) update without any additional requirements but network connection.</li>
+    <li><strong>Optional installation</strong><br />
+  HTML5 apps can be distributed any way creator wants - via Market/AppStore or just via the browser. Users are not required to install anything, all they need is modern HTML5 capable browser.</li>
+    <li><strong>Strong support of market leaders</strong><br />
+  HTML5 is pushed by big companies like Google, Facebook and Apple so it will not disappear any time soon and only thing what happens it gets more and more support over time. All major browser vendors(including Microsoft) see HTML5 as their biggest goal. RIM and HP(Palm) have made Javascript as a built in way for creating native applications for their mobile devices.</li>
+  <br /></ul>
+<h3><strong>Limitations of HTML5 games</strong></h3>
+<ul>
+  <li><strong>Performance<br />
+  </strong>Regardless of advances in HTML5 developments and frameworks, HTML5 based games are still slower compared to native code based cousins. In near future it will change significantly as technology advances very fast. Only clear drawback I can see is that low-end smart-phones are on the rise and they do handle complex graphics not that well as high end ones do. Not everyone gets the same smooth experience (but this is equally true for native apps so no clear winner here). Luckily hardware acceleration and WebGL are already appearing in latest browser version pushing the speeds very close to native performance.</li>
+    <li><strong>Inconsistent implementations<br />
+  </strong>HTML5 specification in still in draft state and some related technologies have very different level of support. Some browser makers try out their own ideas, some don&rsquo;t like the ideas proposed by their competitors. This turns your code into device specific hacks and makes it less likely your game will still work with newer versions. Using a framework is a must to avoid such situations.</li>
+    <li><strong>3D<br />
+    </strong>It&rsquo;s probably fair to say that if you want to create a full 3D experience with 3D transformations and shading today with HTML5 then it would be quite difficult. But if you want to create an optimized, bare-bones 3D then JavaScript engine that supports translations and rotations can do it quite well. There is however possibility to get next level with 3D  - namely <a href="http://en.wikipedia.org/wiki/WebGL">WebGL</a>. Luckily hardware acceleration and <a href="http://chrome.blogspot.com/2011/02/dash-of-speed-3d-and-apps.html">WebGL are already appearing </a>in latest browser version pushing the speeds very close to native performance.</li>
+    <li>Integration<br />
+      peer-to-peer networking is still currently not available for HTML5 (there are some workarounds). But then again, you can develop a hybrid app which uses very little native code and relies mostly on HTML5.</li>
+    <li><strong>Monetizing<br />
+  </strong>Monetizing the game of HTML5 will be exactly like it is today for anything else. If you want to make income then native app development is still the most logical way to go but its slowly changing. Also with ad-supported model there is no notable difference. You can also take a <a href="http://developer.android.com/reference/android/webkit/WebView.html">WebView</a> and package  it to a regular native shell and you have a &#8220;native&#8221; app (which is really just a web app), that&#8217;s pretty much what <a href="http://mashable.com/2010/12/03/netflix-html5/">Netflix did </a>for the iPad.<br />
+ </li>
+</ul>
+<h3> <strong>How to gain maximum with LimeJS
+  </strong></h3></p>
+<ul>
+    <li><strong>Hybrid HTML</strong><br />
+  HTML5 vs native is not an &ldquo;either/or&rdquo; decision its much wider view of things. Follow principles set by Netflix to use HTML as far as it is reasonable and if needed do the rest with native/hybrid app</li>
+    <li><strong>Package it</strong><br />
+  On iOS you can bookmark your app directly to desktop and from there for average user there is no difference if its native app or HTML5 creation. In Android things are a little bit different - Android does not allow to create headless browser experience &ldquo;out of box&rdquo;, so only way to do is to package it (with <a href="http://www.phonegap.com/">PhoneGap</a> or something similar)</li>
+    <li><strong>Offline content</strong><br />
+  One notable property of HTML5 is great support for local storage. It makes possible to your user to go offline and use app without any data connection.</li>
+    <li><strong>Look &amp; feel you want</strong><br />
+  you are not limited to &ldquo;usual and native&rdquo; interface look, in fact you can and should adjust everything according your own game centered needs - LimeJS has all needed tools for that</li>
+    <li><strong>Think big</strong><br />
+  LimeJS is created real games in mind, its not for making demos nor it is collection of &ldquo;hacks&rdquo; - everything is systematically thought trough to give game creators freedom and tools to create true game experience and keep everything maintainable.</li>
+</ul>
+
+<p><p><br />
+  Why we in Digital Fruit believe that HTML5 will be the definite future of mobile (gaming)?<br />
+  We strongly believe that in 2-3 years from now, majority of games (and apps) on mobile devices will be based on HTML5. Right now HTML5 gaming may be is still playing &#8220;catch-up game&#8221; but technology is progressing extremely fast. There is a really big and growing demand for multi-platform world in which most major mobile platforms (iOS, Android, Windows Phone 7 and Blackberry) are very serious for a significant market share. It will be clear that most companies will not be able to afford that many parallel development teams and supported platforms. If you think of a cross platform software layer for Internet applications what would be supported by all vendors, anything other than HTML does not make sense. Sure Flash can do some nice tricks better in the moment (specially on desktop as iOS still lacking support for Flash and on Android its nothing more than proof of concept) but if you think about the future there is no way a proprietary plugin can be something that fulfils all vendors need for better apps. <br />
+  <br />
+Currently HTML5 is not yet the best thing in the world, but all this will change rapidly over short time. HTML5 is the way browsers are heading, and they&#8217;ll all just get better and better. HTML5 is most definitely future of gaming on touch devices.
+  </p>
+  <p><em>Olavi Tõnisson<br />
+  CEO</em></p></p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/03/09/making-flexible-views</id>
+        <title type="text"><![CDATA[Making flexible views]]></title>
+        <link href="http://www.limejs.com/2011/03/09/making-flexible-views" rel="alternate" type="text/html" />
+        <updated>2011-03-09T22:19:16Z</updated>
+        <published>2011-03-09T22:03:35Z</published>
+        <content type="html"><![CDATA[<p>While creating games with LimeJS you don&#8217;t have to think about the different screen sizes your players will be using. In the beginning of your game you just have to define the stage size and we will take care of that you game appears in maximum size on both HD monitors and on an iPhone. This enables you to use fixed positions and sizes, much like in Flash. When the display size or device orientation changes you don&#8217;t have to recalculate your game elements positions as your stage is still same size, although it appears visually bigger on the screen.</p>
+<p>This all happens automatically for screen sizes. But what should you use when your element itself transforms or elements parent element is resized?</p>
+<h2 id="anchorpoint_-_handling_elements_own_tranforms">AnchorPoint - handling element&#8217;s own tranforms.</h2>
+<p>AnchorPoint lets you define the location in your element that is most important for your game object. When you position your element this is the point that is put on the exact position you give in &#8216;setPosition()&#8217;. The element rotates around this point when you use &#8216;setRotation()&#8217;. If you scale an element this location remains in its position and everything around it is scaled. All children of the element are by default positioned by the parent element&#8217;s anchor point.</p>
+<p>AnchorPoint is defined with &#8216;setAnchorPoint()&#8217; method. The parameters are vector points in 0 to 1 range where (0,0) means top-left and (1,1) bottom right corner. By default all elements are positioned from the center and so have anchor point set to (0.5,0.5).</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">80</span><span class="o">,</span><span class="mi">30</span><span class="p">).</span><span class="nx">setAnchorPoint</span><span class="p">(.</span><span class="mi">25</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>These are some examples of &#8216;setAnchorPoint()&#8217; in action:</p>
+<p><img alt="AnchorPoint examples" src="/static/flex_anchorpoint.png" /></p>
+<h2 id="autoresize_masks_-_when_the_parents_size_changes">AutoResize masks - when the parent&#8217;s size changes.</h2>
+<p>AutoResize is common technique to define item&#8217;s size relative to the parents size. For example Flex and UIKit use very similar pattern. In LimeJS there is a method &#8216;setAutoResize()&#8217;. Into this method you can pass the combination of bitmask constants that define the areas that are flexible. So if the parent element&#8217;s size changes only the flexible parts get stretched.</p>
+<p>All bitmask constants you can use are:</p>
+<ul>
+<li>lime.AutoResize.NONE</li>
+<li>lime.AutoResize.LEFT</li>
+<li>lime.AutoResize.TOP</li>
+<li>lime.AutoResize.RIGHT</li>
+<li>lime.AutoResize.BOTTOM</li>
+<li>lime.AutoResize.WIDTH</li>
+<li>lime.AutoResize.HEIGHT</li>
+<li>lime.AutoResize.ALL</li>
+</ul>
+<p>To make a combination of multiple areas you tie them together with | operator(bitwise or) before passing them into &#8216;setAutoResize()&#8217;. By default elements have autoresize mask lime.AutoResize.NONE and therefore do not resize automatically when parent&#8217;s size changes.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#00c&#39;</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">80</span><span class="o">,</span><span class="mi">20</span><span class="p">).</span>
+    <span class="nx">setAutoResize</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">AutoResize</span><span class="p">.</span><span class="nx">LEFT</span> <span class="o">|</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">AutoResize</span><span class="p">.</span><span class="nx">HEIGHT</span><span class="p">);</span>
+<span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>And here are the examples:</p>
+<p><img alt="AnchorPoint examples" src="/static/flex_autoresize.png" /></p>
+<p>We are also looking into enabling simple ways for allowing completely different layouts for different orientations and screen size ranges. You can currently also change the stage size during gameplay but manually positioning all elements between different sizes is not easy. If you have some ideas or suggestions about it let us know.</p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/03/03/using-keyframeanimation-for-fill-effects</id>
+        <title type="text"><![CDATA[Using KeyframeAnimation for fill effects]]></title>
+        <link href="http://www.limejs.com/2011/03/03/using-keyframeanimation-for-fill-effects" rel="alternate" type="text/html" />
+        <updated>2011-03-03T21:53:03Z</updated>
+        <published>2011-03-03T21:48:52Z</published>
+        <content type="html"><![CDATA[<p>Some posts ago we showed how to use KeyframeAnimation in the <a href="http://www.limejs.com/2011/02/21/introducing-sprite-sheets">normal way</a>. That is by making a SpriteSheet image and using separate areas from that image as separate frames in the animation. But theres a bit more in it. The &#8216;addFrame()&#8217; method can actually accept any kind of fills. Depending on what you wish to achieve this may give you a way to have some animating objects without using lot of images.</p>
+<p>Please note that following can not be counted as a major feature of LimeJS but rather a side effect that we are happy about.</p>
+<p>Starting with the simplest fill types here is the animation using plain colors as fills. All syntax is the same. Just pass the color name to the &#8216;addFrame()&#8217; method. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">RoundedRect</span><span class="p">().</span><span class="nx">setRadius</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">50</span><span class="o">,</span><span class="mi">50</span><span class="p">).</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">200</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">().</span><span class="nx">setDelay</span><span class="p">(.</span><span class="mi">5</span><span class="p">).</span>
+    <span class="nx">addFrame</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">addFrame</span><span class="p">(</span><span class="s1">&#39;#0c0&#39;</span><span class="p">).</span><span class="nx">addFrame</span><span class="p">(</span><span class="s1">&#39;#00c&#39;</span><span class="p">);</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>This creates a simple blinking effect. One other use case would be to use &#8216;addBrightness()&#8217; or &#8216;addSaturation()&#8217; and create a stepping version of ColorTo animation.</p>
+<div id="demo_03_1" style="width:100px;height:100px;margin: 40px auto;"></div>
+
+<p>Next up gradients. Gradients are defined by their direction points and color locations. With a simple loop you could alter some parameters of the gradient to make an effect that the gradient is transforming into another. Here is an example of such case.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">circle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Circle</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">120</span><span class="o">,</span><span class="mi">120</span><span class="p">).</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">250</span><span class="o">,</span><span class="mi">200</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">circle</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">anim2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">().</span><span class="nx">setDelay</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">15</span><span class="p">)</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="mi">10</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="nx">anim2</span><span class="p">.</span><span class="nx">addFrame</span><span class="p">(</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">LinearGradient</span><span class="p">().</span><span class="nx">setDirection</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="nx">i</span><span class="o">/</span><span class="mi">10</span><span class="o">,</span><span class="nx">i</span><span class="o">/</span><span class="mi">10</span><span class="p">).</span>
+        <span class="nx">addColorStop</span><span class="p">(</span><span class="nx">i</span><span class="o">/</span><span class="mi">11</span><span class="o">,</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span><span class="s1">&#39;#00c&#39;</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="mi">10</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="nx">anim2</span><span class="p">.</span><span class="nx">addFrame</span><span class="p">(</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">LinearGradient</span><span class="p">().</span><span class="nx">setDirection</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="nx">i</span><span class="o">/</span><span class="mi">10</span><span class="o">,</span><span class="mi">1</span><span class="o">-</span><span class="nx">i</span><span class="o">/</span><span class="mi">10</span><span class="p">).</span>
+        <span class="nx">addColorStop</span><span class="p">(</span><span class="nx">i</span><span class="o">/</span><span class="mi">11</span><span class="o">,</span><span class="s1">&#39;#00c&#39;</span><span class="p">).</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span><span class="s1">&#39;#c00&#39;</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="nx">circle</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim2</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Here we add gradient from red (#c00) to blue (#00c) to the animations. While doing so in each step the location of the gradient is moved from top-left closer to the bottom right. This makes an effect that the gradient is sliding. Then the effect is repeated with swapped colors from different corner so we end up in the same position as the original frame. Note that the loop runs only once while defining the frames not when the animation itself is playing. It looks like this:</p>
+<div id="demo_03_2" style="width:200px;height:200px;margin: 40px auto;"></div>
+
+<p>One more way how this could be used is by using a single image and defining different size or position offset for each frame. As an example we draw a polygon arrow that uses single image of the &#8220;police line&#8221; that is scrolling over in a loop. To make such effect the x-axis offset if changed inside the for loop to move it from the left position to the right. Here is the code:<br />
+</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sign</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Polygon</span><span class="p">().</span><span class="nx">setPoints</span><span class="p">(</span><span class="mi">10</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">60</span><span class="o">,</span><span class="mi">60</span><span class="o">,</span><span class="mi">50</span><span class="o">,</span><span class="mi">20</span><span class="o">,</span><span class="mi">120</span><span class="o">,</span><span class="mi">20</span><span class="o">,</span><span class="mi">120</span><span class="o">,-</span><span class="mi">20</span><span class="o">,</span><span class="mi">50</span><span class="o">,-</span><span class="mi">20</span><span class="o">,</span><span class="mi">60</span><span class="o">,-</span><span class="mi">60</span><span class="p">).</span>
+    <span class="nx">setPosition</span><span class="p">(</span><span class="mi">450</span><span class="o">,</span><span class="mi">200</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sign</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">anim3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">().</span><span class="nx">setDelay</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">30</span><span class="p">);</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="mi">100</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+<span class="nx">anim3</span><span class="p">.</span><span class="nx">addFrame</span><span class="p">(</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">Image</span><span class="p">(</span><span class="s1">&#39;assets/sign.png&#39;</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">200</span><span class="o">,</span><span class="mi">33</span><span class="p">).</span>
+    <span class="nx">setOffset</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">i</span><span class="o">/</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="kc">true</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="nx">sign</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim3</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Add a RotateBy animation for bit more effect and here&#8217;s how it looks.</p>
+<div id="demo_03_3" style="width:300px;height:300px;margin: 40px auto;"></div>
+
+<p>These were some samples of KeyframeAnimation effects. You may also combine different techniques as well, so that for example some of the frames use full colors and some use gradients. All depends of course on the effect you need in your game.</p>
+<p>All source code for demos above can be seen <a href="https://github.com/digitalfruit/limejs/blob/master/lime/demos/tests/keyframe2.js">here</a>. </p>
+<script type="text/javascript" src="/static/demo_03.js"></script>
+<script type="text/javascript">
+test.start('demo_03_1',100,1,50);
+test.start('demo_03_2',200,2,100);
+test.start('demo_03_3',300,3,150);
+</script>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/02/27/new-formats-for-spritesheets</id>
+        <title type="text"><![CDATA[New formats for SpriteSheets]]></title>
+        <link href="http://www.limejs.com/2011/02/27/new-formats-for-spritesheets" rel="alternate" type="text/html" />
+        <updated>2011-02-27T20:27:02Z</updated>
+        <published>2011-02-27T20:25:05Z</published>
+        <content type="html"><![CDATA[<p>There has been some new features added to SpriteSheet functionality. In addition to the Zwoptex Flash format LimeJS now also supports the newer Zwoptex (cocos2d) format and JSON format present in <a href="http://texturepacker.com/">TexturePacker</a>. While you could use trimming before you now can pack your files even more by using rotation switching.</p>
+<p>We have put a parser logic for each format in the special object that needs to be included with <em>goog.require()</em> and passed in to the SpriteSheet constructor as a third parameter. All currently supported parser objects are:</p>
+<ul>
+<li><em>lime.parser.ZWOPTEX</em> - Original Zwoptex format, also known as Zwoptex Flash format or cocos2d-0.99.4</li>
+<li><em>lime.parser.ZWOPTEX2</em> - New Zwoptex format, also known as Zwoptex Generic or cocos2d</li>
+<li><em>lime.parser.JSON</em> - JSON format that can be exported from TexturePacker </li>
+</ul>
+<p>So your new code may look something like this:</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">goog</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;lime.parser.JSON&#39;</span><span class="p">);</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;lime.ASSETS.mysheet.json&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">ss</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">SpriteSheet</span><span class="p">(</span><span class="s1">&#39;mysheet.png&#39;</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">ASSETS</span><span class="p">.</span><span class="nx">mysheet</span><span class="p">.</span><span class="nx">json</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">parser</span><span class="p">.</span><span class="nx">JSON</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Note that previous logic that meant that initializing SpriteSheet with only two parameters is still supported but marked deprecated. It is safest to always pass the third parameter. Maybe in the future we will make JSON format default as it is more JavaScript friendly than XML Zwoptex formats.</p>
+<p>If you use the JSON coordinate format make sure you name your file with <em>.json</em> extension before you make it an asset with the <em>gensoy</em> command. This way the program knows to include the file as raw data instead of escaping it into strings that is required for XML formats. Otherwise everything is the same as described in <a href="http://www.limejs.com/2011/02/21/introducing-sprite-sheets">previous post</a>.</p>
+<p>To use the new rotation features you don&#8217;t have to do anything in the code. Only select &#8220;allow rotation&#8221; in the program you use for generating the sheet. Everything else is done automatically.</p>
+<p>If you think any more formats would be useful for LimeJS let us know in the comments.</p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/02/21/introducing-sprite-sheets</id>
+        <title type="text"><![CDATA[Introducing Sprite Sheets]]></title>
+        <link href="http://www.limejs.com/2011/02/21/introducing-sprite-sheets" rel="alternate" type="text/html" />
+        <updated>2011-03-21T09:14:03Z</updated>
+        <published>2011-02-21T23:23:34Z</published>
+        <content type="html"><![CDATA[<p>LimeJS now has full support of sprite sheets. This means that you can gather your image assets to the same file and define areas that contain only the parts you are interested about. This lets you load multiple images with one request and export your whole keyframe animation with single file. </p>
+<p>To define a fill for a part of a image there is a new Frame fill. It takes in an image(as url or Image element) and frame definition(as goog.math.Rect object or numbers). You can then use the Frame fill instance as you would  use any other fill. All the same methods can be used for Frame as for Image fill(this covers repeating patterns) and performance should be also similar.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">frame</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">Frame</span><span class="p">(</span><span class="s1">&#39;sheet.png&#39;</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="mi">30</span><span class="o">,</span> <span class="mi">200</span><span class="o">,</span> <span class="mi">150</span><span class="p">);</span> <span class="c">//x , y, width, height</span>
+<span class="nx">box</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="nx">frame</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>By default the fill will take the same size as your object but you can change it with setSize(width,height,opt_isrelative) method. You may also change around the position from where the drawing of a fill starts with method setOffset(x,y,opt_isrelative). If the opt_isrelative parameter is set then the values don&#8217;t represent actual pixel values but the factors the target size is multiplied with.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">frame</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(.</span><span class="mi">5</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="o">,</span><span class="kc">true</span><span class="p">);</span> <span class="c">// make fill half the target size</span>
+</pre></div>
+</td></tr></table>
+
+<p>Of course managing your sprite sheets by hand and updating the positions directly to the code can be very hard. To make it much easier other people have made cool apps like <a href="http://zwoptexapp.com/">Zwoptex</a>, <a href="http://texturepacker.com/">TexturePacker</a>, <a href="http://www.bit-101.com/blog/?p=2939">SWFSheet</a> and many more. These programs allow you to import your assets and export them out as single image plus a coordinate definition file. Luckily LimeJS has direct support for both of these files.</p>
+<p>Lets look at SWFSheet first. This program, made by author of many great books <a href="http://www.bit-101.com/">Keith Peters</a>, allows to convert a Flash animation exported as a SWF into separate frames inside a sprite sheet. There&#8217;s a good video about the functionality <a href="http://www.bit-101.com/blog/?p=2939">here</a>. After setting all correct  parameters save the sheet and metadata. Select &#8220;Zwoptex&#8221; as metadata format.</p>
+<p>Now put the files inside your project. The metadata file is XML so we have to convert it to template asset to directly use it from the code. To do that run:</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py gensoy path/to/the/spinner.zwoptex
+</pre></div>
+</td></tr></table>
+
+<p>After doing this the contents of the file can be accessed from Javascript under namespace prefix <em>lime.ASSETS</em>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">goog</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">ASSETS</span><span class="p">.</span><span class="nx">spinner</span><span class="p">.</span><span class="nx">zwoptex</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">myfile</span> <span class="o">=</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">ASSETS</span><span class="p">.</span><span class="nx">spinner</span><span class="p">.</span><span class="nx">zwoptex</span><span class="o">;</span> <span class="c">//assignment to local not really needed</span>
+</pre></div>
+</td></tr></table>
+
+<p>Now lets construct the animation again. First create a lime.SpriteSheet object. Then you can ask for all the separate frames from the sheet with ’getFrame(name)’ method. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">ss</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">SpriteSheet</span><span class="p">(</span><span class="s1">&#39;assets/spinner.png&#39;</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">ASSETS</span><span class="p">.</span><span class="nx">spinner</span><span class="p">.</span><span class="nx">zwoptex</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Create a sprite to run the animations on. Set the initial frame. Note that the frame name does not reflect a URL to the file but only the name frame is defined for the sheet. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">100</span><span class="p">).</span><span class="nx">setFill</span><span class="p">(</span><span class="nx">ss</span><span class="p">.</span><span class="nx">getFrame</span><span class="p">(</span><span class="s1">&#39;frame_0001.png&#39;</span><span class="p">));</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>And finally create KeyframeAnimation. Set up all its frames and run it on the sprite.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">();</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="mi">60</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="nx">anim</span><span class="p">.</span><span class="nx">addFrame</span><span class="p">(</span><span class="nx">ss</span><span class="p">.</span><span class="nx">getFrame</span><span class="p">(</span><span class="s1">&#39;frame_&#39;</span><span class="o">+</span><span class="nx">goog</span><span class="p">.</span><span class="nx">string</span><span class="p">.</span><span class="nx">padNumber</span><span class="p">(</span><span class="nx">i</span><span class="o">,</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Thats it. Here is how it looks like (using the test files that came with SWFSheet):</p>
+<div id="demo_01" style="padding:20px;border: 3px solid #ccc;width:200px;height:200px;margin: 20px auto;"></div>
+
+<script type="text/javascript" src="/static/demo_01.js?1"></script>
+
+<p>Now lets make something bit more interactive. I downloaded some game asset tiles for a monster character from <a href="http://reinerstileset.4players.de/monstersE.html">this page</a>. Zip file contains BMP files that need to be converted to PNGs for Zwoptex app. I choosed the walking related images, imported them into Zwoptex and turned on trimming. It looked like this:</p>
+<p><img alt="Zwoptex screenshot" src="/static/zwoptex_ss.png" /></p>
+<p>Publishing is similar as for SWFSheet. Format currently supported in LimeJS is Zwoptex Flash format(can be changed from publishing settings). After that convert the coordinates XML file to assets same way as for SWFSheet(gensoy). </p>
+<p>The objective is to make the monster object move to the place clicked/touched while animating through the frames same time. I won&#8217;t paste full source code (can be seen <a href="https://github.com/digitalfruit/limejs/blob/master/lime/demos/tests/frame4.js">here</a>) but here is the basic function that does it.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">test</span><span class="p">.</span><span class="nx">moveToPosition</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">monster</span><span class="o">,</span><span class="nx">pos</span><span class="p">){</span>
+
+<span class="kd">var</span> <span class="nx">delta</span> <span class="o">=</span> <span class="nx">goog</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">Coordinate</span><span class="p">.</span><span class="nx">difference</span><span class="p">(</span><span class="nx">pos</span><span class="o">,</span><span class="nx">monster</span><span class="p">.</span><span class="nx">getPosition</span><span class="p">())</span><span class="o">,</span> 
+    <span class="nx">angle</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="o">-</span><span class="nx">delta</span><span class="p">.</span><span class="nx">y</span><span class="o">,</span><span class="nx">delta</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span> <span class="c">// in radians</span>
+
+<span class="c">//determine the direction    </span>
+<span class="kd">var</span> <span class="nx">dir</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">angle</span><span class="o">/</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">8</span><span class="p">);</span> <span class="c">// 8th of the circle</span>
+<span class="kd">var</span> <span class="nx">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="o">,</span><span class="s1">&#39;ne&#39;</span><span class="o">,</span><span class="s1">&#39;n&#39;</span><span class="o">,</span><span class="s1">&#39;nw&#39;</span><span class="o">,</span><span class="s1">&#39;w&#39;</span><span class="o">,</span><span class="s1">&#39;sw&#39;</span><span class="o">,</span><span class="s1">&#39;s&#39;</span><span class="o">,</span><span class="s1">&#39;se&#39;</span><span class="p">];</span> <span class="c">//from original file names</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">dir</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="nx">dir</span><span class="o">=</span><span class="mi">8</span><span class="o">+</span><span class="nx">dir</span><span class="o">;</span> <span class="c">//backwards for negative angles</span>
+<span class="nx">dir</span> <span class="o">=</span> <span class="nx">dirs</span><span class="p">[</span><span class="nx">dir</span><span class="p">];</span>
+
+<span class="c">// move animation</span>
+<span class="kd">var</span> <span class="nx">move</span> <span class="o">=</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">MoveBy</span><span class="p">(</span><span class="nx">delta</span><span class="p">).</span><span class="nx">setEasing</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">LINEAR</span><span class="p">).</span><span class="nx">setSpeed</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="c">//setSpeed is just a helper that sets the duration based on the length of the delta</span>
+<span class="nx">monster</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">move</span><span class="p">);</span>
+
+<span class="c">// keyframe animation</span>
+<span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">KeyframeAnimation</span><span class="p">();</span>
+<span class="nx">anim</span><span class="p">.</span><span class="nx">delay</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">7</span><span class="o">;</span> <span class="c">// 1/7 sec between frames, too fast otherwise</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="mi">7</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span> <span class="c">//add the frames</span>
+    <span class="nx">anim</span><span class="p">.</span><span class="nx">addFrame</span><span class="p">(</span><span class="nx">test</span><span class="p">.</span><span class="nx">ss</span><span class="p">.</span><span class="nx">getFrame</span><span class="p">(</span><span class="s1">&#39;walking-&#39;</span><span class="o">+</span><span class="nx">dir</span><span class="o">+</span><span class="s1">&#39;000&#39;</span><span class="o">+</span><span class="nx">i</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="nx">monster</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">anim</span><span class="p">);</span>
+
+<span class="c">// on stop show front facing frame</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">move</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">STOP</span><span class="o">,</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">anim</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span> <span class="c">//keyframeanimation has no duration so have to be stopped manually</span>
+    <span class="nx">monster</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="nx">test</span><span class="p">.</span><span class="nx">ss</span><span class="p">.</span><span class="nx">getFrame</span><span class="p">(</span><span class="s1">&#39;walking-s0001.png&#39;</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="p">};</span>
+</pre></div>
+</td></tr></table>
+
+<p>Here is how it looks like. Click on a monster first to select it then somewhere else to move it to this position.</p>
+<div id="demo_02" style="padding:20px;border: 3px solid #ccc;width:600px;height:400px;margin: 20px auto;"><a href="/static/monster_demo.html" target="_blank"><img src="/static/monsters_ss.png"></a></div>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/02/17/browser_device_support_roundup</id>
+        <title type="text"><![CDATA[Browser/device support video]]></title>
+        <link href="http://www.limejs.com/2011/02/17/browser_device_support_roundup" rel="alternate" type="text/html" />
+        <updated>2011-02-17T08:54:42Z</updated>
+        <published>2011-02-17T02:51:46Z</published>
+        <content type="html"><![CDATA[<p>Here is a video about LimeJS current browser and device support. Sorry about it being a bit shaky, we&#8217;ll try to do a better job next time.</p>
+<iframe title="YouTube video player" width="640" height="390" src="http://www.youtube.com/embed/RhRb-90knrA" frameborder="0" allowfullscreen></iframe>
+
+<p>As a summary to the video: All major browsers&#8217; current stable versions are supported except Internet Explorer where we support the next version IE9 that is currently on Release Candidate status. In mobile space we have full support for iOS devices(iPad,iPhone and iPod Touch). The Android version needs a speed boost that will hopefully come in next months. Options for RIM Playbook seem very good as well as for HP WebOS.</p>
+<p>Funnily the browsers giving us biggest headache at the moment aren&#8217;t IE or even Opera but Chrome and Firefox. This of course does not mean these are not good HTML5 browsers. They are both the most innovative browsers out there but they unfortunately have some bugs.</p>
+<p>Chrome 9 was released almost the same time as we made LimeJS public and some of our previous work was hit with a CSS transformations bug. This bug may affect first loading speed if your DOM trees get large. The solution is just to switch to Canvas renderer. If you have seen this bug then you can leave a comment at the <a href="http://code.google.com/p/chromium/issues/detail?id=71919">Chromium issue page</a>, hopefully Google will fix it quicker then.</p>
+<p>For the Firefox there are some hardware acceleration issues on Firefox4 that at least appear on a Mac. Seems to be some combination of transforms and/or transitions. This is completely acceptable as Firefox4 is still on beta and beta browsers are allowed to have bugs. The solution is just to turn off hardware acceleration in the preferences. Firefox 3.6 branch is unaffected.</p>
+<p>If you have seen LimeJS work on some other devices or browsers you can let us know in the comments!</p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/02/08/guide-complete-renderers-demo</id>
+        <title type="text"><![CDATA[Guide complete + Renderers demo]]></title>
+        <link href="http://www.limejs.com/2011/02/08/guide-complete-renderers-demo" rel="alternate" type="text/html" />
+        <updated>2011-02-08T22:58:55Z</updated>
+        <published>2011-02-08T22:58:55Z</published>
+        <content type="html"><![CDATA[<p>We have finished all chapters of the initial <a href="http://www.limejs.com/0-getting-started">Programming guide</a>. If you want to know how to use LimeJS this is a place to start. Follow it through chapter by chapter and try out the solutions described on your own hello-world project. If you get stuck don&#8217;t be shy to ask for help.</p>
+<p>The last chapter, added just couple of minutes ago, was about different rendering engines LimeJS supports. If you don&#8217;t know what that means go read more about it from <a href="http://www.limejs.com/6_drawing_engines">here</a>. Basically it means that you can use the same code to draw your elements with CSS or with Canvas. In your game you can change the rendering method with one function call depending on your content and the device you are running on.</p>
+<p>This is a simple demo of different Renderers in action. <strong>Press Alt-D to switch between Normal and Debug mode to see what&#8217;s going on under the hood.</strong> In Debug mode all DOM elements have red border. You will see first row consists of many DIV elements while the other is only one Canvas element.</p>
+<div id="demo_00" style="padding:20px;border: 3px solid #ccc;width:500px;height:350px;margin: 20px auto;"></div>
+
+<script type="text/javascript" src="/static/demo_00.js"></script>
+
+<p>This is the basic code that does the double rendering. It creates two layers, uses same method to add children to the layers. Then moves one layer below the other and sets it renderer to Canvas.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">layer1</span> <span class="o">=</span> <span class="nx">makeLayerOfStuff</span><span class="p">();</span>
+<span class="nx">scene</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">layer1</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">layer2</span> <span class="o">=</span> <span class="nx">makeLayerOfStuff</span><span class="p">().</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">180</span><span class="p">).</span>
+    <span class="nx">setRenderer</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">Renderer</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">);</span>
+<span class="nx">scene</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">layer2</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>You can view the full source of this demo <a href="https://github.com/digitalfruit/limejs/blob/master/lime/demos/tests/canvas2.js">here</a>.<br />
+</p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2011/02/03/go-and-create-your-game</id>
+        <title type="text"><![CDATA[Go and create your game!]]></title>
+        <link href="http://www.limejs.com/2011/02/03/go-and-create-your-game" rel="alternate" type="text/html" />
+        <updated>2011-02-03T13:40:16Z</updated>
+        <published>2011-02-03T12:31:45Z</published>
+        <content type="html"><![CDATA[<p>LimeJS is a JavaScript game framwork that allows any developer to create HTML5 based games in no time. Games created with LimeJS framework do not require any browser plug-ins or any additional software installation to run – just a modern web browser is needed. Current version of LimeJS supports almost all HTML5 capable browsers: Chrome, Safari, Firefox and even Opera (sorry, no Internet Explorer support yet). And of course this also covers two main mobile platforms, namely the iOS (iPad, iPhone and iPod Touch) and Android.</p>
+<p><a href="http://www.digitalfruit.eu/">Digital Fruit</a> has developed LimeJS as part-time/side project quite a while, our desire to create game toolkit was initially driven from lack of tools for developing HTML5 based games generally and specially for touchscreens (iOS, Android).  LimeJS&#8217;s goal is quite clear and simple: to provide an easy way to build good game experience without thinking about inner workings. </p>
+<p>There were two main questions what we tried to solve. First, how to make HTML5 based game experience so close to any Flash game or native game on modern smartphone that regular user will not see difference. Secondly, how to bring development time (and therefore cost) of game to similar level what Flash games enjoy today. I think we succeeded in both of our goals. 
+<strong>Seeing is believing.</strong> Point your Mobile Safari to  <a href="http://www.limejs.com/static/roundball/index.html">Roundball</a></a> or <a href="http://www.limejs.com/static/zlizer/index.html">Zlizer</a></p>
+<p><strong>Now its your turn: go and create your game.</strong></p>
+<p>The work is far from over, though. We will keep development going and hope that you will also add your small share (not required). </p>
+<p>Our blog will keep you informed about new releases, developments and bug fixes, new tutorials, resources and everything else what is going on with Lime JS.</p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/7-building</id>
+        <title type="text"><![CDATA[#7 Building]]></title>
+        <link href="http://www.limejs.com/7-building" rel="alternate" type="text/html" />
+        <updated>2013-03-03T18:50:58Z</updated>
+        <published>2011-02-03T10:57:21Z</published>
+        <content type="html"><![CDATA[<h1 id="building">Building</h1>
+<p>If you have followed along previous examples you may have looked up how the internals looked like in <a href="http://getfirebug.com/">Firebug</a> or Webkit Developer Tools. What you see there in the Resources tab may have not made you happy. Even the Hello World example loads in lot of different Javascript files and their total size is huge. Not quite the way <a href="http://developer.yahoo.com/yslow/">YSlow</a> or <a href="http://code.google.com/speed/page-speed/">Google Page Speed</a> have told how it should be done and a nightmare to distribute.</p>
+<p>Fortunately there is a solution named <em>Closure Compiler</em> and it was already downloaded when you first ran the init script. You should never distribute the development files(unless for open source reasons). Once you have completed your project simply run the <em>lime.py</em> helper script with <em>build</em> command. This will combine all Javascript code needed for your project into a single file. To start this file you use the same HTML file you had before with an exception that you don&#8217;t need to include Closure Library&#8217;s base.js any more.</p>
+<p>The build command takes in base namespace of the code that you need to compile. This namespace needs to be defined with <code>goog.provide()</code> in the entrypoint of you projects code. With <code>-o</code> parameter you can define the path where the compiled version should be written(defaults to <em>stdout</em>).</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py build helloworld -o helloworld/compiled/hw.js
+</pre></div>
+</td></tr></table>
+
+<h2 id="advanced_optimizations_mode">Advanced optimizations mode</h2>
+<p>Though default build process strips out all whitespace, replaces local variable names and does much more, the compression rate can be taken to much higher level. If you enable advanced optimizations additional optimizations like property name replacing for all variables and redundant code removal will also take place. Your final code will be much smaller, but there are some extra requirements that you must stick to if you wish to use this mode. For example you can&#8217;t use property names inconsistently (with dot notation in some places and string notation in other) and must <em>jsdoc</em> the <em>@this</em> object type in static functions. More on that <a href="http://code.google.com/closure/compiler/docs/api-tutorial3.html">here</a>. To enable advanced optimizations you simple add <code>-a</code> to the build command.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py build helloworld -o helloworld/compiled/hw_adv.js -a
+</pre></div>
+</td></tr></table>
+
+<p>To further optimize the compiled version it is encouraged that you compress it with <code>gzip</code>. <a href="http://code.google.com/speed/page-speed/docs/payload.html#GzipCompression">Read more</a></p>
+<h3 id="declaring_externs">Declaring Externs</h3>
+<p>To declare Externs to be used by the Advanced Compilation, use the <code>-e</code> option in the build command. This option can be passed multiple times, in case you have multiple externs files.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py build helloworld -o helloworld/compiled/hw_adv.js -e helloworld/externs/some_externs.js -e helloworld/externs/more_externs.js -a
+</pre></div>
+</td></tr></table>
+
+<h2 id="exports">Exports</h2>
+<p>As said before advanced optimizations mode replaces all variable names. This means there are no way to interact with you compiled code from some external code(for example onload handler in your HTML file). To deal with that you can define externs and exports from your code. Extern means that this variable/propery will not be renamed so you can fully interact with it from any external code. Export means variable will be renamed but a link to the new variable will be created with original name. In 99% of places you will only need export and save lot of space this way. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">goog</span><span class="p">.</span><span class="nx">exportSymbol</span><span class="p">(</span><span class="s1">&#39;helloworld.start&#39;</span><span class="o">,</span> <span class="nx">helloworld</span><span class="p">.</span><span class="nx">start</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="debugging">Debugging</h2>
+<p>Sometimes you may find out that you have made a mistake following the advanced optimizations guidelines and your compiled version doesn&#8217;t run any more though your development version worked fine. Common debugging techniques can&#8217;t be applied here as the compressed file is completely unreadable. The solution is to compile with a <code>-m/--map</code> option. This way compiler makes a function map file that binds a compressed function to the position of the uncompressed function in original source. To use the map you have to download Closure Inspector that is a addon for Firebug. Now Firebug can show you the place in the original source where the error happened. <a href="http://code.google.com/closure/compiler/docs/inspector.html">Read more</a></p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py build helloworld -o helloworld/compiled/hw_adv.js -a -m helloworld/complied/debug_map.txt
+</pre></div>
+</td></tr></table>
+
+<h2 id="preloaderoffline_support">Preloader/Offline support</h2>
+<p><em>Preloader support is currenlty very limited. Much more functionality will be added in the future.</em></p>
+<p>Having a single Javascript file makes your game easy to distribute but the Javascript file and all the assets you wish to use still need to be loaded every time the game is accessed. To make the experience better for the player you can compile your game with preloader file. This preloader file use modern browsers offline support capabilities and downloads all files you need before starting the game. Even better, next time the game is played it starts much quicker because it is loaded from users hard drive. If the game is updated, preloader will first download the updated files and then start your game. Offline access is specially important on iOS devices where it allows people to play your webapp game even when they are not connected to the internet.</p>
+<p>You can build your game with preloader by specifying <code>-p</code> option and a callback that starts your game. This callback is the same Javascript function name that you would usually use in the onload handler of your development version.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py build helloworld -o helloworld/compiled/hw_adv.js -a -p helloworld.start
+</pre></div>
+</td></tr></table>
+
+<p>Here are some rules on working with <a href="http://www.w3.org/TR/html5/offline.html#manifests">*.manifest</a> file the preloader build creates:</p>
+<ul>
+<li>Manifest file needs to be served as <em>text/cache-manifest</em> from your webserver. <a href="http://www.thecssninja.com/javascript/how-to-create-offline-webapps-on-the-iphone">Tutorial</a></li>
+<li>If you use your game specific assets(images etc.) you need to list them in the manifest manually</li>
+<li>If you change some of the files in the manifest(without running build again) you also have to change the manifest file. Simplest is to just update the generation time.</li>
+</ul>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/6_drawing_engines</id>
+        <title type="text"><![CDATA[#6 Drawing Engines]]></title>
+        <link href="http://www.limejs.com/6_drawing_engines" rel="alternate" type="text/html" />
+        <updated>2011-11-17T11:36:31Z</updated>
+        <published>2011-02-03T10:56:35Z</published>
+        <content type="html"><![CDATA[<h1 id="drawing_engine">Drawing engine</h1>
+<p>One of the most important features of LimeJS is its different rendering engines support. It is wrong to call LimeJS a Canvas game framework as Canvas is only one of the lower level technologies supported. The lower level methods that have ability to draw to screen are gathered into namespace <em>lime.Renderer</em>. Different renderers can be switched on any Node with <code>setRenderer(renderer)</code>method in any time. Currently supported renderers in LimeJS are <em>lime.Renderer.DOM</em> and <em>lime.Renderer.CANVAS</em>.</p>
+<h2 id="why_many_renderers_are_required">Why many renderers are required?</h2>
+<p>Maybe your first intention is that Canvas is so cool and everything could be done with that. In some day we will maybe get to that but we&#8217;re not there at the moment at least. Canvas is great and allows you to do almost anything but due to it&#8217;s bitmap type nature can&#8217;t be suitable for everything. You may have seen SVG vs Canvas charts about when to use which, same could be done about DOM vs Canvas. Also there isn&#8217;t currently a stable browser that has hardware accelerated Canvas implementation. In mobile devices this is a must because mobile CPU-s aren&#8217;t so speedy as your PC may be.</p>
+<p>There are lot of innovative technologies in HTML5 and Canvas is only one of them. Rounded corners, transforms, transitions and gradients are some of the cool thing HTML5 adds to DOM. Every device/browser has a bit different implementation(performance wise and sometimes API-wise). This is actually a good thing as it helps the web move forward faster and doesn&#8217;t limit us to some fixed stack. But it isn&#8217;t something you want to worry about when you want to develop your game for many devices and the deadline is approaching. For example current iOS version 4.2 has very slow implementation of the Canvas element, instead it has GPU accelerated CSS transforms. On the other hand current non-beta PC browsers don&#8217;t have hardware accelerated CSS transforms, but because they have fast CPU-s they can draw to Canvas pretty quickly. Because CSS transforms and Canvas are very different technologies you would practically have to make two games if you would want to support both. Luckily you have LimeJS that lets you do this with one line. </p>
+<h2 id="limerendererdom">lime.Renderer.DOM</h2>
+<p>DOM renderer renders the nodes it draws as DIV elements and changes their CSS properties to make them look like wanted from the script. DOM renderer is default renderer for all elements that support it.</p>
+<p>You should usually use DOM renderer when:</p>
+<ul>
+<li>On iOS</li>
+<li>The node tree is relatively simple and not deep</li>
+<li>Your element changes/animates often</li>
+<li>Your element takes big part of the screen</li>
+</ul>
+<p>Instances on Director and Scene always use DOM renderer and can&#8217;t be switched to Canvas.</p>
+<h2 id="limerenderercanvas">lime.Renderer.CANVAS</h2>
+<p>Canvas renderer makes a single Canvas element and draw into its 2D context with Canvas drawing methods. If element has children they will be drawn to the same Canvas. If any element changes whole Canvas will be redrawn in the next frame. You can&#8217;t add pure DOM elements as children of a Node if it is being drawn with Canvas renderer.</p>
+<p>You should usually use Canvas renderer when:</p>
+<ul>
+<li>You have a piece of tree that is relatively static</li>
+<li>DOM renderer result doesn&#8217;t satisfy you</li>
+<li>You can see groups of elements that usually change together</li>
+<li>You are on machine with fast CPU or browser that has hardware accelerated Canvas implementation.</li>
+</ul>
+<p>Polygon shapes are always drawn with Canvas renderer as there isn&#8217;t any way to make them with CSS.</p>
+<h2 id="future_compatibility">Future compatibility</h2>
+<p>There is one more thing why this method is important. Web is moving in rapid speed and there is no way to see what will happen in even couple of years. There will probably be even better technologies then available. By hiding away this layer we can implement them as soon as they arrive. The game developer doesn&#8217;t need to change anything and users who still use older browsers/devices can use the old version.</p>
+<p>We have already decided that there will be a WebGL renderer in the future. It will be pretty similar to the Canvas implementation but things will be drawn to WebGL graphics context. All the hard shaders stuff will be hidden away from you. You only need to call the <code>setRenderer()</code> method for your current element. As the development is open for everyone someone else could very well make a SVG renderer or even VML if there is a need for that.</p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/5_animations</id>
+        <title type="text"><![CDATA[#5 Animations]]></title>
+        <link href="http://www.limejs.com/5_animations" rel="alternate" type="text/html" />
+        <updated>2011-02-03T10:56:04Z</updated>
+        <published>2011-02-03T10:56:04Z</published>
+        <content type="html"><![CDATA[<h1 id="animations">Animations</h1>
+<p>Animations provide a way to change elements properties over time. Typical uses are making object larger or changing its position in a way it looks natural for the user. To make an animation you make an animation object and then run it on target. Don&#8217;t forget that you have to include the animation using <code>goog.require()</code>, as no animations are loaded automatically. By default all animations run for 1 second, you can change it with <code>setDuration()</code> method.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">fadehalf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">FadeTo</span><span class="p">(.</span><span class="mi">5</span><span class="p">).</span><span class="nx">setDuration</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">ball</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">fadehalf</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<p>Different types of animations supported:</p>
+<ul>
+<li><em>MoveBy</em> - move object by offset from current location.</li>
+<li><em>MoveTo</em> - move object to specific location.</li>
+<li><em>ScaleBy</em> - scale objects dimensions by a factor. Passing 2 makes object 2 times bigger from its current size.</li>
+<li><em>ScaleTo</em> - scale objects dimensions to a given factor.</li>
+<li><em>RotateBy</em> - rotate object by a given angle</li>
+<li><em>RotateTo</em> - rotate object to a specific angle</li>
+<li><em>ColorTo</em> - change objects color from current color to another.</li>
+<li><em>FadeTo</em> - fade elements opacity to a given value.</li>
+</ul>
+<p>If you wish know when an animation has ended you can listen for its <em>stop</em> event. Event name is also defined as constant <code>lime.animation.Event.STOP</code>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">moveleft</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">MoveBy</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="nx">ball</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="nx">moveleft</span><span class="p">);</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">moveleft</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">STOP</span><span class="o">,</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Ball has finished moving&#39;</span><span class="p">);</span>
+<span class="p">})</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="multiple_targets">Multiple targets</h2>
+<p>There is also possibility to run a single animation on multiple targets. For that you create animation instance, then add targets to this instance and finally call the <code>play()</code> method.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">doublesize</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">ScaleBy</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">doublesize</span><span class="p">.</span><span class="nx">addTarget</span><span class="p">(</span><span class="nx">ball</span><span class="p">);</span>
+<span class="nx">doublesize</span><span class="p">.</span><span class="nx">addTarget</span><span class="p">(</span><span class="nx">square</span><span class="p">);</span>
+<span class="nx">doublesize</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="sequence_spawn_and_loop">Sequence, Spawn and Loop</h2>
+<p>Sequence, Spawn and Loop are animations that combine other animations to make a new effect. Sequence takes in unlimited amount of animations and runs them in a queue one after another. Spawn is similar but all the subanimations run together in same time. Loop is used if you wish the animation to restart itself after it has finished.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">zoomout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Spawn</span><span class="p">(</span>
+    <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">ScaleTo</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">,</span>
+    <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">FadeTo</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">keepturning</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">Loop</span><span class="p">(</span>
+    <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">RotateBy</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+    <span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="precompiled_css3_animations">Precompiled CSS3 animations</h2>
+<p>Making animations as described earlier results in Javascript animations. This means the way the effect is created is by changing objects properties with Javascript on timer intervals. Some modern browsers also support different kind of effects called CSS3 transitions. These events may run smoother as they are hardware accelerated in some platforms(iOS). To enable this accelerated support in LimeJS you have to run the animations <code>enableOptimizations()</code> method. This makes the animation run smoother on iOS devices and possibly use less CPU resources.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">ball</span><span class="p">.</span><span class="nx">runAction</span><span class="p">(</span><span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">MoveBy</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="p">).</span><span class="nx">enableOptimizations</span><span class="p">());</span>
+</pre></div>
+</td></tr></table>
+
+<p>The downside is that <code>enableOptimizations()</code> does not always work. This is also the reason why you specifically have to say you wish the animation to use this feature. The CSS3 transitions API isn&#8217;t so flexible that it could handle all possible scenarios.</p>
+<p>Things that are not currently supported when <code>enableOptimizations()</code> is turned on:</p>
+<ul>
+<li>You can&#8217;t combine move,scale and rotate animations in a way that their timings overlap but aren&#8217;t the same. You can still use them together in a Sequence and you can use them together in a Spawn if their durations match.</li>
+<li>You can&#8217;t combine position,scale and size in a way that one of the parameters is being changed manually while another is animating.</li>
+</ul>
+<h2 id="easing">Easing</h2>
+<p>Easing defines the characteristics how the time is changing when the animation is running. It provides more natural motion as it doesn&#8217;t change the properties in fixed intervals. This makes an object slow down and speed up. All Lime animations have easing ease-in-out by default. This means that object will first speed up and then slow down when it reaches its destination. You define the easing function with <code>setEasing()</code> method. Built in values thath you can use include:</p>
+<ul>
+<li>lime.animation.Easing.EASE</li>
+<li>lime.animation.Easing.LINEAR</li>
+<li>lime.animation.Easing.EASEIN</li>
+<li>lime.animation.Easing.EASEOUT</li>
+<li>lime.animation.Easing.EASEINOUT</li>
+</ul>
+<p>You can also provide custom function made of points of cubic bezier curve.</p>
+<p><em>Lime animations do not use or rely on goog.fx.* libraries. These are common functions for making animations in Closure Library but don&#8217;t quite fit in with LimeJS logic. This may change in the future but not very likely.</em></p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/4_events</id>
+        <title type="text"><![CDATA[#4 Events]]></title>
+        <link href="http://www.limejs.com/4_events" rel="alternate" type="text/html" />
+        <updated>2011-02-03T10:55:40Z</updated>
+        <published>2011-02-03T10:55:40Z</published>
+        <content type="html"><![CDATA[<h1 id="events">Events</h1>
+<p>Event management in Lime is very similar to normal events management in Closure library. You use the same methods <code>goog.events.listen(src, type, listener, opt_capt, opt_handler)</code> to listen for events and <code>goog.events.unlisten(src, type, listener, opt_capt, opt_handler)</code> to remove the listener. The target object(src) is the same Node element that you interact normally. Event types are the ones you would normally add to your DOM elements: usually <em>mousedown</em>, <em>mousemove</em> and <em>mouseup</em> for mouse events and <em>touchstart</em>, <em>touchmove</em>, <em>touchend</em> and <em>touchcancel</em> for touch events. Event types can be also specified as an array.</p>
+<p>The idea behind Lime event management is to allow you to write all your code only once for both touch and mouse based devices. If you have tried to do this before you might know this is not so simple to achieve as it first sounds. First of all there is no one-to-one relation between mouse and touch events. Mousedown may usually mean same as touchstart but mousemove is totally different concept than touchmove. Secondly there is a implementation difference - the position of the different events is exposed differently for different events. And thirdly the touch devices usually support multitouch. This means that you can&#8217;t only have handlers for specific events but you need to set next responders for specific interations. Lime tries to solve all those problems.</p>
+<p>When you listen for an event on an element in Lime the Event object you receive in your handler function isn&#8217;t the normal browser event but instance of <em>lime.events.Event</em>. The properties of this object include:</p>
+<ul>
+<li><em>position</em> - Coordinate for the event in target node&#8217;s coordinate space</li>
+<li><em>screenPosition</em> - Coordinate for the event in screen coordinate space</li>
+<li><em>targetObject</em> - Object that fired the event</li>
+<li><em>event</em> - Normal browser event(you can call stopPropagation() on that for example)</li>
+</ul>
+<p>These positions are the same for both mouse and touch events. All the coordinates can be transformed to different coordinate spaces with Node object&#8217;s helper functions.</p>
+<h2 id="eventswallow">event.swallow()</h2>
+<p>Event object also has <code>swallow(eventType,handler)</code> method. This allows you to interact with queue of events. You would normally use it so that you listen for a first interaction(mousdown, touchstart etc) as you normally would and then on a handler would swallow next mousemove or mouseup events. Swallow means that the handlers only get called if it is still part of the same interaction. On a multitouch capable device every individual touch has its own swallow handlers so if your touchstart had been started by one finger it never gets mixed up with movement of some other finger. When the interaction ends(touchend, mouseup) all swallowed listeners are automatically cleared.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">goog</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">ball</span><span class="o">,</span><span class="p">[</span><span class="s1">&#39;mousedown&#39;</span><span class="o">,</span><span class="s1">&#39;touchstart&#39;</span><span class="p">]</span><span class="o">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">);</span> <span class="c">// ball is colored to red when touched</span>
+
+    <span class="nx">e</span><span class="p">.</span><span class="nx">swallow</span><span class="p">([</span><span class="s1">&#39;mouseup&#39;</span><span class="o">,</span><span class="s1">&#39;touchend&#39;</span><span class="o">,</span><span class="s1">&#39;touchcancel&#39;</span><span class="p">]</span><span class="o">,</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#0c0&#39;</span><span class="p">);</span> <span class="c">// ball is colored back to green when interaction ends</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="dragging">Dragging</h2>
+<p>One common interaction is to drag elements around. Lime has made it simple for you. In the event handler simply call <code>event.startDrag()</code>. You can also provide parameters that limit the draggable area, snap to center or provide custom target object. Because the drag method uses the same <code>swallow()</code> logic as described earlier every dragging is handled separately and you can drag around multiple items same time without writing a single line of code.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">goog</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">ball</span><span class="o">,</span><span class="p">[</span><span class="s1">&#39;mousedown&#39;</span><span class="o">,</span><span class="s1">&#39;touchstart&#39;</span><span class="p">]</span><span class="o">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">startDrag</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span> <span class="c">// true is for snapToCenter</span>
+<span class="p">});</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="non_dom_elements">Non DOM elements</h2>
+<p>When you use Canvas renderer there are no DOM elements to pick up the events. While developing with raw Canvas methods this can be problem cause you only have one event target. Fortunately in Lime using different renderers doesn&#8217;t affect the event system at all. You can still listen events on Nodes that don&#8217;t have a DOM counterpart. </p>
+<h2 id="the_hit_test">The Hit Test</h2>
+<p>If you have some weird custom displayobject you can override it&#8217;s <code>hitTest()</code> method to give it a custom area from where it responds to events. By default all sprites respond to their bounding box(not to fill). Custom shapes check their own geometry. Layers don&#8217;t have any body so they respond to all of their children.</p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/3_shapes_and_fills</id>
+        <title type="text"><![CDATA[#3 Shapes and Fills]]></title>
+        <link href="http://www.limejs.com/3_shapes_and_fills" rel="alternate" type="text/html" />
+        <updated>2011-02-03T12:05:00Z</updated>
+        <published>2011-02-03T10:55:17Z</published>
+        <content type="html"><![CDATA[<h1 id="shapes_and_fills">Shapes and Fills</h1>
+<h2 id="sprites">Sprites</h2>
+<p>In previous chapter you learned about Node class. Though Node is the most important class in LimeJS you almost never create instances of Node itself. You will create Sprites. Sprite is a rectangular display object that can have visual appearance. The appearance can be added with ’setFill(fill)’ method. All of the functionality of the Node class can still be used on sprites and other shapes that inherit from it. This includes adding children sprites.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">redsquare</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">50</span><span class="o">,</span><span class="mi">50</span><span class="p">).</span>
+    <span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">setAnchorPoint</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">redsquare</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="other_common_shapes">Other common shapes</h2>
+<h3 id="circle">Circle</h3>
+<p>Circle shape makes it easy to create circles or ellipses. All methods are the same as for Sprite. Note that you don&#8217;t define radius for a circle but just set it&#8217;s width and height.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">circle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Circle</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">40</span><span class="o">,</span><span class="mi">40</span><span class="p">);</span>
+    <span class="c">// circle with radius 20</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="roundedrect">RoundedRect</h3>
+<p>RoundedRect shape acts like a Sprite but you get a extra method ’setRadius(radius)’. Radius is the same corner radius property that you will find in any drawing application.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">shape</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">RoundedRect</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">40</span><span class="p">).</span>
+    <span class="nx">setRadius</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="label">Label</h3>
+<p>Label is a shape what can have textual content inside. Text can be defined with ’setText(str)’ method. You can also set various font properties of a label and alignment of its text. If you don&#8217;t set fixed size for the label one is calculated automatically based on the length of the text and size of the font.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">lbl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Label</span><span class="p">().</span><span class="nx">setText</span><span class="p">(</span><span class="s1">&#39;Your Score: 10&#39;</span><span class="p">).</span><span class="nx">setFontFamily</span><span class="p">(</span><span class="s1">&#39;Verdana&#39;</span><span class="p">).</span>
+    <span class="nx">setFontColor</span><span class="p">(</span><span class="s1">&#39;#c00&#39;</span><span class="p">).</span><span class="nx">setFontSize</span><span class="p">(</span><span class="mi">26</span><span class="p">).</span><span class="nx">setFontWeight</span><span class="p">(</span><span class="s1">&#39;bold&#39;</span><span class="p">).</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">150</span><span class="o">,</span><span class="mi">30</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="polygon">Polygon</h3>
+<p>Polygons are most abstract shapes you can create with LimeJS. You need to define the points that make up the polygon, all the rest is done for you. You can not change the anchorPoint and size properties of a polygon caused this are also taken from the point values. This flexible way allows you to create almost anything but realize that less points will mean better performance.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">triangle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Polygon</span><span class="p">().</span>
+    <span class="nx">addPoints</span><span class="p">(</span><span class="mi">0</span><span class="o">,-</span><span class="mi">1</span><span class="o">,</span> <span class="p">.</span><span class="mi">5</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="o">,</span> <span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="fills">Fills</h2>
+<p>Simply creating shapes will not show anything on the screen, it will only set up connections between them. To add some visual appearance you have to set shape&#8217;s fill property with ’setFill(fill)’ method. The property passed in to <em>setFill</em> can be object that implements <em>lime.fill.Fill</em> or for some simpler fills you can just pass in the values that will be parsed through ’lime.fill.Fill.parse()’ function to automatically create the fills. <br />
+</p>
+<h3 id="colors">Colors</h3>
+<p>Color is the simplest fill you can add to your shape to have it appear in single solid color. You can pass in the values in many different forms: as a hex string, rgb(a) string or raw rgb(a) values.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">shape</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span> <span class="c">//dark red</span>
+<span class="nx">shape</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span> <span class="c">// 50% transparent gray</span>
+
+<span class="nx">shape</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">);</span> <span class="c">//white</span>
+<span class="nx">shape</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;rgb(100,0,0)&#39;</span><span class="p">);</span> <span class="c">//same dark red as first</span>
+</pre></div>
+</td></tr></table>
+
+<p>Once you have created your Color fill object you can transform its value with some built in functions. More specifically you can change color&#8217;s brightness with method ’addBrightness(factor)’ and saturation with ’addSaturation(factor)’. The factor must be in -1 to +1 range.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">green</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">Color</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span> <span class="c">// neutral green</span>
+<span class="kd">var</span> <span class="nx">darker_green</span> <span class="o">=</span> <span class="nx">green</span><span class="p">.</span><span class="nx">addBrightness</span><span class="p">(</span><span class="o">-</span><span class="p">.</span><span class="mi">2</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">intensive_green</span> <span class="o">=</span> <span class="nx">green</span><span class="p">.</span><span class="nx">addSaturation</span><span class="p">(.</span><span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="images">Images</h3>
+<p>As it&#8217;s name says Image fill simply allows you to set external image file as background of a shape. Image is scaled to fit the elements size.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">sprite</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;assets/image.png&#39;</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="gradients">Gradients</h3>
+<p>Currently only supported gradient is <em>lime.fill.LinearGradient</em> that allows to create a background transform between colors on a single direction. Radial gradients are not supported at the moment. The angle of the gradient can be defined with method ’setDirection(x0,y0,x1,y1)’ where P(x0,y0) and P(x1,y1) define start and end positions inside 1x1 square. Colors can be defined with method ’addColorStop(offset,var_args)’ where offset must be in 0-1 range.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">gradient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">fill</span><span class="p">.</span><span class="nx">LinearGradient</span><span class="p">().</span>
+        <span class="nx">setDirection</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="mi">1</span><span class="p">).</span> <span class="c">// 45&#39; angle </span>
+        <span class="nx">addColorStop</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">100</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="p">).</span> <span class="c">// start from red color</span>
+        <span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">100</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span> <span class="c">// end with transparent blue</span>
+<span class="nx">sprite</span><span class="p">.</span><span class="nx">setFill</span><span class="p">(</span><span class="nx">gradient</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="masks">Masks</h2>
+<p>Adding mask to a shape means that you only show some specific area of your element. In LimeJS masking is done similarly as in Flash - you create two objects and set one as a mask for the other. This means that only the intersection part is shown and all other parts are clipped away from original element. Only rectangular masks are supported at the moment. After the masks are set you can still modify all the properties of both elements.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">mask</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">100</span><span class="p">).</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">100</span><span class="p">);</span>
+<span class="nx">parent</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">mask</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">image</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">300</span><span class="o">,</span><span class="mi">200</span><span class="p">).</span><span class="nx">setFill</span><span class="p">(</span><span class="s1">&#39;assets/myimage.png&#39;</span><span class="p">);</span>
+<span class="nx">parent</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">image</span><span class="p">);</span>
+
+<span class="nx">image</span><span class="p">.</span><span class="nx">setMask</span><span class="p">(</span><span class="nx">mask</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/2_layout_and_nodes</id>
+        <title type="text"><![CDATA[#2 Layout and Nodes]]></title>
+        <link href="http://www.limejs.com/2_layout_and_nodes" rel="alternate" type="text/html" />
+        <updated>2013-02-27T22:12:56Z</updated>
+        <published>2011-02-03T10:54:23Z</published>
+        <content type="html"><![CDATA[<h1 id="layout_and_nodes">Layout and nodes</h1>
+<h2 id="resize_and_orientation_changes">Resize and orientation changes</h2>
+<p>There is not much you have to do to support different screen sizes and viewport size changes in LimeJS. It&#8217;s all done automatically. In the constructor of the Director(or in the <em>setSize</em> method) you define the stage size, but this doesn&#8217;t need to match the actual screen size. The actual size of your game is taken from the size of the container DOM element your game is located in. If the size of the container object changes your game will resize as well to fill the container. It is important to note that although your game scales the coordinates you use in your game logic will still reflect your original stage size so you can completely ignore it while programming.</p>
+<h2 id="full_screen_games">Full screen games</h2>
+<p>The default project template initializes the Director directly inside the body element. This makes it easy to make a game that is always in full screen - something that is a must for mobile web applications. But this behavior isn&#8217;t something that is required. You could very well just make a fixed size DIV element and use it as a parent container. This will then look more like a usual flash game inside HTML page. </p>
+<h2 id="nodes">Nodes</h2>
+<p>Node is the most important object in LimeJS as it&#8217;s the base object for every object in the display objects tree structure. In fact even the Director, Scene and Layer classes described earlier all inherit from Node class. </p>
+<p>Node class defines lot of common functionality for the display objects. Note that all the setter functions return the object itself so they can be combined together in a chain. All setters also have getter counterpart. Everything is similar to the DOM element tree or Flash displayobjects tree.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">parent</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">();</span>
+<span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">child</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="size">Size</h3>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">().</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">50</span><span class="o">,</span><span class="mi">50</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">size</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getSize</span><span class="p">();</span> <span class="c">// returns object</span>
+<span class="nx">size</span><span class="p">.</span><span class="nx">width</span><span class="o">+=</span><span class="mi">100</span><span class="o">;</span>
+<span class="nx">node</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="nx">size</span><span class="p">);</span>
+
+<span class="nx">node</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="k">new</span> <span class="nx">goog</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">Size</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">50</span><span class="p">));</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="position">Position</h3>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">().</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">200</span><span class="o">,</span><span class="mi">100</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">pos</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getPosition</span><span class="p">();</span> <span class="c">// return object</span>
+<span class="nx">pos</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">150</span><span class="o">;</span>
+<span class="nx">node</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="nx">pos</span><span class="p">);</span>
+
+<span class="nx">node</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="k">new</span> <span class="nx">goog</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">Coordinate</span><span class="p">(</span><span class="mi">50</span><span class="o">,</span><span class="mi">50</span><span class="p">));</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="scale">Scale</h3>
+<p>Scale makes object larges by a factor. Note that the position of the element isn&#8217;t changed.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">().</span><span class="nx">setScale</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">node</span><span class="p">.</span><span class="nx">setScale</span><span class="p">(.</span><span class="mi">7</span><span class="p">);</span> <span class="c">//scale in both axis</span>
+<span class="nx">node</span><span class="p">.</span><span class="nx">setScale</span><span class="p">(</span><span class="k">new</span> <span class="nx">goog</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">Vec2</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="p">));</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="rotation">Rotation</h3>
+<p>Object rotation is defined in degrees.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Node</span><span class="p">().</span><span class="nx">setRotation</span><span class="p">(</span><span class="mi">90</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="quality">Quality</h3>
+<p>Setting object&#8217;s quality value makes it render in a smaller size and then scale the whole element to its original size. In some cases this allows boost performance by loosing in quality. Note that it almost never makes sense to to set the quality value larger than 1 as if quality is already 100% it can&#8217;t get any better.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">node</span><span class="p">.</span><span class="nx">setQuality</span><span class="p">(.</span><span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="autoresize">AutoResize</h3>
+<p>AutoResize define how the objects size should change when its parent objects size changes. There are no percentage unit sizes in LimeJS but this allows you to have same result in much powerful way. Enum lime.AutoResize defines different properties that can be flexible. You pass the combination of these bitmask properties to ’setAutoResize()’ method to make the combination you need. Similar method is used in iOS UIKit framework.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">box</span><span class="p">.</span><span class="nx">setAutoResize</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">AutoResize</span><span class="p">.</span><span class="nx">WIDTH</span> <span class="o">|</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">AutoResize</span><span class="p">.</span><span class="nx">HEIGHT</span><span class="p">);</span>
+
+<span class="nx">footer</span><span class="p">.</span><span class="nx">setAutoResize</span><span class="p">(</span><span class="nx">lime</span><span class="p">.</span><span class="nx">AutoResize</span><span class="p">.</span><span class="nx">TOP</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="anchor_points">Anchor Points</h3>
+<p>In HTML all objects position relatively from its top left corner by default. In games this isn&#8217;t always suitable. There are many object that have their most important point in some other area. Node&#8217;s method ’setAnchorPoint(vec2)’ allows you to set any position as base relative point. The vector passed in should have values in 0-1 range where (0,0) means top-left and (1,1) bottom-right. By default all objects are positioned by their center. Anchor point is used when positioning the element and its children and also while rotating.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">box</span><span class="p">.</span><span class="nx">setAnchorPoint</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="nx">circle</span><span class="p">.</span><span class="nx">setAnchorPoint</span><span class="p">(.</span><span class="mi">5</span><span class="o">,</span><span class="p">.</span><span class="mi">5</span><span class="p">);</span> <span class="c">//also default value</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="coordinate_conversion">Coordinate conversion</h2>
+<p>In some situation you may need to set one elements position relatively from another. When the objects aren&#8217;t in the same layer this isn&#8217;t so simple as the position properties originate from different parent. For dealing with that issue Lime provides functions to convert coordinates from one node&#8217;s coordinate space to other.</p>
+<div class="codehilite"><pre>box.localToScreen(coord) - Converts local coordinate to screen coordinate.
+box.screenToLocal(coord) - Converts screen coordinate to local nodes space.
+box.localToNode(coord,node) - Converts local coordinate to any other nodes coordinate space.
+</pre></div>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/1_the_timeline</id>
+        <title type="text"><![CDATA[#1 The Timeline]]></title>
+        <link href="http://www.limejs.com/1_the_timeline" rel="alternate" type="text/html" />
+        <updated>2013-02-27T22:08:33Z</updated>
+        <published>2011-02-03T10:53:32Z</published>
+        <content type="html"><![CDATA[<h1 id="the_timeline">The Timeline</h1>
+<h2 id="director">Director</h2>
+<p>It all starts from the director. Director is a base object needed for every game and connects all LimeJS logic to a single place on the webpage. If you come from flash world you can think of it as a stage, Cocos2d users see familiarities with Cocos2d-s own Director. All other can think of it just as a front controller. </p>
+<p>There is only one director instance for each game. It handles games global viewport and controls which scenes are visible. In the beginning of your game logic you have to create an instance of director. The parameters for the constructor method are container DOM element, stage width in pixels and height in pixels.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">director</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">dfkit</span><span class="p">.</span><span class="nx">Director</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="o">,</span><span class="mi">320</span><span class="o">,</span><span class="mi">460</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="scene">Scene</h2>
+<p>Scene is a independent portion of visible elements that cover all the viewport. This means that only one scene can be active at a given time. For example, in common game logic you would have menu scene, play scene and game-over scene. To make a scene visible you call <code>director.replaceScene(scene)</code> or <code>director.pushScene(scene)</code>. The difference is that <em>pushScene</em> does not remove the previous scene but keeps it in a hidden stack so it can be made visible again with <code>director.popScene()</code> call.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">scene</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
+<span class="nx">director</span><span class="p">.</span><span class="nx">replaceScene</span><span class="p">(</span><span class="nx">scene</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="transitions">Transitions</h2>
+<p>Using plain <code>replaceScene()</code> just makes a quick switch between the scenes that may not be visually appealing. To make it better you can set optional <em>transition</em> and <em>duration</em> property of your <code>replaceScene()</code> call. The transition defines the animation that happens when current scene is dismissed and new scene is activated. Currently various <em>Slide</em> and <em>Move</em> transitions are supported as well as <em>Dissolve</em> for fade-in effect.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">director</span><span class="p">.</span><span class="nx">replaceScene</span><span class="p">(</span><span class="nx">menuscene</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">transitions</span><span class="p">.</span><span class="nx">SlideInRight</span><span class="p">);</span>
+
+<span class="nx">director</span><span class="p">.</span><span class="nx">replaceScene</span><span class="p">(</span><span class="nx">gamescene</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">transitions</span><span class="p">.</span><span class="nx">Dissolve</span><span class="o">,</span><span class="mi">2</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="schedulemanager">ScheduleManager</h2>
+<p>Everything in Lime is drawn with repaint-dirty pattern. That means that every time you change something your method calls aren&#8217;t strictly related to the equivalent DOM or Canvas2dContext calls. Instead property you set is marked as dirty and will be redrawn in the next frame. This allows us to update only once, update only what is necessary and keep all updates stateless. Last criteria allows us to switch between the renderer methods any time. As there isn&#8217;t any on-enter-frame event in Javascript we&#8217;ve made a <em>lime.sheduleManager</em> static object that simulates it. These are the methods it provides:</p>
+<ul>
+<li>schedule(callback, context) - Call a function in every frame. Context is object that represents <em>this</em>.</li>
+<li>unschedule(callback, context) - Clear previously scheduled function.</li>
+<li>scheduleWithDelay(callback, context, delay, opt_limit) - Same as <em>schedule</em> but function is only called if more than <em>delay</em> seconds has passed from last execution.</li>
+<li>callAfter(callback, context, delay) - Only call function once after the delay.</li>
+</ul>
+<p>You should never use JavaScript built in methods <code>setTimeout()</code> and <code>setInterval()</code> directly in your game code. <em>lime.schduleManager</em> provides you with the same functionality with extra features. Your callback is called with a parameter that is the delay from the last execution of the same callback in milliseconds. This allows you to make smooth animations even if the CPU performance changes drastically.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">velocity</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+<span class="nx">lime</span><span class="p">.</span><span class="nx">scheduleManager</span><span class="p">.</span><span class="nx">schedule</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">dt</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">position</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getPosition</span><span class="p">();</span>
+    <span class="nx">position</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">velocity</span> <span class="o">*</span> <span class="nx">dt</span><span class="o">;</span> <span class="c">// if dt is bigger we just move more</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="nx">position</span><span class="p">);</span> 
+<span class="p">}</span><span class="o">,</span><span class="nx">ball</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="pausing">Pausing</h2>
+<p>Using scheduleManager instead of timer functions also gives you benefit of pausing support. When you wish to pause your game you simply have to call the <code>setPaused(true)</code> on your Director object. This pauses all the scheduled functions and animations. Once you resume by calling <code>setPaused(false)</code> all your code is resumed as if nothing ever happened. While your game is in paused state instance of <em>lime.PauseScene</em> is placed as a active scene of the Director. If you wish to have some custom appearance on this state you can override this class functionality. </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre><span class="nx">mygame</span><span class="p">.</span><span class="nx">director</span><span class="p">.</span><span class="nx">setPaused</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="layers">Layers</h2>
+<p>Now we are ready to add something on the screen. To better manage your display object we have introduced <em>lime.Layer</em> objects. You can think about them in a same way as Photoshop layers. Layers are there to hold stuff in. They act as any other display objects with an exception that they don&#8217;t have any body or size themselves. Their only contents is their children objects. So you create them, add to the tree, position if necessary and add child objects into to them. Just to be clear, using layers is not required  - your can add any display objects to the scene. Layers just make your life easier.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><div class="codehilite"><pre><span class="kd">var</span> <span class="nx">layer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">Layer</span><span class="p">().</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">100</span><span class="p">);</span>
+<span class="nx">scene</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">layer</span><span class="p">);</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="o">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">box</span> <span class="o">=</span> <span class="nx">customMakeBoxFunc</span><span class="p">().</span><span class="nx">setPosition</span><span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">50</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+    <span class="nx">layer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">box</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+    <entry>
+        <id>http://www.limejs.com/0-getting-started</id>
+        <title type="text"><![CDATA[#0 Getting Started]]></title>
+        <link href="http://www.limejs.com/0-getting-started" rel="alternate" type="text/html" />
+        <updated>2011-02-10T15:41:48Z</updated>
+        <published>2011-02-03T10:52:45Z</published>
+        <content type="html"><![CDATA[<h1 id="getting_started">Getting started</h1>
+<h2 id="installation">Installation</h2>
+<p><strong>Windows users:</strong> please follow the installation guide in the README file</p>
+<p>The dependencies required to develop with LimeJS include <a href="http://www.python.org/">Python 2.6+</a>, <a href="http://git-scm.com/download">Git</a> and <a href="http://subversion.apache.org/">Subversion</a> or Git-SVN. If you wish to use Closure Compiler then <a href="http://www.java.com/en/">Java</a> is also required. Once you have your built game there are no specific requirements for the distribution server.</p>
+<p>Download the source from <a href="http://github.com/digitalfruit/limejs">github</a>. The files include Javascript source files (in lime/) and one Python helper command line tool(lime.py) in bin/ directory.</p>
+<p>Check out the features of the CLI utility by running</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py --help
+</pre></div>
+</td></tr></table>
+
+<p>You will see the utility can handle initial setup, dependency updating, project creation, template generations and project building.</p>
+<p>Start by running inital setup: </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py init
+</pre></div>
+</td></tr></table>
+
+<p>This will download <a href="http://code.google.com/closure/library/">Closure Library</a>, <a href="http://box2d.thinkpixellab.com/">Box2D physics library</a>, <a href="http://code.google.com/closure/compiler/">Closure Compiler</a> &amp; <a href="http://code.google.com/closure/templates/">Templates</a> and set them all up so they are ready for being used.</p>
+<p>You&#8217;re done! Create a simple helloworld project by running </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>bin/lime.py create helloworld
+</pre></div>
+</td></tr></table>
+
+<p>Open helloworld/helloworld.html in the browser and enjoy your accomplishment.</p>
+<h2 id="common_closure">Common Closure</h2>
+<p>LimeJS is built with Closure Library. Closure is JavaScript library built by Google, it has been used to develop lot of Google&#8217;s great products like Gmail or Docs. It is highly maintainable and readable, fast and feature rich. It also integrates well with other Closure tools like Compiler and Templates.</p>
+<h3 id="namespaces">Namespaces</h3>
+<p>One of Closure&#8217;s the most noticeable features is its namespacing system. Unlike some other libraries all the code is separated between files. Every file provides names for its code and can request some other files being present. While developing you only have to include <em>base.js</em> file that gives you new functions <code>goog.provide(namespace)</code> and <code>goog.require(namespace)</code>. Provide function declares that all code in the file can be requested with that name. Require function requests another file with that name. The whole system is analogues with any other language that has namespaces built in (Java, ActionScript, Python) with an exception that the name does not need to specify correct folder structure but can be completely arbitrary. Closure uses its built in <em>deps.js</em> file to map the namespaces to file paths. This means that if you add new namespaces you have to run </p>
+<table class="codehilitetable"><tr><td class="linenos"><pre>1</pre></td><td class="code"><div class="codehilite"><pre>python bin/lime.py update
+</pre></div>
+</td></tr></table>
+
+<p>to update the <em>deps.js</em> so your new file can be accessed.</p>
+<p>It is not required that you use <code>goog.provide()</code> for your own project files but its highly encouraged. Using this will also get you much better results when you are ready to compile your game.</p>
+<h3 id="inheritance">Inheritance</h3>
+<p>Working with LimeJS one of the common actions is to make your custom subclass of a builtin class. Using this you can add your custom game specific methods to common objects. This is an example of a <em>lime.Circle</em>&#8216;s subclass <em>mygame.Ball</em>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></td><td class="code"><div class="codehilite"><pre><span class="c">// make file loadable from other files</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">provide</span><span class="p">(</span><span class="s1">&#39;mygame.Ball&#39;</span><span class="p">);</span>
+
+<span class="c">// request that lime.Circle&#39;s definitions are loaded</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;lime.Circle&#39;</span><span class="p">);</span>
+
+<span class="c">// new constructor</span>
+<span class="nx">mygame</span><span class="p">.</span><span class="nx">Ball</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c">// call parents constructor </span>
+    <span class="nx">goog</span><span class="p">.</span><span class="nx">base</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="c">// custom initialization code</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">color_</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="o">;</span>
+<span class="p">}</span>
+<span class="c">// define parent class</span>
+<span class="nx">goog</span><span class="p">.</span><span class="nx">inherits</span><span class="p">(</span><span class="nx">mygame</span><span class="p">.</span><span class="nx">Ball</span><span class="o">,</span><span class="nx">lime</span><span class="p">.</span><span class="nx">Circle</span><span class="p">);</span>
+
+<span class="c">// new custom method for ball instances</span>
+<span class="nx">mygame</span><span class="p">.</span><span class="nx">Ball</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">myMethod</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>    
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="events">Events</h3>
+<p>Closure provides you functions for listening and unlistening events for objects. You add an event listener with function <code>goog.events.listen(src, type, listener, opt_capture, opt_handler)</code>. Src is the target object dispatching the event, type is the event name(for example mousedown). Listener is callback function that is called when event fires. You can also make the event fire in capture phase and define custom context object for callback function. Removing event listener uses same kind of function named <code>goog.events.unlisten()</code> with all the same parameters.</p>
+<p>If you wish to dispatch events from your custom object you have to make them subclass of <em>goog.events.EventTarget</em> and then call the objects <code>dispatchEvent()</code> method.</p>
+<p><em>There is much more you could know about Closure Library, check out the <a href="http://closure-library.googlecode.com/svn/docs/index.html">docs</a>, <a href="http://www.amazon.com/Closure-Definitive-Guide-Michael-Bolin/dp/1449381871">book</a> or <a href="http://www.youtube.com/watch?v=yp_9q3tgDnQ">video</a> for more information.</em></p>]]></content>
+        <author>
+            <name><![CDATA[Digital Fruit]]></name>
+            <email>lime@limejs.com</email>
+            <uri>http://www.limejs.com</uri>
+        </author>
+    </entry>
+    
+</feed>
