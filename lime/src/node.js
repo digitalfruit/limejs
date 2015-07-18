@@ -632,8 +632,7 @@ lime.Node.prototype.createDomElement = function() {
     var newTagName =
         this.renderer.getType() == lime.Renderer.CANVAS ? 'canvas' : 'div';
     var create = function() {
-        this.domElement = this.rootElement =
-            this.containerElement = goog.dom.createDom(newTagName);
+        this.domElement = this.rootElement = goog.dom.createDom(newTagName);
         if (this.domClassName)
             goog.dom.classes.add(this.domElement, this.domClassName);
         this.dirty_ |= ~0;
@@ -677,7 +676,6 @@ lime.Node.prototype.removeDomElement = function() {
         goog.dom.removeNode(this.rootElement);
         delete this.domElement;
         delete this.rootElement;
-        delete this.containerElement;
         //return true;
     }
 };
@@ -734,9 +732,6 @@ lime.Node.prototype.update = function(opt_pass) {
             delete this.transitionsActiveSet_[i];
             property = lime.Node.getPropertyForTransition(parseInt(i, 10));
             lime.style.clearTransition(this.domElement, property);
-            if (this.domElement != this.containerElement) {
-                lime.style.clearTransition(this.continerElement, property);
-            }
         }
 
         // predraw is a check that elements are correctly drawn before the
@@ -786,14 +781,6 @@ lime.Node.prototype.update = function(opt_pass) {
             this.transitionsActive_[i] = value[0];
             lime.style.setTransition(this.domElement,
                 property, value[1], value[2]);
-
-            if (this.domElement != this.containerElement &&
-                property == lime.style.transformProperty) {
-
-                lime.style.setTransition(this.containerElement,
-                    property, value[1], value[2]);
-
-            }
             }
             delete this.transitionsAdd_[i];
         }
