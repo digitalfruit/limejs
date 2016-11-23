@@ -122,8 +122,8 @@ def checkDependencies():
         zippedFile = zipfile.ZipFile(zip_path)
         jarName = ''
         for name in zippedFile.namelist():
-            if re.match(r'closure-compiler-.*\.jar', info):
-                jarName = info
+            if re.match(r'closure-compiler-.*\.jar', name):
+                jarName = name
                 print(jarName)
         zippedFile.extract(jarName, extdir)
         zippedFile.close()
