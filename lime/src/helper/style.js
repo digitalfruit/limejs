@@ -30,10 +30,16 @@ lime.style.tryProperty = function(name) {
  * @param {string} name Unprefixed name.
  * @return {string} Actual valid property name.
  */
+lime.style.knownProperties = {};
 lime.style.getCSSproperty = function(name) {
+    var knownProperties = lime.style.knownProperties;
+    if (knownProperties[name]) {
+        return knownProperties[name];
+    }
     var name_lower = name.charAt(0).toLowerCase() + name.substr(1),
         prefix_name = prefix + name;
-    return lime.style.tryProperty(name) ?
+    return knownProperties[name] =
+        lime.style.tryProperty(name) ?
         name : (lime.style.tryProperty(name_lower)  ?
                 name_lower : lime.style.tryProperty(prefix_name) ?
                 prefix_name : undefined );
@@ -109,6 +115,7 @@ lime.style.Transform.prototype.scale = function(sx, sy) {
  * @return {lime.style.Transform} object itself.
  */
 lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
+    if (angle != 0) {
     var rot_str;
 
     if (this.enable3D_ && (lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
@@ -116,9 +123,8 @@ lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
     } else {
         rot_str = 'rotate(' + angle + (opt_unit ? opt_unit : 'deg') + ')';
     }
-    if (angle != 0)
         this.values.push(rot_str);
-
+    }
     return this;
 };
 
