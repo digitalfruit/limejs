@@ -372,7 +372,6 @@ lime.scheduleManager.changeDirectorActivity = function(director, value) {
     var t, context, f, d, i,
     j = this.taskStack_.length;
     while (--j >= 0) {
-
         t = this.taskStack_[j];
         i = t.functionStack_.length;
         while (--i >= 0) {
