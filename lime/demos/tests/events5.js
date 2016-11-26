@@ -40,9 +40,28 @@ test.start = function() {
         e.swallow(['mouseup', 'touchend'], function() {t.setFill(0, 0, 100)});
     });
 
+    // This sprite propagates events to the sprite(s) below it, "sticking" to
+    // them.
+    var propagation_box = new lime.Sprite().setSize(50, 50).setFill(0, 255, 0)
+        .setPosition(100, -30);
+    goog.events.listen(
+        propagation_box, ['mousedown', 'touchstart'],
+        function(e) {
+            e.startDrag();
+        });
+    layer.appendChild(propagation_box);
 
-
-
+    // This sprite does not propagate events.
+    var stop_propagation_box =
+        new lime.Sprite().setSize(50, 50).setFill(255, 0, 0)
+        .setPosition(100, 30);
+    goog.events.listen(
+        stop_propagation_box, ['mousedown', 'touchstart'],
+        function(e) {
+            e.startDrag();
+            e.stopPropagation();
+        });
+    layer.appendChild(stop_propagation_box);
 
 	// set active scene
 	test.director.replaceScene(gamescene);

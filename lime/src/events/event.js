@@ -8,10 +8,13 @@ goog.require('lime.events.Drag');
  * @constructor
  */
 lime.events.Event = function(dispatcher) {
-    this.dispatcher_ = dispatcher;
+    goog.events.Event.call(this);
 
+    this.dispatcher_ = dispatcher;
     this.identifier = 0;
 };
+
+goog.inherits(lime.events.Event, goog.events.Event);
 
 /**
  * Swallow an event. This means that next event from the same
