@@ -1,4 +1,4 @@
-#Building
+# Building
 
 If you have followed along previous examples you may have looked up how the internals looked like in [Firebug](http://getfirebug.com/) or Webkit Developer Tools. What you see there in the Resources tab may have not made you happy. Even the Hello World example loads in lot of different Javascript files and their total size is huge. Not quite the way [YSlow](http://developer.yahoo.com/yslow/) or [Google Page Speed](http://code.google.com/speed/page-speed/) have told how it should be done and a nightmare to distribute.
 

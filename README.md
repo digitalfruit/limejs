@@ -1,8 +1,8 @@
-#LimeJS
+# LimeJS
 
-##Getting started:
+## Getting started:
 
-###Mac OS X and Linux users:
+### Mac OS X and Linux users:
 
 - Requirements: Python 2.6+, Git
 - Clone the git repo (you have probably already done that):
@@ -25,7 +25,7 @@
 - documentation is at <http://limejs.digitalfruit.ee/docs/>
 
 
-###Windows users:
+### Windows users:
 
 If you consider yourself advanced user and know how to use Git/Python you are probably better off reading through Mac/Linux guide and choosing your best alternative tools/methods yourself. If not then follow this step-by-step route.
 
@@ -64,7 +64,7 @@ If you consider yourself advanced user and know how to use Git/Python you are pr
 
 
 
-##Browser support:
+## Browser support:
 
 - *Current:* Chrome, Safari 5, Firefox 3.6+, Opera, IE9, Mobile Safari
 - *Soon:* Android, Blackberry Playbook
@@ -72,7 +72,7 @@ If you consider yourself advanced user and know how to use Git/Python you are pr
 
 
 
-##Links:
+## Links:
 
 Closure Library: <https://developers.google.com/closure/library/>
 
